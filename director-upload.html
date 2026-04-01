@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Director Control Panel | Deepu Siva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Barlow', sans-serif; background: #0d1117; color: #c9d1d9; padding: 20px; }
+        .admin-container { max-width: 900px; margin: auto; background: #161b22; padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
+        h1 { color: #f97316; border-bottom: 2px solid #f97316; padding-bottom: 10px; }
+        select, input, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #0d1117; border: 1px solid #30363d; color: white; border-radius: 5px; }
+        .upload-section { margin-top: 30px; padding: 20px; border: 1px dashed #4ade80; border-radius: 8px; }
+        button { background: #238636; color: white; border: none; padding: 15px 30px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        button:hover { background: #2ea043; }
+        .user-list { margin-top: 20px; font-size: 14px; }
+        .status-pending { color: #f97316; }
+        #vault-door { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; }
+    </style>
+</head>
+<body>
+
+    <div id="vault-door">
+        <h1 style="color: white;">DIRECTOR SECURITY CHECK</h1>
+        <input type="text" id="adminID" placeholder="Enter Admin ID" style="width: 250px;">
+        <input type="password" id="adminPass" placeholder="Master Password" style="width: 250px;">
+        <button onclick="unlockVault()" style="width: 260px;">Unlock System</button>
+    </div>
+
+    <div class="admin-container" id="adminContent" style="display:none;">
+        <h1>Director Control Panel</h1>
+        <p>Select a client to update their dashboard details.</p>
+
+        <label>Step 1: Select Approved Client</label>
+        <select id="clientSelect">
+            <option value="">-- Loading Registered Clients --</option>
+        </select>
+
+        <div class="upload-section">
+            <label>Step 2: What are you uploading?</label>
+            <select id="dataType">
+                <option value="bills">New Bill / Invoice</option>
+                <option value="payments">Payment Status Update</option>
+                <option value="sites">New Site Location (Map Link)</option>
+                <option value="updates">General Project Update</option>
+            </select>
+
+            <label>Title / Description</label>
+            <input type="text" id="dataTitle" placeholder="e.g., Invoice #102 or Site B Status">
+            
+            <label>Detail / Value / Link</label>
+            <textarea id="dataValue" rows="3" placeholder="Enter amount, status text, or Google Maps URL"></textarea>
+
+            <button id="uploadBtn">🚀 PUSH TO CLIENT DASHBOARD</button>
+        </div>
+
+        <p id="logMsg" style="text-align: center; margin-top: 15px; font-weight: bold;"></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
+            authDomain: "deepu-siva-portal.firebaseapp.com",
+            projectId: "deepu-siva-portal",
+            storageBucket: "deepu-siva-portal.firebasestorage.app",
+            messagingSenderId: "1014351018202",
+            appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- 🛡️ VAULT LOGIC ---
+        window.unlockVault = () => {
+            const id = document.getElementById('adminID').value;
+            const pass = document.getElementById('adminPass').value;
+            // Only you know these two secrets!
+            if(id === "DEEPU_ADMIN" && pass === "Deepu@2026") { 
+                document.getElementById('vault-door').style.display = "none";
+                document.getElementById('adminContent').style.display = "block";
+                loadClients();
+            } else {
+                alert("ACCESS DENIED: Unauthorized Entrance Attempted.");
+            }
+        };
+
+        // --- 📋 LOAD CLIENT LIST ---
+        async function loadClients() {
+            const querySnapshot = await getDocs(collection(db, "users"));
+            const select = document.getElementById('clientSelect');
+            select.innerHTML = '<option value="">-- Choose a Client --</option>';
+            
+            querySnapshot.forEach((userDoc) => {
+                const data = userDoc.data();
+                const option = document.createElement('option');
+                option.value = userDoc.id;
+                option.text = `${data.fullName} (${data.companyName || 'Individual'})`;
+                select.appendChild(option);
+            });
+        }
+
+        // --- 🚀 PUSH DATA LOGIC ---
+        document.getElementById('uploadBtn').addEventListener('click', async () => {
+            const clientId = document.getElementById('clientSelect').value;
+            const type = document.getElementById('dataType').value;
+            const title = document.getElementById('dataTitle').value;
+            const value = document.getElementById('dataValue').value;
+            const log = document.getElementById('logMsg');
+
+            if(!clientId || !title || !value) {
+                alert("Director, please fill all fields before pushing data.");
+                return;
+            }
+
+            try {
+                const clientRef = doc(db, "users", clientId);
+                
+                // This adds the new info to the client's "Filing Cabinet" without erasing old info
+                await updateDoc(clientRef, {
+                    [type]: arrayUnion({
+                        title: title,
+                        detail: value,
+                        date: new Date().toLocaleDateString()
+                    })
+                });
+
+                log.innerText = "✅ Successfully pushed to client dashboard!";
+                log.style.color = "#4ade80";
+                
+                // Clear form
+                document.getElementById('dataTitle').value = "";
+                document.getElementById('dataValue').value = "";
+
+            } catch (err) {
+                log.innerText = "Error: " + err.message;
+                log.style.color = "#ff4d4d";
+            }
+        });
+    </script>
+</body>
+</html>
