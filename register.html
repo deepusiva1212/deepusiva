@@ -218,5 +218,21 @@
       document.getElementById('phoneModal').style.display = 'flex';
     });
   </script>
+  <div id="phoneModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; z-index: 1000;">
+    <div style="background:#161b22; padding:30px; border-radius:8px; width:320px; text-align:center; border: 1px solid #30363d;">
+      <h3 style="color:#fff; margin-top:0;">Verify Mobile</h3>
+      <p style="font-size: 13px; color: #8b949e;">Enter number with +91</p>
+      
+      <div id="recaptcha-container"></div>
+      
+      <input type="tel" id="phoneNumber" placeholder="+91 99524 27492" style="margin-top:10px;">
+      <button type="button" class="submit-btn" id="sendOTP">Send OTP</button>
+      
+      <input type="text" id="otpCode" placeholder="6-digit Code" style="display:none; margin-top:10px;">
+      <button type="button" class="submit-btn" id="verifyOTP" style="display:none; background: #4ade80; color: #000;">Verify & Apply</button>
+      
+      <button type="button" onclick="document.getElementById('phoneModal').style.display='none'" style="background:none; border:none; color:#8b949e; cursor:pointer; margin-top:15px; font-size: 14px;">Cancel</button>
+    </div>
+  </div>
 </body>
 </html>
