@@ -3,54 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Account | Deepu Siva</title>
+  <title>Smart Registration | Deepu Siva</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     body { font-family: 'Barlow', sans-serif; background: #0d1117; color: #c9d1d9; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
-    .login-box { background: #161b22; padding: 40px; border-radius: 8px; border: 1px solid #21262d; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    h2 { font-family: 'Barlow Condensed', sans-serif; color: #f0f6fc; font-size: 32px; margin: 0 0 10px 0; letter-spacing: 1px; }
-    p.subtitle { color: #8b949e; margin-bottom: 24px; font-size: 15px; }
-    input, textarea { width: 100%; padding: 14px; margin-bottom: 16px; background: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 4px; box-sizing: border-box; font-family: 'Barlow', sans-serif; }
-    input:focus, textarea:focus { outline: none; border-color: #f97316; }
+    .reg-box { background: #161b22; padding: 40px; border-radius: 8px; border: 1px solid #21262d; width: 100%; max-width: 550px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    h2 { font-family: 'Barlow Condensed', sans-serif; color: #f0f6fc; font-size: 28px; text-align: center; margin: 0 0 20px 0; letter-spacing: 1px; }
+    
+    /* Social Buttons */
+    .social-btns { display: flex; gap: 10px; margin-bottom: 25px; }
+    .s-btn { flex: 1; padding: 12px; border-radius: 4px; border: 1px solid #30363d; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; background: #1c2128; color: #fff; font-size: 14px; }
+    .s-btn:hover { background: #30363d; }
+    
+    .divider { display: flex; align-items: center; color: #8b949e; font-size: 12px; margin: 20px 0; }
+    .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #30363d; margin: 0 10px; }
+
+    input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 4px; box-sizing: border-box; font-family: 'Barlow', sans-serif; }
+    input:focus { border-color: #f97316; outline: none; }
     .row { display: flex; gap: 10px; }
-    button { width: 100%; padding: 14px; background: #f97316; color: #fff; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-    button:hover { background: #ea580c; }
-    button:disabled { background: #555; cursor: not-allowed; }
-    .back-link { display: inline-block; margin-top: 20px; color: #8b949e; text-decoration: none; font-size: 14px; }
-    .back-link:hover { color: #c9d1d9; }
-    #message { margin-top: 15px; font-size: 15px; display: none; font-weight: 500; }
+    label { display: block; font-size: 12px; color: #8b949e; margin-bottom: 5px; margin-left: 2px; }
+    
+    button.submit-btn { width: 100%; padding: 15px; background: #f97316; color: #fff; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    #message { margin-top: 15px; text-align: center; font-size: 14px; display: none; }
+    
+    /* Phone Modal */
+    #phoneModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; }
+    .modal-content { background:#161b22; padding:30px; border-radius:8px; width:300px; text-align:center; }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>CLIENT REGISTRATION</h2>
-    <p class="subtitle">Apply for your secure project dashboard.</p>
-    
-    <form id="registerForm">
-      <div class="row">
-        <input type="text" id="firstName" placeholder="First Name" required>
-        <input type="text" id="lastName" placeholder="Last Name" required>
+
+  <div class="reg-box">
+    <h2>CLIENT ONBOARDING</h2>
+
+    <div class="social-btns">
+      <div class="s-btn" id="googleBtn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Google
       </div>
-      <input type="text" id="username" placeholder="Desired Username" required>
-      <input type="tel" id="phone" placeholder="Phone Number" required>
-      <textarea id="address" placeholder="Company / Personal Address" rows="3" required></textarea>
+      <div class="s-btn" id="phoneBtn">📞 Mobile OTP</div>
+    </div>
+
+    <div class="divider">OR USE EMAIL</div>
+
+    <form id="regForm">
+      <div class="row">
+        <div><label>First Name</label><input type="text" id="fName" required></div>
+        <div><label>Last Name</label><input type="text" id="lName" required></div>
+      </div>
+
+      <label>Unique Username</label>
+      <input type="text" id="uName" placeholder="e.g. deepu_siva_01" required>
+
+      <label>Country</label>
+      <select id="country">
+        <option value="India">India 🇮🇳</option>
+        <option value="UAE">United Arab Emirates 🇦🇪</option>
+        <option value="USA">USA 🇺🇸</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <div class="row">
+        <div>
+          <label>PIN Code</label>
+          <input type="text" id="pincode" placeholder="6 Digits" maxlength="6" required>
+        </div>
+        <div>
+          <label>City</label>
+          <input type="text" id="city" readonly placeholder="Auto-filled">
+        </div>
+      </div>
+
+      <label>State</label>
+      <input type="text" id="state" readonly placeholder="Auto-filled">
+
+      <label>Full Address</label>
+      <textarea id="addr" rows="2" required></textarea>
+
+      <label>Email ID</label>
+      <input type="email" id="email" required>
       
-      <div style="height: 1px; background: #30363d; margin: 10px 0 25px 0;"></div>
-      
-      <input type="email" id="email" placeholder="Email Address" required>
-      <input type="password" id="password" placeholder="Create Password (min 6 chars)" required minlength="6">
-      
-      <button type="submit" id="submitBtn">Submit Application →</button>
+      <label>Create Password</label>
+      <input type="password" id="pass" minlength="6" required>
+
+      <button type="submit" class="submit-btn" id="mainBtn">Submit Application</button>
       <div id="message"></div>
     </form>
+  </div>
 
-    <a href="login.html" class="back-link">← Already have an account? Log In</a>
+  <div id="phoneModal">
+    <div class="modal-content">
+      <h3 style="color:#fff">Verify Mobile</h3>
+      <div id="recaptcha-container"></div>
+      <input type="tel" id="phoneNumber" placeholder="+91 99524 27492">
+      <button class="submit-btn" id="sendOTP">Send OTP</button>
+      <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" style="display:none; margin-top:10px;">
+      <button class="submit-btn" id="verifyOTP" style="display:none">Verify & Sign Up</button>
+      <button onclick="document.getElementById('phoneModal').style.display='none'" style="background:none; border:none; color:#8b949e; cursor:pointer; margin-top:10px;">Cancel</button>
+    </div>
   </div>
 
   <script type="module">
-    // Import both Authentication AND Firestore this time!
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -66,49 +120,59 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const msg = document.getElementById('message');
-      
-      btn.innerText = "Processing...";
-      btn.disabled = true;
-
-      try {
-        // 1. Create the secure login credentials
-        const userCredential = await createUserWithEmailAndPassword(
-          auth, 
-          document.getElementById('email').value, 
-          document.getElementById('password').value
-        );
-        const user = userCredential.user;
-
-        // 2. Save all the extra profile details to your new Firestore database
-        await setDoc(doc(db, "users", user.uid), {
-          firstName: document.getElementById('firstName').value,
-          lastName: document.getElementById('lastName').value,
-          username: document.getElementById('username').value,
-          phone: document.getElementById('phone').value,
-          address: document.getElementById('address').value,
-          email: document.getElementById('email').value,
-          status: "pending", // This is the magic word that locks their account until you approve it!
-          dateApplied: new Date().toISOString()
-        });
-
-        // 3. Show success message
-        msg.style.color = "#4ade80"; 
-        msg.innerText = "Success! Your application has been sent. Please wait for admin approval before logging in.";
-        msg.style.display = "block";
-        document.getElementById('registerForm').reset();
-        btn.innerText = "Application Submitted";
-
-      } catch (error) {
-        msg.style.color = "#ff4d4d"; 
-        msg.innerText = "Error: " + error.message;
-        msg.style.display = "block";
-        btn.innerText = "Submit Application →";
-        btn.disabled = false;
+    // --- PIN CODE AUTO-FILL LOGIC ---
+    document.getElementById('pincode').addEventListener('input', async (e) => {
+      if(e.target.value.length === 6) {
+        try {
+          const res = await fetch(`https://api.postalpincode.in/pincode/${e.target.value}`);
+          const data = await res.json();
+          if(data[0].Status === "Success") {
+            document.getElementById('city').value = data[0].PostOffice[0].District;
+            document.getElementById('state').value = data[0].PostOffice[0].State;
+          }
+        } catch (err) { console.log("PIN lookup failed"); }
       }
+    });
+
+    // --- SAVE USER TO FIRESTORE ---
+    async function saveUser(uid, email, method) {
+      await setDoc(doc(db, "users", uid), {
+        firstName: document.getElementById('fName').value,
+        lastName: document.getElementById('lName').value,
+        username: document.getElementById('uName').value,
+        country: document.getElementById('country').value,
+        pincode: document.getElementById('pincode').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        address: document.getElementById('addr').value,
+        email: email,
+        loginMethod: method,
+        status: "pending",
+        date: new Date().toISOString()
+      });
+      document.getElementById('message').innerText = "Application sent! Awaiting admin approval.";
+      document.getElementById('message').style.display = "block";
+      document.getElementById('message').style.color = "#4ade80";
+    }
+
+    // --- EMAIL SIGN UP ---
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('pass').value);
+        await saveUser(userCred.user.uid, userCred.user.email, "email");
+      } catch (err) { alert(err.message); }
+    });
+
+    // --- GOOGLE SIGN UP ---
+    document.getElementById('googleBtn').addEventListener('click', async () => {
+      // Check if they filled the form first!
+      if(!document.getElementById('uName').value) { alert("Please fill in your name and address details first!"); return; }
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        await saveUser(result.user.uid, result.user.email, "google");
+      } catch (err) { alert(err.message); }
     });
   </script>
 </body>
