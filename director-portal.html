@@ -18,6 +18,12 @@
   </style>
 </head>
 <body>
+  <div id="vaultDoor" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d1117; z-index: 999; flex-direction: column; align-items: center; justify-content: center;">
+    <h2 style="color: #f97316; margin-bottom: 20px;">DIRECTOR CLEARANCE REQUIRED</h2>
+    <input type="text" id="adminId" placeholder="Admin ID" style="margin-bottom: 15px; padding: 12px; border-radius: 5px; border: 1px solid #30363d; background: #161b22; color: white; width: 250px;">
+    <input type="password" id="adminPass" placeholder="Master Password" style="margin-bottom: 20px; padding: 12px; border-radius: 5px; border: 1px solid #30363d; background: #161b22; color: white; width: 250px;">
+    <button id="unlockBtn" style="padding: 12px 20px; background: #4ade80; color: black; border: none; font-weight: bold; border-radius: 5px; cursor: pointer; width: 275px;">UNLOCK PORTAL</button>
+  </div>
 
   <div class="header">
     <h1>PENDING APPROVALS</h1>
@@ -48,23 +54,41 @@
 const adminEmails = [
   "deepadharsan.rajavel@gmail.com",
   "deepusiva.pvt@gmail.com",
-  "contact@deepusiva.com" 
+  "contact@deepusiva.com",
+  "deepusiva2017@gmail.com" // <-- Type your extra email here!
 ];
 
-// Run the security check instantly
+// Run the security check
 onAuthStateChanged(auth, (user) => {
   if (user) {
     if (adminEmails.includes(user.email)) {
-      // Access Granted! Un-hide the page.
+      // Email Approved! Un-hide the page, BUT show the Vault Door first
       document.body.style.display = "block";
+      document.getElementById('vaultDoor').style.display = "flex";
     } else {
-      // They are logged in, but not an Admin. Kick them out!
       alert("SECURITY ALERT: You do not have permission to view the Admin Portal.");
       window.location.href = "index.html"; 
     }
   } else {
-    // Not logged in at all. Kick them to login page!
     window.location.href = "login.html"; 
+  }
+});
+
+// 🗝️ THE VAULT DOOR LOGIC
+document.getElementById('unlockBtn').addEventListener('click', () => {
+  const enteredId = document.getElementById('adminId').value;
+  const enteredPass = document.getElementById('adminPass').value;
+
+  // 🛑 SET YOUR SECRET ID AND PASSWORD HERE
+  const secretId = "DEEPU_ADMIN"; 
+  const secretPass = "Director@2026"; 
+
+  if (enteredId === secretId && enteredPass === secretPass) {
+    // Correct Password! Hide the Vault Door and show the Portal
+    document.getElementById('vaultDoor').style.display = "none";
+    console.log("Vault Unlocked.");
+  } else {
+    alert("ACCESS DENIED: Incorrect Admin ID or Password.");
   }
 });
     const db = getFirestore(app);
