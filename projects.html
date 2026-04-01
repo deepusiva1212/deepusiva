@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Projects | Deepu Siva Private Limited</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* Keeping your exact original styling */
+    :root {
+      --steel: #0d1117; --steel2: #161b22; --steel3: #21262d;
+      --orange: #f97316; --orange2: #ea580c;
+      --silver: #c9d1d9; --white: #f0f6fc; --muted: #8b949e;
+      --radius: 6px;
+      --font-head: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background: var(--steel); color: var(--silver); }
+    
+    /* Topbar & Navbar */
+    .topbar { background: var(--steel2); border-bottom: 1px solid var(--steel3); padding: 8px 0; font-size: 13px; }
+    .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; gap: 28px; }
+    .topbar a { color: var(--silver); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    nav { background: var(--steel); border-bottom: 2px solid var(--orange); position: sticky; top: 0; z-index: 999; }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .logo { font-family: var(--font-head); font-size: 24px; font-weight: 800; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 12px; }
+    .logo-badge { background: var(--orange); color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 3px; font-weight: 700; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 16px; list-style: none; }
+    .nav-links a { color: var(--silver); text-decoration: none; font-size: 14px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--orange); }
+    .btn-quote { background: var(--orange); color: #fff !important; padding: 10px 22px; border-radius: var(--radius); text-decoration: none; font-weight: 600; }
+    
+    /* Page Header */
+    .page-header { background: linear-gradient(135deg, #161b22 0%, #0d1117 100%); padding: 80px 24px; text-align: center; border-bottom: 1px solid var(--steel3); }
+    .page-header h1 { font-family: var(--font-head); font-size: 48px; color: var(--white); text-transform: uppercase; margin-bottom: 12px; }
+    .page-header p { color: var(--muted); font-size: 16px; max-width: 600px; margin: 0 auto; }
+    
+    /* Project Details Grid */
+    .container { max-width: 1200px; margin: 60px auto; padding: 0 24px; }
+    .detailed-project { background: var(--steel2); border: 1px solid var(--steel3); border-radius: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; overflow: hidden; }
+    .project-image-placeholder { background: var(--steel3); min-height: 350px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; text-transform: uppercase; letter-spacing: 2px; border-right: 1px solid var(--steel3); }
+    .project-content { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+    .project-category { color: var(--orange); font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .project-content h2 { font-family: var(--font-head); font-size: 32px; color: var(--white); text-transform: uppercase; margin-bottom: 16px; }
+    .project-content p { color: var(--muted); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+    
+    @media (max-width: 800px) { .detailed-project { grid-template-columns: 1fr; } .project-image-placeholder { min-height: 250px; border-right: none; border-bottom: 1px solid var(--steel3); } }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="mailto:contact@deepusiva.com">✉ contact@deepusiva.com</a>
+    <a href="tel:+918489090666">📞 +91 84890 90666</a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span>DEEPU SIVA</span><span class="logo-badge">Pvt Ltd</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">← Back to Home</a></li>
+      <li><a href="index.html#contact" class="btn-quote">Get a Quote</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Our Past Projects</h1>
+  <p>Take a closer look at some of the structural, roofing, and solar projects we have successfully delivered.</p>
+</div>
+
+<div class="container">
+  
+  <div class="detailed-project">
+    <div class="project-image-placeholder">
+      [ Upload Photo of Platform Here ]
+    </div>
+    <div class="project-content">
+      <div class="project-category">Metal Fabrication</div>
+      <h2>Industrial Platform & Staircase</h2>
+      <p>We designed, fabricated, and installed a heavy-duty MS structural platform complete with safety handrails and an access staircase for a local manufacturing unit. The structure was engineered to support heavy machinery and ensure worker safety.</p>
+    </div>
+  </div>
+
+  <div class="detailed-project">
+    <div class="project-image-placeholder">
+      [ Upload Photo of Roofing Here ]
+    </div>
+    <div class="project-content">
+      <div class="project-category">Industrial Roofing</div>
+      <h2>5000 SQM Warehouse Roofing</h2>
+      <p>A massive industrial roofing project utilizing premium GI sheets and insulated panels. This setup ensured weather-proofing and temperature control for a large-scale storage warehouse, completed strictly on schedule.</p>
+    </div>
+  </div>
+
+  <div class="detailed-project">
+    <div class="project-image-placeholder">
+      [ Upload Photo of Solar Structure Here ]
+    </div>
+    <div class="project-content">
+      <div class="project-category">Solar Structures</div>
+      <h2>1 MW Rooftop Solar Mounting</h2>
+      <p>Leveraging our deep expertise in solar frameworks, we fabricated and erected a hot-dip galvanised mounting structure capable of holding a 1 MW solar grid. The design was heavily reinforced to withstand high wind speeds and structural loads.</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
