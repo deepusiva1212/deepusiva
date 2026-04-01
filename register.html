@@ -54,6 +54,8 @@
         <div><label>First Name</label><input type="text" id="fName" required></div>
         <div><label>Last Name</label><input type="text" id="lName" required></div>
       </div>
+      <label>Company Name (Optional)</label>
+    <input type="text" id="companyName" placeholder="e.g. RAJA DEEPU SOORIYA PVT LTD">
 
       <label>Unique Username</label>
       <input type="text" id="uName" placeholder="e.g. deepu_siva_01" required>
@@ -88,6 +90,8 @@
       
       <label>Create Password</label>
       <input type="password" id="pass" minlength="6" required>
+      <label>Confirm Password</label>
+<input type="password" id="confirmPass" required>
 
       <button type="submit" class="submit-btn" id="mainBtn">Submit Application</button>
       <div id="message"></div>
@@ -162,6 +166,30 @@
     // --- EMAIL SIGN UP ---
     document.getElementById('regForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      // --- 🛡️ NEW SECURITY CHECK START ---
+    const pass = document.getElementById('pass').value;
+    const confirmPass = document.getElementById('confirmPass').value;
+    const messageDiv = document.getElementById('message');
+
+    // Clear previous messages
+    messageDiv.innerText = "";
+    messageDiv.style.display = "block";
+
+    // 1. Check Passwords Match
+    if (pass !== confirmPass) {
+      messageDiv.innerText = "Error: Passwords do not match!";
+      messageDiv.style.color = "#ff4d4d"; 
+      return; 
+    }
+
+    // 2. Validate Strong Password 
+    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+    if (!strongRegex.test(pass)) {
+      messageDiv.innerText = "Weak Password: Must be 8+ characters, include 1 uppercase letter, and 1 number.";
+      messageDiv.style.color = "#ff4d4d"; 
+      return; 
+    }
+    // --- 🛡️ NEW SECURITY CHECK END ---
       try {
         const userCred = await createUserWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('pass').value);
         await saveUser(userCred.user.uid, userCred.user.email, "email");
