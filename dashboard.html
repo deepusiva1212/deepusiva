@@ -70,12 +70,13 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-// --- 🚀 SMARTER DASHBOARD LOAD (Patient Version) ---
+// --- 🚀 THE "STAY-PUT" DASHBOARD LOGIC ---
         onAuthStateChanged(auth, async (user) => {
             const mainBody = document.getElementById('mainBody');
-            
+            const nameSpan = document.getElementById('userName');
+
             if (user) {
-                console.log("✅ User Verified:", user.email);
+                console.log("✅ Firebase says: User is logged in!", user.email);
                 
                 try {
                     const userRef = doc(db, "users", user.uid);
@@ -83,40 +84,40 @@
 
                     if (docSnap.exists()) {
                         const userData = docSnap.data();
-                        
+                        console.log("📂 Firestore Data found for:", userData.firstName);
+
                         // 1. Set the name
-                        const nameSpan = document.getElementById('userName');
                         if (nameSpan) nameSpan.innerText = userData.firstName || "Client";
 
-                        // 2. Open the Door
-                        if (mainBody) mainBody.style.display = "block";
-                        document.body.style.display = "block"; // Double backup
-                        
-                        console.log("🔓 Dashboard unlocked for", userData.firstName);
+                        // 2. Force the page to show
+                        if (mainBody) {
+                            mainBody.style.display = "block";
+                        } else {
+                            // If your ID is named something else, this shows the whole page
+                            document.body.style.display = "block";
+                        }
                     } else {
-                        console.error("❌ No database profile found.");
-                        if (mainBody) mainBody.style.display = "block";
+                        console.log("⚠️ No profile found in Firestore. Showing page anyway.");
+                        document.body.style.display = "block";
                     }
                 } catch (err) {
                     console.error("❌ Firestore Error:", err);
-                    if (mainBody) mainBody.style.display = "block";
+                    document.body.style.display = "block";
                 }
 
             } else {
-                console.log("👋 Checking for session...");
+                console.log("👋 No user session detected yet.");
+                // 🛑 WE REMOVED THE REDIRECT HERE TO STOP THE LOOP.
+                // If you see a black screen, it means 'user' is null.
                 
-                // 🛑 WAIT: Give Firebase 1.5 seconds to "wake up" before kicking you out
-                setTimeout(() => {
-                    if (!auth.currentUser) {
-                        console.log("🚫 Truly logged out. Redirecting to login...");
-                        window.location.href = "login.html";
-                    } else {
-                        console.log("⏳ Session found late, staying on dashboard.");
-                    }
-                }, 1500); 
+                // Let's add a button to manualy go to login if they are truly out
+                document.body.innerHTML += '<div style="color:white; text-align:center; margin-top:50px;">Session not found. <a href="login.html" style="color:orange;">Click here to Login</a></div>';
             }
         });
 
+        window.logout = () => {
+            signOut(auth).then(() => { window.location.href = "login.html"; });
+        };
         // This connects to your Logout button
         window.logout = () => {
             signOut(auth).then(() => {
