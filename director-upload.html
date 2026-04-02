@@ -58,7 +58,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
@@ -88,30 +88,41 @@
         });
 
         // --- 📋 LOAD CLIENT LIST (Fixed Name Logic) ---
-        async function loadClients() {
-            try {
-                const querySnapshot = await getDocs(collection(db, "users"));
-                const select = document.getElementById('clientSelect');
-                select.innerHTML = '<option value="">-- Choose a Client --</option>';
-                
-                querySnapshot.forEach((userDoc) => {
-                    const data = userDoc.data();
-                    const option = document.createElement('option');
-                    option.value = userDoc.id;
-                    
-                    // Fixed: Using data.username to match your registration save
-                    let displayName = data.fullName || 
-                                      ((data.firstName || "") + " " + (data.lastName || "")).trim() || 
-                                      data.username || 
-                                      "Unknown User";
-                    
-                    option.text = `${displayName} (${data.companyName || 'Individual'})`;
-                    select.appendChild(option);
-                });
-            } catch (err) {
-                console.error("Error loading clients:", err);
+      // --- 📋 LOAD CLIENT LIST (APPROVED ONLY) ---
+    async function loadClients() {
+        try {
+            const select = document.getElementById('clientSelect');
+            select.innerHTML = '<option value="">-- Loading Approved Clients --</option>';
+            
+            // 🛡️ THE SECURITY FILTER: Only fetch users where status is "approved"
+            const q = query(collection(db, "users"), where("status", "==", "approved"));
+            const querySnapshot = await getDocs(q);
+            
+            select.innerHTML = '<option value="">-- Choose a Client --</option>';
+            
+            if (querySnapshot.empty) {
+                select.innerHTML = '<option value="">No Approved Clients Found</option>';
+                return;
             }
+
+            querySnapshot.forEach((userDoc) => {
+                const data = userDoc.data();
+                const option = document.createElement('option');
+                option.value = userDoc.id;
+                
+                let displayName = data.fullName || 
+                                  ((data.firstName || "") + " " + (data.lastName || "")).trim() || 
+                                  data.username || 
+                                  "Unknown User";
+                
+                option.text = `${displayName} (${data.companyName || 'Individual'})`;
+                select.appendChild(option);
+            });
+        } catch (err) {
+            console.error("Error loading clients:", err);
+            document.getElementById('logMsg').innerText = "Error loading list: Check console.";
         }
+    }
 
         // --- 🚀 PUSH DATA LOGIC ---
         document.getElementById('uploadBtn').addEventListener('click', async () => {
