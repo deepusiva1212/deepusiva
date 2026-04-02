@@ -53,29 +53,59 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
-            authDomain: "deepu-siva-portal.firebaseapp.com",
-            projectId: "deepu-siva-portal",
-            storageBucket: "deepu-siva-portal.firebasestorage.app",
-            messagingSenderId: "1014351018202",
-            appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
+        authDomain: "deepu-siva-portal.firebaseapp.com",
+        projectId: "deepu-siva-portal",
+        storageBucket: "deepu-siva-portal.firebasestorage.app",
+        messagingSenderId: "1014351018202",
+        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        // Simple check: Is the user logged in?
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            // 1. Find the user's data in the "users" collection
+            const userRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(userRef);
+
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+
+                // 2. Security Check (Disabled for testing)
+                // We're letting you in even if not verified yet!
+
+                // 3. Update the dashboard with the client's name
+                const nameDisplay = document.getElementById('userName');
+                if (nameDisplay) {
+                    nameDisplay.innerText = userData.firstName || "Client";
+                }
+
+                // 4. Reveal the dashboard
                 document.getElementById('mainBody').style.display = "block";
             } else {
-                window.location.href = "login.html";
+                // If record doesn't exist, still show body so you aren't stuck
+                document.getElementById('mainBody').style.display = "block";
             }
+        } else {
+            // If logged out, go back to login
+            window.location.href = "login.html";
+        }
+    });
+
+    // Logout Function
+    window.logout = () => {
+        signOut(auth).then(() => {
+            window.location.href = "login.html";
         });
-    </script>
+    };
+</script>
 </body>
 </html>
