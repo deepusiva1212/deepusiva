@@ -70,9 +70,12 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-   onAuthStateChanged(auth, async (user) => {
+// --- 🚀 SMARTER DASHBOARD LOAD (Patient Version) ---
+        onAuthStateChanged(auth, async (user) => {
+            const mainBody = document.getElementById('mainBody');
+            
             if (user) {
-                console.log("✅ User detected:", user.email);
+                console.log("✅ User Verified:", user.email);
                 
                 try {
                     const userRef = doc(db, "users", user.uid);
@@ -80,35 +83,37 @@
 
                     if (docSnap.exists()) {
                         const userData = docSnap.data();
-                        console.log("📂 Database Status:", userData.status);
-
-                        // 1. Put the name on the screen
+                        
+                        // 1. Set the name
                         const nameSpan = document.getElementById('userName');
                         if (nameSpan) nameSpan.innerText = userData.firstName || "Client";
 
-                        // 2. Reveal the content
-                        // This turns off the "Hidden" mode so you can see your buttons
-                        const mainBody = document.getElementById('mainBody');
-                        if (mainBody) {
-                            mainBody.style.display = "block";
-                        } else {
-                            // If you forgot the ID, this forces it to show
-                            document.body.style.display = "block";
-                        }
-
+                        // 2. Open the Door
+                        if (mainBody) mainBody.style.display = "block";
+                        document.body.style.display = "block"; // Double backup
+                        
+                        console.log("🔓 Dashboard unlocked for", userData.firstName);
                     } else {
-                        console.error("❌ Profile not found in database.");
-                        document.body.style.display = "block";
+                        console.error("❌ No database profile found.");
+                        if (mainBody) mainBody.style.display = "block";
                     }
-                } catch (error) {
-                    console.error("❌ Firestore Error:", error);
-                    document.body.style.display = "block";
+                } catch (err) {
+                    console.error("❌ Firestore Error:", err);
+                    if (mainBody) mainBody.style.display = "block";
                 }
 
             } else {
-                console.log("👋 No user session. Sending to login.");
-                // Only redirect if there is absolutely no user
-                window.location.href = "login.html";
+                console.log("👋 Checking for session...");
+                
+                // 🛑 WAIT: Give Firebase 1.5 seconds to "wake up" before kicking you out
+                setTimeout(() => {
+                    if (!auth.currentUser) {
+                        console.log("🚫 Truly logged out. Redirecting to login...");
+                        window.location.href = "login.html";
+                    } else {
+                        console.log("⏳ Session found late, staying on dashboard.");
+                    }
+                }, 1500); 
             }
         });
 
