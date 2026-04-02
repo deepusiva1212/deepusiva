@@ -112,7 +112,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, createUserWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, createUserWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -193,6 +193,9 @@
       try {
         const userCred = await createUserWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('pass').value);
         await saveUser(userCred.user.uid, userCred.user.email, "email");
+        // --- 📧 ADD THIS LINE FOR SEND VERIFICATION LINK ---
+    await sendEmailVerification(userCred.user);
+    alert("Success! Check your inbox for a verification link.");
       } catch (err) { alert(err.message); }
     });
 
