@@ -89,7 +89,7 @@
         };
 
         // --- 📋 LOAD CLIENT LIST ---
-        async function loadClients() {
+      async function loadClients() {
             const querySnapshot = await getDocs(collection(db, "users"));
             const select = document.getElementById('clientSelect');
             select.innerHTML = '<option value="">-- Choose a Client --</option>';
@@ -98,9 +98,17 @@
                 const data = userDoc.data();
                 const option = document.createElement('option');
                 option.value = userDoc.id;
-                option.text = `${data.fullName} (${data.companyName || 'Individual'})`;
+                
+                // --- 🛡️ THE FIX: Check for all possible name formats ---
+                let displayName = data.fullName || 
+                                  ((data.firstName || "") + " " + (data.lastName || "")).trim() || 
+                                  data.uName || 
+                                  "Unknown User";
+                
+                option.text = `${displayName} (${data.companyName || 'Individual'})`;
                 select.appendChild(option);
             });
+        }
         }
 
         // --- 🚀 PUSH DATA LOGIC ---
