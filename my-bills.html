@@ -41,8 +41,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+        // 🔑 YOUR MASTER KEY (The one we just fixed!)
         const firebaseConfig = {
             apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
             authDomain: "deepu-siva-portal.firebaseapp.com",
@@ -53,39 +54,25 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(auth);
+        const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // --- 🛡️ THE BILLS PAGE BOUNCER ---
         onAuthStateChanged(auth, async (user) => {
+            const page = document.getElementById('mainBody');
+
             if (user) {
-                const userRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(userRef);
+                console.log("✅ Siva is authorized to see bills.");
+                
+                // TURN ON THE LIGHTS
+                if (page) page.style.display = "block";
+                document.body.style.display = "block";
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const bills = data.bills || [];
-                    const list = document.getElementById('billList');
-
-                    if (bills.length === 0) {
-                        document.getElementById('noBills').style.display = "block";
-                    } else {
-                        bills.reverse().forEach(bill => {
-                            const card = document.createElement('div');
-                            card.className = 'bill-card';
-                            card.innerHTML = `
-                                <div class="bill-info">
-                                    <div class="bill-date">${bill.date}</div>
-                                    <span class="bill-title">${bill.title}</span>
-                                    <span class="bill-amount">${bill.detail}</span>
-                                </div>
-                                <div class="status-badge">ISSUED</div>
-                            `;
-                            list.appendChild(card);
-                        });
-                    }
-                    document.getElementById('mainBody').style.display = "block";
-                }
+                // (Optional) You can add logic here later to load 
+                // actual bills from Firestore for this user!
+                
             } else {
+                console.log("🚫 No session. Kicking back to login.");
                 window.location.href = "login.html";
             }
         });
