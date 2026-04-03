@@ -41,9 +41,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // 🔑 YOUR MASTER KEY (The one we just fixed!)
+        // 🔑 THE MASTER KEY (Matches your working Dashboard)
         const firebaseConfig = {
             apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
             authDomain: "deepu-siva-portal.firebaseapp.com",
@@ -55,24 +54,25 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
         // --- 🛡️ THE BILLS PAGE BOUNCER ---
-        onAuthStateChanged(auth, async (user) => {
-            const page = document.getElementById('mainBody');
+        onAuthStateChanged(auth, (user) => {
+            const bodyTag = document.getElementById('mainBody');
 
             if (user) {
-                console.log("✅ Siva is authorized to see bills.");
+                console.log("✅ User Verified on Bills Page:", user.email);
                 
-                // TURN ON THE LIGHTS
-                if (page) page.style.display = "block";
+                // 1. TURN ON THE LIGHTS
+                if (bodyTag) {
+                    bodyTag.style.display = "block";
+                }
+                
+                // 2. EMERGENCY OVERRIDE (In case the ID is missing)
                 document.body.style.display = "block";
-
-                // (Optional) You can add logic here later to load 
-                // actual bills from Firestore for this user!
                 
+                console.log("🔓 Page Unlocked.");
             } else {
-                console.log("🚫 No session. Kicking back to login.");
+                console.log("🚫 No session. Redirecting...");
                 window.location.href = "login.html";
             }
         });
