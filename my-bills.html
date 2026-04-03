@@ -38,11 +38,10 @@
         </div>
     </div>
 
-    <script type="module">
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // 🔑 THE MASTER KEY (Matches your working Dashboard)
         const firebaseConfig = {
             apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
             authDomain: "deepu-siva-portal.firebaseapp.com",
@@ -55,25 +54,32 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // --- 🛡️ THE BILLS PAGE BOUNCER ---
+        // --- 🛡️ THE PATIENT BILLS BOUNCER ---
         onAuthStateChanged(auth, (user) => {
             const bodyTag = document.getElementById('mainBody');
 
             if (user) {
-                console.log("✅ User Verified on Bills Page:", user.email);
+                console.log("✅ Session Found for Bills:", user.email);
                 
-                // 1. TURN ON THE LIGHTS
-                if (bodyTag) {
-                    bodyTag.style.display = "block";
-                }
-                
-                // 2. EMERGENCY OVERRIDE (In case the ID is missing)
-                document.body.style.display = "block";
-                
-                console.log("🔓 Page Unlocked.");
+                // TURN ON THE LIGHTS
+                if (bodyTag) bodyTag.style.display = "block";
+                document.body.style.display = "block"; 
+
             } else {
-                console.log("🚫 No session. Redirecting...");
-                window.location.href = "login.html";
+                console.log("⏳ Waiting 3 seconds for Firebase to wake up...");
+                
+                // 🛑 DON'T REDIRECT IMMEDIATELY
+                setTimeout(() => {
+                    // Check one last time before kicking them out
+                    if (!auth.currentUser) {
+                        console.log("🚫 Still no user. Going to login.");
+                        window.location.href = "login.html";
+                    } else {
+                        console.log("🎉 User found late! Unlocking page.");
+                        if (bodyTag) bodyTag.style.display = "block";
+                        document.body.style.display = "block";
+                    }
+                }, 3000); 
             }
         });
     </script>
