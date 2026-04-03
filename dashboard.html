@@ -70,11 +70,14 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // --- 🚀 THE LOOP KILLER LOGIC ---
+        let checkCount = 0;
+
         onAuthStateChanged(auth, async (user) => {
             const bodyTag = document.getElementById('mainBody');
-
+            
             if (user) {
-                console.log("✅ User detected:", user.email);
+                console.log("✅ Session Found:", user.email);
                 
                 try {
                     const userRef = doc(db, "users", user.uid);
@@ -82,32 +85,34 @@
 
                     if (docSnap.exists()) {
                         const userData = docSnap.data();
-                        
-                        // 1. Update the Welcome Name
                         const nameSpan = document.getElementById('userName');
                         if (nameSpan) nameSpan.innerText = userData.firstName || "Client";
                     }
-
-                    // 2. TURN ON THE LIGHTS
-                    if (bodyTag) {
-                        bodyTag.style.display = "block";
-                    } else {
-                        // Backup if ID is missing: force show the whole page
-                        document.body.style.display = "block";
-                    }
+                    
+                    // TURN ON THE LIGHTS IMMEDIATELY
+                    if (bodyTag) bodyTag.style.display = "block";
+                    document.body.style.display = "block"; 
 
                 } catch (err) {
-                    console.error("Firestore Error:", err);
-                    // Show page anyway even if database fails
+                    console.error("Database Error:", err);
                     document.body.style.display = "block";
                 }
             } else {
-                // Not logged in? Send back to login
-                window.location.href = "login.html";
+                // 🛑 INSTEAD OF REDIRECTING IMMEDIATELY, WE WAIT.
+                console.log("⏳ Waiting for Firebase to wake up...");
+                
+                setTimeout(() => {
+                    // We check one last time before kicking you out
+                    if (!auth.currentUser) {
+                        console.log("🚫 No user found after waiting. Going to login.");
+                        window.location.href = "login.html";
+                    } else {
+                        console.log("🎉 User found late! Staying on dashboard.");
+                    }
+                }, 3000); // 3 second delay
             }
         });
 
-        // Sign Out Logic
         window.logout = () => {
             signOut(auth).then(() => { window.location.href = "login.html"; });
         };
