@@ -51,35 +51,33 @@
 
         // --- 📧 EMAIL & PASSWORD LOGIN ---
         document.getElementById('loginBtn').addEventListener('click', (e) => {
-            // Safety: Stop form from refreshing
             e.preventDefault();
 
             const email = document.getElementById('email').value.trim();
-            const pass = document.getElementById('password').value; // Matches your ID on Line 27
+            const pass = document.getElementById('password').value; 
             const errorMsg = document.getElementById('errorMessage');
 
-            if (!email || !pass) {
-                errorMsg.innerText = "Please fill in all fields.";
-                errorMsg.style.display = "block";
-                return;
-            }
-
-            errorMsg.innerText = "Connecting...";
+            errorMsg.innerText = "Checking...";
             errorMsg.style.display = "block";
-            errorMsg.style.color = "#f97316";
 
             signInWithEmailAndPassword(auth, email, pass)
                 .then(() => {
-                    console.log("Login successful! Moving to dashboard...");
-                    // We wait 0.5 seconds to make sure Firebase saves the session
-                    setTimeout(() => {
-                        window.location.href = "dashboard.html";
-                    }, 5000); 
+                    window.location.href = "dashboard.html";
                 })
                 .catch((error) => {
-                    console.error("Login Error:", error.code);
+                    console.error("Firebase Login Error Code:", error.code);
                     errorMsg.style.color = "#ff4d4d";
-                    errorMsg.innerText = "Invalid email or password.";
+
+                    // This logic tells you EXACTLY what is wrong:
+                    if (error.code === 'auth/user-not-found') {
+                        errorMsg.innerText = "Error: No user found with this email.";
+                    } else if (error.code === 'auth/wrong-password') {
+                        errorMsg.innerText = "Error: The password you entered is wrong.";
+                    } else if (error.code === 'auth/invalid-email') {
+                        errorMsg.innerText = "Error: That email address looks typed wrong.";
+                    } else {
+                        errorMsg.innerText = "Invalid login. (Error Code: " + error.code + ")";
+                    }
                 });
         });
     </script>
