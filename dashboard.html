@@ -70,14 +70,12 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- 🚀 THE LOOP KILLER LOGIC ---
-        let checkCount = 0;
-
+        // --- 🛡️ THE ULTIMATE LOOP KILLER ---
         onAuthStateChanged(auth, async (user) => {
-            const bodyTag = document.getElementById('mainBody');
+            const mainBody = document.getElementById('mainBody');
             
             if (user) {
-                console.log("✅ Session Found:", user.email);
+                console.log("✅ User Found:", user.email);
                 
                 try {
                     const userRef = doc(db, "users", user.uid);
@@ -85,34 +83,40 @@
 
                     if (docSnap.exists()) {
                         const userData = docSnap.data();
+                        
+                        // 1. Set the Welcome Name
                         const nameSpan = document.getElementById('userName');
                         if (nameSpan) nameSpan.innerText = userData.firstName || "Client";
+                        
+                        console.log("📂 Firestore Status:", userData.status);
                     }
                     
-                    // TURN ON THE LIGHTS IMMEDIATELY
-                    if (bodyTag) bodyTag.style.display = "block";
+                    // 2. TURN ON THE LIGHTS (Force show the page)
+                    if (mainBody) mainBody.style.display = "block";
                     document.body.style.display = "block"; 
-
+                    
                 } catch (err) {
-                    console.error("Database Error:", err);
+                    console.error("❌ Database Error:", err);
                     document.body.style.display = "block";
                 }
+
             } else {
-                // 🛑 INSTEAD OF REDIRECTING IMMEDIATELY, WE WAIT.
-                console.log("⏳ Waiting for Firebase to wake up...");
+                console.log("⏳ Checking login session... please wait.");
                 
+                // 🛑 SAFETY TIMER: Wait 5 seconds before kicking you out
                 setTimeout(() => {
-                    // We check one last time before kicking you out
                     if (!auth.currentUser) {
-                        console.log("🚫 No user found after waiting. Going to login.");
+                        console.log("🚫 No user found. Redirecting to login.html");
                         window.location.href = "login.html";
                     } else {
-                        console.log("🎉 User found late! Staying on dashboard.");
+                        console.log("🎉 User detected late! Staying on dashboard.");
+                        if (mainBody) mainBody.style.display = "block";
                     }
-                }, 3000); // 3 second delay
+                }, 5000); 
             }
         });
 
+        // Logout Logic
         window.logout = () => {
             signOut(auth).then(() => { window.location.href = "login.html"; });
         };
