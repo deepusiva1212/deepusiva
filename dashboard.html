@@ -29,7 +29,7 @@
     </nav>
 
     <div class="container">
-        <h2 style="color: #fff;">Welcome Back!</h2>
+        <h2>Welcome Back, <span id="userName">User</span>!</h2>
         <p>Select an option below to manage your projects and payments.</p>
 
         <div class="grid">
@@ -52,31 +52,29 @@
         </div>
     </div>
 
-    <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+   <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
-        authDomain: "deepu-siva-portal.firebaseapp.com",
-        projectId: "deepu-siva-portal",
-        storageBucket: "deepu-siva-portal.firebasestorage.app",
-        messagingSenderId: "1014351018202",
-        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
+            authDomain: "deepu-siva-portal.firebaseapp.com",
+            projectId: "deepu-siva-portal",
+            storageBucket: "deepu-siva-portal.firebasestorage.app",
+            messagingSenderId: "1014351018202",
+            appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-// --- 🚀 THE "STAY-PUT" DASHBOARD LOGIC ---
         onAuthStateChanged(auth, async (user) => {
-            const mainBody = document.getElementById('mainBody');
-            const nameSpan = document.getElementById('userName');
+            const bodyTag = document.getElementById('mainBody');
 
             if (user) {
-                console.log("✅ Firebase says: User is logged in!", user.email);
+                console.log("✅ User detected:", user.email);
                 
                 try {
                     const userRef = doc(db, "users", user.uid);
@@ -84,45 +82,34 @@
 
                     if (docSnap.exists()) {
                         const userData = docSnap.data();
-                        console.log("📂 Firestore Data found for:", userData.firstName);
-
-                        // 1. Set the name
+                        
+                        // 1. Update the Welcome Name
+                        const nameSpan = document.getElementById('userName');
                         if (nameSpan) nameSpan.innerText = userData.firstName || "Client";
+                    }
 
-                        // 2. Force the page to show
-                        if (mainBody) {
-                            mainBody.style.display = "block";
-                        } else {
-                            // If your ID is named something else, this shows the whole page
-                            document.body.style.display = "block";
-                        }
+                    // 2. TURN ON THE LIGHTS
+                    if (bodyTag) {
+                        bodyTag.style.display = "block";
                     } else {
-                        console.log("⚠️ No profile found in Firestore. Showing page anyway.");
+                        // Backup if ID is missing: force show the whole page
                         document.body.style.display = "block";
                     }
+
                 } catch (err) {
-                    console.error("❌ Firestore Error:", err);
+                    console.error("Firestore Error:", err);
+                    // Show page anyway even if database fails
                     document.body.style.display = "block";
                 }
-
             } else {
-                console.log("👋 No user session detected yet.");
-                // 🛑 WE REMOVED THE REDIRECT HERE TO STOP THE LOOP.
-                // If you see a black screen, it means 'user' is null.
-                
-                // Let's add a button to manualy go to login if they are truly out
-                document.body.innerHTML += '<div style="color:white; text-align:center; margin-top:50px;">Session not found. <a href="login.html" style="color:orange;">Click here to Login</a></div>';
+                // Not logged in? Send back to login
+                window.location.href = "login.html";
             }
         });
 
+        // Sign Out Logic
         window.logout = () => {
             signOut(auth).then(() => { window.location.href = "login.html"; });
-        };
-        // This connects to your Logout button
-        window.logout = () => {
-            signOut(auth).then(() => {
-                window.location.href = "login.html";
-            });
         };
     </script>
 </body>
