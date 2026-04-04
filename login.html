@@ -34,11 +34,18 @@
   </div>
 
   <script type="module">
+        // 1. IMPORT PERSISTENCE TOOLS
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            setPersistence, 
+            browserLocalPersistence 
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
+        // 🔑 YOUR MASTER CONFIG
         const firebaseConfig = {
-            apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+            apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
             authDomain: "deepu-siva-portal.firebaseapp.com",
             projectId: "deepu-siva-portal",
             storageBucket: "deepu-siva-portal.firebasestorage.app",
@@ -49,35 +56,31 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // --- 📧 EMAIL & PASSWORD LOGIN ---
+        // --- 📧 THE "STICKY" LOGIN LOGIC ---
         document.getElementById('loginBtn').addEventListener('click', (e) => {
             e.preventDefault();
 
             const email = document.getElementById('email').value.trim();
-            const pass = document.getElementById('password').value; 
+            const pass = document.getElementById('password').value;
             const errorMsg = document.getElementById('errorMessage');
 
-            errorMsg.innerText = "Checking...";
+            errorMsg.innerText = "Connecting...";
             errorMsg.style.display = "block";
 
-            signInWithEmailAndPassword(auth, email, pass)
+            // 🛡️ STEP A: Tell the browser to "Remember" this session
+            setPersistence(auth, browserLocalPersistence)
                 .then(() => {
+                    // 🔑 STEP B: Now perform the actual login
+                    return signInWithEmailAndPassword(auth, email, pass);
+                })
+                .then(() => {
+                    console.log("✅ Persistence set and Login successful!");
                     window.location.href = "dashboard.html";
                 })
                 .catch((error) => {
-                    console.error("Firebase Login Error Code:", error.code);
+                    console.error("Login Error:", error.code);
                     errorMsg.style.color = "#ff4d4d";
-
-                    // This logic tells you EXACTLY what is wrong:
-                    if (error.code === 'auth/user-not-found') {
-                        errorMsg.innerText = "Error: No user found with this email.";
-                    } else if (error.code === 'auth/wrong-password') {
-                        errorMsg.innerText = "Error: The password you entered is wrong.";
-                    } else if (error.code === 'auth/invalid-email') {
-                        errorMsg.innerText = "Error: That email address looks typed wrong.";
-                    } else {
-                        errorMsg.innerText = "Invalid login. (Error Code: " + error.code + ")";
-                    }
+                    errorMsg.innerText = "Invalid login. (Error: " + error.code + ")";
                 });
         });
     </script>
