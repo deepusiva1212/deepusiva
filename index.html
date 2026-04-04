@@ -885,7 +885,17 @@
     .fade-up-4 { animation: fadeUp .7s .45s ease both; }
   </style>
 </head>
-<body>
+
+<body style="overflow-x: hidden;">
+
+    <div class="theme-switch-wrapper">
+        <span style="margin-right: 8px; font-size: 14px;">☀️</span>
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider"></div>
+        </label>
+        <span style="margin-left: 8px; font-size: 14px;">🌙</span>
+    </div>
 
 <!-- TOPBAR -->
 <div class="topbar">
