@@ -1,0 +1,38 @@
+/* 🌓 THEME MASTER VARIABLES */
+:root {
+    --bg: #0d1117;
+    --card: #1a1a1a;
+    --text: #ffffff;
+    --border: #30363d;
+}
+
+body.light-mode {
+    --bg: #f6f8fa;
+    --card: #ffffff;
+    --text: #1f2328;
+    --border: #d0d7de;
+}
+
+/* 🎨 GLOBAL STYLES */
+body { 
+    background-color: var(--bg) !important; 
+    color: var(--text) !important; 
+    transition: 0.3s; 
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.card, .user-card, .bill-card { 
+    background-color: var(--card) !important; 
+    color: var(--text) !important; 
+    border: 1px solid var(--border) !important; 
+}
+
+/* 🔘 THE TOGGLE SWITCH */
+.theme-switch-wrapper { display: flex; align-items: center; position: fixed; top: 20px; right: 20px; z-index: 1000; }
+.theme-switch { display: inline-block; height: 24px; position: relative; width: 50px; }
+.theme-switch input { display: none; }
+.slider { background-color: #30363d; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+.slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
+input:checked + .slider { background-color: #f97316; }
+input:checked + .slider:before { transform: translateX(26px); }
