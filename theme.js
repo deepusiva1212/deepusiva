@@ -9,16 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (toggleSwitch) toggleSwitch.checked = true;
     }
 
-    // 2. Listen for clicks
+    // 2. Listen for clicks to flip the switch
     if (toggleSwitch) {
         toggleSwitch.addEventListener('change', (e) => {
             if (e.target.checked) {
                 document.body.classList.add('light-mode');
                 localStorage.setItem('theme', 'light');
+                console.log("Switching to Light Mode");
             } else {
                 document.body.classList.remove('light-mode');
                 localStorage.setItem('theme', 'dark');
+                console.log("Switching to Dark Mode");
             }
         });
+    } else {
+        console.error("Theme Switch Error: Could not find the checkbox ID!");
     }
 });
