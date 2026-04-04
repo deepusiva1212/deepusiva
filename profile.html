@@ -24,11 +24,12 @@
         <button onclick="logout()" style="width: 100%; margin-top: 20px; padding: 12px; background: none; border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 6px; cursor: pointer;">Logout</button>
     </div>
 
-    <script type="module">
+   <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+        // 🔑 THE CORRECTED MASTER KEY
         const firebaseConfig = {
             apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
             authDomain: "deepu-siva-portal.firebaseapp.com",
@@ -42,24 +43,35 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // --- 🛡️ THE PATIENT PROFILE BOUNCER ---
         onAuthStateChanged(auth, async (user) => {
+            const bodyTag = document.getElementById('mainBody');
+
             if (user) {
-                const docSnap = await getDoc(doc(db, "users", user.uid));
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('prof-company').innerText = data.companyName || "Not Provided";
-                    document.getElementById('prof-name').innerText = data.fullName || (data.firstName + " " + data.lastName);
-                    document.getElementById('prof-phone').innerText = data.phone || data.mobile;
-                    document.getElementById('prof-email').innerText = user.email;
-                    document.getElementById('prof-last').innerText = user.metadata.lastSignInTime;
-                    document.body.style.display = "block";
-                }
+                console.log("✅ Profile Session Found:", user.email);
+                
+                // (Optional) Fetch profile data here later
+                
+                // TURN ON THE LIGHTS
+                if (bodyTag) bodyTag.style.display = "block";
+                document.body.style.display = "block"; 
+
             } else {
-                window.location.href = "login.html";
+                console.log("⏳ Waiting 6 seconds for Firebase to wake up...");
+                
+                // Give it a generous 6 seconds before redirecting
+                setTimeout(() => {
+                    if (!auth.currentUser) {
+                        console.log("🚫 Still no user. Redirecting to login.");
+                        window.location.href = "login.html";
+                    } else {
+                        console.log("🎉 Session found late! Unlocking Profile.");
+                        if (bodyTag) bodyTag.style.display = "block";
+                        document.body.style.display = "block";
+                    }
+                }, 6000); 
             }
         });
-
-        window.logout = () => { signOut(auth).then(() => { window.location.href = "login.html"; }); };
     </script>
 </body>
 </html>
