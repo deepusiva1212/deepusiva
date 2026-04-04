@@ -1,35 +1,54 @@
 /* 🌓 THEME MASTER VARIABLES */
 :root {
     --bg: #0d1117;
-    --card: #1a1a1a;
     --text: #ffffff;
+    --card: #1a1a1a;
     --border: #30363d;
 }
 
+/* ⚪️ LIGHT MODE - THE "FORCE" OVERRIDE */
 body.light-mode {
-    --bg: #f6f8fa;
-    --card: #ffffff;
-    --text: #1f2328;
-    --border: #d0d7de;
+    --bg: #ffffff !important;
+    --text: #000000 !important;
+    --card: #f4f4f4 !important;
+    --border: #d0d7de !important;
 }
 
 /* 🎨 GLOBAL STYLES */
 body { 
     background-color: var(--bg) !important; 
     color: var(--text) !important; 
-    transition: 0.3s; 
+    transition: background-color 0.3s, color 0.3s; 
     margin: 0;
-    font-family: sans-serif;
 }
 
-.card, .user-card, .bill-card { 
-    background-color: var(--card) !important; 
-    color: var(--text) !important; 
-    border: 1px solid var(--border) !important; 
+/* This forces every div and section to listen to the Light Mode colors */
+body.light-mode div, 
+body.light-mode section, 
+body.light-mode header,
+body.light-mode footer {
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
 }
 
-/* 🔘 THE TOGGLE SWITCH */
-.theme-switch-wrapper { display: flex; align-items: center; position: fixed; top: 20px; right: 20px; z-index: 1000; }
+body.light-mode p, body.light-mode h1, body.light-mode h2, body.light-mode h3, body.light-mode a {
+    color: var(--text) !important;
+}
+
+/* 🔘 BUTTON PLACEMENT (FIXED TOP-RIGHT) */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    position: fixed; /* Keeps it on top of everything */
+    top: 100px;      /* Moves it down so it doesn't cover your phone number bar */
+    right: 20px;     /* Moves it away from the edge */
+    z-index: 99999;  /* Forces it to be the TOP layer */
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 12px;
+    border-radius: 25px;
+    border: 1px solid var(--border);
+}
+
 .theme-switch { display: inline-block; height: 24px; position: relative; width: 50px; }
 .theme-switch input { display: none; }
 .slider { background-color: #30363d; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
