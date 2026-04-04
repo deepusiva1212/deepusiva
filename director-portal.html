@@ -31,7 +31,25 @@
   </div>
 
   <div id="userList">Loading pending applications...</div>
+<div class="card" style="margin-top: 30px; background: #1a1a1a; padding: 20px; border-radius: 10px; border: 1px solid #30363d;">
+    <h2 style="color: #f97316;">Director Control Panel</h2>
+    <p style="color: #8b949e;">Select a client to update their dashboard details.</p>
 
+    <label style="color: white; display: block; margin-top: 15px;">Step 1: Select Approved Client</label>
+    <select id="clientSelect" style="width: 100%; padding: 12px; margin-top: 5px; background: #0d1117; color: white; border: 1px solid #30363d; border-radius: 5px;">
+        <option value="">-- Choose a Client --</option>
+    </select>
+
+    <label style="color: white; display: block; margin-top: 15px;">Title / Description</label>
+    <input type="text" id="updateTitle" placeholder="e.g., Invoice #102 or Site B Status" style="width: 100%; padding: 12px; margin-top: 5px; background: #0d1117; color: white; border: 1px solid #30363d; border-radius: 5px;">
+
+    <label style="color: white; display: block; margin-top: 15px;">Detail / Value / Link</label>
+    <textarea id="updateDetail" placeholder="Enter amount, status text, or Google Maps URL" style="width: 100%; padding: 12px; margin-top: 5px; background: #0d1117; color: white; border: 1px solid #30363d; border-radius: 5px; height: 80px;"></textarea>
+
+    <button id="pushBtn" style="width: 100%; margin-top: 20px; padding: 15px; background: #238636; color: white; border: none; font-weight: bold; border-radius: 5px; cursor: pointer;">
+        🚀 PUSH TO CLIENT DASHBOARD
+    </button>
+</div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, updateDoc, doc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -140,6 +158,39 @@
         loadClientDropdown(); // Refresh dropdown so they appear there too
       }
     };
+
+    // --- 📤 THE PUSH BUTTON LOGIC ---
+document.getElementById('pushBtn').addEventListener('click', async () => {
+    const selectedEmail = document.getElementById('clientSelect').value;
+    const title = document.getElementById('updateTitle').value;
+    const detail = document.getElementById('updateDetail').value;
+
+    if (!selectedEmail || !title) {
+        alert("Please select a client and enter a title.");
+        return;
+    }
+
+    // 💡 THE GROUP FEATURE POPUP:
+    const isGroup = confirm("Push this to the ENTIRE COMPANY instead of just this one email?");
+
+    try {
+        await addDoc(collection(db, "updates"), {
+            title: title,
+            detail: detail,
+            targetEmail: isGroup ? null : selectedEmail,
+            targetCompany: isGroup ? "RAJA DEEPU SOORIYA PVT LTD" : null, 
+            timestamp: new Date(),
+            type: isGroup ? "group" : "private"
+        });
+        alert("✅ Dashboard Updated Successfully!");
+        
+        // Clear fields for the next one
+        document.getElementById('updateTitle').value = "";
+        document.getElementById('updateDetail').value = "";
+    } catch (e) {
+        alert("Error: " + e.message);
+    }
+});
 </script>
 </body>
 </html>
