@@ -42,6 +42,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
+        // 🔑 THE MASTER KEY
         const firebaseConfig = {
             apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJ16mB0",
             authDomain: "deepu-siva-portal.firebaseapp.com",
@@ -51,34 +52,34 @@
             appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        // Initialize and catch immediate errors
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
 
-        // --- 🕵️ THE SMART BILLS BOUNCER ---
-        onAuthStateChanged(auth, (user) => {
-            const bodyTag = document.getElementById('mainBody');
-
-            if (user) {
-                console.log("✅ User detected on Bills page:", user.email);
-                if (bodyTag) bodyTag.style.display = "block";
-                document.body.style.display = "block"; 
-            } else {
-                console.log("⏳ Session not found. Current Domain:", window.location.hostname);
+            onAuthStateChanged(auth, (user) => {
+                const bodyTag = document.getElementById('mainBody');
                 
-                // Instead of jumping to login, show a message on the white screen
-                setTimeout(() => {
-                    if (!auth.currentUser) {
-                        document.body.innerHTML = `
-                            <div style="color:white; text-align:center; padding-top:100px; font-family:sans-serif;">
-                                <h2 style="color:orange;">Session Expired or Domain Not Authorized</h2>
-                                <p>Checking domain: <b>${window.location.hostname}</b></p>
-                                <p>Please <a href="login.html" style="color:cyan;">Login again</a> from this specific domain.</p>
-                            </div>
-                        `;
-                    }
-                }, 4000); 
-            }
-        });
+                if (user) {
+                    console.log("✅ User detected.");
+                    // TURN ON THE LIGHTS
+                    if (bodyTag) bodyTag.style.display = "block";
+                    document.body.style.display = "block"; 
+                } else {
+                    // If no user after 3 seconds, show a manual login link
+                    setTimeout(() => {
+                        if (!auth.currentUser) {
+                            document.body.style.display = "block"; // Force show anyway
+                            document.body.innerHTML = '<div style="color:white; text-align:center; margin-top:50px;">Session not found. <a href="login.html" style="color:orange;">Return to Login</a></div>';
+                        }
+                    }, 3000);
+                }
+            });
+        } catch (error) {
+            // IF THE SCRIPT CRASHES, FORCE THE PAGE TO SHOW SO YOU CAN SEE THE ERROR
+            document.body.style.display = "block";
+            document.body.innerHTML = `<h1 style="color:red;">Script Error: ${error.message}</h1>`;
+        }
     </script>
 </body>
 </html>
