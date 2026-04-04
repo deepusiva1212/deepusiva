@@ -25,53 +25,69 @@
     </div>
 
    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // 🔑 THE CORRECTED MASTER KEY
-        const firebaseConfig = {
-            apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
-            authDomain: "deepu-siva-portal.firebaseapp.com",
-            projectId: "deepu-siva-portal",
-            storageBucket: "deepu-siva-portal.firebasestorage.app",
-            messagingSenderId: "1014351018202",
-            appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+        authDomain: "deepu-siva-portal.firebaseapp.com",
+        projectId: "deepu-siva-portal",
+        storageBucket: "deepu-siva-portal.firebasestorage.app",
+        messagingSenderId: "1014351018202",
+        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        // --- 🛡️ THE PATIENT PROFILE BOUNCER ---
-        onAuthStateChanged(auth, async (user) => {
-            const bodyTag = document.getElementById('mainBody');
+    onAuthStateChanged(auth, async (user) => {
+        const bodyTag = document.getElementById('mainBody');
 
-            if (user) {
-                console.log("✅ Profile Session Found:", user.email);
-                
-                // (Optional) Fetch profile data here later
-                
-                // TURN ON THE LIGHTS
-                if (bodyTag) bodyTag.style.display = "block";
-                document.body.style.display = "block"; 
+        if (user) {
+            // 🔓 TURN ON THE LIGHTS
+            if (bodyTag) bodyTag.style.display = "block";
+            document.body.style.display = "block";
 
-            } else {
-                console.log("⏳ Waiting 6 seconds for Firebase to wake up...");
-                
-                // Give it a generous 6 seconds before redirecting
-                setTimeout(() => {
-                    if (!auth.currentUser) {
-                        console.log("🚫 Still no user. Redirecting to login.");
-                        window.location.href = "login.html";
-                    } else {
-                        console.log("🎉 Session found late! Unlocking Profile.");
-                        if (bodyTag) bodyTag.style.display = "block";
-                        document.body.style.display = "block";
-                    }
-                }, 6000); 
+            // 🕵️ FETCH DATA FROM FIRESTORE
+            try {
+                const userRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(userRef);
+
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                    
+                    // Fill the blanks using the IDs from your screenshot
+                    document.getElementById('prof-company').innerText = userData.company || "Not Set";
+                    document.getElementById('prof-name').innerText = userData.fullName || "User";
+                    document.getElementById('prof-phone').innerText = userData.mobile || userData.phone || "Not Set";
+                    document.getElementById('prof-email').innerText = user.email;
+                    
+                    // Automatically get last login from Google
+                    const lastLogin = user.metadata.lastSignInTime;
+                    document.getElementById('prof-last').innerText = lastLogin ? new Date(lastLogin).toLocaleString() : "First Login";
+                    
+                } else {
+                    console.error("No Firestore document found for this UID!");
+                    document.getElementById('prof-email').innerText = user.email;
+                }
+            } catch (error) {
+                console.error("Error fetching profile:", error);
             }
+        } else {
+            setTimeout(() => {
+                if (!auth.currentUser) window.location.href = "login.html";
+            }, 5000);
+        }
+    });
+
+    // 🚪 ADD THE LOGOUT FUNCTION (Matched to your button)
+    window.logout = () => {
+        signOut(auth).then(() => {
+            window.location.href = "login.html";
         });
-    </script>
+    };
+</script>
 </body>
 </html>
