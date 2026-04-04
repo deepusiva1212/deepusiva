@@ -54,32 +54,29 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // --- 🛡️ THE PATIENT BILLS BOUNCER ---
+        // --- 🕵️ THE SMART BILLS BOUNCER ---
         onAuthStateChanged(auth, (user) => {
             const bodyTag = document.getElementById('mainBody');
 
             if (user) {
-                console.log("✅ Session Found for Bills:", user.email);
-                
-                // TURN ON THE LIGHTS
+                console.log("✅ User detected on Bills page:", user.email);
                 if (bodyTag) bodyTag.style.display = "block";
                 document.body.style.display = "block"; 
-
             } else {
-                console.log("⏳ Waiting 3 seconds for Firebase to wake up...");
+                console.log("⏳ Session not found. Current Domain:", window.location.hostname);
                 
-                // 🛑 DON'T REDIRECT IMMEDIATELY
+                // Instead of jumping to login, show a message on the white screen
                 setTimeout(() => {
-                    // Check one last time before kicking them out
                     if (!auth.currentUser) {
-                        console.log("🚫 Still no user. Going to login.");
-                        window.location.href = "login.html";
-                    } else {
-                        console.log("🎉 User found late! Unlocking page.");
-                        if (bodyTag) bodyTag.style.display = "block";
-                        document.body.style.display = "block";
+                        document.body.innerHTML = `
+                            <div style="color:white; text-align:center; padding-top:100px; font-family:sans-serif;">
+                                <h2 style="color:orange;">Session Expired or Domain Not Authorized</h2>
+                                <p>Checking domain: <b>${window.location.hostname}</b></p>
+                                <p>Please <a href="login.html" style="color:cyan;">Login again</a> from this specific domain.</p>
+                            </div>
+                        `;
                     }
-                }, 3000); 
+                }, 4000); 
             }
         });
     </script>
