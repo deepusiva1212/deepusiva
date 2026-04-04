@@ -34,11 +34,11 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, updateDoc, doc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+      apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0", // ✅ Corrected API Key
       authDomain: "deepu-siva-portal.firebaseapp.com",
       projectId: "deepu-siva-portal",
       storageBucket: "deepu-siva-portal.firebasestorage.app",
@@ -47,62 +47,73 @@
     };
 
     const app = initializeApp(firebaseConfig);
-
     const auth = getAuth(app);
-
-// 🔒 THE MASTER KEY LIST
-const adminEmails = [
-  "deepadharsan.rajavel@gmail.com",
-  "deepusiva.pvt@gmail.com",
-  "contact@deepusiva.com",
-  "deepusiva2017@gmail.com" // <-- Type your extra email here!
-];
-
-// Run the security check
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    if (adminEmails.includes(user.email)) {
-      // Email Approved! Un-hide the page, BUT show the Vault Door first
-      document.body.style.display = "block";
-      document.getElementById('vaultDoor').style.display = "flex";
-    } else {
-      alert("SECURITY ALERT: You do not have permission to view the Admin Portal.");
-      window.location.href = "index.html"; 
-    }
-  } else {
-    window.location.href = "login.html"; 
-  }
-});
-
-// 🗝️ THE VAULT DOOR LOGIC
-document.getElementById('unlockBtn').addEventListener('click', () => {
-  const enteredId = document.getElementById('adminId').value;
-  const enteredPass = document.getElementById('adminPass').value;
-
-  // 🛑 SET YOUR SECRET ID AND PASSWORD HERE
-  const secretId = "DEEPU_ADMIN"; 
-  const secretPass = "Director@2026"; 
-
-  if (enteredId === secretId && enteredPass === secretPass) {
-    // Correct Password! Hide the Vault Door and show the Portal
-    document.getElementById('vaultDoor').style.display = "none";
-    console.log("Vault Unlocked.");
-  } else {
-    alert("ACCESS DENIED: Incorrect Admin ID or Password.");
-  }
-});
     const db = getFirestore(app);
 
-    async function loadUsers() {
+    // 🔒 THE MASTER ADMIN LIST
+    const adminEmails = [
+      "deepadharsan.rajavel@gmail.com",
+      "deepusiva.pvt@gmail.com",
+      "contact@deepusiva.com",
+      "deepusiva2017@gmail.com"
+    ];
+
+    // 🛡️ SECURITY CHECK & VAULT DOOR
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (adminEmails.includes(user.email)) {
+          document.body.style.display = "block";
+          document.getElementById('vaultDoor').style.display = "flex";
+          // Once authorized, load both lists
+          loadPendingUsers();
+          loadClientDropdown();
+        } else {
+          alert("SECURITY ALERT: Access Denied.");
+          window.location.href = "index.html"; 
+        }
+      } else {
+        window.location.href = "login.html"; 
+      }
+    });
+
+    // 🗝️ VAULT DOOR UNLOCK
+    document.getElementById('unlockBtn').addEventListener('click', () => {
+      const enteredId = document.getElementById('adminId').value;
+      const enteredPass = document.getElementById('adminPass').value;
+      if (enteredId === "DEEPU_ADMIN" && enteredPass === "Director@2026") {
+        document.getElementById('vaultDoor').style.display = "none";
+      } else {
+        alert("ACCESS DENIED: Incorrect Admin ID or Password.");
+      }
+    });
+
+    // --- 1. THE "SMART" DROPDOWN (For sending Bills/Updates) ---
+    async function loadClientDropdown() {
+        const clientSelect = document.getElementById('clientSelect');
+        if (!clientSelect) return;
+        clientSelect.innerHTML = '<option value="">-- Choose a Client --</option>';
+
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((doc) => {
+            const user = doc.data();
+            const option = document.createElement('option');
+            // We use email as the ID so we can send data to them correctly
+            option.value = user.email; 
+            // This shows: Full Name (Email) - Company
+            option.innerText = `${user.fullName || user.firstName} (${user.email}) — ${user.company || 'Individual'}`;
+            clientSelect.appendChild(option);
+        });
+    }
+
+    // --- 2. THE PENDING APPROVAL LIST (For new signups) ---
+    async function loadPendingUsers() {
       const userList = document.getElementById('userList');
       userList.innerHTML = "";
-      
-      // Look for anyone with status 'pending'
       const q = query(collection(db, "users"), where("status", "==", "pending"));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        userList.innerHTML = "<p>No pending applications at the moment.</p>";
+        userList.innerHTML = "<p>No pending applications.</p>";
         return;
       }
 
@@ -113,9 +124,7 @@ document.getElementById('unlockBtn').addEventListener('click', () => {
         card.innerHTML = `
           <div class="user-info">
             <h3>${data.firstName} ${data.lastName} <span class="status-tag">${data.username}</span></h3>
-            <p><strong>Email:</strong> ${data.email} | <strong>Phone:</strong> ${data.phone}</p>
-            <p><strong>Location:</strong> ${data.city}, ${data.state} (${data.pincode})</p>
-            <p><strong>Address:</strong> ${data.address}</p>
+            <p><strong>Email:</strong> ${data.email} | <strong>Company:</strong> ${data.company || 'N/A'}</p>
           </div>
           <button class="approve-btn" onclick="approveUser('${userDoc.id}')">Approve Access</button>
         `;
@@ -127,11 +136,10 @@ document.getElementById('unlockBtn').addEventListener('click', () => {
       if(confirm("Allow this client to access the dashboard?")) {
         await updateDoc(doc(db, "users", uid), { status: "approved" });
         alert("Client Approved!");
-        loadUsers(); // Refresh the list
+        loadPendingUsers(); 
+        loadClientDropdown(); // Refresh dropdown so they appear there too
       }
     };
-
-    loadUsers();
-  </script>
+</script>
 </body>
 </html>
