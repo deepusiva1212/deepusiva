@@ -72,3 +72,37 @@ body.light-mode .feature-card {
 .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
 input:checked + .slider { background-color: #f97316; }
 input:checked + .slider:before { transform: translateX(26px); }
+
+/* 🌅 LIGHT MODE BACKGROUND OPTIMIZATION */
+
+/* 1. This adds a white 'fog' over your big dark images so text is easy to read */
+body.light-mode section[style*="background-image"] {
+    position: relative;
+}
+
+body.light-mode section[style*="background-image"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7) !important; /* 70% white overlay */
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* 2. This pushes your text and buttons to the front so they don't get 'foggy' */
+body.light-mode .container, 
+body.light-mode .hero-content, 
+body.light-mode .topbar-inner,
+body.light-mode .row,
+body.light-mode .nav-links {
+    position: relative;
+    z-index: 5 !important;
+}
+
+/* 3. This brightens the actual images slightly */
+body.light-mode [style*="background-image"] {
+    filter: brightness(1.2) saturate(0.9);
+}
