@@ -883,6 +883,18 @@
     .fade-up-2 { animation: fadeUp .7s .15s ease both; }
     .fade-up-3 { animation: fadeUp .7s .3s ease both; }
     .fade-up-4 { animation: fadeUp .7s .45s ease both; }
+  /* 🚀 EMERGENCY POSITION OVERRIDE */
+.theme-switch-wrapper {
+    position: fixed !important; 
+    top: 150px !important;      /* This moves it clearly below your navigation menu */
+    right: 20px !important;
+    z-index: 999999 !important; /* This forces it to the very front layer */
+    display: flex !important;
+    background: rgba(0, 0, 0, 0.8) !important; /* Dark background so you can see it */
+    padding: 10px !important;
+    border-radius: 50px !important;
+    border: 1px solid #f97316 !important; /* Orange border so we can find it! */
+}
   </style>
 </head>
 
