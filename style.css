@@ -22,31 +22,48 @@ body {
     margin: 0;
 }
 
-/* This forces every div and section to listen to the Light Mode colors */
-body.light-mode div, 
+/* 🚀 THE "FORCE" - Ensuring every section and text is visible in Light Mode */
+body.light-mode div:not(.theme-switch-wrapper), 
 body.light-mode section, 
-body.light-mode header,
+body.light-mode header, 
 body.light-mode footer {
     background-color: var(--bg) !important;
     color: var(--text) !important;
 }
 
-body.light-mode p, body.light-mode h1, body.light-mode h2, body.light-mode h3, body.light-mode a {
+/* Forces all headings, paragraphs, lists, and spans to be dark charcoal */
+body.light-mode p, 
+body.light-mode h1, 
+body.light-mode h2, 
+body.light-mode h3, 
+body.light-mode h4,
+body.light-mode a,
+body.light-mode li,
+body.light-mode span:not(.slider) {
     color: var(--text) !important;
 }
 
+/* Fixes the "Cards" (Our Expertise, Services, etc.) so they look professional on white */
+body.light-mode .card, 
+body.light-mode .service-card, 
+body.light-mode .advantage-card,
+body.light-mode .feature-card {
+    background-color: #f8f9fa !important; /* A light off-white for cards */
+    border: 1px solid #dee2e6 !important;
+}
 /* 🔘 BUTTON PLACEMENT (FIXED TOP-RIGHT) */
 .theme-switch-wrapper {
     display: flex;
     align-items: center;
-    position: fixed; /* Keeps it on top of everything */
-    top: 100px;      /* Moves it down so it doesn't cover your phone number bar */
-    right: 20px;     /* Moves it away from the edge */
-    z-index: 99999;  /* Forces it to be the TOP layer */
-    background: rgba(0, 0, 0, 0.4);
+    position: fixed; 
+    top: 120px;      /* 👈 Moves it down past the main menu */
+    right: 15px;     /* 👈 Keeps it tucked to the side */
+    z-index: 10000;  /* 👈 Ensures it stays on top */
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark background */
     padding: 8px 12px;
-    border-radius: 25px;
-    border: 1px solid var(--border);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px); /* Makes it look modern/glassy */
 }
 
 .theme-switch { display: inline-block; height: 24px; position: relative; width: 50px; }
