@@ -121,7 +121,7 @@ const db = getFirestore(app);
 
             querySnapshot.forEach((userDoc) => {
                 const data = userDoc.data();
-                const option = createElement('option');
+                const option = document.createElement('option');
                 option.value = userDoc.id;
                 
                 let displayName = data.fullName || 
@@ -139,12 +139,12 @@ const db = getFirestore(app);
     }
 
         // --- 🚀 PUSH DATA LOGIC ---
-        getElementById('uploadBtn').addEventListener('click', async () => {
-            const clientId = getElementById('clientSelect').value;
-            const type = getElementById('dataType').value;
-            const title = getElementById('dataTitle').value;
-            const value = getElementById('dataValue').value;
-            const log = document.getElementById('logMsg');
+       document.getElementById('uploadBtn').addEventListener('click', async () => {
+    const clientId = document.getElementById('clientSelect').value;
+    const type = document.getElementById('dataType').value;
+    const title = document.getElementById('dataTitle').value;
+    const value = document.getElementById('dataValue').value;
+    const log = document.getElementById('logMsg');
 
             if(!clientId || !title || !value) {
                 alert("Director, please fill all fields before pushing data.");
