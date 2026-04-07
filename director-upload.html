@@ -93,9 +93,9 @@ const db = getFirestore(app);
             const pass = document.getElementById('adminPass').value;
 
             if(id === "DEEPU_ADMIN" && pass === "Deepu@2026") { 
-                getElementById('vault-door').style.display = "none";
-                getElementById('adminContent').style.display = "block";
-                loadClients();
+                document.getElementById('vault-door').style.display = "none";
+    document.getElementById('adminContent').style.display = "block";
+    loadClients();
             } else {
                 alert("ACCESS DENIED: Unauthorized Entrance Attempted.");
             }
@@ -105,7 +105,7 @@ const db = getFirestore(app);
       // --- 📋 LOAD CLIENT LIST (APPROVED ONLY) ---
     async function loadClients() {
         try {
-            const select = getElementById('clientSelect');
+            const select = document.getElementById('clientSelect');
             select.innerHTML = '<option value="">-- Loading Approved Clients --</option>';
             
             // 🛡️ THE SECURITY FILTER: Only fetch users where status is "approved"
