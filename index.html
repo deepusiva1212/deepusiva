@@ -883,17 +883,32 @@
     .fade-up-2 { animation: fadeUp .7s .15s ease both; }
     .fade-up-3 { animation: fadeUp .7s .3s ease both; }
     .fade-up-4 { animation: fadeUp .7s .45s ease both; }
-  /* 🚀 EMERGENCY POSITION OVERRIDE */
+   /* 🚀 MASTER POSITION & COLOR OVERRIDE */
 .theme-switch-wrapper {
-    position: fixed !important; 
-    top: 150px !important;      /* This moves it clearly below your navigation menu */
-    right: 20px !important;
-    z-index: 999999 !important; /* This forces it to the very front layer */
+    position: fixed !important;
+    top: 15px !important;      /* Moves it to the very top corner */
+    right: 15px !important;    /* Moves it to the far right */
+    z-index: 999999 !important; /* Forces it above all other layers */
     display: flex !important;
-    background: rgba(0, 0, 0, 0.8) !important; /* Dark background so you can see it */
-    padding: 10px !important;
+    align-items: center !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    padding: 8px 12px !important;
     border-radius: 50px !important;
-    border: 1px solid #f97316 !important; /* Orange border so we can find it! */
+    border: 1px solid #f97316 !important; /* Orange border so you can spot it! */
+}
+
+/* ⚪️ FORCE READABLE TEXT IN LIGHT MODE */
+body.light-mode, 
+body.light-mode section, 
+body.light-mode div, 
+body.light-mode p, 
+body.light-mode h1, 
+body.light-mode h2, 
+body.light-mode h3, 
+body.light-mode span:not(.slider), 
+body.light-mode a {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important; /* This turns invisible white text into black text */
 }
   </style>
 </head>
