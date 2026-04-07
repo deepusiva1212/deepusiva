@@ -65,55 +65,50 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, addDoc, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-// 📄 ADD THIS LINE BELOW FOR PDF UPLOADS
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
-            authDomain: "deepu-siva-portal.firebaseapp.com",
-            projectId: "deepu-siva-portal",
-            storageBucket: "deepu-siva-portal.firebasestorage.app",
-            messagingSenderId: "1014351018202",
-            appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-        };
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, addDoc, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
-        // 🏗️ STEP 1: Build the 'app' first! (Move this UP)
-const app = initializeApp(firebaseConfig);
+    const firebaseConfig = {
+        apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+        authDomain: "deepu-siva-portal.firebaseapp.com",
+        projectId: "deepu-siva-portal",
+        storageBucket: "deepu-siva-portal.firebasestorage.app",
+        messagingSenderId: "1014351018202",
+        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+    };
 
-// ⛽ STEP 2: Now get the tools from the app
-const storage = getStorage(app);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    // 🏗️ 1. Build Engine
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    const db = getFirestore(app);
 
-        // --- 🛡️ VAULT LOGIC (Fixed for Modules) ---
-        document.getElementById('unlockBtn').addEventListener('click', () => {
-            const id = document.getElementById('adminID').value;
-            const pass = document.getElementById('adminPass').value;
+    console.log("🚀 Deepu Siva System: Online");
 
-            if(id === "DEEPU_ADMIN" && pass === "Deepu@2026") { 
-                document.getElementById('vault-door').style.display = "none";
-    document.getElementById('adminContent').style.display = "block";
-    loadClients();
-            } else {
-                alert("ACCESS DENIED: Unauthorized Entrance Attempted.");
-            }
-        });
+    // --- 🔐 UNLOCK SYSTEM ---
+    document.getElementById('unlockBtn').addEventListener('click', () => {
+        const id = document.getElementById('adminID').value;
+        const pass = document.getElementById('adminPass').value;
 
-        // --- 📋 LOAD CLIENT LIST (Fixed Name Logic) ---
-      // --- 📋 LOAD CLIENT LIST (APPROVED ONLY) ---
+        if (id === "DEEPU_ADMIN" && pass === "Deepu@2026") {
+            document.getElementById('vault-door').style.display = "none";
+            document.getElementById('adminContent').style.display = "block";
+            loadClients();
+        } else {
+            alert("ACCESS DENIED: Unauthorized Entrance Attempted.");
+        }
+    });
+
+    // --- 👥 LOAD CLIENTS ---
     async function loadClients() {
+        const select = document.getElementById('clientSelect');
+        select.innerHTML = '<option value="">-- Loading Approved Clients --</option>';
+
         try {
-            const select = document.getElementById('clientSelect');
-            select.innerHTML = '<option value="">-- Loading Approved Clients --</option>';
-            
-            // 🛡️ THE SECURITY FILTER: Only fetch users where status is "approved"
             const q = query(collection(db, "users"), where("status", "==", "approved"));
             const querySnapshot = await getDocs(q);
-            
             select.innerHTML = '<option value="">-- Choose a Client --</option>';
-            
+
             if (querySnapshot.empty) {
                 select.innerHTML = '<option value="">No Approved Clients Found</option>';
                 return;
@@ -123,106 +118,64 @@ const db = getFirestore(app);
                 const data = userDoc.data();
                 const option = document.createElement('option');
                 option.value = userDoc.id;
-                
-                let displayName = data.fullName || 
-                                  ((data.firstName || "") + " " + (data.lastName || "")).trim() || 
-                                  data.username || 
-                                  "Unknown User";
-                
-                option.text = `${displayName} | ${data.email || 'No Email'} (${data.companyName || 'Individual'})`;
+                let displayName = data.fullName || (data.firstName + " " + (data.lastName || "")) || data.username || "Unknown";
+                option.text = `${displayName.trim()} | ${data.email || 'No Email'} (${data.companyName || 'Individual'})`;
                 select.appendChild(option);
             });
         } catch (err) {
-            console.error("Error loading clients:", err);
-            document.getElementById('logMsg').innerText = ...
+            console.error("Fetch Error:", err);
+            document.getElementById('logMsg').innerText = "⚠️ Error loading clients.";
         }
     }
 
-        // --- 🚀 PUSH DATA LOGIC ---
-       document.getElementById('uploadBtn').addEventListener('click', async () => {
-    const clientId = document.getElementById('clientSelect').value;
-    const type = document.getElementById('dataType').value;
-    const title = document.getElementById('dataTitle').value;
-    const value = document.getElementById('dataValue').value;
-    const log = document.getElementById('logMsg');
+    // --- 🚀 MASTER PUSH (Text + PDF) ---
+    document.getElementById('uploadBtn').addEventListener('click', async () => {
+        const clientId = document.getElementById('clientSelect').value;
+        const dataType = document.getElementById('dataType').value;
+        const title = document.getElementById('dataTitle').value;
+        const value = document.getElementById('dataValue').value;
+        const file = document.getElementById('billFile').files[0];
+        const log = document.getElementById('logMsg');
 
-            if(!clientId || !title || !value) {
-                alert("Director, please fill all fields before pushing data.");
-                return;
-            }
-
-            try {
-                const clientRef = doc(db, "users", clientId);
-                await updateDoc(clientRef, {
-                    [type]: arrayUnion({
-                        title: title,
-                        detail: value,
-                        date: new Date().toLocaleDateString()
-                    })
-                });
-
-                log.innerText = "✅ Successfully pushed to client dashboard!";
-                log.style.color = "#4ade80";
-                document.getElementById('dataTitle').value = "";
-                document.getElementById('dataValue').value = "";
-
-            } catch (err) {
-                log.innerText = "Error: " + err.message;
-                log.style.color = "#ff4d4d";
-            }
-        });
-        // --- 🚀 MASTER PUSH LOGIC (Handles Text + PDF) ---
-document.getElementById('uploadBtn').addEventListener('click', async () => {
-    const selectedClientId = document.getElementById('clientSelect').value;
-    const dataType = document.getElementById('dataType').value;
-    const title = document.getElementById('dataTitle').value;
-    const value = document.getElementById('dataValue').value;
-    const file = document.getElementById('billFile').files[0]; // 📄 Grabs the PDF
-    const logMsg = document.getElementById('logMsg');
-
-    if (!selectedClientId || !title) {
-        alert("Please select a client and enter a title!");
-        return;
-    }
-
-    logMsg.innerText = "⏳ Processing upload...";
-    logMsg.style.color = "white";
-
-    try {
-        let fileUrl = "";
-
-        // 1. If a PDF is selected, upload it to Firebase Storage
-        if (file) {
-            const storageRef = ref(storage, `bills/${selectedClientId}/${Date.now()}_${file.name}`);
-            const snapshot = await uploadBytes(storageRef, file);
-            fileUrl = await getDownloadURL(snapshot.ref);
-            console.log("File uploaded successfully:", fileUrl);
+        if (!clientId || !title) {
+            alert("Please select a client and enter a title!");
+            return;
         }
 
-        // 2. Save everything to Firestore (The user's personal invoice collection)
-        await addDoc(collection(db, "users", selectedClientId, "invoices"), {
-            title: title,
-            detail: value,
-            type: dataType,
-            billUrl: fileUrl, // 🔗 Links the PDF URL here
-            timestamp: serverTimestamp(),
-            status: "Unpaid"
-        });
+        log.innerText = "⏳ Processing upload...";
+        log.style.color = "white";
 
-        logMsg.style.color = "#4bb543";
-        logMsg.innerText = "✅ Successfully pushed to Client Dashboard!";
-        
-        // Reset form
-        document.getElementById('dataTitle').value = "";
-        document.getElementById('dataValue').value = "";
-        document.getElementById('billFile').value = "";
+        try {
+            let fileUrl = "";
+            if (file) {
+                const storageRef = ref(storage, `bills/${clientId}/${Date.now()}_${file.name}`);
+                const snapshot = await uploadBytes(storageRef, file);
+                fileUrl = await getDownloadURL(snapshot.ref);
+            }
 
-    } catch (error) {
-        console.error("Upload Error:", error);
-        logMsg.style.color = "#ff4b2b";
-        logMsg.innerText = "❌ Error: " + error.message;
-    }
-});
+            await addDoc(collection(db, "users", clientId, "invoices"), {
+                title: title,
+                detail: value,
+                type: dataType,
+                billUrl: fileUrl,
+                timestamp: serverTimestamp(),
+                status: "Unpaid"
+            });
+
+            log.style.color = "#4ade80";
+            log.innerText = "✅ Successfully pushed to Client Dashboard!";
+            
+            // Reset fields
+            document.getElementById('dataTitle').value = "";
+            document.getElementById('dataValue').value = "";
+            document.getElementById('billFile').value = "";
+
+        } catch (error) {
+            console.error("Upload Error:", error);
+            log.style.color = "#ff4d4d";
+            log.innerText = "❌ Error: " + error.message;
+        }
+    });
     </script>
 </body>
 </html>
