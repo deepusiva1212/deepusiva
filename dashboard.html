@@ -66,47 +66,46 @@
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
-    apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
-    authDomain: "deepu-siva-portal.firebaseapp.com",
-    projectId: "deepu-siva-portal",
-    storageBucket: "deepu-siva-portal.firebasestorage.app",
-    messagingSenderId: "1014351018202",
-    appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-};
+        apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
+        authDomain: "deepu-siva-portal.firebaseapp.com",
+        projectId: "deepu-siva-portal",
+        storageBucket: "deepu-siva-portal.firebasestorage.app",
+        messagingSenderId: "1014351018202",
+        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    let authTimer; 
-
+    // 🕵️‍♂️ THE BULLETPROOF WATCHER
     onAuthStateChanged(auth, async (user) => {
         const overlay = document.getElementById('auth-check-overlay');
         
         if (user) {
             console.log("✅ Identity Confirmed:", user.email);
-            clearTimeout(authTimer); // 🛑 Kill the logout timer
             
-            // Show the user's name
+            // Fetch User Data
             try {
                 const userDoc = await getDoc(doc(db, "users", user.uid));
                 if (userDoc.exists()) {
-                    document.getElementById('userName').innerText = userDoc.data().fullName || "Client";
+                    const fullName = userDoc.data().fullName || "Director";
+                    document.getElementById('userName').innerText = fullName;
                 }
-            } catch (e) { console.log("Name fetch skipped."); }
+            } catch (e) { console.log("DB check skipped."); }
 
             // OPEN THE VAULT
             if(overlay) overlay.style.display = 'none';
 
         } else {
-            console.log("⏳ Searching browser for active session...");
-            // If no session found in 5 seconds, it's a real logout
-            authTimer = setTimeout(() => {
+            // Check one last time before kicking out
+            // We give it a short 3-second delay to catch up
+            setTimeout(() => {
                 if (!auth.currentUser) {
-                    console.log("❌ No session found. Redirecting to login.");
+                    console.log("❌ No session found. Returning to login.");
                     window.location.href = "login.html";
                 }
-            }, 5000);
+            }, 3000);
         }
     });
     </script>
