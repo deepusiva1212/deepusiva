@@ -62,72 +62,55 @@
 
    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-    apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
-    authDomain: "deepu-siva-portal.firebaseapp.com",
-    projectId: "deepu-siva-portal",
-    storageBucket: "deepu-siva-portal.firebasestorage.app",
-    messagingSenderId: "1014351018202",
-    appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+        authDomain: "deepu-siva-portal.firebaseapp.com",
+        projectId: "deepu-siva-portal",
+        storageBucket: "deepu-siva-portal.firebasestorage.app",
+        messagingSenderId: "1014351018202",
+        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-let authTimer; 
+    let authTimer;
 
-    onAuthStateChanged(auth, (user) => {
+    // 🕵️‍♂️ THE SECURITY WATCHER
+    onAuthStateChanged(auth, async (user) => {
         const overlay = document.getElementById('auth-check-overlay');
         
         if (user) {
-            console.log("✅ Dashboard Access Granted:", user.email);
-            clearTimeout(authTimer); // 🛑 Stop the redirect timer
-            if(overlay) overlay.style.display = 'none'; // Open the curtain
+            console.log("✅ Access Granted:", user.email);
+            clearTimeout(authTimer); 
+            
+            // 1. Fetch User Name from Database
+            try {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    document.getElementById('userName').innerText = userDoc.data().fullName || userDoc.data().username || "Director";
+                }
+            } catch (e) {
+                console.error("Data Fetch Error:", e);
+            }
+
+            // 2. OPEN THE CURTAIN (Hide the loading screen)
+            if(overlay) overlay.style.display = 'none';
+
         } else {
-            console.log("⏳ Waiting for vault access...");
-            // Give the browser 4 seconds to remember your login
+            console.log("⏳ Waiting for vault key...");
+            // If no user found after 5 seconds, send back to login
             authTimer = setTimeout(() => {
                 if (!auth.currentUser) {
-                    console.log("❌ No session found, redirecting...");
                     window.location.href = "login.html";
                 }
-            }, 4000);
+            }, 5000);
         }
     });
-                    
-                    // 2. TURN ON THE LIGHTS (Force show the page)
-                    if (mainBody) mainBody.style.display = "block";
-                    document.body.style.display = "block"; 
-                    
-                } catch (err) {
-                    console.error("❌ Database Error:", err);
-                    document.body.style.display = "block";
-                }
-
-            } else {
-                console.log("⏳ Checking login session... please wait.");
-                
-                // 🛑 SAFETY TIMER: Wait 5 seconds before kicking you out
-                setTimeout(() => {
-                    if (!auth.currentUser) {
-                        console.log("🚫 No user found. Redirecting to login.html");
-                        window.location.href = "login.html";
-                    } else {
-                        console.log("🎉 User detected late! Staying on dashboard.");
-                        if (mainBody) mainBody.style.display = "block";
-                    }
-                }, 5000); 
-            }
-        });
-
-        // Logout Logic
-        window.logout = () => {
-            signOut(auth).then(() => { window.location.href = "login.html"; });
-        };
     </script>
 </body>
 </html>
