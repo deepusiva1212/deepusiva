@@ -21,7 +21,15 @@
         .action-card span { font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
     </style>
 </head>
-<body style="display:none;" id="mainBody">
+<body>
+    <div id="auth-check-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0d1117; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; font-family:'Barlow', sans-serif;">
+        <div style="border: 4px solid #f97316; border-top: 4px solid transparent; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 20px; letter-spacing: 2px;">SECURE LOGIN IN PROGRESS...</p>
+    </div>
+
+    <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 
     <nav>
         <h1>DEEPU SIVA - CLIENT PORTAL</h1>
@@ -70,26 +78,26 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- 🛡️ THE ULTIMATE LOOP KILLER ---
-        onAuthStateChanged(auth, async (user) => {
-            const mainBody = document.getElementById('mainBody');
-            
-            if (user) {
-                console.log("✅ User Found:", user.email);
-                
-                try {
-                    const userRef = doc(db, "users", user.uid);
-                    const docSnap = await getDoc(userRef);
+let authTimer; 
 
-                    if (docSnap.exists()) {
-                        const userData = docSnap.data();
-                        
-                        // 1. Set the Welcome Name
-                        const nameSpan = document.getElementById('userName');
-                        if (nameSpan) nameSpan.innerText = userData.firstName || "Client";
-                        
-                        console.log("📂 Firestore Status:", userData.status);
-                    }
+    onAuthStateChanged(auth, (user) => {
+        const overlay = document.getElementById('auth-check-overlay');
+        
+        if (user) {
+            console.log("✅ Dashboard Access Granted:", user.email);
+            clearTimeout(authTimer); // 🛑 Stop the redirect timer
+            if(overlay) overlay.style.display = 'none'; // Open the curtain
+        } else {
+            console.log("⏳ Waiting for vault access...");
+            // Give the browser 4 seconds to remember your login
+            authTimer = setTimeout(() => {
+                if (!auth.currentUser) {
+                    console.log("❌ No session found, redirecting...");
+                    window.location.href = "login.html";
+                }
+            }, 4000);
+        }
+    });
                     
                     // 2. TURN ON THE LIGHTS (Force show the page)
                     if (mainBody) mainBody.style.display = "block";
