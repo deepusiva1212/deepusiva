@@ -22,8 +22,15 @@
         .empty-msg { text-align: center; margin-top: 50px; color: #8b949e; }
     </style>
 </head>
-<body style="display:none;" id="mainBody">
+<body>
+<div id="auth-check-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0d1117; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; font-family:'Barlow', sans-serif;">
+        <div style="border: 4px solid #f97316; border-top: 4px solid transparent; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 20px; letter-spacing: 2px;">VERIFYING ACCESS...</p>
+    </div>
 
+    <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
     <div class="container">
         <div class="header">
             <h1>MY INVOICES</h1>
@@ -57,20 +64,24 @@
     const db = getFirestore(app);
 
   // 🕵️‍♂️ 1. THE SECURITY WATCHER
+   // 🕵️‍♂️ THE VERIFIER
     onAuthStateChanged(auth, (user) => {
+        const overlay = document.getElementById('auth-check-overlay');
+        
         if (user) {
-            // ✅ Firebase found the user! Now we load the bills.
-            console.log("Verified User:", user.uid);
+            console.log("✅ User Verified:", user.email);
+            // This line hides the loading screen once you are found
+            if(overlay) overlay.style.display = 'none'; 
             loadMyBills(user.uid);
         } else {
-            // 🛑 No user found AFTER the check is finished.
-            // We wait 2 seconds just to be 100% sure before redirecting.
+            console.log("⏳ Checking for session...");
+            // We give the browser 3 seconds to "find" your login
             setTimeout(() => {
                 if (!auth.currentUser) {
-                    console.log("No user detected, redirecting to login...");
+                    console.log("❌ No session found, redirecting...");
                     window.location.href = "login.html";
                 }
-            }, 2000); 
+            }, 3000);
         }
     });
 
