@@ -49,6 +49,14 @@
             <label>Detail / Value / Link</label>
             <textarea id="dataValue" rows="3" placeholder="Enter amount, status text, or Google Maps URL"></textarea>
 
+            <div class="input-group" style="margin-top: 20px;">
+    <label style="color: #f97316; font-weight: bold; display: block; margin-bottom: 8px;">
+        Step 2: Upload PDF Bill (Optional)
+    </label>
+    <input type="file" id="billFile" accept="application/pdf" 
+           style="background: #1a1a1a; color: white; padding: 10px; border: 1px solid #30363d; width: 100%; border-radius: 6px;">
+    <p style="font-size: 12px; color: #8b949e; margin-top: 5px;">* Only PDF files are allowed.</p>
+</div>
             <button id="uploadBtn">🚀 PUSH TO CLIENT DASHBOARD</button>
         </div>
 
@@ -58,8 +66,10 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
+import { getFirestore, collection, getDocs, doc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+// 📄 ADD THIS LINE BELOW FOR PDF UPLOADS
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+        
         const firebaseConfig = {
             apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
             authDomain: "deepu-siva-portal.firebaseapp.com",
@@ -69,6 +79,7 @@
             appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
         };
 
+        const storage = getStorage(app);
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -115,7 +126,7 @@
                                   data.username || 
                                   "Unknown User";
                 
-                option.text = `${displayName} (${data.companyName || 'Individual'})`;
+                option.text = `${displayName} | ${data.email || 'No Email'} (${data.companyName || 'Individual'})`;
                 select.appendChild(option);
             });
         } catch (err) {
@@ -157,6 +168,58 @@
                 log.style.color = "#ff4d4d";
             }
         });
+        // --- 🚀 MASTER PUSH LOGIC (Handles Text + PDF) ---
+document.getElementById('uploadBtn').addEventListener('click', async () => {
+    const selectedClientId = document.getElementById('clientSelect').value;
+    const dataType = document.getElementById('dataType').value;
+    const title = document.getElementById('dataTitle').value;
+    const value = document.getElementById('dataValue').value;
+    const file = document.getElementById('billFile').files[0]; // 📄 Grabs the PDF
+    const logMsg = document.getElementById('logMsg');
+
+    if (!selectedClientId || !title) {
+        alert("Please select a client and enter a title!");
+        return;
+    }
+
+    logMsg.innerText = "⏳ Processing upload...";
+    logMsg.style.color = "white";
+
+    try {
+        let fileUrl = "";
+
+        // 1. If a PDF is selected, upload it to Firebase Storage
+        if (file) {
+            const storageRef = ref(storage, `bills/${selectedClientId}/${Date.now()}_${file.name}`);
+            const snapshot = await uploadBytes(storageRef, file);
+            fileUrl = await getDownloadURL(snapshot.ref);
+            console.log("File uploaded successfully:", fileUrl);
+        }
+
+        // 2. Save everything to Firestore (The user's personal invoice collection)
+        await addDoc(collection(db, "users", selectedClientId, "invoices"), {
+            title: title,
+            detail: value,
+            type: dataType,
+            billUrl: fileUrl, // 🔗 Links the PDF URL here
+            timestamp: serverTimestamp(),
+            status: "Unpaid"
+        });
+
+        logMsg.style.color = "#4bb543";
+        logMsg.innerText = "✅ Successfully pushed to Client Dashboard!";
+        
+        // Reset form
+        document.getElementById('dataTitle').value = "";
+        document.getElementById('dataValue').value = "";
+        document.getElementById('billFile').value = "";
+
+    } catch (error) {
+        console.error("Upload Error:", error);
+        logMsg.style.color = "#ff4b2b";
+        logMsg.innerText = "❌ Error: " + error.message;
+    }
+});
     </script>
 </body>
 </html>
