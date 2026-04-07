@@ -66,7 +66,7 @@
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+        apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
         authDomain: "deepu-siva-portal.firebaseapp.com",
         projectId: "deepu-siva-portal",
         storageBucket: "deepu-siva-portal.firebasestorage.app",
@@ -78,34 +78,32 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    let authTimer;
+    let authTimer; 
 
-    // 🕵️‍♂️ THE SECURITY WATCHER
     onAuthStateChanged(auth, async (user) => {
         const overlay = document.getElementById('auth-check-overlay');
         
         if (user) {
-            console.log("✅ Access Granted:", user.email);
-            clearTimeout(authTimer); 
+            console.log("✅ Identity Confirmed:", user.email);
+            clearTimeout(authTimer); // 🛑 Kill the logout timer
             
-            // 1. Fetch User Name from Database
+            // Show the user's name
             try {
                 const userDoc = await getDoc(doc(db, "users", user.uid));
                 if (userDoc.exists()) {
-                    document.getElementById('userName').innerText = userDoc.data().fullName || userDoc.data().username || "Director";
+                    document.getElementById('userName').innerText = userDoc.data().fullName || "Client";
                 }
-            } catch (e) {
-                console.error("Data Fetch Error:", e);
-            }
+            } catch (e) { console.log("Name fetch skipped."); }
 
-            // 2. OPEN THE CURTAIN (Hide the loading screen)
+            // OPEN THE VAULT
             if(overlay) overlay.style.display = 'none';
 
         } else {
-            console.log("⏳ Waiting for vault key...");
-            // If no user found after 5 seconds, send back to login
+            console.log("⏳ Searching browser for active session...");
+            // If no session found in 5 seconds, it's a real logout
             authTimer = setTimeout(() => {
                 if (!auth.currentUser) {
+                    console.log("❌ No session found. Redirecting to login.");
                     window.location.href = "login.html";
                 }
             }, 5000);
