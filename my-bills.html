@@ -51,13 +51,13 @@
     import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
-        authDomain: "deepu-siva-portal.firebaseapp.com",
-        projectId: "deepu-siva-portal",
-        storageBucket: "deepu-siva-portal.firebasestorage.app",
-        messagingSenderId: "1014351018202",
-        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-    };
+    apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
+    authDomain: "deepu-siva-portal.firebaseapp.com",
+    projectId: "deepu-siva-portal",
+    storageBucket: "deepu-siva-portal.firebasestorage.app",
+    messagingSenderId: "1014351018202",
+    appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+};
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -65,26 +65,26 @@
 
   // 🕵️‍♂️ 1. THE SECURITY WATCHER
    // 🕵️‍♂️ THE VERIFIER
+    let authTimer; // ⏱️ This timer waits for the "ID Card" to load
+
     onAuthStateChanged(auth, (user) => {
         const overlay = document.getElementById('auth-check-overlay');
         
         if (user) {
-            console.log("✅ User Verified:", user.email);
-            // This line hides the loading screen once you are found
-            if(overlay) overlay.style.display = 'none'; 
+            console.log("✅ Verified User:", user.email);
+            clearTimeout(authTimer); // 🛑 STOP the logout order immediately
+            if(overlay) overlay.style.display = 'none';
             loadMyBills(user.uid);
         } else {
-            console.log("⏳ Checking for session...");
-            // We give the browser 3 seconds to "find" your login
-            setTimeout(() => {
+            // Start the countdown, but give it 4 seconds
+            authTimer = setTimeout(() => {
                 if (!auth.currentUser) {
-                    console.log("❌ No session found, redirecting...");
+                    console.log("❌ No session found, redirecting to login...");
                     window.location.href = "login.html";
                 }
-            }, 3000);
+            }, 4000); 
         }
     });
-
     // 📋 2. LOAD BILLS FROM THE PRIVATE FOLDER
     function loadMyBills(userId) {
         const billContainer = document.getElementById('billList'); // Ensure you have a div with this ID
