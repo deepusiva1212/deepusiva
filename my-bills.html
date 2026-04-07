@@ -56,13 +56,21 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // 🕵️‍♂️ 1. WAIT FOR USER TO LOGIN
+  // 🕵️‍♂️ 1. THE SECURITY WATCHER
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            console.log("Logged in as:", user.uid);
+            // ✅ Firebase found the user! Now we load the bills.
+            console.log("Verified User:", user.uid);
             loadMyBills(user.uid);
         } else {
-            window.location.href = "login.html"; // Send them back if not logged in
+            // 🛑 No user found AFTER the check is finished.
+            // We wait 2 seconds just to be 100% sure before redirecting.
+            setTimeout(() => {
+                if (!auth.currentUser) {
+                    console.log("No user detected, redirecting to login...");
+                    window.location.href = "login.html";
+                }
+            }, 2000); 
         }
     });
 
