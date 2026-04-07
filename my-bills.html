@@ -40,46 +40,70 @@
 
 <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // 🔑 THE MASTER KEY
-        const firebaseConfig = {
-            apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
-            authDomain: "deepu-siva-portal.firebaseapp.com",
-            projectId: "deepu-siva-portal",
-            storageBucket: "deepu-siva-portal.firebasestorage.app",
-            messagingSenderId: "1014351018202",
-            appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+        authDomain: "deepu-siva-portal.firebaseapp.com",
+        projectId: "deepu-siva-portal",
+        storageBucket: "deepu-siva-portal.firebasestorage.app",
+        messagingSenderId: "1014351018202",
+        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+    };
 
-        // Initialize and catch immediate errors
-        try {
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-            onAuthStateChanged(auth, (user) => {
-                const bodyTag = document.getElementById('mainBody');
-                
-                if (user) {
-                    console.log("✅ User detected.");
-                    // TURN ON THE LIGHTS
-                    if (bodyTag) bodyTag.style.display = "block";
-                    document.body.style.display = "block"; 
-                } else {
-                    // If no user after 3 seconds, show a manual login link
-                    setTimeout(() => {
-                        if (!auth.currentUser) {
-                            document.body.style.display = "block"; // Force show anyway
-                            document.body.innerHTML = '<div style="color:white; text-align:center; margin-top:50px;">Session not found. <a href="login.html" style="color:orange;">Return to Login</a></div>';
-                        }
-                    }, 3000);
-                }
-            });
-        } catch (error) {
-            // IF THE SCRIPT CRASHES, FORCE THE PAGE TO SHOW SO YOU CAN SEE THE ERROR
-            document.body.style.display = "block";
-            document.body.innerHTML = `<h1 style="color:red;">Script Error: ${error.message}</h1>`;
+    // 🕵️‍♂️ 1. WAIT FOR USER TO LOGIN
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("Logged in as:", user.uid);
+            loadMyBills(user.uid);
+        } else {
+            window.location.href = "login.html"; // Send them back if not logged in
         }
+    });
+
+    // 📋 2. LOAD BILLS FROM THE PRIVATE FOLDER
+    function loadMyBills(userId) {
+        const billContainer = document.getElementById('billList'); // Ensure you have a div with this ID
+        
+        // This looks in users > {YourID} > invoices (Exactly where the Director pushes)
+        const q = query(
+            collection(db, "users", userId, "invoices"), 
+            orderBy("timestamp", "desc")
+        );
+
+        onSnapshot(q, (snapshot) => {
+            if (snapshot.empty) {
+                billContainer.innerHTML = "<p style='text-align:center;'>No bills or invoices found yet.</p>";
+                return;
+            }
+
+            let html = "";
+            snapshot.forEach((doc) => {
+                const bill = doc.data();
+                const date = bill.timestamp ? bill.timestamp.toDate().toLocaleDateString() : "Pending";
+                
+                // 🎨 This draws the bill card
+                html += `
+                    <div style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                        <h3 style="color: #f97316; margin-top: 0;">${bill.title}</h3>
+                        <p style="color: #8b949e; font-size: 14px;">Date: ${date}</p>
+                        <p style="color: white;">${bill.detail}</p>
+                        
+                        ${bill.billUrl ? 
+                            `<a href="${bill.billUrl}" target="_blank" style="display:inline-block; margin-top:10px; color:#4ade80; text-decoration:none; font-weight:bold;">📥 Download PDF Bill</a>` : 
+                            `<span style="color:#8b949e; font-size:12px;">(No PDF Attached)</span>`
+                        }
+                    </div>
+                `;
+            });
+            billContainer.innerHTML = html;
+        });
+    }
     </script>
 </body>
 </html>
