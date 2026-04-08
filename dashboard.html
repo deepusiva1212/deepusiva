@@ -61,46 +61,56 @@
     </div>
 
    <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // 📢 ALERT IS WORKING - LET'S GET THE LOGS WORKING
-    console.warn("🚀 SCRIPT STARTING: Looking for Director's credentials...");
+        console.warn("🚀 DASHBOARD STARTING: Looking for Director's credentials...");
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
-        authDomain: "deepu-siva-portal.firebaseapp.com",
-        projectId: "deepu-siva-portal",
-        storageBucket: "deepu-siva-portal.firebasestorage.app",
-        messagingSenderId: "1014351018202",
-        appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
+            authDomain: "deepu-siva-portal.firebaseapp.com",
+            projectId: "deepu-siva-portal",
+            storageBucket: "deepu-siva-portal.firebasestorage.app",
+            messagingSenderId: "1014351018202",
+            appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+        };
 
-    try {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        let authTimer; // 🛑 This prevents the "Kick-back" loop
 
         onAuthStateChanged(auth, async (user) => {
             const overlay = document.getElementById('auth-check-overlay');
             
             if (user) {
-                console.error("✅ IDENTITY FOUND: Welcome back, " + user.email);
+                console.warn("✅ ACCESS GRANTED: Welcome back, " + user.email);
+                if (authTimer) clearTimeout(authTimer); // Stop the timer immediately!
+                
+                // Fetch User's Name from Firestore
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        const nameField = document.getElementById('userName');
+                        if(nameField) nameField.innerText = userDoc.data().fullName || "Director";
+                    }
+                } catch (e) { console.log("Profile details hidden."); }
+
                 if(overlay) overlay.style.display = 'none';
             } else {
-                console.error("⏳ NO SESSION FOUND - Browser storage is empty.");
-                setTimeout(() => {
+                console.error("⏳ NO SESSION FOUND - Waiting for vault response...");
+                
+                // Give the browser 10 seconds to find the modern ID card
+                authTimer = setTimeout(() => {
                     if (!auth.currentUser) {
+                        console.error("❌ FINAL TIMEOUT: Returning to login.");
                         window.location.href = "login.html";
                     }
-                }, 5000);
+                }, 10000); 
             }
         });
-    } catch (err) {
-        console.error("❌ CRITICAL SYSTEM ERROR:", err.message);
-        alert("CRITICAL ERROR: " + err.message);
-    }
     </script>
 </body>
 </html>
