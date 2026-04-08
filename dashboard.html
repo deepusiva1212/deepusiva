@@ -61,12 +61,12 @@
     </div>
 
    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // 📢 THE LOUD CHECK
-    alert("SYSTEM CHECK: The Dashboard script is now running!");
+    // 📢 ALERT IS WORKING - LET'S GET THE LOGS WORKING
+    console.warn("🚀 SCRIPT STARTING: Looking for Director's credentials...");
 
     const firebaseConfig = {
         apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
@@ -77,40 +77,30 @@
         appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    try {
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    // 🕵️‍♂️ THE BULLETPROOF WATCHER
-    onAuthStateChanged(auth, async (user) => {
-        const overlay = document.getElementById('auth-check-overlay');
-        
-        if (user) {
-            console.log("✅ Identity Confirmed:", user.email);
+        onAuthStateChanged(auth, async (user) => {
+            const overlay = document.getElementById('auth-check-overlay');
             
-            // Fetch User Data
-            try {
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (userDoc.exists()) {
-                    const fullName = userDoc.data().fullName || "Director";
-                    document.getElementById('userName').innerText = fullName;
-                }
-            } catch (e) { console.log("DB check skipped."); }
-
-            // OPEN THE VAULT
-            if(overlay) overlay.style.display = 'none';
-
-        } else {
-            // Check one last time before kicking out
-            // We give it a short 3-second delay to catch up
-            setTimeout(() => {
-                if (!auth.currentUser) {
-                    console.log("❌ No session found. Returning to login.");
-                    window.location.href = "login.html";
-                }
-            }, 7000);
-        }
-    });
+            if (user) {
+                console.error("✅ IDENTITY FOUND: Welcome back, " + user.email);
+                if(overlay) overlay.style.display = 'none';
+            } else {
+                console.error("⏳ NO SESSION FOUND - Browser storage is empty.");
+                setTimeout(() => {
+                    if (!auth.currentUser) {
+                        window.location.href = "login.html";
+                    }
+                }, 5000);
+            }
+        });
+    } catch (err) {
+        console.error("❌ CRITICAL SYSTEM ERROR:", err.message);
+        alert("CRITICAL ERROR: " + err.message);
+    }
     </script>
 </body>
 </html>
