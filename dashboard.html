@@ -65,7 +65,7 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        console.warn("🚀 DASHBOARD STARTING: Looking for Director's credentials...");
+        console.warn("🚀 DASHBOARD STARTING...");
 
         const firebaseConfig = {
             apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
@@ -80,32 +80,34 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let authTimer; // 🛑 This prevents the "Kick-back" loop
+        let authTimer; // 🛑 THIS IS THE KEY!
 
         onAuthStateChanged(auth, async (user) => {
             const overlay = document.getElementById('auth-check-overlay');
             
             if (user) {
-                console.warn("✅ ACCESS GRANTED: Welcome back, " + user.email);
-                if (authTimer) clearTimeout(authTimer); // Stop the timer immediately!
+                console.warn("✅ ACCESS GRANTED: Welcome, " + user.email);
                 
-                // Fetch User's Name from Firestore
+                // 🛑 STOP the timer immediately so you don't get kicked out!
+                if (authTimer) clearTimeout(authTimer); 
+                
+                if(overlay) overlay.style.display = 'none';
+
+                // Try to show your name
                 try {
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     if (userDoc.exists()) {
                         const nameField = document.getElementById('userName');
                         if(nameField) nameField.innerText = userDoc.data().fullName || "Director";
                     }
-                } catch (e) { console.log("Profile details hidden."); }
+                } catch (e) { console.log("Data fetch skipped."); }
 
-                if(overlay) overlay.style.display = 'none';
             } else {
-                console.error("⏳ NO SESSION FOUND - Waiting for vault response...");
+                console.error("⏳ WAITING FOR LOGIN...");
                 
-                // Give the browser 10 seconds to find the modern ID card
+                // If no user is found after 10 seconds, THEN go back to login
                 authTimer = setTimeout(() => {
                     if (!auth.currentUser) {
-                        console.error("❌ FINAL TIMEOUT: Returning to login.");
                         window.location.href = "login.html";
                     }
                 }, 10000); 
