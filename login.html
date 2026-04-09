@@ -34,32 +34,23 @@
   </div>
 
   <script type="module">
-        // 1. IMPORT PERSISTENCE TOOLS
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { 
-            getAuth, 
-            signInWithEmailAndPassword, 
-            setPersistence, 
-            browserLocalPersistence 
-        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // 🔑 YOUR MASTER CONFIG
-       // 🔑 THE CORRECT MASTER CONFIG
         const firebaseConfig = {
-    apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
-    authDomain: "deepu-siva-portal.firebaseapp.com",
-    projectId: "deepu-siva-portal",
-    storageBucket: "deepu-siva-portal.firebasestorage.app",
-    messagingSenderId: "1014351018202",
-    appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-};
+            apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
+            authDomain: "deepu-siva-portal.firebaseapp.com",
+            projectId: "deepu-siva-portal",
+            storageBucket: "deepu-siva-portal.firebasestorage.app",
+            messagingSenderId: "1014351018202",
+            appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+        };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // --- 📧 THE "STICKY" LOGIN LOGIC ---
         document.getElementById('loginBtn').addEventListener('click', (e) => {
             e.preventDefault();
-
             const email = document.getElementById('email').value.trim();
             const pass = document.getElementById('password').value;
             const errorMsg = document.getElementById('errorMessage');
@@ -67,20 +58,16 @@
             errorMsg.innerText = "Connecting...";
             errorMsg.style.display = "block";
 
-            // 🛡️ STEP A: Tell the browser to "Remember" this session
+            // 🔐 THIS STAPLES THE ID CARD TO THE BROWSER
             setPersistence(auth, browserLocalPersistence)
                 .then(() => {
-                    // 🔑 STEP B: Now perform the actual login
                     return signInWithEmailAndPassword(auth, email, pass);
                 })
                 .then(() => {
-                    console.log("✅ Persistence set and Login successful!");
                     window.location.href = "dashboard.html";
                 })
                 .catch((error) => {
-                    console.error("Login Error:", error.code);
-                    errorMsg.style.color = "#ff4d4d";
-                    errorMsg.innerText = "Invalid login. (Error: " + error.code + ")";
+                    errorMsg.innerText = "Invalid login. (" + error.code + ")";
                 });
         });
     </script>
