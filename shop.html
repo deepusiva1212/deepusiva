@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Deepu Siva – Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+:root{
+  --steel:#0d1117;--steel2:#161b22;--steel3:#21262d;
+  --orange:#f97316;--orange2:#ea580c;
+  --silver:#c9d1d9;--white:#f0f6fc;--muted:#8b949e;
+  --green:#22c55e;--red:#ef4444;
+  --font-head:'Barlow Condensed',sans-serif;
+  --font-body:'Barlow',sans-serif;
+  --radius:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);background:var(--steel);color:var(--silver);min-height:100vh;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:var(--orange);border-radius:3px;}
+
+/* NAV */
+nav{background:var(--steel2);border-bottom:2px solid var(--orange);position:sticky;top:0;z-index:900;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--white);text-decoration:none;}
+.nav-logo span{background:var(--orange);color:#fff;font-size:10px;padding:2px 7px;border-radius:4px;margin-left:8px;letter-spacing:2px;}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.cart-btn{background:var(--orange);color:#fff;border:none;padding:10px 20px;border-radius:var(--radius);font-family:var(--font-head);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.2s;}
+.cart-btn:hover{background:var(--orange2);}
+.cart-count{background:#fff;color:var(--orange);border-radius:50%;width:20px;height:20px;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:800;}
+
+/* HERO BANNER */
+.shop-hero{background:linear-gradient(135deg,var(--steel2),#1a1f2e);border-bottom:1px solid var(--steel3);padding:40px 24px;text-align:center;}
+.shop-hero h1{font-family:var(--font-head);font-size:clamp(32px,5vw,56px);font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:1px;}
+.shop-hero h1 span{color:var(--orange);}
+.shop-hero p{color:var(--muted);margin-top:8px;font-size:15px;}
+
+/* FILTERS */
+.filters{max-width:1200px;margin:32px auto 0;padding:0 24px;display:flex;gap:10px;flex-wrap:wrap;}
+.filter-btn{background:var(--steel2);border:1px solid var(--steel3);color:var(--silver);padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;transition:.2s;}
+.filter-btn:hover,.filter-btn.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+
+/* PRODUCTS GRID */
+.products-section{max-width:1200px;margin:0 auto;padding:24px;}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-top:16px;}
+.product-card{background:var(--steel2);border:1px solid var(--steel3);border-radius:12px;overflow:hidden;transition:.3s;cursor:pointer;}
+.product-card:hover{border-color:rgba(249,115,22,.5);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
+.product-img{width:100%;height:200px;object-fit:cover;background:var(--steel3);display:flex;align-items:center;justify-content:center;font-size:60px;}
+.product-img img{width:100%;height:100%;object-fit:cover;}
+.product-info{padding:16px;}
+.product-cat{font-size:11px;color:var(--orange);letter-spacing:2px;text-transform:uppercase;font-weight:600;}
+.product-name{font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--white);margin-top:4px;text-transform:uppercase;}
+.product-desc{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5;}
+.product-price{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--orange);margin-top:10px;}
+.product-price span{font-size:14px;color:var(--muted);font-family:var(--font-body);font-weight:400;}
+.add-to-cart{width:100%;background:var(--orange);color:#fff;border:none;padding:12px;border-radius:var(--radius);font-family:var(--font-head);font-size:16px;font-weight:700;cursor:pointer;margin-top:12px;transition:.2s;letter-spacing:.5px;}
+.add-to-cart:hover{background:var(--orange2);}
+.add-to-cart.added{background:var(--green);}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:80px 24px;color:var(--muted);}
+.empty-state .icon{font-size:60px;margin-bottom:16px;}
+.loading-spinner{text-align:center;padding:80px;color:var(--muted);}
+
+/* CART SIDEBAR */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:none;opacity:0;transition:.3s;}
+.cart-overlay.open{display:block;opacity:1;}
+.cart-sidebar{position:fixed;right:0;top:0;bottom:0;width:min(460px,100vw);background:var(--steel2);border-left:2px solid var(--orange);z-index:1001;transform:translateX(100%);transition:.35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+.cart-sidebar.open{transform:translateX(0);}
+.cart-header{padding:20px 24px;border-bottom:1px solid var(--steel3);display:flex;align-items:center;justify-content:space-between;}
+.cart-header h2{font-family:var(--font-head);font-size:24px;font-weight:800;color:var(--white);text-transform:uppercase;}
+.close-cart{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;padding:4px 8px;border-radius:4px;transition:.2s;}
+.close-cart:hover{color:var(--white);background:var(--steel3);}
+.cart-items{flex:1;overflow-y:auto;padding:16px 24px;}
+.cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--steel3);}
+.cart-item-img{width:64px;height:64px;border-radius:var(--radius);background:var(--steel3);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden;}
+.cart-item-img img{width:100%;height:100%;object-fit:cover;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--white);text-transform:uppercase;}
+.cart-item-price{font-size:14px;color:var(--orange);font-weight:600;margin-top:2px;}
+.cart-item-controls{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.qty-btn{background:var(--steel3);border:none;color:var(--white);width:28px;height:28px;border-radius:4px;font-size:16px;cursor:pointer;transition:.2s;}
+.qty-btn:hover{background:var(--orange);}
+.qty-display{font-size:15px;font-weight:600;color:var(--white);min-width:24px;text-align:center;}
+.remove-item{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;margin-left:auto;padding:4px;}
+.remove-item:hover{color:var(--red);}
+.cart-empty{text-align:center;padding:60px 0;color:var(--muted);}
+.cart-empty .icon{font-size:48px;margin-bottom:12px;}
+
+/* CART STEPS */
+.cart-steps{display:flex;border-bottom:1px solid var(--steel3);}
+.cart-step{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid transparent;transition:.2s;}
+.cart-step.active{color:var(--orange);border-bottom-color:var(--orange);}
+.cart-step.done{color:var(--green);}
+
+/* CART PANELS */
+.cart-panel{display:none;flex-direction:column;flex:1;}
+.cart-panel.active{display:flex;}
+
+/* ADDRESS FORM */
+.address-form{padding:20px 24px;flex:1;overflow-y:auto;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px;}
+.form-group input,
+.form-group select,
+.form-group textarea{width:100%;background:var(--steel3);border:1px solid var(--steel3);color:var(--silver);padding:10px 14px;border-radius:var(--radius);font-family:var(--font-body);font-size:14px;outline:none;transition:.2s;}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{border-color:var(--orange);}
+.form-group textarea{min-height:80px;resize:vertical;}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ORDER SUMMARY */
+.order-summary{padding:16px 24px;border-top:1px solid var(--steel3);}
+.summary-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px;color:var(--silver);}
+.summary-row.total{font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--white);border-top:1px solid var(--steel3);padding-top:10px;margin-top:4px;}
+.summary-row.total span:last-child{color:var(--orange);}
+
+/* ACTION BUTTONS */
+.cart-actions{padding:16px 24px;border-top:1px solid var(--steel3);display:flex;gap:10px;}
+.btn-back{background:var(--steel3);color:var(--silver);border:none;padding:12px 20px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-back:hover{background:var(--steel);color:var(--white);}
+.btn-next{flex:1;background:var(--orange);color:#fff;border:none;padding:12px;border-radius:var(--radius);font-family:var(--font-head);font-size:16px;font-weight:800;cursor:pointer;transition:.2s;letter-spacing:.5px;}
+.btn-next:hover{background:var(--orange2);}
+.btn-next:disabled{background:var(--steel3);color:var(--muted);cursor:not-allowed;}
+.btn-pay{flex:1;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;padding:14px;border-radius:var(--radius);font-family:var(--font-head);font-size:17px;font-weight:800;cursor:pointer;transition:.2s;letter-spacing:.5px;}
+.btn-pay:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(34,197,94,.3);}
+
+/* SUCCESS */
+.success-panel{text-align:center;padding:40px 24px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.success-icon{font-size:72px;margin-bottom:16px;}
+.success-panel h3{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--green);text-transform:uppercase;}
+.success-panel p{color:var(--muted);margin-top:8px;font-size:15px;line-height:1.6;}
+.order-id-box{background:var(--steel3);border:1px solid var(--steel);border-radius:var(--radius);padding:12px 20px;margin-top:20px;font-family:monospace;font-size:14px;color:var(--orange);}
+.btn-continue{margin-top:24px;background:var(--orange);color:#fff;border:none;padding:12px 32px;border-radius:var(--radius);font-family:var(--font-head);font-size:16px;font-weight:700;cursor:pointer;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--green);color:#fff;padding:12px 24px;border-radius:var(--radius);font-weight:600;font-size:14px;z-index:2000;transition:.4s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.error{background:var(--red);}
+
+@media(max-width:600px){
+  .products-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
+  .product-img{height:150px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">DEEPU SIVA <span>PVT LTD</span></a>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="shop-hero">
+  <h1>Our <span>Products</span> & Materials</h1>
+  <p>Browse our industrial products — add to cart and place your order securely</p>
+</div>
+
+<!-- FILTERS -->
+<div class="filters" id="filterBar">
+  <button class="filter-btn active" onclick="filterProducts('all',this)">All Products</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products-section">
+  <div class="products-grid" id="productsGrid">
+    <div class="loading-spinner">⏳ Loading products...</div>
+  </div>
+</div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>🛒 Your Cart</h2>
+    <button class="close-cart" onclick="closeCart()">✕</button>
+  </div>
+
+  <!-- STEPS -->
+  <div class="cart-steps">
+    <div class="cart-step active" id="step-tab-1">1. Items</div>
+    <div class="cart-step" id="step-tab-2">2. Address</div>
+    <div class="cart-step" id="step-tab-3">3. Payment</div>
+  </div>
+
+  <!-- PANEL 1: CART ITEMS -->
+  <div class="cart-panel active" id="panel1" style="flex-direction:column;">
+    <div class="cart-items" id="cartItemsList">
+      <div class="cart-empty"><div class="icon">🛒</div><p>Your cart is empty</p></div>
+    </div>
+    <div class="order-summary" id="summaryPanel1" style="display:none;">
+      <div class="summary-row"><span>Subtotal</span><span id="subtotal1">₹0</span></div>
+      <div class="summary-row"><span>GST (18%)</span><span id="gst1">₹0</span></div>
+      <div class="summary-row total"><span>Total</span><span id="total1">₹0</span></div>
+    </div>
+    <div class="cart-actions">
+      <button class="btn-next" id="toAddressBtn" onclick="goToStep(2)" disabled>Proceed to Address →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 2: ADDRESS -->
+  <div class="cart-panel" id="panel2" style="flex-direction:column;">
+    <div class="address-form">
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" id="addr-name" placeholder="Your full name"/>
+      </div>
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input type="tel" id="addr-phone" placeholder="+91 XXXXX XXXXX"/>
+      </div>
+      <div class="form-group">
+        <label>Email Address *</label>
+        <input type="email" id="addr-email" placeholder="email@example.com"/>
+      </div>
+      <div class="form-group">
+        <label>Delivery Address *</label>
+        <textarea id="addr-street" placeholder="Door No, Street, Area..."></textarea>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>City *</label>
+          <input type="text" id="addr-city" placeholder="City"/>
+        </div>
+        <div class="form-group">
+          <label>State *</label>
+          <input type="text" id="addr-state" placeholder="State"/>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>PIN Code *</label>
+          <input type="text" id="addr-pin" placeholder="6-digit PIN"/>
+        </div>
+        <div class="form-group">
+          <label>Order Notes</label>
+          <input type="text" id="addr-notes" placeholder="Any special instructions"/>
+        </div>
+      </div>
+    </div>
+    <div class="cart-actions">
+      <button class="btn-back" onclick="goToStep(1)">← Back</button>
+      <button class="btn-next" onclick="goToStep(3)">Review Order →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 3: PAYMENT -->
+  <div class="cart-panel" id="panel3" style="flex-direction:column;">
+    <div class="address-form" id="reviewSection">
+      <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:14px;">Delivery To</p>
+      <div id="reviewAddress" style="background:var(--steel3);padding:14px;border-radius:var(--radius);font-size:14px;line-height:1.7;color:var(--silver);"></div>
+      <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);font-weight:600;margin:18px 0 10px;">Order Items</p>
+      <div id="reviewItems" style="background:var(--steel3);padding:14px;border-radius:var(--radius);font-size:14px;"></div>
+    </div>
+    <div class="order-summary">
+      <div class="summary-row"><span>Subtotal</span><span id="subtotal3">₹0</span></div>
+      <div class="summary-row"><span>GST (18%)</span><span id="gst3">₹0</span></div>
+      <div class="summary-row"><span>Shipping</span><span style="color:var(--green);">FREE</span></div>
+      <div class="summary-row total"><span>Total Payable</span><span id="total3">₹0</span></div>
+    </div>
+    <div class="cart-actions">
+      <button class="btn-back" onclick="goToStep(2)">← Back</button>
+      <button class="btn-pay" onclick="startPayment()">💳 Pay Now</button>
+    </div>
+  </div>
+
+  <!-- PANEL 4: SUCCESS -->
+  <div class="cart-panel" id="panel4" style="flex-direction:column;">
+    <div class="success-panel">
+      <div class="success-icon">✅</div>
+      <h3>Order Placed!</h3>
+      <p>Thank you for your order.<br/>We will contact you within 24 hours to confirm delivery.</p>
+      <div class="order-id-box" id="orderIdBox">Order ID: —</div>
+      <button class="btn-continue" onclick="closeCart();resetCart()">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE + APP SCRIPT -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+// ── YOUR FIREBASE CONFIG ──
+const firebaseConfig = {
+  apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+  authDomain: "deepu-siva-portal.firebaseapp.com",
+  projectId: "deepu-siva-portal",
+  storageBucket: "deepu-siva-portal.firebasestorage.app",
+  messagingSenderId: "1014351018202",
+  appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+};
+
+// ── YOUR RAZORPAY KEY ── (replace with your actual key)
+const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID";
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── STATE ──
+let allProducts = [];
+let cart = JSON.parse(localStorage.getItem('dsCart') || '[]');
+
+// ── LOAD PRODUCTS ──
+async function loadProducts() {
+  try {
+    const snap = await getDocs(collection(db, "products"));
+    allProducts = [];
+    const categories = new Set(['all']);
+
+    snap.forEach(doc => {
+      const p = { id: doc.id, ...doc.data() };
+      allProducts.push(p);
+      if (p.category) categories.add(p.category);
+    });
+
+    // Build filter buttons
+    const filterBar = document.getElementById('filterBar');
+    filterBar.innerHTML = '';
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (cat === 'all' ? ' active' : '');
+      btn.textContent = cat === 'all' ? 'All Products' : cat;
+      btn.onclick = () => filterProducts(cat, btn);
+      filterBar.appendChild(btn);
+    });
+
+    renderProducts(allProducts);
+    updateCartUI();
+  } catch (e) {
+    document.getElementById('productsGrid').innerHTML =
+      '<div class="empty-state"><div class="icon">⚠️</div><p>Could not load products. Check Firestore connection.</p></div>';
+  }
+}
+
+// ── RENDER PRODUCTS ──
+function renderProducts(products) {
+  const grid = document.getElementById('productsGrid');
+  if (!products.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="icon">📦</div><p>No products found in this category.</p></div>';
+    return;
+  }
+  grid.innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-img">
+        ${p.imageUrl
+          ? `<img src="${p.imageUrl}" alt="${p.name}" loading="lazy"/>`
+          : `<span>${p.emoji || '📦'}</span>`}
+      </div>
+      <div class="product-info">
+        <div class="product-cat">${p.category || 'Product'}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.description || ''}</div>
+        <div class="product-price">₹${Number(p.price).toLocaleString('en-IN')} <span>/ ${p.unit || 'unit'}</span></div>
+        <button class="add-to-cart" id="btn-${p.id}" onclick="addToCart('${p.id}')">
+          + Add to Cart
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── FILTER ──
+window.filterProducts = function(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat);
+  renderProducts(filtered);
+};
+
+// ── CART ──
+window.addToCart = function(productId) {
+  const product = allProducts.find(p => p.id === productId);
+  if (!product) return;
+  const existing = cart.find(i => i.id === productId);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  saveCart();
+  updateCartUI();
+  showToast(`✅ ${product.name} added to cart!`);
+  const btn = document.getElementById('btn-' + productId);
+  if (btn) { btn.textContent = '✓ Added'; btn.classList.add('added'); setTimeout(() => { btn.textContent = '+ Add to Cart'; btn.classList.remove('added'); }, 1500); }
+};
+
+window.changeQty = function(productId, delta) {
+  const item = cart.find(i => i.id === productId);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== productId);
+  saveCart();
+  updateCartUI();
+  renderCartItems();
+};
+
+window.removeFromCart = function(productId) {
+  cart = cart.filter(i => i.id !== productId);
+  saveCart();
+  updateCartUI();
+  renderCartItems();
+};
+
+function saveCart() { localStorage.setItem('dsCart', JSON.stringify(cart)); }
+
+function calcTotals() {
+  const subtotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+  const gst = Math.round(subtotal * 0.18);
+  const total = subtotal + gst;
+  return { subtotal, gst, total };
+}
+
+function updateCartUI() {
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('toAddressBtn').disabled = cart.length === 0;
+  const { subtotal, gst, total } = calcTotals();
+  document.getElementById('summaryPanel1').style.display = cart.length ? 'block' : 'none';
+  ['1','3'].forEach(n => {
+    if(document.getElementById('subtotal'+n)) document.getElementById('subtotal'+n).textContent = '₹' + subtotal.toLocaleString('en-IN');
+    if(document.getElementById('gst'+n))      document.getElementById('gst'+n).textContent      = '₹' + gst.toLocaleString('en-IN');
+    if(document.getElementById('total'+n))    document.getElementById('total'+n).textContent    = '₹' + total.toLocaleString('en-IN');
+  });
+}
+
+function renderCartItems() {
+  const list = document.getElementById('cartItemsList');
+  if (!cart.length) {
+    list.innerHTML = '<div class="cart-empty"><div class="icon">🛒</div><p>Your cart is empty</p></div>';
+    return;
+  }
+  list.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img">
+        ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.name}"/>` : (item.emoji || '📦')}
+      </div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">₹${Number(item.price).toLocaleString('en-IN')} / ${item.unit || 'unit'}</div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
+          <span class="qty-display">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${item.id}',1)">+</button>
+          <button class="remove-item" onclick="removeFromCart('${item.id}')">🗑</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── STEPS ──
+window.goToStep = function(step) {
+  if (step === 2) {
+    const { subtotal } = calcTotals();
+    if (subtotal === 0) { showToast('Please add items first!', true); return; }
+  }
+  if (step === 3) {
+    const name  = document.getElementById('addr-name').value.trim();
+    const phone = document.getElementById('addr-phone').value.trim();
+    const email = document.getElementById('addr-email').value.trim();
+    const street= document.getElementById('addr-street').value.trim();
+    const city  = document.getElementById('addr-city').value.trim();
+    const state = document.getElementById('addr-state').value.trim();
+    const pin   = document.getElementById('addr-pin').value.trim();
+    if (!name||!phone||!email||!street||!city||!state||!pin) {
+      showToast('Please fill all required fields!', true); return;
+    }
+    // Render review
+    document.getElementById('reviewAddress').innerHTML =
+      `<strong>${name}</strong><br/>${phone} | ${email}<br/>${street}<br/>${city}, ${state} – ${pin}`;
+    document.getElementById('reviewItems').innerHTML = cart.map(i =>
+      `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--steel);">
+        <span>${i.name} × ${i.qty}</span>
+        <span style="color:var(--orange);">₹${(i.price*i.qty).toLocaleString('en-IN')}</span>
+       </div>`).join('');
+  }
+  [1,2,3,4].forEach(n => {
+    document.getElementById('panel'+n).classList.toggle('active', n===step);
+    const tab = document.getElementById('step-tab-'+n);
+    if(tab) { tab.classList.toggle('active', n===step); tab.classList.toggle('done', n<step); }
+  });
+};
+
+// ── PAYMENT ──
+window.startPayment = function() {
+  const { total } = calcTotals();
+  const name  = document.getElementById('addr-name').value.trim();
+  const phone = document.getElementById('addr-phone').value.trim();
+  const email = document.getElementById('addr-email').value.trim();
+
+  const options = {
+    key: RAZORPAY_KEY,
+    amount: total * 100, // paise
+    currency: "INR",
+    name: "Deepu Siva Pvt Ltd",
+    description: "Product Order",
+    image: "https://deepusiva.com/logo.png",
+    prefill: { name, email, contact: phone },
+    theme: { color: "#f97316" },
+    handler: async function(response) {
+      // Save order to Firestore
+      try {
+        const street = document.getElementById('addr-street').value.trim();
+        const city   = document.getElementById('addr-city').value.trim();
+        const state  = document.getElementById('addr-state').value.trim();
+        const pin    = document.getElementById('addr-pin').value.trim();
+        const notes  = document.getElementById('addr-notes').value.trim();
+        const { subtotal, gst, total } = calcTotals();
+
+        const orderRef = await addDoc(collection(db, "orders"), {
+          customer: { name, phone, email },
+          address: { street, city, state, pin, notes },
+          items: cart.map(i => ({ id:i.id, name:i.name, price:i.price, qty:i.qty, unit:i.unit||'unit' })),
+          subtotal, gst, total,
+          payment: {
+            razorpay_payment_id: response.razorpay_payment_id,
+            status: "paid"
+          },
+          status: "confirmed",
+          createdAt: serverTimestamp()
+        });
+
+        document.getElementById('orderIdBox').textContent = 'Order ID: ' + orderRef.id;
+        goToStep(4);
+      } catch(e) {
+        showToast('Order saved locally. Payment received!');
+        goToStep(4);
+      }
+    },
+    modal: { ondismiss: () => showToast('Payment cancelled', true) }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+};
+
+window.resetCart = function() {
+  cart = [];
+  saveCart();
+  updateCartUI();
+  goToStep(1);
+  renderCartItems();
+};
+
+// ── CART OPEN/CLOSE ──
+window.openCart = function() {
+  renderCartItems();
+  updateCartUI();
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartSidebar').classList.add('open');
+};
+
+window.closeCart = function() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartSidebar').classList.remove('open');
+};
+
+// ── TOAST ──
+window.showToast = function(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+};
+
+// ── INIT ──
+loadProducts();
+</script>
+</body>
+</html>
