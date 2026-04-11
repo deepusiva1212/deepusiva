@@ -540,6 +540,25 @@ window.startPayment = function() {
           status: "confirmed",
           createdAt: serverTimestamp()
         });
+        // 🚀 THE EMAIL TRIGGER
+        const emailParams = {
+            order_id: orderRef.id,         // Fetches the new ID from the database
+            email: email,                  // Customer's email
+            name: name,                    // Customer's name
+            price: total,                  // Total amount paid
+            units: cart.map(i => `${i.name} (x${i.qty})`).join(', '),
+            "cost.shipping": "FREE",
+            "cost.tax": gst.toLocaleString('en-IN'),
+            "cost.total": total.toLocaleString('en-IN')
+        };
+
+        // This sends the receipt to you and the customer
+        emailjs.send("service_w18col9", "YOUR_TEMPLATE_ID", emailParams)
+            .then(() => {
+                console.log("✅ Order confirmation email successfully sent!");
+            }, (error) => {
+                console.warn("❌ Email failed, but the order is safe in the database:", error);
+            });
 
         document.getElementById('orderIdBox').textContent = 'Order ID: ' + orderRef.id;
         goToStep(4);
