@@ -78,31 +78,40 @@
 
     // 🔐 SMART SECURITY CHECK & VAULT DOOR
 onAuthStateChanged(auth, async (user) => {
+    // 1. Safety: Unhide the page structure immediately so it's not a white screen
+    document.body.style.display = "block";
+
     if (user) {
-        // 1. Fetch your role from the Firestore 'users' collection
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.exists() ? userSnap.data() : {};
+        try {
+            // 2. Fetch your role from Firestore
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.exists() ? userSnap.data() : {};
 
-        // 2. Check: Is the email in the Master List OR is the role 'admin'?
-        const isMasterEmail = adminEmails.map(e => e.toLowerCase()).includes(user.email.toLowerCase());
-        const isAdminRole = (userData.role === 'admin');
+            // 3. Robust Email Check (Prevents crash if email is null)
+            const userEmail = (user.email || "").toLowerCase();
+            const isMasterEmail = adminEmails.map(e => e.toLowerCase()).includes(userEmail);
+            const isAdminRole = (userData.role === 'admin');
 
-        if (isMasterEmail || isAdminRole) {
-            console.log("✅ Access Granted to Director");
-            document.body.style.display = "block";
-            document.getElementById('vaultDoor').style.display = "flex";
-            
-            // Once authorized, load your management tools
-            loadPendingUsers();
-            loadClientDropdown();
-        } else {
-            console.warn("❌ Unauthorized Email:", user.email);
-            alert("SECURITY ALERT: Access Denied.");
-            window.location.href = "index.html";
+            if (isMasterEmail || isAdminRole) {
+                console.log("✅ Access Granted: Welcome, Director.");
+                // Show the admin tools
+                const vault = document.getElementById('vaultDoor');
+                if (vault) vault.style.display = "flex";
+                
+                loadPendingUsers();
+                loadClientDropdown();
+            } else {
+                console.warn("❌ Unauthorized access attempt:", userEmail);
+                alert("SECURITY ALERT: Access Denied.");
+                window.location.href = "index.html";
+            }
+        } catch (error) {
+            console.error("Database Error:", error);
+            // If the database fails, we still let you see the screen to debug
         }
     } else {
-        // Not logged in at all? Back to login page.
+        // Not logged in? Back to the login gate.
         window.location.href = "login.html";
     }
 });
