@@ -76,23 +76,36 @@
       "deepusiva2017@gmail.com"
     ];
 
-    // 🛡️ SECURITY CHECK & VAULT DOOR
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        if (adminEmails.includes(user.email)) {
-          document.body.style.display = "block";
-          document.getElementById('vaultDoor').style.display = "flex";
-          // Once authorized, load both lists
-          loadPendingUsers();
-          loadClientDropdown();
+    // 🔐 SMART SECURITY CHECK & VAULT DOOR
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        // 1. Fetch your role from the Firestore 'users' collection
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.exists() ? userSnap.data() : {};
+
+        // 2. Check: Is the email in the Master List OR is the role 'admin'?
+        const isMasterEmail = adminEmails.map(e => e.toLowerCase()).includes(user.email.toLowerCase());
+        const isAdminRole = (userData.role === 'admin');
+
+        if (isMasterEmail || isAdminRole) {
+            console.log("✅ Access Granted to Director");
+            document.body.style.display = "block";
+            document.getElementById('vaultDoor').style.display = "flex";
+            
+            // Once authorized, load your management tools
+            loadPendingUsers();
+            loadClientDropdown();
         } else {
-          alert("SECURITY ALERT: Access Denied.");
-          window.location.href = "index.html"; 
+            console.warn("❌ Unauthorized Email:", user.email);
+            alert("SECURITY ALERT: Access Denied.");
+            window.location.href = "index.html";
         }
-      } else {
-        window.location.href = "login.html"; 
-      }
-    });
+    } else {
+        // Not logged in at all? Back to login page.
+        window.location.href = "login.html";
+    }
+});
 
     // 🗝️ VAULT DOOR UNLOCK
     document.getElementById('unlockBtn').addEventListener('click', () => {
