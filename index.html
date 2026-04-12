@@ -1536,5 +1536,143 @@ We bring the same dedication that built D S Electricals into every project we un
   }
 </script>
   <script src="theme.js"></script>
+  <style>
+  /* The Floating Button */
+  #chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #238636;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 1000;
+  }
+
+  /* The Hidden Chat Window */
+  #chat-window {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 320px;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.8);
+    z-index: 1000;
+    overflow: hidden;
+    font-family: sans-serif;
+  }
+
+  /* Chat Header */
+  #chat-header {
+    background-color: #238636;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #chat-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  /* Message Display Area */
+  #chat-messages {
+    height: 300px;
+    padding: 15px;
+    overflow-y: auto;
+    color: white;
+    background-color: #161b22;
+  }
+
+  .bot-msg {
+    background-color: #30363d;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  /* Typing Area */
+  #chat-input-area {
+    display: flex;
+    padding: 10px;
+    background-color: #0d1117;
+    border-top: 1px solid #30363d;
+  }
+
+  #chat-input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #161b22;
+    color: white;
+  }
+
+  #chat-send {
+    background-color: #238636;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+</style>
+
+<button id="chat-bubble" onclick="toggleChat()">💬</button>
+
+<div id="chat-window">
+  <div id="chat-header">
+    Deepu Siva Support
+    <button id="chat-close" onclick="toggleChat()">✖</button>
+  </div>
+  <div id="chat-messages">
+    <div class="bot-msg">Welcome to Deepu Siva Private Limited! How can we help you with your fabrication or solar needs today?</div>
+  </div>
+  <div id="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Type a message...">
+    <button id="chat-send" onclick="sendTestMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  function toggleChat() {
+    const chatWindow = document.getElementById('chat-window');
+    if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+      chatWindow.style.display = 'block';
+    } else {
+      chatWindow.style.display = 'none';
+    }
+  }
+
+  function sendTestMessage() {
+    const input = document.getElementById('chat-input');
+    const messages = document.getElementById('chat-messages');
+    
+    if(input.value.trim() !== "") {
+      // This temporarily shows the user's message in the window
+      messages.innerHTML += `<div class="bot-msg" style="background-color:#1f6feb; text-align:right; margin-left:40px;">${input.value}</div>`;
+      input.value = "";
+      messages.scrollTop = messages.scrollHeight; // Auto-scroll to bottom
+    }
+  }
+</script>
 </body>
 </html>
