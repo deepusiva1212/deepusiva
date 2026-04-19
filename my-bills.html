@@ -1,129 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Invoices | Deepu Siva</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Barlow', sans-serif; background: #0d1117; color: #c9d1d9; padding: 20px; }
-        .container { max-width: 600px; margin: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f97316; padding-bottom: 10px; margin-bottom: 20px; }
-        h1 { color: #f0f6fc; margin: 0; font-size: 24px; }
-        .back-link { color: #f97316; text-decoration: none; font-weight: bold; }
-        
-        .bill-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .bill-info { flex-grow: 1; }
-        .bill-date { font-size: 11px; color: #8b949e; text-transform: uppercase; }
-        .bill-title { color: #fff; font-size: 18px; font-weight: bold; display: block; margin: 5px 0; }
-        .bill-amount { font-size: 16px; color: #4ade80; font-weight: bold; }
-        
-        .status-badge { background: #238636; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .empty-msg { text-align: center; margin-top: 50px; color: #8b949e; }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Bills | Deepu Siva Portal</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+#auth-overlay{position:fixed;inset:0;background:var(--white);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.spinner{width:44px;height:44px;border:3px solid var(--green-light);border-top-color:var(--green);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#auth-overlay p{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.portal-header{background:var(--white);border-bottom:3px solid var(--green);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(22,163,74,.08);}
+.portal-header h1{font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--green3);text-transform:uppercase;margin:0;}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-size:14px;font-weight:600;text-decoration:none;}
+.page-body{max-width:700px;margin:0 auto;padding:28px 24px 100px;}
+.bill-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:16px;transition:.2s;}
+.bill-card:hover{border-color:var(--green);box-shadow:0 4px 16px rgba(22,163,74,.1);}
+.bill-date{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+.bill-title{font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;display:block;margin:6px 0 8px;}
+.bill-detail{font-size:14px;color:var(--muted);line-height:1.6;}
+.bill-amount{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--green);margin-top:10px;display:block;}
+.download-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green-light);color:var(--green3);border:1px solid rgba(22,163,74,.2);padding:9px 18px;border-radius:var(--radius);font-size:13px;font-weight:700;text-decoration:none;margin-top:12px;transition:.2s;}
+.download-btn:hover{background:var(--green);color:#fff;}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-state svg{opacity:.3;margin-bottom:12px;}
+.empty-state p{font-size:15px;}
+.section-tag-sm{display:inline-block;background:var(--green-light);color:var(--green3);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:20px;}
+</style>
 </head>
 <body>
-<div id="auth-check-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0d1117; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; font-family:'Barlow', sans-serif;">
-        <div style="border: 4px solid #f97316; border-top: 4px solid transparent; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
-        <p style="margin-top: 20px; letter-spacing: 2px;">VERIFYING ACCESS...</p>
-    </div>
 
-    <style>
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-    <div class="container">
-        <div class="header">
-            <h1>MY INVOICES</h1>
-            <a href="dashboard.html" class="back-link">← BACK</a>
-        </div>
+<div id="auth-overlay">
+  <div class="spinner"></div>
+  <p>Verifying session…</p>
+</div>
 
-        <div id="billList">
-            </div>
+<header class="portal-header">
+  <h1>My Bills & Invoices</h1>
+  <a href="dashboard.html" class="back-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Dashboard
+  </a>
+</header>
 
-        <div id="noBills" class="empty-msg" style="display:none;">
-            <p>No invoices found in your record.</p>
-        </div>
-    </div>
+<div class="page-body">
+  <span class="section-tag-sm">Your Documents</span>
+  <div id="billList"></div>
+  <div id="noBills" class="empty-state" style="display:none;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <p>No invoices or bills found yet.<br/>Your project manager will upload them here.</p>
+  </div>
+</div>
+
+<nav class="app-bottom-nav">
+  <a href="index.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span>Home</span></a>
+  <a href="my-bills.html" class="nav-tab active"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span>Bills</span></a>
+  <a href="dashboard.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span><span>Dashboard</span></a>
+  <a href="updates.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></span><span>Updates</span></a>
+</nav>
 
 <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { db, requireAuth } from './ds-firebase.js';
+import { collection, query, orderBy, onSnapshot }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-    apiKey: "AIzaSyCm0UFXGcDiXk8dmGZ8coKOnnVmaJl6mB0", 
-    authDomain: "deepu-siva-portal.firebaseapp.com",
-    projectId: "deepu-siva-portal",
-    storageBucket: "deepu-siva-portal.firebasestorage.app",
-    messagingSenderId: "1014351018202",
-    appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
-};
+requireAuth((user) => {
+  const list = document.getElementById('billList');
+  const empty = document.getElementById('noBills');
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  const q = query(
+    collection(db, 'users', user.uid, 'invoices'),
+    orderBy('timestamp', 'desc')
+  );
 
-  // 🕵️‍♂️ 1. THE SECURITY WATCHER
-   // 🕵️‍♂️ THE VERIFIER
-    let authTimer; // ⏱️ This timer waits for the "ID Card" to load
-
-    onAuthStateChanged(auth, (user) => {
-        const overlay = document.getElementById('auth-check-overlay');
-        
-        if (user) {
-            console.log("✅ Verified User:", user.email);
-            clearTimeout(authTimer); // 🛑 STOP the logout order immediately
-            if(overlay) overlay.style.display = 'none';
-            loadMyBills(user.uid);
-        } else {
-            // Start the countdown, but give it 4 seconds
-            authTimer = setTimeout(() => {
-                if (!auth.currentUser) {
-                    console.log("❌ No session found, redirecting to login...");
-                    window.location.href = "login.html";
-                }
-            }, 4000); 
-        }
-    });
-    // 📋 2. LOAD BILLS FROM THE PRIVATE FOLDER
-    function loadMyBills(userId) {
-        const billContainer = document.getElementById('billList'); // Ensure you have a div with this ID
-        
-        // This looks in users > {YourID} > invoices (Exactly where the Director pushes)
-        const q = query(
-            collection(db, "users", userId, "invoices"), 
-            orderBy("timestamp", "desc")
-        );
-
-        onSnapshot(q, (snapshot) => {
-            if (snapshot.empty) {
-                billContainer.innerHTML = "<p style='text-align:center;'>No bills or invoices found yet.</p>";
-                return;
-            }
-
-            let html = "";
-            snapshot.forEach((doc) => {
-                const bill = doc.data();
-                const date = bill.timestamp ? bill.timestamp.toDate().toLocaleDateString() : "Pending";
-                
-                // 🎨 This draws the bill card
-                html += `
-                    <div style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
-                        <h3 style="color: #f97316; margin-top: 0;">${bill.title}</h3>
-                        <p style="color: #8b949e; font-size: 14px;">Date: ${date}</p>
-                        <p style="color: white;">${bill.detail}</p>
-                        
-                        ${bill.billUrl ? 
-                            `<a href="${bill.billUrl}" target="_blank" style="display:inline-block; margin-top:10px; color:#4ade80; text-decoration:none; font-weight:bold;">📥 Download PDF Bill</a>` : 
-                            `<span style="color:#8b949e; font-size:12px;">(No PDF Attached)</span>`
-                        }
-                    </div>
-                `;
-            });
-            billContainer.innerHTML = html;
-        });
+  onSnapshot(q, (snap) => {
+    if (snap.empty) {
+      empty.style.display = 'block';
+      list.innerHTML = '';
+      return;
     }
-    </script>
+    empty.style.display = 'none';
+    list.innerHTML = snap.docs.map(d => {
+      const b = d.data();
+      const date = b.timestamp ? b.timestamp.toDate().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : 'Pending';
+      return `
+        <div class="bill-card">
+          <div class="bill-date">${date}</div>
+          <span class="bill-title">${b.title || 'Invoice'}</span>
+          <div class="bill-detail">${b.detail || ''}</div>
+          ${b.amount ? `<span class="bill-amount">₹${Number(b.amount).toLocaleString('en-IN')}</span>` : ''}
+          ${b.billUrl
+            ? `<a href="${b.billUrl}" target="_blank" class="download-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download PDF
+               </a>`
+            : `<span style="font-size:12px;color:var(--muted);margin-top:8px;display:block;">No PDF attached yet</span>`
+          }
+        </div>`;
+    }).join('');
+  }, (err) => {
+    list.innerHTML = '<p style="color:var(--red);padding:20px;">Error loading bills. Please refresh.</p>';
+  });
+});
+</script>
 </body>
-    
 </html>
