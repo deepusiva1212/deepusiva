@@ -95,6 +95,35 @@ tbody tr:hover td{background:var(--green-pale);}
 .a-toast{position:fixed;bottom:24px;right:24px;background:var(--green3);color:#fff;padding:13px 24px;border-radius:var(--radius);font-weight:600;font-size:14px;z-index:9999;opacity:0;transform:translateY(20px);transition:.35s;box-shadow:0 4px 16px rgba(0,0,0,.15);}
 .a-toast.show{opacity:1;transform:translateY(0);}
 .a-toast.err{background:var(--red);}
+/* ── CMS ── */
+.cms-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px;overflow-x:auto;}
+.cms-tab{padding:11px 20px;font-family:var(--font-head);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap;}
+.cms-tab.active{color:var(--green);border-bottom-color:var(--green);}
+.cms-sub{display:none;}.cms-sub.active{display:block;}
+.proj-list-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;gap:16px;align-items:flex-start;margin-bottom:12px;}
+.proj-list-thumb{width:72px;height:60px;border-radius:6px;background:var(--green-pale);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--green3);font-size:24px;overflow:hidden;}
+.proj-list-thumb img{width:100%;height:100%;object-fit:cover;}
+.proj-list-body{flex:1;}
+.proj-list-body h4{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--text);text-transform:uppercase;}
+.proj-list-body p{font-size:13px;color:var(--muted);margin-top:3px;}
+.proj-list-actions{display:flex;gap:8px;margin-top:8px;}
+.rte-toolbar{display:flex;gap:4px;flex-wrap:wrap;padding:10px;background:var(--bg3);border:1px solid var(--border);border-bottom:none;border-radius:var(--radius) var(--radius) 0 0;}
+.rte-btn{background:var(--white);border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;}
+.rte-btn:hover{background:var(--green-pale);border-color:var(--green);color:var(--green3);}
+.rte-editor{min-height:240px;padding:16px;border:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius);background:var(--white);color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.8;outline:none;}
+.rte-editor:focus{border-color:var(--green);}
+.social-input-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.social-icon-box{width:40px;height:40px;border-radius:var(--radius);background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-backdrop.open{display:flex;}
+.modal-box{background:var(--white);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;}
+.modal-box h3{font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--green3);text-transform:uppercase;margin-bottom:20px;}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--bg3);border:none;color:var(--muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:var(--red);color:#fff;}
+.img-preview{width:100%;height:160px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border);margin-top:8px;display:none;}
+.cms-log{padding:10px 14px;border-radius:var(--radius);font-size:13px;font-weight:600;margin-top:12px;display:none;}
+.cms-log.ok{background:var(--green-pale);color:var(--green3);border:1px solid rgba(22,163,74,.25);display:block;}
+.cms-log.err{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;display:block;}
 
 @media(max-width:900px){.admin-sidebar{display:none;}.admin-main{margin-left:0;}.stats-row{grid-template-columns:1fr 1fr;}.form-2col,.form-3col{grid-template-columns:1fr;}}
 </style>
@@ -126,6 +155,10 @@ tbody tr:hover td{background:var(--green-pale);}
     <button class="nav-item" onclick="showPage('clients',this)">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       All Clients
+    </button>
+    <button class="nav-item" onclick="showPage('cms',this)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      Website CMS
     </button>
   </nav>
   <div class="sidebar-bottom">
@@ -283,8 +316,210 @@ tbody tr:hover td{background:var(--green-pale);}
       </div>
     </div>
 
+    <!-- ── PAGE: WEBSITE CMS ── -->
+    <div class="admin-page" id="page-cms">
+
+      <!-- CMS Sub-tabs -->
+      <div class="cms-tabs">
+        <button class="cms-tab active" onclick="showCmsTab('portfolio',this)">Portfolio</button>
+        <button class="cms-tab" onclick="showCmsTab('policies',this)">Policies</button>
+        <button class="cms-tab" onclick="showCmsTab('video',this)">Video Widget</button>
+        <button class="cms-tab" onclick="showCmsTab('social',this)">Social Links</button>
+      </div>
+
+      <!-- PORTFOLIO -->
+      <div class="cms-sub active" id="cms-portfolio">
+        <div class="sec-header">
+          <span class="sec-title">Our Projects</span>
+          <button class="btn btn-green btn-sm" onclick="openProjectModal()">+ Add Project</button>
+        </div>
+        <div id="portfolioList"><p style="color:var(--muted);">Loading projects…</p></div>
+      </div>
+
+      <!-- POLICIES -->
+      <div class="cms-sub" id="cms-policies">
+        <div class="sec-header" style="margin-bottom:16px;">
+          <span class="sec-title">Legal Policies</span>
+          <span style="font-size:13px;color:var(--muted);">Changes save to Firestore & appear on your website immediately.</span>
+        </div>
+
+        <!-- Policy tabs -->
+        <div style="display:flex;gap:8px;margin-bottom:20px;">
+          <button class="filter-chip active" onclick="showPolicyTab('privacy',this)" id="ptab-privacy">Privacy Policy</button>
+          <button class="filter-chip" onclick="showPolicyTab('terms',this)" id="ptab-terms">Terms & Conditions</button>
+          <button class="filter-chip" onclick="showPolicyTab('refund',this)" id="ptab-refund">Refund & Shipping</button>
+        </div>
+
+        <div id="policy-privacy" class="policy-editor-block">
+          <div class="rte-toolbar" id="rte-toolbar-privacy">
+            <button class="rte-btn" title="Bold" onclick="rteCmd('privacy','bold')"><b>B</b></button>
+            <button class="rte-btn" title="Italic" onclick="rteCmd('privacy','italic')"><i>I</i></button>
+            <button class="rte-btn" title="H2 Heading" onclick="rteCmd('privacy','formatBlock','h2')">H2</button>
+            <button class="rte-btn" title="H3 Heading" onclick="rteCmd('privacy','formatBlock','h3')">H3</button>
+            <button class="rte-btn" title="Paragraph" onclick="rteCmd('privacy','formatBlock','p')">¶</button>
+            <button class="rte-btn" title="Bullet List" onclick="rteCmd('privacy','insertUnorderedList')">≡</button>
+            <button class="rte-btn" title="Numbered List" onclick="rteCmd('privacy','insertOrderedList')">1.</button>
+            <button class="rte-btn" title="Horizontal Rule" onclick="rteCmd('privacy','insertHorizontalRule')">—</button>
+          </div>
+          <div class="rte-editor" id="rte-privacy" contenteditable="true" spellcheck="false">Loading…</div>
+          <button class="btn btn-green" style="margin-top:12px;" onclick="savePolicy('privacy')">Save Privacy Policy</button>
+          <div class="cms-log" id="log-privacy"></div>
+        </div>
+
+        <div id="policy-terms" class="policy-editor-block" style="display:none;">
+          <div class="rte-toolbar">
+            <button class="rte-btn" onclick="rteCmd('terms','bold')"><b>B</b></button>
+            <button class="rte-btn" onclick="rteCmd('terms','italic')"><i>I</i></button>
+            <button class="rte-btn" onclick="rteCmd('terms','formatBlock','h2')">H2</button>
+            <button class="rte-btn" onclick="rteCmd('terms','formatBlock','h3')">H3</button>
+            <button class="rte-btn" onclick="rteCmd('terms','formatBlock','p')">¶</button>
+            <button class="rte-btn" onclick="rteCmd('terms','insertUnorderedList')">≡</button>
+            <button class="rte-btn" onclick="rteCmd('terms','insertOrderedList')">1.</button>
+            <button class="rte-btn" onclick="rteCmd('terms','insertHorizontalRule')">—</button>
+          </div>
+          <div class="rte-editor" id="rte-terms" contenteditable="true" spellcheck="false">Loading…</div>
+          <button class="btn btn-green" style="margin-top:12px;" onclick="savePolicy('terms')">Save Terms & Conditions</button>
+          <div class="cms-log" id="log-terms"></div>
+        </div>
+
+        <div id="policy-refund" class="policy-editor-block" style="display:none;">
+          <div class="rte-toolbar">
+            <button class="rte-btn" onclick="rteCmd('refund','bold')"><b>B</b></button>
+            <button class="rte-btn" onclick="rteCmd('refund','italic')"><i>I</i></button>
+            <button class="rte-btn" onclick="rteCmd('refund','formatBlock','h2')">H2</button>
+            <button class="rte-btn" onclick="rteCmd('refund','formatBlock','h3')">H3</button>
+            <button class="rte-btn" onclick="rteCmd('refund','formatBlock','p')">¶</button>
+            <button class="rte-btn" onclick="rteCmd('refund','insertUnorderedList')">≡</button>
+            <button class="rte-btn" onclick="rteCmd('refund','insertOrderedList')">1.</button>
+            <button class="rte-btn" onclick="rteCmd('refund','insertHorizontalRule')">—</button>
+          </div>
+          <div class="rte-editor" id="rte-refund" contenteditable="true" spellcheck="false">Loading…</div>
+          <button class="btn btn-green" style="margin-top:12px;" onclick="savePolicy('refund')">Save Refund Policy</button>
+          <div class="cms-log" id="log-refund"></div>
+        </div>
+      </div>
+
+      <!-- VIDEO WIDGET -->
+      <div class="cms-sub" id="cms-video">
+        <div class="panel">
+          <h3>Floating Video Widget</h3>
+          <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Paste a YouTube or Instagram Reel URL. If filled, a floating video widget appears on your public website bottom-right. Clear it to remove the widget.</p>
+          <div class="form-group">
+            <label class="form-label">YouTube / Instagram URL</label>
+            <input class="form-control" type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=... or https://www.instagram.com/reel/..."/>
+          </div>
+          <div id="videoPreviewBox" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:12px;">
+            <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">PREVIEW</p>
+            <iframe id="videoPreviewFrame" src="" width="100%" height="180" frameborder="0" allowfullscreen style="border-radius:6px;"></iframe>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button class="btn btn-green" onclick="saveVideoUrl()">Save & Publish Widget</button>
+            <button class="btn btn-outline-green" onclick="clearVideoUrl()">Remove Widget</button>
+          </div>
+          <div class="cms-log" id="log-video"></div>
+        </div>
+      </div>
+
+      <!-- SOCIAL LINKS -->
+      <div class="cms-sub" id="cms-social">
+        <div class="panel">
+          <h3>Social Media Links</h3>
+          <p style="font-size:14px;color:var(--muted);margin-bottom:24px;">These URLs appear in your website footer. Save to update them instantly — no code changes needed.</p>
+
+          <div class="social-input-row">
+            <div class="social-icon-box">📸</div>
+            <div style="flex:1;">
+              <label class="form-label">Instagram</label>
+              <input class="form-control" type="url" id="social-instagram" placeholder="https://www.instagram.com/yourhandle"/>
+            </div>
+          </div>
+          <div class="social-input-row">
+            <div class="social-icon-box">👍</div>
+            <div style="flex:1;">
+              <label class="form-label">Facebook</label>
+              <input class="form-control" type="url" id="social-facebook" placeholder="https://www.facebook.com/yourpage"/>
+            </div>
+          </div>
+          <div class="social-input-row">
+            <div class="social-icon-box">▶️</div>
+            <div style="flex:1;">
+              <label class="form-label">YouTube</label>
+              <input class="form-control" type="url" id="social-youtube" placeholder="https://www.youtube.com/@yourchannel"/>
+            </div>
+          </div>
+          <div class="social-input-row">
+            <div class="social-icon-box">💼</div>
+            <div style="flex:1;">
+              <label class="form-label">LinkedIn</label>
+              <input class="form-control" type="url" id="social-linkedin" placeholder="https://www.linkedin.com/company/yourcompany"/>
+            </div>
+          </div>
+          <div class="social-input-row">
+            <div class="social-icon-box">✕</div>
+            <div style="flex:1;">
+              <label class="form-label">X / Twitter</label>
+              <input class="form-control" type="url" id="social-twitter" placeholder="https://x.com/yourhandle"/>
+            </div>
+          </div>
+          <div class="social-input-row">
+            <div class="social-icon-box">💬</div>
+            <div style="flex:1;">
+              <label class="form-label">WhatsApp Link</label>
+              <input class="form-control" type="url" id="social-whatsapp" placeholder="https://wa.me/918489090666"/>
+            </div>
+          </div>
+
+          <button class="btn btn-green" style="margin-top:8px;" onclick="saveSocialLinks()">Save All Social Links</button>
+          <div class="cms-log" id="log-social"></div>
+        </div>
+      </div>
+
+    </div><!-- /page-cms -->
+
   </div><!-- /admin-content -->
 </div><!-- /admin-main -->
+
+<!-- ══ PROJECT ADD/EDIT MODAL ══ -->
+<div class="modal-backdrop" id="projectModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeProjectModal()">✕</button>
+    <h3 id="modalTitle">Add Project</h3>
+    <input type="hidden" id="editProjectId"/>
+
+    <div class="form-group">
+      <label class="form-label">Project Title *</label>
+      <input class="form-control" type="text" id="proj-title" placeholder="e.g. Industrial Platform & Staircase"/>
+    </div>
+    <div class="form-2col">
+      <div class="form-group">
+        <label class="form-label">Category *</label>
+        <input class="form-control" type="text" id="proj-cat" placeholder="e.g. Metal Fabrication"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Display Order</label>
+        <input class="form-control" type="number" id="proj-order" placeholder="1" value="1"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Short Description (shown on home page)</label>
+      <textarea class="form-control" id="proj-short" rows="2" placeholder="Brief description for the project card…"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Full Description (shown on project detail page)</label>
+      <textarea class="form-control" id="proj-full" rows="4" placeholder="Detailed project description, scope, materials used…"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Project Image</label>
+      <input class="form-control" type="file" id="proj-image" accept="image/*" style="padding:10px;cursor:pointer;" onchange="previewProjImage(event)"/>
+      <img id="proj-img-preview" class="img-preview" src="" alt="Preview"/>
+      <p style="font-size:12px;color:var(--muted);margin-top:6px;">Or paste a direct image URL instead:</p>
+      <input class="form-control" type="url" id="proj-imageUrl" placeholder="https://..." style="margin-top:6px;"/>
+    </div>
+
+    <button class="btn btn-green btn-full" style="margin-top:4px;" id="saveProjectBtn" onclick="saveProject()">Save Project</button>
+    <div class="cms-log" id="log-project"></div>
+  </div>
+</div>
 
 <div class="a-toast" id="aToast"></div>
 
@@ -293,7 +528,7 @@ import { auth, db, storage, requireAdmin } from './ds-firebase.js';
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import {
   collection, getDocs, getDoc, updateDoc, deleteDoc,
-  addDoc, doc, query, where, orderBy, serverTimestamp, onSnapshot
+  addDoc, doc, query, where, orderBy, serverTimestamp, onSnapshot, setDoc
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
@@ -310,7 +545,7 @@ window.showPage = function(pageId, btn) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + pageId).classList.add('active');
   if (btn) btn.classList.add('active');
-  const titles = { overview:'Overview', approvals:'Client Approvals', upload:'Upload to Client', clients:'All Clients' };
+  const titles = { overview:'Overview', approvals:'Client Approvals', upload:'Upload to Client', clients:'All Clients', cms:'Website CMS' };
   document.getElementById('pageTitle').textContent = titles[pageId] || pageId;
 };
 
@@ -539,6 +774,307 @@ function toast(msg, isErr = false) {
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 window.toast = toast;
+
+// ══════════════════════════════════════
+//  MODULE A — CMS FUNCTIONS
+// ══════════════════════════════════════
+
+// ── CMS SUB-TAB SWITCHER ──
+window.showCmsTab = function(tab, btn) {
+  document.querySelectorAll('.cms-sub').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.cms-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('cms-' + tab).classList.add('active');
+  btn.classList.add('active');
+  if (tab === 'portfolio') loadPortfolio();
+  if (tab === 'policies')  loadPolicies();
+  if (tab === 'video')     loadVideoUrl();
+  if (tab === 'social')    loadSocialLinks();
+};
+
+// ── POLICY TAB SWITCHER ──
+window.showPolicyTab = function(tab, btn) {
+  document.querySelectorAll('.policy-editor-block').forEach(b => b.style.display = 'none');
+  document.querySelectorAll('[id^="ptab-"]').forEach(b => b.classList.remove('active'));
+  document.getElementById('policy-' + tab).style.display = 'block';
+  btn.classList.add('active');
+};
+
+// ── RICH TEXT EDITOR COMMAND ──
+window.rteCmd = function(editorId, cmd, value) {
+  document.getElementById('rte-' + editorId).focus();
+  document.execCommand(cmd, false, value || null);
+};
+
+// ─────────────────────────────────────
+//  PORTFOLIO MANAGEMENT
+// ─────────────────────────────────────
+let editingProjectId = null;
+
+async function loadPortfolio() {
+  const container = document.getElementById('portfolioList');
+  container.innerHTML = '<p style="color:var(--muted);">Loading…</p>';
+  try {
+    const snap = await getDocs(query(collection(db,'portfolio'), orderBy('order','asc')));
+    if (snap.empty) {
+      container.innerHTML = '<div class="no-data"><p>No projects yet. Add your first one!</p></div>';
+      return;
+    }
+    container.innerHTML = snap.docs.map(d => {
+      const p = d.data();
+      return `
+        <div class="proj-list-item" id="pitem-${d.id}">
+          <div class="proj-list-thumb">
+            ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.title}"/>` : '🏗️'}
+          </div>
+          <div class="proj-list-body">
+            <h4>${p.title}</h4>
+            <p>${p.category} &nbsp;·&nbsp; Order: ${p.order ?? '—'}</p>
+            <p style="margin-top:4px;">${(p.shortDesc||'').substring(0,80)}${(p.shortDesc||'').length>80?'…':''}</p>
+            <div class="proj-list-actions">
+              <button class="btn-sm-green" onclick="openProjectModal('${d.id}')">Edit</button>
+              <button class="btn-sm-red" onclick="deleteProject('${d.id}','${p.title}')">Delete</button>
+              <a href="project.html?id=${d.id}" target="_blank" class="btn-sm-green" style="text-decoration:none;">View →</a>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    container.innerHTML = `<p style="color:var(--red);">Error: ${e.message}</p>`;
+  }
+}
+
+window.openProjectModal = async function(id = null) {
+  editingProjectId = id;
+  document.getElementById('editProjectId').value  = id || '';
+  document.getElementById('modalTitle').textContent = id ? 'Edit Project' : 'Add New Project';
+  document.getElementById('proj-title').value    = '';
+  document.getElementById('proj-cat').value      = '';
+  document.getElementById('proj-order').value    = '1';
+  document.getElementById('proj-short').value    = '';
+  document.getElementById('proj-full').value     = '';
+  document.getElementById('proj-imageUrl').value = '';
+  document.getElementById('proj-img-preview').style.display = 'none';
+  document.getElementById('log-project').className = 'cms-log';
+
+  if (id) {
+    try {
+      const snap = await getDoc(doc(db, 'portfolio', id));
+      if (snap.exists()) {
+        const p = snap.data();
+        document.getElementById('proj-title').value    = p.title    || '';
+        document.getElementById('proj-cat').value      = p.category || '';
+        document.getElementById('proj-order').value    = p.order    || 1;
+        document.getElementById('proj-short').value    = p.shortDesc || '';
+        document.getElementById('proj-full').value     = p.fullDesc  || '';
+        document.getElementById('proj-imageUrl').value = p.imageUrl  || '';
+        if (p.imageUrl) {
+          const prev = document.getElementById('proj-img-preview');
+          prev.src = p.imageUrl; prev.style.display = 'block';
+        }
+      }
+    } catch(e) { toast('Error loading project', true); }
+  }
+  document.getElementById('projectModal').classList.add('open');
+};
+
+window.closeProjectModal = function() {
+  document.getElementById('projectModal').classList.remove('open');
+  editingProjectId = null;
+};
+
+window.previewProjImage = function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('proj-img-preview');
+    prev.src = e.target.result; prev.style.display = 'block';
+    document.getElementById('proj-imageUrl').value = ''; // clear URL field
+  };
+  reader.readAsDataURL(file);
+};
+
+window.saveProject = async function() {
+  const title    = document.getElementById('proj-title').value.trim();
+  const category = document.getElementById('proj-cat').value.trim();
+  const order    = parseInt(document.getElementById('proj-order').value) || 1;
+  const shortDesc= document.getElementById('proj-short').value.trim();
+  const fullDesc  = document.getElementById('proj-full').value.trim();
+  const imageUrlField = document.getElementById('proj-imageUrl').value.trim();
+  const imageFile= document.getElementById('proj-image').files[0];
+  const log      = document.getElementById('log-project');
+  const btn      = document.getElementById('saveProjectBtn');
+
+  if (!title || !category) {
+    log.className = 'cms-log err'; log.textContent = 'Title and Category are required.'; return;
+  }
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  log.className = 'cms-log';
+
+  try {
+    let imageUrl = imageUrlField;
+
+    // Upload image file if provided
+    if (imageFile) {
+      const storageRef = ref(storage, `portfolio/${Date.now()}_${imageFile.name}`);
+      const snap = await uploadBytes(storageRef, imageFile);
+      imageUrl = await getDownloadURL(snap.ref);
+    }
+
+    const payload = {
+      title, category, order, shortDesc, fullDesc, imageUrl,
+      updatedAt: serverTimestamp()
+    };
+
+    if (editingProjectId) {
+      await updateDoc(doc(db, 'portfolio', editingProjectId), payload);
+    } else {
+      payload.createdAt = serverTimestamp();
+      await addDoc(collection(db, 'portfolio'), payload);
+    }
+
+    log.className = 'cms-log ok';
+    log.textContent = `✅ Project "${title}" saved! It now appears on the public website.`;
+    toast(`Project "${title}" saved!`);
+    loadPortfolio();
+    setTimeout(closeProjectModal, 1800);
+  } catch(e) {
+    log.className = 'cms-log err'; log.textContent = '❌ Error: ' + e.message;
+    toast('Save failed', true);
+  } finally {
+    btn.textContent = 'Save Project'; btn.disabled = false;
+  }
+};
+
+window.deleteProject = async function(id, title) {
+  if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+  try {
+    await deleteDoc(doc(db, 'portfolio', id));
+    document.getElementById('pitem-' + id)?.remove();
+    toast(`"${title}" deleted.`);
+  } catch(e) { toast('Delete failed', true); }
+};
+
+// ─────────────────────────────────────
+//  POLICY EDITOR
+// ─────────────────────────────────────
+async function loadPolicies() {
+  const policyIds = ['privacy','terms','refund'];
+  for (const id of policyIds) {
+    try {
+      const snap = await getDoc(doc(db, 'cms', id));
+      const editor = document.getElementById('rte-' + id);
+      if (editor) {
+        editor.innerHTML = snap.exists() ? snap.data().content : '<p>Start writing your policy here…</p>';
+      }
+    } catch(e) { console.error('Policy load error:', e); }
+  }
+}
+
+window.savePolicy = async function(id) {
+  const editor = document.getElementById('rte-' + id);
+  const log    = document.getElementById('log-' + id);
+  if (!editor) return;
+  try {
+    await setDoc(doc(db, 'cms', id), { content: editor.innerHTML, updatedAt: serverTimestamp() });
+    log.className = 'cms-log ok';
+    log.textContent = `✅ ${id.charAt(0).toUpperCase()+id.slice(1)} policy saved! Public page updated immediately.`;
+    toast('Policy saved!');
+  } catch(e) {
+    log.className = 'cms-log err'; log.textContent = '❌ Error: ' + e.message;
+    toast('Save failed', true);
+  }
+};
+
+// ─────────────────────────────────────
+//  VIDEO WIDGET
+// ─────────────────────────────────────
+async function loadVideoUrl() {
+  try {
+    const snap = await getDoc(doc(db, 'cms', 'settings'));
+    const url  = snap.exists() ? (snap.data().videoUrl || '') : '';
+    document.getElementById('videoUrl').value = url;
+    if (url) showVideoPreview(url);
+  } catch(e) { console.error('Video load:', e); }
+}
+
+function showVideoPreview(url) {
+  const box  = document.getElementById('videoPreviewBox');
+  const frame= document.getElementById('videoPreviewFrame');
+  const embedUrl = getEmbedUrl(url);
+  if (embedUrl) { frame.src = embedUrl; box.style.display = 'block'; }
+  else { box.style.display = 'none'; }
+}
+
+function getEmbedUrl(url) {
+  if (!url) return null;
+  // YouTube
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0`;
+  // Instagram reels — embed note
+  const igMatch = url.match(/instagram\.com\/reel\/([a-zA-Z0-9_-]+)/);
+  if (igMatch) return `https://www.instagram.com/reel/${igMatch[1]}/embed/`;
+  return null;
+}
+
+document.getElementById('videoUrl').addEventListener('input', function() {
+  showVideoPreview(this.value);
+});
+
+window.saveVideoUrl = async function() {
+  const url = document.getElementById('videoUrl').value.trim();
+  const log = document.getElementById('log-video');
+  try {
+    await setDoc(doc(db, 'cms', 'settings'), { videoUrl: url }, { merge: true });
+    log.className = 'cms-log ok';
+    log.textContent = url
+      ? '✅ Video widget published! It now floats on your website.'
+      : '✅ Video widget URL saved (empty — widget is hidden).';
+    toast('Video widget updated!');
+  } catch(e) {
+    log.className = 'cms-log err'; log.textContent = '❌ Error: ' + e.message;
+  }
+};
+
+window.clearVideoUrl = async function() {
+  if (!confirm('Remove the floating video widget from your website?')) return;
+  document.getElementById('videoUrl').value = '';
+  document.getElementById('videoPreviewBox').style.display = 'none';
+  await saveVideoUrl();
+};
+
+// ─────────────────────────────────────
+//  SOCIAL LINKS
+// ─────────────────────────────────────
+async function loadSocialLinks() {
+  try {
+    const snap  = await getDoc(doc(db, 'cms', 'settings'));
+    const links = snap.exists() ? (snap.data().socialLinks || {}) : {};
+    const fields = ['instagram','facebook','youtube','linkedin','twitter','whatsapp'];
+    fields.forEach(f => {
+      const el = document.getElementById('social-' + f);
+      if (el) el.value = links[f] || '';
+    });
+  } catch(e) { console.error('Social load:', e); }
+}
+
+window.saveSocialLinks = async function() {
+  const log = document.getElementById('log-social');
+  try {
+    const fields = ['instagram','facebook','youtube','linkedin','twitter','whatsapp'];
+    const socialLinks = {};
+    fields.forEach(f => {
+      const val = document.getElementById('social-' + f)?.value.trim() || '';
+      if (val) socialLinks[f] = val;
+    });
+    await setDoc(doc(db, 'cms', 'settings'), { socialLinks }, { merge: true });
+    log.className = 'cms-log ok';
+    log.textContent = '✅ Social links saved! Your website footer updates automatically.';
+    toast('Social links saved!');
+  } catch(e) {
+    log.className = 'cms-log err'; log.textContent = '❌ Error: ' + e.message;
+  }
+};
 </script>
 </body>
 </html>
