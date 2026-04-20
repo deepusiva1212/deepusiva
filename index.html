@@ -683,7 +683,7 @@
       <h2 class="section-title">Our Recent Projects</h2>
       <div class="divider"></div>
     </div>
-    <div class="projects-grid">
+    <div class="projects-grid" id="dynamicProjectsGrid">
       <div class="proj-card"><div class="proj-thumb proj-thumb-1">🏭</div><div class="proj-info"><div class="proj-cat">Metal Fabrication</div><h4>Industrial Platform</h4><p>MS structural platform with handrails and staircase for a manufacturing unit.</p></div></div>
       <div class="proj-card"><div class="proj-thumb proj-thumb-2">🏗️</div><div class="proj-info"><div class="proj-cat">Industrial Roofing</div><h4>Warehouse Roofing — 5000 sqm</h4><p>GI sheet roofing with insulated panels for a large warehouse facility.</p></div></div>
       <div class="proj-card"><div class="proj-thumb proj-thumb-3">☀️</div><div class="proj-info"><div class="proj-cat">Solar Structures</div><h4>1 MW Rooftop Solar</h4><p>Hot-dip galvanised mounting structure for a 1 MW industrial solar plant.</p></div></div>
@@ -834,5 +834,6 @@ window.addEventListener('scroll', () => {
   navAs.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
 });
 </script>
+  <script type="module" src="cms-loader.js"></script>
 </body>
 </html>
