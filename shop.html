@@ -113,6 +113,24 @@
   .products-wrap{padding:16px 12px 100px;}
   .addr-row{grid-template-columns:1fr;}
 }
+/* ── B2B VALIDATION STYLES ── */
+.phone-input-wrap{display:flex;gap:0;}
+.phone-prefix{background:var(--green-light);border:1px solid var(--green);border-right:none;color:var(--green3);font-weight:700;font-size:14px;padding:12px 14px;border-radius:var(--radius) 0 0 var(--radius);white-space:nowrap;display:flex;align-items:center;user-select:none;}
+.phone-prefix-input{border-radius:0 var(--radius) var(--radius) 0 !important;flex:1;}
+.field-valid{border-color:#059669 !important;background:var(--green-pale) !important;}
+.field-error{border-color:var(--red) !important;background:#fff5f5 !important;}
+.field-hint{font-size:11px;margin-top:4px;padding:0 2px;}
+.field-hint.ok{color:#059669;}
+.field-hint.err{color:var(--red);}
+.field-hint.info{color:var(--muted);}
+.pin-loading{font-size:11px;color:var(--muted);margin-top:4px;display:none;}
+.b2b-section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green3);background:var(--green-pale);border:1px solid rgba(22,163,74,.15);padding:8px 14px;border-radius:var(--radius);margin:16px 0 12px;display:flex;align-items:center;gap:8px;}
+/* GST breakdown in review */
+.gst-breakdown-box{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin:0 20px 8px;}
+.gst-row{display:flex;justify-content:space-between;font-size:13px;color:var(--text2);padding:4px 0;border-bottom:1px solid var(--border);}
+.gst-row:last-child{border-bottom:none;font-family:var(--font-head);font-size:17px;font-weight:800;color:var(--text);padding-top:8px;}
+.gst-row:last-child span:last-child{color:var(--green);}
+.gst-row .muted{color:var(--muted);font-size:12px;}
 </style>
 </head>
 <body>
@@ -207,20 +225,69 @@
     </div>
   </div>
 
-  <!-- PANEL 2 -->
+  <!-- PANEL 2 — B2B ADDRESS & VALIDATION -->
   <div class="cart-panel" id="panel2">
     <div class="addr-form">
-      <div class="form-group"><label class="form-label">Full Name *</label><input class="form-control" type="text" id="addr-name" placeholder="Your full name"/></div>
-      <div class="form-group"><label class="form-label">Phone *</label><input class="form-control" type="tel" id="addr-phone" placeholder="+91 XXXXX XXXXX"/></div>
-      <div class="form-group"><label class="form-label">Email *</label><input class="form-control" type="email" id="addr-email" placeholder="email@example.com"/></div>
-      <div class="form-group"><label class="form-label">Delivery Address *</label><textarea class="form-control" id="addr-street" rows="2" placeholder="Door No, Street, Area..."></textarea></div>
-      <div class="addr-row">
-        <div class="form-group"><label class="form-label">City *</label><input class="form-control" type="text" id="addr-city" placeholder="City"/></div>
-        <div class="form-group"><label class="form-label">State *</label><input class="form-control" type="text" id="addr-state" placeholder="State"/></div>
+      <div class="b2b-section-label">Contact Details</div>
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input class="form-control" type="text" id="addr-name" placeholder="Your full name" oninput="validateName()"/>
+        <div class="field-hint" id="hint-name"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mobile Number * <span style="color:var(--muted);font-size:10px;font-weight:400;">(10 digits, India only)</span></label>
+        <div class="phone-input-wrap">
+          <span class="phone-prefix">+91</span>
+          <input class="form-control phone-prefix-input" type="tel" id="addr-phone"
+            placeholder="98765 43210" maxlength="10"
+            oninput="this.value=this.value.replace(/\D/g,'').substring(0,10);validatePhone()"/>
+        </div>
+        <div class="field-hint" id="hint-phone"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input class="form-control" type="email" id="addr-email" placeholder="you@example.com" oninput="validateEmail()"/>
+        <div class="field-hint" id="hint-email"></div>
+      </div>
+      <div class="b2b-section-label">B2B Details <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px;">(optional — for GST invoice)</span></div>
+      <div class="form-group">
+        <label class="form-label">Company / Organisation Name</label>
+        <input class="form-control" type="text" id="addr-company" placeholder="e.g. ABC Industries Pvt Ltd"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">GSTIN <span style="color:var(--muted);font-size:10px;font-weight:400;">(15-char Indian GST number)</span></label>
+        <input class="form-control" type="text" id="addr-gstin"
+          placeholder="e.g. 33AABCU9603R1ZM" maxlength="15"
+          oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'').substring(0,15);validateGSTIN()"/>
+        <div class="field-hint" id="hint-gstin"></div>
+        <!-- 🔗 GSTIN VERIFICATION API HOOK — plug in gstin.io or mastergstin.com API here when ready -->
+      </div>
+      <div class="b2b-section-label">Delivery Address</div>
+      <div class="form-group">
+        <label class="form-label">Street / Area *</label>
+        <textarea class="form-control" id="addr-street" rows="2" placeholder="Door No, Street, Area, Landmark…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">PIN Code * <span style="color:var(--muted);font-size:10px;font-weight:400;">(auto-fills city & state)</span></label>
+        <input class="form-control" type="text" id="addr-pin"
+          placeholder="6-digit PIN" maxlength="6"
+          oninput="this.value=this.value.replace(/\D/g,'').substring(0,6);onPinInput()"/>
+        <div class="pin-loading" id="pinLoading">Looking up PIN…</div>
+        <div class="field-hint" id="hint-pin"></div>
       </div>
       <div class="addr-row">
-        <div class="form-group"><label class="form-label">PIN Code *</label><input class="form-control" type="text" id="addr-pin" placeholder="6-digit PIN"/></div>
-        <div class="form-group"><label class="form-label">Order Notes</label><input class="form-control" type="text" id="addr-notes" placeholder="Special instructions"/></div>
+        <div class="form-group">
+          <label class="form-label">City *</label>
+          <input class="form-control" type="text" id="addr-city" placeholder="Auto-filled"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">State *</label>
+          <input class="form-control" type="text" id="addr-state" placeholder="Auto-filled"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Order Notes</label>
+        <input class="form-control" type="text" id="addr-notes" placeholder="Delivery instructions, special requirements…"/>
       </div>
     </div>
     <div class="cart-actions">
@@ -229,23 +296,25 @@
     </div>
   </div>
 
-  <!-- PANEL 3 -->
+  <!-- PANEL 3 — REVIEW + GST BREAKDOWN -->
   <div class="cart-panel" id="panel3" style="overflow-y:auto;">
     <div style="flex:1;overflow-y:auto;padding-bottom:8px;">
       <div class="review-block">Delivery To</div>
       <div class="review-box" id="reviewAddress"></div>
       <div class="review-block" style="margin-top:14px;">Order Items</div>
       <div class="review-box" id="reviewItems"></div>
-    </div>
-    <div class="order-summary">
-      <div class="summary-row"><span>Subtotal</span><span id="subtotal3">₹0</span></div>
-      <div class="summary-row"><span>GST (18%)</span><span id="gst3">₹0</span></div>
-      <div class="summary-row free"><span>Shipping</span><span>FREE ✓</span></div>
-      <div class="summary-row total"><span>Total Payable</span><span id="total3">₹0</span></div>
+      <div class="review-block" style="margin-top:14px;">GST Invoice Breakdown</div>
+      <div class="gst-breakdown-box">
+        <div class="gst-row"><span>Base Amount (Taxable Value)</span><span id="bd-base">₹0</span></div>
+        <div class="gst-row"><span>SGST @ 9% <span class="muted">State GST</span></span><span id="bd-sgst">₹0</span></div>
+        <div class="gst-row"><span>CGST @ 9% <span class="muted">Central GST</span></span><span id="bd-cgst">₹0</span></div>
+        <div class="gst-row"><span>Shipping</span><span style="color:var(--green);font-size:13px;font-family:var(--font-body);font-weight:600;">FREE</span></div>
+        <div class="gst-row"><span>Grand Total Payable</span><span id="bd-total">₹0</span></div>
+      </div>
     </div>
     <div class="cart-actions">
       <button class="btn-cart-back" onclick="goToStep(2)">← Back</button>
-      <button class="btn-pay-now" onclick="startPayment()">💳 Pay Now</button>
+      <button class="btn-pay-now" onclick="startPayment()">Pay Now</button>
     </div>
   </div>
 
@@ -300,111 +369,476 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, doc, getDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey:"AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
-  authDomain:"deepu-siva-portal.firebaseapp.com",
-  projectId:"deepu-siva-portal",
-  storageBucket:"deepu-siva-portal.firebasestorage.app",
-  messagingSenderId:"1014351018202",
-  appId:"1:1014351018202:web:16d2578f726159e5ef8de3"
+  apiKey:            "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+  authDomain:        "deepu-siva-portal.firebaseapp.com",
+  projectId:         "deepu-siva-portal",
+  storageBucket:     "deepu-siva-portal.firebasestorage.app",
+  messagingSenderId: "1014351018202",
+  appId:             "1:1014351018202:web:16d2578f726159e5ef8de3"
 };
-const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID";
+
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
+
+// ── RAZORPAY KEY — fetched securely from Firestore, never hardcoded ──
+// Store your key in Firestore at: config/payments → { razorpayKey: "rzp_live_..." }
+// To add it: Firebase Console → Firestore → config collection → payments doc → add field razorpayKey
+let RAZORPAY_KEY = '';
+async function loadPaymentConfig() {
+  try {
+    const snap = await getDoc(doc(db, 'config', 'payments'));
+    if (snap.exists()) RAZORPAY_KEY = snap.data().razorpayKey || '';
+  } catch(e) { console.warn('Payment config fetch failed:', e.message); }
+}
+
 let allProducts = [];
-let cart = JSON.parse(localStorage.getItem('dsCart')||'[]');
+let cart = JSON.parse(localStorage.getItem('dsCart') || '[]');
 
-async function loadProducts(){
-  try{
-    const snap=await getDocs(collection(db,"products"));
-    allProducts=[];
-    const cats=new Set(['all']);
-    snap.forEach(d=>{const p={id:d.id,...d.data()};allProducts.push(p);if(p.category)cats.add(p.category);});
-    const bar=document.getElementById('filterBar');bar.innerHTML='';
-    cats.forEach(cat=>{const b=document.createElement('button');b.className='filter-chip'+(cat==='all'?' active':'');b.textContent=cat==='all'?'All Products':cat;b.onclick=()=>filterProducts(cat,b);bar.appendChild(b);});
-    renderProducts(allProducts);updateCartUI();
-  }catch(e){document.getElementById('productsGrid').innerHTML='<div class="state-box"><div class="ico">⚠️</div><p>Could not load products. Check Firestore.</p></div>';}
-}
-
-function renderProducts(list){
-  const grid=document.getElementById('productsGrid');
-  if(!list.length){grid.innerHTML='<div class="state-box"><div class="ico">📦</div><p>No products in this category.</p></div>';return;}
-  grid.innerHTML=list.map(p=>`<div class="product-card"><div class="product-img">${p.imageUrl?`<img src="${p.imageUrl}" alt="${p.name}" loading="lazy"/>`:`<span>${p.emoji||'📦'}</span>`}</div><div class="product-body"><div class="product-cat">${p.category||'Product'}</div><div class="product-name">${p.name}</div><div class="product-desc">${p.description||''}</div><div class="product-price">₹${Number(p.price).toLocaleString('en-IN')} <span>/ ${p.unit||'unit'}</span></div><button class="add-to-cart-btn" id="btn-${p.id}" onclick="addToCart('${p.id}')">+ Add to Cart</button></div></div>`).join('');
-}
-
-window.filterProducts=function(cat,btn){document.querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderProducts(cat==='all'?allProducts:allProducts.filter(p=>p.category===cat));};
-
-window.addToCart=function(id){
-  const p=allProducts.find(p=>p.id===id);if(!p)return;
-  const ex=cart.find(i=>i.id===id);ex?ex.qty++:cart.push({...p,qty:1});
-  saveCart();updateCartUI();showToast(`✅ ${p.name} added!`);
-  const btn=document.getElementById('btn-'+id);
-  if(btn){btn.textContent='✓ Added!';btn.classList.add('added');setTimeout(()=>{btn.textContent='+ Add to Cart';btn.classList.remove('added');},1500);}
-};
-
-window.changeQty=function(id,d){const item=cart.find(i=>i.id===id);if(!item)return;item.qty+=d;if(item.qty<=0)cart=cart.filter(i=>i.id!==id);saveCart();updateCartUI();renderCartItems();};
-window.removeFromCart=function(id){cart=cart.filter(i=>i.id!==id);saveCart();updateCartUI();renderCartItems();};
-function saveCart(){localStorage.setItem('dsCart',JSON.stringify(cart));}
-
-function calcTotals(){const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);const gst=Math.round(subtotal*.18);return{subtotal,gst,total:subtotal+gst};}
-
-function updateCartUI(){
-  const count=cart.reduce((s,i)=>s+i.qty,0);
-  const dc=document.getElementById('cartCountDesk');if(dc)dc.textContent=count;
-  ['cartBadgeMob','cartBadgeMob2'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=count;el.classList.toggle('visible',count>0);}});
-  document.getElementById('toAddressBtn').disabled=cart.length===0;
-  const{subtotal,gst,total}=calcTotals();
-  document.getElementById('summaryPanel1').style.display=cart.length?'block':'none';
-  ['1','3'].forEach(n=>{
-    const s=document.getElementById('subtotal'+n),g=document.getElementById('gst'+n),t=document.getElementById('total'+n);
-    if(s)s.textContent='₹'+subtotal.toLocaleString('en-IN');
-    if(g)g.textContent='₹'+gst.toLocaleString('en-IN');
-    if(t)t.textContent='₹'+total.toLocaleString('en-IN');
-  });
-}
-
-function renderCartItems(){
-  const el=document.getElementById('cartItemsList');
-  if(!cart.length){el.innerHTML='<div class="cart-empty-state"><div class="ico">🛒</div><p>Your cart is empty</p></div>';return;}
-  el.innerHTML=cart.map(i=>`<div class="cart-item"><div class="cart-item-thumb">${i.imageUrl?`<img src="${i.imageUrl}" alt="${i.name}"/>`:(i.emoji||'📦')}</div><div class="cart-item-info"><div class="cart-item-name">${i.name}</div><div class="cart-item-price">₹${Number(i.price).toLocaleString('en-IN')} / ${i.unit||'unit'}</div><div class="cart-item-controls"><button class="qty-btn" onclick="changeQty('${i.id}',-1)">−</button><span class="qty-num">${i.qty}</span><button class="qty-btn" onclick="changeQty('${i.id}',1)">+</button><button class="remove-btn" onclick="removeFromCart('${i.id}')">🗑</button></div></div></div>`).join('');
-}
-
-window.goToStep=function(step){
-  if(step===2&&calcTotals().subtotal===0){showToast('Please add items first!',true);return;}
-  if(step===3){
-    const[name,phone,email,street,city,state,pin]=['addr-name','addr-phone','addr-email','addr-street','addr-city','addr-state','addr-pin'].map(id=>document.getElementById(id).value.trim());
-    if(!name||!phone||!email||!street||!city||!state||!pin){showToast('Please fill all required fields!',true);return;}
-    document.getElementById('reviewAddress').innerHTML=`<strong>${name}</strong><br/>${phone} | ${email}<br/>${street}<br/>${city}, ${state} – ${pin}`;
-    document.getElementById('reviewItems').innerHTML=cart.map(i=>`<div class="review-item-row"><span>${i.name} × ${i.qty}</span><span>₹${(i.price*i.qty).toLocaleString('en-IN')}</span></div>`).join('');
+// ── LOAD PRODUCTS ──
+async function loadProducts() {
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    allProducts = [];
+    const cats = new Set(['all']);
+    snap.forEach(d => {
+      const p = { id: d.id, ...d.data() };
+      allProducts.push(p);
+      if (p.category) cats.add(p.category);
+    });
+    const bar = document.getElementById('filterBar');
+    bar.innerHTML = '';
+    cats.forEach(cat => {
+      const b = document.createElement('button');
+      b.className = 'filter-chip' + (cat === 'all' ? ' active' : '');
+      b.textContent = cat === 'all' ? 'All Products' : cat;
+      b.onclick = () => filterProducts(cat, b);
+      bar.appendChild(b);
+    });
+    renderProducts(allProducts);
+    updateCartUI();
+  } catch(e) {
+    document.getElementById('productsGrid').innerHTML =
+      '<div class="state-box"><div class="ico">⚠️</div><p>Could not load products.</p></div>';
   }
-  [1,2,3,4].forEach(n=>{document.getElementById('panel'+n).classList.toggle('active',n===step);const t=document.getElementById('step-tab-'+n);if(t){t.classList.toggle('active',n===step);t.classList.toggle('done',n<step);}});
+}
+
+function renderProducts(list) {
+  const grid = document.getElementById('productsGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div class="state-box"><div class="ico">📦</div><p>No products in this category.</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(p => `
+    <div class="product-card">
+      <div class="product-img">
+        ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.name}" loading="lazy"/>` : `<span>${p.emoji || '📦'}</span>`}
+      </div>
+      <div class="product-body">
+        <div class="product-cat">${p.category || 'Product'}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.description || ''}</div>
+        <div class="product-price">₹${Number(p.price).toLocaleString('en-IN')} <span>/ ${p.unit || 'unit'}</span></div>
+        <button class="add-to-cart-btn" id="btn-${p.id}" onclick="addToCart('${p.id}')">+ Add to Cart</button>
+      </div>
+    </div>`).join('');
+}
+
+window.filterProducts = function(cat, btn) {
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat));
 };
 
-window.startPayment=function(){
-  const{total,subtotal,gst}=calcTotals();
-  const name=document.getElementById('addr-name').value.trim(),phone=document.getElementById('addr-phone').value.trim(),email=document.getElementById('addr-email').value.trim();
-  const street=document.getElementById('addr-street').value.trim(),city=document.getElementById('addr-city').value.trim(),state=document.getElementById('addr-state').value.trim(),pin=document.getElementById('addr-pin').value.trim(),notes=document.getElementById('addr-notes').value.trim();
+// ── CART ──
+window.addToCart = function(id) {
+  const p = allProducts.find(p => p.id === id);
+  if (!p) return;
+  const ex = cart.find(i => i.id === id);
+  ex ? ex.qty++ : cart.push({ ...p, qty: 1 });
+  saveCart(); updateCartUI();
+  showToast(`${p.name} added to cart!`);
+  const btn = document.getElementById('btn-' + id);
+  if (btn) {
+    btn.textContent = '✓ Added!'; btn.classList.add('added');
+    setTimeout(() => { btn.textContent = '+ Add to Cart'; btn.classList.remove('added'); }, 1500);
+  }
+};
+
+window.changeQty = function(id, d) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += d;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  saveCart(); updateCartUI(); renderCartItems();
+};
+
+window.removeFromCart = function(id) {
+  cart = cart.filter(i => i.id !== id);
+  saveCart(); updateCartUI(); renderCartItems();
+};
+
+function saveCart() { localStorage.setItem('dsCart', JSON.stringify(cart)); }
+
+// ── GST CALCULATION — SGST 9% + CGST 9% = 18% total ──
+function calcTotals() {
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const sgst     = Math.round(subtotal * 0.09);
+  const cgst     = Math.round(subtotal * 0.09);
+  const total    = subtotal + sgst + cgst;
+  return { subtotal, sgst, cgst, gst: sgst + cgst, total };
+}
+
+function updateCartUI() {
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const dc = document.getElementById('cartCountDesk');
+  if (dc) dc.textContent = count;
+  ['cartBadgeMob', 'cartBadgeMob2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = count; el.classList.toggle('visible', count > 0); }
+  });
+  document.getElementById('toAddressBtn').disabled = cart.length === 0;
+  const { subtotal, sgst, cgst, gst, total } = calcTotals();
+  document.getElementById('summaryPanel1').style.display = cart.length ? 'block' : 'none';
+  // Panel 1 summary (simple view)
+  const s1 = document.getElementById('subtotal1');
+  const g1 = document.getElementById('gst1');
+  const t1 = document.getElementById('total1');
+  if (s1) s1.textContent = '₹' + subtotal.toLocaleString('en-IN');
+  if (g1) g1.textContent = '₹' + gst.toLocaleString('en-IN') + ' (SGST+CGST)';
+  if (t1) t1.textContent = '₹' + total.toLocaleString('en-IN');
+  // Panel 3 GST breakdown
+  const bdBase = document.getElementById('bd-base');
+  const bdSgst = document.getElementById('bd-sgst');
+  const bdCgst = document.getElementById('bd-cgst');
+  const bdTotal= document.getElementById('bd-total');
+  if (bdBase) bdBase.textContent = '₹' + subtotal.toLocaleString('en-IN');
+  if (bdSgst) bdSgst.textContent = '₹' + sgst.toLocaleString('en-IN');
+  if (bdCgst) bdCgst.textContent = '₹' + cgst.toLocaleString('en-IN');
+  if (bdTotal) bdTotal.textContent = '₹' + total.toLocaleString('en-IN');
+}
+
+function renderCartItems() {
+  const el = document.getElementById('cartItemsList');
+  if (!cart.length) {
+    el.innerHTML = '<div class="cart-empty-state"><div class="ico">🛒</div><p>Your cart is empty</p></div>';
+    return;
+  }
+  el.innerHTML = cart.map(i => `
+    <div class="cart-item">
+      <div class="cart-item-thumb">
+        ${i.imageUrl ? `<img src="${i.imageUrl}" alt="${i.name}"/>` : (i.emoji || '📦')}
+      </div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-price">₹${Number(i.price).toLocaleString('en-IN')} / ${i.unit || 'unit'}</div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty('${i.id}',-1)">−</button>
+          <span class="qty-num">${i.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${i.id}',1)">+</button>
+          <button class="remove-btn" onclick="removeFromCart('${i.id}')">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════
+//  MODULE B — VALIDATION FUNCTIONS
+// ════════════════════════════════════════
+
+// ── NAME ──
+window.validateName = function() {
+  const val = document.getElementById('addr-name').value.trim();
+  const hint = document.getElementById('hint-name');
+  const inp  = document.getElementById('addr-name');
+  if (val.length < 2) {
+    hint.textContent = 'Enter your full name'; hint.className = 'field-hint err';
+    inp.classList.remove('field-valid'); inp.classList.add('field-error');
+  } else {
+    hint.textContent = ''; hint.className = 'field-hint';
+    inp.classList.remove('field-error'); inp.classList.add('field-valid');
+  }
+};
+
+// ── PHONE (strict 10 digits) ──
+window.validatePhone = function() {
+  const val  = document.getElementById('addr-phone').value.trim();
+  const hint = document.getElementById('hint-phone');
+  const inp  = document.getElementById('addr-phone');
+  if (val.length === 0) {
+    hint.textContent = ''; hint.className = 'field-hint';
+    inp.classList.remove('field-valid','field-error'); return;
+  }
+  if (!/^[6-9]\d{9}$/.test(val)) {
+    hint.textContent = val.length < 10
+      ? `${10 - val.length} more digit${10 - val.length !== 1 ? 's' : ''} needed`
+      : 'Must start with 6, 7, 8, or 9';
+    hint.className = 'field-hint err';
+    inp.classList.remove('field-valid'); inp.classList.add('field-error');
+  } else {
+    hint.textContent = '+91 ' + val + ' ✓'; hint.className = 'field-hint ok';
+    inp.classList.remove('field-error'); inp.classList.add('field-valid');
+  }
+};
+
+// ── EMAIL (strict regex) ──
+window.validateEmail = function() {
+  const val  = document.getElementById('addr-email').value.trim();
+  const hint = document.getElementById('hint-email');
+  const inp  = document.getElementById('addr-email');
+  if (!val) { hint.textContent = ''; hint.className = 'field-hint'; inp.classList.remove('field-valid','field-error'); return; }
+  const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(val)) {
+    hint.textContent = 'Enter a valid email address (e.g. name@company.com)';
+    hint.className = 'field-hint err';
+    inp.classList.remove('field-valid'); inp.classList.add('field-error');
+  } else {
+    hint.textContent = ''; hint.className = 'field-hint';
+    inp.classList.remove('field-error'); inp.classList.add('field-valid');
+  }
+};
+
+// ── GSTIN (Indian format: 15-char regex) ──
+window.validateGSTIN = function() {
+  const val  = document.getElementById('addr-gstin').value.trim();
+  const hint = document.getElementById('hint-gstin');
+  const inp  = document.getElementById('addr-gstin');
+  if (!val) { hint.textContent = ''; hint.className = 'field-hint'; inp.classList.remove('field-valid','field-error'); return; }
+  // Indian GSTIN format: 2-digit state code + 5 chars PAN + 4 digits + 1 char entity + 1 char Z + 1 check digit
+  const gstinRegex = /^[0-3][0-9][A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+  if (val.length < 15) {
+    hint.textContent = `${15 - val.length} more characters needed`;
+    hint.className = 'field-hint info';
+    inp.classList.remove('field-valid','field-error');
+  } else if (!gstinRegex.test(val)) {
+    hint.textContent = 'Invalid GSTIN format. Check and re-enter.';
+    hint.className = 'field-hint err';
+    inp.classList.remove('field-valid'); inp.classList.add('field-error');
+  } else {
+    hint.textContent = 'Valid GSTIN format ✓'; hint.className = 'field-hint ok';
+    inp.classList.remove('field-error'); inp.classList.add('field-valid');
+    // 🔗 FUTURE: Call GSTIN verification API here
+    // verifyGSTIN(val).then(result => { ... });
+  }
+};
+
+// ── PIN CODE AUTOFILL (postalpincode.in free API) ──
+let pinDebounceTimer;
+window.onPinInput = function() {
+  const val  = document.getElementById('addr-pin').value;
+  const hint = document.getElementById('hint-pin');
+  const load = document.getElementById('pinLoading');
+  if (val.length < 6) { hint.textContent = ''; load.style.display = 'none'; return; }
+  clearTimeout(pinDebounceTimer);
+  pinDebounceTimer = setTimeout(() => fetchPinData(val), 400);
+};
+
+async function fetchPinData(pin) {
+  const load = document.getElementById('pinLoading');
+  const hint = document.getElementById('hint-pin');
+  const cityEl  = document.getElementById('addr-city');
+  const stateEl = document.getElementById('addr-state');
+  load.style.display = 'block';
+  hint.textContent = ''; hint.className = 'field-hint';
+
+  try {
+    const res  = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+    const data = await res.json();
+
+    if (data[0]?.Status === 'Success' && data[0]?.PostOffice?.length > 0) {
+      const po = data[0].PostOffice[0];
+      cityEl.value  = po.District || po.Name || '';
+      stateEl.value = po.State || '';
+      cityEl.classList.add('field-valid');
+      stateEl.classList.add('field-valid');
+      document.getElementById('addr-pin').classList.remove('field-error');
+      document.getElementById('addr-pin').classList.add('field-valid');
+      hint.textContent = `${po.District}, ${po.State} ✓`;
+      hint.className = 'field-hint ok';
+    } else {
+      hint.textContent = 'PIN code not found. Please enter city and state manually.';
+      hint.className = 'field-hint err';
+      document.getElementById('addr-pin').classList.add('field-error');
+    }
+  } catch(e) {
+    hint.textContent = 'Could not fetch PIN data. Enter city and state manually.';
+    hint.className = 'field-hint info';
+  } finally {
+    load.style.display = 'none';
+  }
+}
+
+// ── STEP NAVIGATION WITH FULL VALIDATION ──
+window.goToStep = function(step) {
+  if (step === 2 && calcTotals().subtotal === 0) {
+    showToast('Please add items first!', true); return;
+  }
+
+  if (step === 3) {
+    const name   = document.getElementById('addr-name').value.trim();
+    const phone  = document.getElementById('addr-phone').value.trim();
+    const email  = document.getElementById('addr-email').value.trim();
+    const street = document.getElementById('addr-street').value.trim();
+    const city   = document.getElementById('addr-city').value.trim();
+    const state  = document.getElementById('addr-state').value.trim();
+    const pin    = document.getElementById('addr-pin').value.trim();
+    const gstin  = document.getElementById('addr-gstin').value.trim();
+
+    // ── VALIDATE ALL FIELDS ──
+    const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+    const phoneRegex = /^[6-9]\d{9}$/;
+    const gstinRegex = /^[0-3][0-9][A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+
+    if (!name || name.length < 2) {
+      showToast('Please enter your full name.', true);
+      document.getElementById('addr-name').focus(); return;
+    }
+    if (!phoneRegex.test(phone)) {
+      showToast('Enter a valid 10-digit mobile number.', true);
+      document.getElementById('addr-phone').focus(); return;
+    }
+    if (!emailRegex.test(email)) {
+      showToast('Enter a valid email address.', true);
+      document.getElementById('addr-email').focus(); return;
+    }
+    if (!street) {
+      showToast('Please enter your delivery address.', true);
+      document.getElementById('addr-street').focus(); return;
+    }
+    if (!pin || pin.length !== 6) {
+      showToast('Enter a valid 6-digit PIN code.', true);
+      document.getElementById('addr-pin').focus(); return;
+    }
+    if (!city || !state) {
+      showToast('City and State are required. Check PIN code.', true);
+      document.getElementById('addr-city').focus(); return;
+    }
+    if (gstin && !gstinRegex.test(gstin)) {
+      showToast('GSTIN format is invalid. Please check and correct.', true);
+      document.getElementById('addr-gstin').focus(); return;
+    }
+
+    // ── BUILD REVIEW ──
+    const company = document.getElementById('addr-company').value.trim();
+    document.getElementById('reviewAddress').innerHTML = `
+      <strong>${name}</strong>
+      ${company ? `<br/>${company}${gstin ? ` (GSTIN: ${gstin})` : ''}` : ''}
+      <br/>+91 ${phone} &nbsp;|&nbsp; ${email}
+      <br/>${street}
+      <br/>${city}, ${state} – ${pin}`;
+
+    document.getElementById('reviewItems').innerHTML = cart.map(i =>
+      `<div class="review-item-row">
+        <span>${i.name} × ${i.qty}</span>
+        <span>₹${(i.price * i.qty).toLocaleString('en-IN')}</span>
+       </div>`).join('');
+
+    updateCartUI(); // refresh GST breakdown
+  }
+
+  [1, 2, 3, 4].forEach(n => {
+    document.getElementById('panel' + n).classList.toggle('active', n === step);
+    const t = document.getElementById('step-tab-' + n);
+    if (t) {
+      t.classList.toggle('active', n === step);
+      t.classList.toggle('done', n < step);
+    }
+  });
+};
+
+// ── PAYMENT ──
+window.startPayment = function() {
+  if (!RAZORPAY_KEY) {
+    showToast('Payment gateway not configured. Please contact us.', true);
+    return;
+  }
+  const { subtotal, sgst, cgst, gst, total } = calcTotals();
+  const name    = document.getElementById('addr-name').value.trim();
+  const phone   = document.getElementById('addr-phone').value.trim();
+  const email   = document.getElementById('addr-email').value.trim();
+  const street  = document.getElementById('addr-street').value.trim();
+  const city    = document.getElementById('addr-city').value.trim();
+  const state   = document.getElementById('addr-state').value.trim();
+  const pin     = document.getElementById('addr-pin').value.trim();
+  const notes   = document.getElementById('addr-notes').value.trim();
+  const company = document.getElementById('addr-company').value.trim();
+  const gstin   = document.getElementById('addr-gstin').value.trim();
+
   new Razorpay({
-    key:RAZORPAY_KEY,amount:total*100,currency:"INR",name:"Deepu Siva Pvt Ltd",description:"Product Order",
-    image:"https://deepusiva.com/logo.png",prefill:{name,email,contact:phone},theme:{color:"#16a34a"},
-    handler:async function(response){
-      try{
-        const ref=await addDoc(collection(db,"orders"),{customer:{name,phone,email},address:{street,city,state,pin,notes},items:cart.map(i=>({id:i.id,name:i.name,price:i.price,qty:i.qty,unit:i.unit||'unit'})),subtotal,gst,total,payment:{razorpay_payment_id:response.razorpay_payment_id,status:"paid"},status:"confirmed",createdAt:serverTimestamp()});
-        emailjs.send("service_w18col9","template_qe8gnyf",{order_id:ref.id,email,name,price:total,units:cart.map(i=>`${i.name} (x${i.qty})`).join(', '),"cost.shipping":"FREE","cost.tax":gst.toLocaleString('en-IN'),"cost.total":total.toLocaleString('en-IN')}).catch(e=>console.warn("Email failed:",e));
-        document.getElementById('orderIdBox').textContent='Order ID: '+ref.id;goToStep(4);
-      }catch(e){document.getElementById('orderIdBox').textContent='Payment received. ID: '+response.razorpay_payment_id;goToStep(4);}
+    key:         RAZORPAY_KEY,
+    amount:      total * 100,
+    currency:    'INR',
+    name:        'Deepu Siva Pvt Ltd',
+    description: 'Product Order',
+    image:       'https://deepusiva.com/logo.png',
+    prefill:     { name, email, contact: '+91' + phone },
+    theme:       { color: '#16a34a' },
+    handler: async function(response) {
+      try {
+        const orderRef = await addDoc(collection(db, 'orders'), {
+          customer: { name, phone: '+91' + phone, email, company, gstin },
+          address:  { street, city, state, pin, notes },
+          items:    cart.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty, unit: i.unit || 'unit' })),
+          subtotal, sgst, cgst, gst, total,
+          payment:  { razorpay_payment_id: response.razorpay_payment_id, status: 'paid' },
+          status:   'confirmed',
+          createdAt: serverTimestamp()
+        });
+
+        // ── EMAIL RECEIPT ──
+        emailjs.send('service_w18col9', 'template_qe8gnyf', {
+          order_id:         orderRef.id,
+          email,
+          name,
+          price:            total,
+          units:            cart.map(i => `${i.name} (×${i.qty})`).join(', '),
+          'cost.shipping':  'FREE',
+          'cost.tax':       `SGST ₹${sgst.toLocaleString('en-IN')} + CGST ₹${cgst.toLocaleString('en-IN')}`,
+          'cost.total':     '₹' + total.toLocaleString('en-IN')
+        }).catch(e => console.warn('Email receipt failed:', e));
+
+        document.getElementById('orderIdBox').textContent = 'Order ID: ' + orderRef.id;
+        goToStep(4);
+      } catch(e) {
+        console.error(e);
+        document.getElementById('orderIdBox').textContent = 'Payment received. ID: ' + response.razorpay_payment_id;
+        goToStep(4);
+      }
     },
-    modal:{ondismiss:()=>showToast('Payment cancelled.',true)}
+    modal: { ondismiss: () => showToast('Payment cancelled.', true) }
   }).open();
 };
 
-window.resetCart=function(){cart=[];saveCart();updateCartUI();goToStep(1);renderCartItems();};
-window.openCart=function(){renderCartItems();updateCartUI();document.getElementById('cartOverlay').classList.add('open');document.getElementById('cartSidebar').classList.add('open');document.body.style.overflow='hidden';};
-window.closeCart=function(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartSidebar').classList.remove('open');document.body.style.overflow='';};
-window.showToast=function(msg,isErr=false){const t=document.getElementById('shopToast');t.textContent=msg;t.className='shop-toast'+(isErr?' err':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);};
+window.resetCart = function() {
+  cart = []; saveCart(); updateCartUI(); goToStep(1); renderCartItems();
+};
 
+window.openCart = function() {
+  renderCartItems(); updateCartUI();
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartSidebar').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeCart = function() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+window.showToast = function(msg, isErr = false) {
+  const t = document.getElementById('shopToast');
+  t.textContent = msg;
+  t.className   = 'shop-toast' + (isErr ? ' err' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+};
+
+// ── BOOT ──
+await loadPaymentConfig();
 loadProducts();
 </script>
 </body>
