@@ -77,33 +77,38 @@ export function requireAuth(onAllowed, onDenied) {
 export function requireAdmin(onAllowed) {
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
-      window.location.href = 'login.html';
+      window.location.replace('login.html');
       return;
     }
-    try {
-      const userEmail = (user.email || '').toLowerCase();
-      const isMasterEmail = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(userEmail);
 
-      // Also check Firestore role for future-proofing
+    const userEmail = (user.email || '').toLowerCase();
+    const isMasterEmail = ADMIN_EMAILS
+      .map(e => e.toLowerCase())
+      .includes(userEmail);
+
+    // ── FAST PASS: email is in the list → grant instantly, no DB query ──
+    if (isMasterEmail) {
+      hideOverlay();
+      onAllowed(user);
+      return; // ← stops here, Firestore never queried
+    }
+
+    // ── FALLBACK: email NOT in list → check Firestore role ──
+    try {
       const snap    = await getDoc(doc(db, 'users', user.uid));
       const isAdmin = snap.exists() && snap.data().role === 'admin';
 
-      if (isMasterEmail || isAdmin) {
+      if (isAdmin) {
         hideOverlay();
         onAllowed(user);
       } else {
         alert('Access Denied. Admin accounts only.');
-        window.location.href = 'index.html';
+        window.location.replace('index.html');
       }
     } catch (e) {
-      // If Firestore fails, still allow master emails through
-      const userEmail = (user.email || '').toLowerCase();
-      if (ADMIN_EMAILS.map(e => e.toLowerCase()).includes(userEmail)) {
-        hideOverlay();
-        onAllowed(user);
-      } else {
-        window.location.href = 'index.html';
-      }
+      // Firestore failed — deny access to be safe
+      alert('Verification failed. Please try again.');
+      window.location.replace('index.html');
     }
   });
 }
