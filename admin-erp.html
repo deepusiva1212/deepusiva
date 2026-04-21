@@ -1561,7 +1561,7 @@
 <script type="module">
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut }
+import { getAuth, onAuthStateChanged, signOut, browserLocalPersistence, setPersistence }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import {
   getFirestore, collection, addDoc, updateDoc, getDoc, getDocs,
@@ -1587,6 +1587,10 @@ const ADMIN_EMAILS = [
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
+
+// ── Tell Firebase to always persist session in localStorage ──
+// This must be set BEFORE auth.authStateReady() is called
+await setPersistence(auth, browserLocalPersistence);
 
 // ── STATE ──────────────────────────────────────────────
 let currentUser  = null;
@@ -1738,20 +1742,41 @@ window.syncOfflineInvoices = async function() {
   }
 };
 
-// ── AUTH GUARD ─────────────────────────────────────────
-onAuthStateChanged(auth, async user => {
-  if (!user) { window.location.href = 'login.html'; return; }
-  const email = (user.email||'').toLowerCase();
-  const isAdmin = ADMIN_EMAILS.map(e=>e.toLowerCase()).includes(email);
-  if (!isAdmin) {
-    try {
-      const snap = await getDoc(doc(db,'users',user.uid));
-      if (!snap.exists() || snap.data().role !== 'admin') {
-        alert('Access denied. Admin only.'); window.location.href = 'index.html'; return;
-      }
-    } catch { alert('Access denied.'); window.location.href = 'index.html'; return; }
-  }
+// ── AUTH GUARD — FIXED ─────────────────────────────────
+// auth.authStateReady() waits until Firebase has FULLY restored
+// the session from localStorage before we check anything.
+// This eliminates the race condition where onAuthStateChanged
+// fired null first and incorrectly kicked the user out.
+await auth.authStateReady();
 
+const _user = auth.currentUser;
+if (!_user) {
+  window.location.replace('login.html');
+} else {
+  const _email = (_user.email || '').toLowerCase();
+  const _isMaster = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(_email);
+
+  if (_isMaster) {
+    // FAST PASS — email in hardcoded list, grant instantly, no DB query
+    await bootERP(_user);
+  } else {
+    // FALLBACK — check Firestore role field
+    try {
+      const _snap = await getDoc(doc(db, 'users', _user.uid));
+      if (_snap.exists() && _snap.data().role === 'admin') {
+        await bootERP(_user);
+      } else {
+        alert('Access Denied. Admin accounts only.');
+        window.location.replace('index.html');
+      }
+    } catch(e) {
+      alert('Could not verify access. Check your connection and try again.');
+      window.location.replace('login.html');
+    }
+  }
+}
+
+async function bootERP(user) {
   currentUser = user;
   ownerUid    = user.uid;
   document.getElementById('topbarUser').textContent = user.email;
@@ -1769,7 +1794,7 @@ onAuthStateChanged(auth, async user => {
   // Check URL params for deep linking
   const params = new URLSearchParams(window.location.search);
   if (params.get('page')) showPage(params.get('page'), null);
-});
+}
 
 // ── NAVIGATION ─────────────────────────────────────────
 window.showPage = function(pageId, btn) {
