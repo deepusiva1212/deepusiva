@@ -692,6 +692,75 @@
 .toggle-switch input:checked + .toggle-slider { background: var(--green); }
 .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
 
+/* ── TEMPLATE CARDS ── */
+.template-card {
+  cursor: pointer;
+  display: block;
+}
+.template-card input[type="radio"]:checked + .template-preview {
+  outline: 2px solid var(--green);
+  box-shadow: 0 0 0 3px rgba(22,163,74,.15);
+}
+.template-preview {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  transition: .2s;
+}
+.template-preview:hover { border-color: var(--green); }
+
+/* ── PARTY SUGGEST ── */
+.party-suggest-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  transition: background .15s;
+}
+.party-suggest-item:last-child { border-bottom: none; }
+.party-suggest-item:hover { background: var(--green-pale); }
+.party-suggest-name { font-weight: 600; color: var(--text2); }
+.party-suggest-gstin { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.party-suggest-save {
+  padding: 10px 14px;
+  background: var(--green-pale);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--green3);
+  font-weight: 700;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.party-suggest-save:hover { background: var(--green-light); }
+
+/* ── HSN MANAGER ROWS ── */
+.hsn-manager-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.hsn-manager-row:last-child { border-bottom: none; }
+.hsn-manager-code { font-family: monospace; font-weight: 700; color: var(--green3); min-width: 60px; }
+.hsn-manager-desc { flex: 1; color: var(--text2); }
+
+/* ── CLIENT DIR ROWS ── */
+.client-dir-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.client-dir-row:last-child { border-bottom: none; }
+.client-dir-name { font-weight: 600; color: var(--text2); flex: 1; }
+.client-dir-gstin { font-size: 12px; color: var(--muted); font-family: monospace; }
+
 /* ── TOAST ── */
 .erp-toast {
   position: fixed;
@@ -1136,26 +1205,27 @@
             <!-- ── BILL FROM / TO ── -->
             <div class="inv-meta">
               <div>
-                <div class="erp-panel-title" style="font-size:13px;margin-bottom:12px;color:var(--green3);">BILL FROM (Your Company)</div>
-                <div class="form-group">
-                  <label class="form-label">Company Name</label>
-                  <input class="form-control" id="f-fromName" placeholder="Deepu Siva Private Limited"/>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                  <div class="erp-panel-title" style="font-size:13px;color:var(--green3);">BILL FROM (Your Company)</div>
+                  <a href="#" onclick="showPage('settings',null);return false;" style="font-size:11px;color:var(--green);font-weight:700;text-decoration:none;">Edit in Settings →</a>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Address</label>
-                  <textarea class="form-control" id="f-fromAddr" rows="2" placeholder="Coimbatore, Tamil Nadu"></textarea>
+                <!-- Read-only display — edit in Settings tab -->
+                <div id="billFromDisplay" style="background:var(--green-pale);border:1px solid rgba(22,163,74,.2);border-radius:var(--radius);padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text2);">
+                  Loading…
                 </div>
-                <div class="inv-meta">
-                  <div class="form-group"><label class="form-label">GSTIN</label><input class="form-control" id="f-fromGSTIN" placeholder="33XXXXX…"/></div>
-                  <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="f-fromPhone" placeholder="+91 84890 90666"/></div>
-                </div>
+                <!-- Hidden inputs carry values for save/print — never shown -->
+                <input type="hidden" id="f-fromName"/>
+                <input type="hidden" id="f-fromAddr"/>
+                <input type="hidden" id="f-fromGSTIN"/>
+                <input type="hidden" id="f-fromPhone"/>
               </div>
               <div>
                 <div class="erp-panel-title" style="font-size:13px;margin-bottom:12px;color:var(--green3);">BILL TO (Party / Client)</div>
-                <div class="form-group">
-                  <label class="form-label">Party Name * <span style="color:var(--muted);font-size:10px;">(or type guest name)</span></label>
-                  <input class="form-control" id="f-toName" placeholder="Client / Company name" list="partyList"/>
-                  <datalist id="partyList"></datalist>
+                <div class="form-group" style="position:relative;">
+                  <label class="form-label">Party Name * <span style="color:var(--muted);font-size:10px;">(type to search saved parties)</span></label>
+                  <input class="form-control" id="f-toName" placeholder="Client / Company name" autocomplete="off" oninput="onPartyInput(this.value)" onfocus="onPartyInput(this.value)" onblur="setTimeout(closePartySuggest,200)"/>
+                  <!-- Smart dropdown — replaces datalist for autofill support -->
+                  <div id="partySuggestBox" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);border:1px solid var(--green);border-top:none;border-radius:0 0 var(--radius) var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:300;max-height:220px;overflow-y:auto;"></div>
                 </div>
                 <div class="form-group">
                   <label class="form-label">Address</label>
@@ -1184,16 +1254,14 @@
               </div>
             </div>
 
-            <!-- ── HSN QUICK PICKS ── -->
+            <!-- ── HSN QUICK PICKS — dynamic from settings ── -->
             <div style="margin-bottom:16px;">
-              <div class="form-label">Common HSN Codes (click to copy)</div>
-              <div class="hsn-quick">
-                <span class="hsn-chip" onclick="copyHSN('7308','Structures of iron/steel')">7308 — Steel Structures</span>
-                <span class="hsn-chip" onclick="copyHSN('7210','GI Roofing Sheets')">7210 — GI Sheets/Roofing</span>
-                <span class="hsn-chip" onclick="copyHSN('8541','Solar Panels')">8541 — Solar Panels</span>
-                <span class="hsn-chip" onclick="copyHSN('6996','Solar Mounting')">6996 — Solar Mounting</span>
-                <span class="hsn-chip" onclick="copyHSN('9954','Construction Services')">9954 — Construction</span>
-                <span class="hsn-chip" onclick="copyHSN('9988','Manufacturing Services')">9988 — Fabrication</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <div class="form-label" style="margin:0;">Common HSN Codes <span style="color:var(--muted);font-weight:400;">(click to apply to last item)</span></div>
+                <a href="#" onclick="showPage('settings',null);return false;" style="font-size:11px;color:var(--green);font-weight:700;text-decoration:none;">Manage in Settings →</a>
+              </div>
+              <div class="hsn-quick" id="hsnQuickBar">
+                <!-- Populated by renderHsnChips() from settings -->
               </div>
             </div>
 
@@ -1416,6 +1484,71 @@
             </div>
           </div>
 
+          <!-- ── HSN CODE MANAGER ── -->
+          <div class="settings-section">
+            <div class="settings-section-title">Common HSN Codes</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">These appear as quick-copy chips in the invoice form.</p>
+            <div id="hsnManagerList" style="margin-bottom:12px;"></div>
+            <div style="display:flex;gap:8px;">
+              <input class="form-control" id="newHsnCode" placeholder="HSN Code (e.g. 7308)" style="width:160px;"/>
+              <input class="form-control" id="newHsnDesc" placeholder="Description (e.g. Steel Structures)" style="flex:1;"/>
+              <button class="btn btn-green btn-sm" onclick="addHsnCode()">+ Add</button>
+            </div>
+          </div>
+
+          <!-- ── CLIENT DIRECTORY ── -->
+          <div class="settings-section">
+            <div class="settings-section-title">Client Directory</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Saved party details for quick autofill in invoices.</p>
+            <div id="clientDirectoryList" style="margin-bottom:12px;"></div>
+            <button class="btn btn-outline-green btn-sm" onclick="loadClientDirectory()">Refresh Directory</button>
+          </div>
+
+          <!-- ── PDF TEMPLATE ── -->
+          <div class="settings-section">
+            <div class="settings-section-title">PDF Invoice Template</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+              <label class="template-card" id="tmpl-classic">
+                <input type="radio" name="pdfTemplate" value="classic" style="display:none;"/>
+                <div class="template-preview" style="border-top:4px solid var(--green3);">
+                  <div style="font-size:11px;font-weight:800;color:var(--green3);text-transform:uppercase;">Classic</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:3px;">Traditional Tally style</div>
+                  <div style="height:40px;background:var(--bg3);border-radius:4px;margin-top:8px;"></div>
+                </div>
+              </label>
+              <label class="template-card" id="tmpl-modern">
+                <input type="radio" name="pdfTemplate" value="modern" style="display:none;"/>
+                <div class="template-preview" style="border-top:4px solid var(--green);">
+                  <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;">Modern</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:3px;">Clean two-column</div>
+                  <div style="height:40px;background:var(--green-pale);border-radius:4px;margin-top:8px;"></div>
+                </div>
+              </label>
+              <label class="template-card" id="tmpl-colorful">
+                <input type="radio" name="pdfTemplate" value="colorful" style="display:none;"/>
+                <div class="template-preview" style="border-top:4px solid var(--amber);">
+                  <div style="font-size:11px;font-weight:800;color:var(--amber);text-transform:uppercase;">Colorful</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:3px;">Bold header, green rows</div>
+                  <div style="height:40px;background:#fef3c7;border-radius:4px;margin-top:8px;"></div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- ── PDF COLUMN TOGGLES ── -->
+          <div class="settings-section">
+            <div class="settings-section-title">PDF Column Visibility</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Toggle which columns appear in your printed/downloaded invoice.</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-hsn" checked/> Show HSN Code</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-unit" checked/> Show Unit</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-rate" checked/> Show Unit Rate</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-gstpct" checked/> Show GST %</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-sgstcgst" checked/> Show SGST/CGST split</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-bank" checked/> Show Bank Details</label>
+            </div>
+          </div>
+
           <button class="btn btn-green" onclick="saveSettings()">Save All Settings</button>
           <div style="margin-top:12px;font-size:13px;color:var(--muted);" id="settingsSaved"></div>
         </div>
@@ -1581,8 +1714,7 @@ const ADMIN_EMAILS = [
   "deepadharsan.rajavel@gmail.com",
   "deepusiva.pvt@gmail.com",
   "contact@deepusiva.com",
-  "deepusiva2017@gmail.com",
-  "deepusiva947@gmail.com"
+  "deepusiva2017@gmail.com"
 ];
 
 const app  = initializeApp(firebaseConfig);
@@ -1790,7 +1922,8 @@ async function bootERP(user) {
   loadAllDocLists();
   updateOnlineStatus();
   prefillFormFromSettings();
-  loadPartyAutocomplete();
+  await loadPartyAutocomplete();  // loads party directory into memory
+  loadClientDirectory();           // renders directory list in settings
 
   // Check URL params for deep linking
   const params = new URLSearchParams(window.location.search);
@@ -1846,7 +1979,16 @@ async function loadSettings() {
 
 window.saveSettings = async function() {
   try {
+    // Gather PDF template + column settings
+    const selectedTmpl = document.querySelector('input[name="pdfTemplate"]:checked');
+    const pdfColumns   = {};
+    ['hsn','unit','rate','gstpct','sgstcgst','bank'].forEach(c => {
+      const el = document.getElementById('col-' + c);
+      pdfColumns[c] = el ? el.checked : true;
+    });
+
     settings = {
+      ...settings, // keep hsnCodes array and other dynamic fields
       companyName: document.getElementById('s-companyName').value.trim(),
       gstin:       document.getElementById('s-gstin').value.trim(),
       address:     document.getElementById('s-address').value.trim(),
@@ -1857,6 +1999,8 @@ window.saveSettings = async function() {
       invPrefix:   document.getElementById('s-invPrefix').value.trim() || 'INV',
       quoPrefix:   document.getElementById('s-quoPrefix').value.trim() || 'QUO',
       dcPrefix:    document.getElementById('s-dcPrefix').value.trim()  || 'DC',
+      pdfTemplate: selectedTmpl ? selectedTmpl.value : 'classic',
+      pdfColumns,
     };
     await setDoc(doc(db,'erp_settings', ownerUid), settings);
     document.getElementById('settingsSaved').textContent = '✅ Settings saved!';
@@ -1868,24 +2012,59 @@ window.saveSettings = async function() {
 
 function prefillFormFromSettings() {
   if (!settings) return;
-  document.getElementById('s-companyName').value = settings.companyName || 'Deepu Siva Private Limited';
-  document.getElementById('s-gstin').value       = settings.gstin       || '';
-  document.getElementById('s-address').value     = settings.address     || 'Coimbatore, Tamil Nadu';
-  document.getElementById('s-phone').value       = settings.phone       || '+91 84890 90666';
-  document.getElementById('s-email').value       = settings.email       || 'contact@deepusiva.com';
+  const name  = settings.companyName || 'Deepu Siva Private Limited';
+  const addr  = settings.address     || 'Coimbatore, Tamil Nadu';
+  const gstin = settings.gstin       || '';
+  const phone = settings.phone       || '+91 84890 90666';
+  const email = settings.email       || 'contact@deepusiva.com';
+
+  // Settings tab fields
+  document.getElementById('s-companyName').value = name;
+  document.getElementById('s-gstin').value       = gstin;
+  document.getElementById('s-address').value     = addr;
+  document.getElementById('s-phone').value       = phone;
+  document.getElementById('s-email').value       = email;
   document.getElementById('s-bankDetails').value = settings.bankDetails || '';
   document.getElementById('s-terms').value       = settings.terms       || '1. Payment due within 30 days\n2. Subject to Coimbatore jurisdiction';
   document.getElementById('s-invPrefix').value   = settings.invPrefix   || 'INV';
   document.getElementById('s-quoPrefix').value   = settings.quoPrefix   || 'QUO';
   document.getElementById('s-dcPrefix').value    = settings.dcPrefix    || 'DC';
 
-  // Prefill invoice form from settings
-  document.getElementById('f-fromName').value    = settings.companyName || 'Deepu Siva Private Limited';
-  document.getElementById('f-fromGSTIN').value   = settings.gstin       || '';
-  document.getElementById('f-fromAddr').value    = settings.address     || 'Coimbatore, Tamil Nadu';
-  document.getElementById('f-fromPhone').value   = settings.phone       || '+91 84890 90666';
+  // Invoice form hidden inputs (carry values for save/print)
+  document.getElementById('f-fromName').value    = name;
+  document.getElementById('f-fromGSTIN').value   = gstin;
+  document.getElementById('f-fromAddr').value    = addr;
+  document.getElementById('f-fromPhone').value   = phone;
   document.getElementById('f-bankDetails').value = settings.bankDetails || '';
   document.getElementById('f-terms').value       = settings.terms       || '';
+
+  // Read-only Bill From display panel
+  const display = document.getElementById('billFromDisplay');
+  if (display) {
+    display.innerHTML =
+      `<strong>${name}</strong><br/>${addr}` +
+      (gstin ? `<br/>GSTIN: <strong>${gstin}</strong>` : '') +
+      (phone ? `<br/>Tel: ${phone}` : '') +
+      (email ? ` &nbsp;|&nbsp; ${email}` : '');
+  }
+
+  // HSN chips from settings
+  renderHsnChips();
+
+  // PDF template selection
+  const tmpl  = settings.pdfTemplate || 'classic';
+  const radio = document.querySelector('input[name="pdfTemplate"][value="' + tmpl + '"]');
+  if (radio) radio.checked = true;
+
+  // Column toggles
+  const cols = settings.pdfColumns || {};
+  ['hsn','unit','rate','gstpct','sgstcgst','bank'].forEach(c => {
+    const el = document.getElementById('col-' + c);
+    if (el) el.checked = cols[c] !== false;
+  });
+
+  // HSN manager list
+  renderHsnManagerList();
 }
 
 // ── DOCUMENT TYPE TOGGLE ───────────────────────────────
@@ -1968,7 +2147,7 @@ window.newDoc = function(type) {
 // ── LINE ITEMS ─────────────────────────────────────────
 window.addLineItem = function() {
   lineItems.push({ desc:'', hsn:'', qty:1, unit:'Nos', price:0, gstPct:18, amount:0 });
-  renderLineItems();
+  renderLineItems();       // Full re-render only on structural changes
   recalcTotals();
 };
 
@@ -1978,11 +2157,26 @@ window.removeLineItem = function(idx) {
   recalcTotals();
 };
 
+// ── FOCUS-SAFE UPDATE ─────────────────────────────────
+// The root cause of the focus bug: updateLineItem called renderLineItems()
+// which destroyed the DOM (including the focused input) and rebuilt it.
+// Fix: Update the data model only. Recalc totals only. NEVER re-render.
+// The amount column is updated in-place without touching the input cell.
 window.updateLineItem = function(idx, field, value) {
+  if (idx >= lineItems.length) return;
   lineItems[idx][field] = field === 'qty' || field === 'price' || field === 'gstPct'
     ? parseFloat(value) || 0 : value;
   lineItems[idx].amount = lineItems[idx].qty * lineItems[idx].price;
-  renderLineItems();
+  // Update ONLY the amount cell for this row — never touch the input cells
+  const amtCells = document.querySelectorAll('.li-amt-cell');
+  if (amtCells[idx]) {
+    amtCells[idx].textContent = '₹' + lineItems[idx].amount.toLocaleString('en-IN',{maximumFractionDigits:2});
+  }
+  // Mobile card total
+  const mobTotals = document.querySelectorAll('.li-card-total-val');
+  if (mobTotals[idx]) {
+    mobTotals[idx].textContent = '₹' + lineItems[idx].amount.toLocaleString('en-IN',{maximumFractionDigits:2});
+  }
   recalcTotals();
 };
 
@@ -2007,7 +2201,7 @@ function renderLineItems() {
             ${[0,5,12,18,28].map(r=>`<option value="${r}" ${item.gstPct===r?'selected':''}>${r}%</option>`).join('')}
           </select>
         </td>
-        <td class="col-amt">₹${(item.qty*item.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
+        <td class="col-amt li-amt-cell">₹${(item.qty*item.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
         <td class="col-del"><button class="del-row-btn" onclick="removeLineItem(${i})"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></td>
       </tr>`).join('') || `<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--muted);">No items yet. Click "+ Add Line Item" below.</td></tr>`;
   }
@@ -2060,16 +2254,73 @@ function recalcTotals() {
 
 // ── COPY HSN ───────────────────────────────────────────
 window.copyHSN = function(code, desc) {
-  // Apply to most recently added item
   if (lineItems.length > 0) {
     const last = lineItems[lineItems.length - 1];
     last.hsn = code;
     if (!last.desc) last.desc = desc;
     renderLineItems();
-    toast(`HSN ${code} applied!`);
+    toast(`HSN ${code} applied to last item!`);
   } else {
     toast('Add a line item first, then click HSN code.', 'warn');
   }
+};
+
+// ── HSN MANAGER ────────────────────────────────────────
+const DEFAULT_HSN = [
+  { code:'7308', desc:'Structures of iron/steel' },
+  { code:'7210', desc:'GI Roofing Sheets' },
+  { code:'8541', desc:'Solar Panels' },
+  { code:'6996', desc:'Solar Mounting Structures' },
+  { code:'9954', desc:'Construction Services' },
+  { code:'9988', desc:'Fabrication/Manufacturing Services' },
+];
+
+function getHsnCodes() {
+  return settings.hsnCodes && settings.hsnCodes.length
+    ? settings.hsnCodes : DEFAULT_HSN;
+}
+
+function renderHsnChips() {
+  const bar = document.getElementById('hsnQuickBar');
+  if (!bar) return;
+  const codes = getHsnCodes();
+  bar.innerHTML = codes.map(h =>
+    `<span class="hsn-chip" onclick="copyHSN('${h.code}','${h.desc.replace(/'/g,"\'")}')">
+      ${h.code} — ${h.desc}
+    </span>`).join('');
+}
+
+function renderHsnManagerList() {
+  const el = document.getElementById('hsnManagerList');
+  if (!el) return;
+  const codes = getHsnCodes();
+  el.innerHTML = codes.map((h, i) => `
+    <div class="hsn-manager-row">
+      <span class="hsn-manager-code">${h.code}</span>
+      <span class="hsn-manager-desc">${h.desc}</span>
+      <button class="btn-sm-red" onclick="removeHsnCode(${i})">Remove</button>
+    </div>`).join('') || '<p style="color:var(--muted);font-size:13px;">No HSN codes. Add one below.</p>';
+}
+
+window.addHsnCode = function() {
+  const code = document.getElementById('newHsnCode').value.trim();
+  const desc = document.getElementById('newHsnDesc').value.trim();
+  if (!code || !desc) { toast('Enter both HSN code and description.', 'warn'); return; }
+  if (!settings.hsnCodes) settings.hsnCodes = [...DEFAULT_HSN];
+  settings.hsnCodes.push({ code, desc });
+  document.getElementById('newHsnCode').value = '';
+  document.getElementById('newHsnDesc').value = '';
+  renderHsnChips();
+  renderHsnManagerList();
+  toast(`HSN ${code} added!`);
+};
+
+window.removeHsnCode = function(idx) {
+  if (!settings.hsnCodes) settings.hsnCodes = [...DEFAULT_HSN];
+  settings.hsnCodes.splice(idx, 1);
+  renderHsnChips();
+  renderHsnManagerList();
+  toast('HSN code removed.');
 };
 
 // ── INVOICE FORM TOGGLE (form ↔ list) ─────────────────
@@ -2211,13 +2462,36 @@ window.confirmPortalPush = async function() {
 
 // ── PDF GENERATION ─────────────────────────────────────
 function buildPrintTemplate() {
-  const totals = recalcTotals();
-  const docNum = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','');
-  const docDate = document.getElementById('f-invDate').value;
-  const dueDate = document.getElementById('f-dueDate').value;
-  const docType = currentDocType === 'quotation' ? 'QUOTATION'
-                : currentDocType === 'challan'   ? 'DELIVERY CHALLAN'
-                : 'TAX INVOICE';
+  const totals   = recalcTotals();
+  const docNum   = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','');
+  const docDate  = document.getElementById('f-invDate').value;
+  const dueDate  = document.getElementById('f-dueDate').value;
+  const docType  = currentDocType === 'quotation' ? 'QUOTATION'
+                 : currentDocType === 'challan'   ? 'DELIVERY CHALLAN'
+                 : 'TAX INVOICE';
+  const tmpl     = settings.pdfTemplate || 'classic';
+  const cols     = settings.pdfColumns  || {};
+  const showHSN  = cols.hsn     !== false;
+  const showUnit = cols.unit    !== false;
+  const showRate = cols.rate    !== false;
+  const showGpct = cols.gstpct  !== false;
+  const showBank = cols.bank    !== false;
+
+  // Apply template theme to print template
+  const header = document.querySelector('#printTemplate .pt-header');
+  if (header) {
+    if (tmpl === 'modern') {
+      header.style.cssText = 'background:var(--green);padding:16px 20px;border-radius:8px 8px 0 0;border-bottom:none;';
+      document.querySelector('.pt-company-name') && (document.querySelector('.pt-company-name').style.color = '#fff');
+      document.querySelector('.pt-doc-type') && (document.querySelector('.pt-doc-type').style.color = '#fff');
+    } else if (tmpl === 'colorful') {
+      header.style.cssText = 'background:linear-gradient(135deg,#166534,#16a34a);padding:16px 20px;border-radius:8px 8px 0 0;border-bottom:none;';
+      document.querySelector('.pt-company-name') && (document.querySelector('.pt-company-name').style.color = '#fff');
+      document.querySelector('.pt-doc-type') && (document.querySelector('.pt-doc-type').style.color = '#f59e0b');
+    } else {
+      header.style.cssText = '';
+    }
+  }
 
   document.getElementById('pt-docType').textContent = docType;
   document.getElementById('pt-docNum').innerHTML    = `<strong>${docNum}</strong><br/>Date: ${docDate}${dueDate ? `<br/>Due: ${dueDate}` : ''}`;
@@ -2238,15 +2512,29 @@ function buildPrintTemplate() {
     <strong>Notes:</strong> ${document.getElementById('f-notes').value || '—'}`;
 
   // Line items in template
+  // Build column headers dynamically based on column settings
+  const ptThead = document.querySelector('#printTemplate .pt-table thead tr');
+  if (ptThead) {
+    ptThead.innerHTML =
+      '<th style="width:30px;">#</th>' +
+      '<th>Description</th>' +
+      (showHSN  ? '<th style="width:70px;">HSN</th>' : '') +
+      '<th style="width:45px;">Qty</th>' +
+      (showUnit ? '<th style="width:55px;">Unit</th>' : '') +
+      (showRate ? '<th style="width:90px;text-align:right;">Rate ₹</th>' : '') +
+      (showGpct ? '<th style="width:55px;text-align:center;">GST%</th>' : '') +
+      '<th style="width:100px;text-align:right;">Amount ₹</th>';
+  }
+
   document.getElementById('pt-lineItems').innerHTML = lineItems.map((item, i) => `
     <tr>
       <td>${i+1}</td>
       <td>${item.desc}</td>
-      <td>${item.hsn}</td>
+      ${showHSN  ? `<td>${item.hsn}</td>` : ''}
       <td>${item.qty}</td>
-      <td>${item.unit}</td>
-      <td style="text-align:right;">₹${item.price.toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
-      <td style="text-align:center;">${item.gstPct}%</td>
+      ${showUnit ? `<td>${item.unit}</td>` : ''}
+      ${showRate ? `<td style="text-align:right;">₹${item.price.toLocaleString('en-IN',{maximumFractionDigits:2})}</td>` : ''}
+      ${showGpct ? `<td style="text-align:center;">${item.gstPct}%</td>` : ''}
       <td>₹${(item.qty*item.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
     </tr>`).join('');
 
@@ -2256,6 +2544,8 @@ function buildPrintTemplate() {
   document.getElementById('pt-round').textContent = totals.roundOff.toFixed(2);
   document.getElementById('pt-total').textContent = '₹' + totals.rounded.toLocaleString('en-IN');
   document.getElementById('pt-inwords').textContent = 'Amount in words: ' + numberToWords(totals.rounded) + ' Rupees Only';
+  const bankSection = document.querySelector('#printTemplate .pt-bank-box');
+  if (bankSection) bankSection.style.display = showBank ? '' : 'none';
   document.getElementById('pt-bankDetails').textContent = document.getElementById('f-bankDetails').value || 'Contact us for bank details';
   document.getElementById('pt-terms').textContent = document.getElementById('f-terms').value || '—';
   document.getElementById('pt-notes').textContent = document.getElementById('f-notes').value || '';
@@ -2347,6 +2637,7 @@ async function loadRecentInvoices() {
   if (!ownerUid) return;
   const tbody = document.getElementById('recentInvoicesList');
   try {
+    // Try with orderBy first (requires composite Firestore index)
     const snap = await getDocs(query(
       collection(db,'erp_documents'),
       where('ownerUid','==',ownerUid),
@@ -2358,7 +2649,29 @@ async function loadRecentInvoices() {
       return;
     }
     tbody.innerHTML = snap.docs.map(d => docRow(d)).join('');
-  } catch { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--red);">Error loading. Check Firestore index.</td></tr>`; }
+  } catch(e) {
+    if (e.code === 'failed-precondition' || e.message?.includes('index')) {
+      // Index not ready yet — fall back to unordered query
+      try {
+        const snap2 = await getDocs(query(
+          collection(db,'erp_documents'),
+          where('ownerUid','==',ownerUid),
+          limit(8)
+        ));
+        if (snap2.empty) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">No documents yet. Create your first invoice!</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = snap2.docs.map(d => docRow(d)).join('');
+        // Show a non-blocking hint about the index
+        toast('Firestore index is still building — items may be unordered for a few minutes.', 'warn');
+      } catch(e2) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted);">Loading… (Firestore index building, usually takes 1-2 minutes)</td></tr>`;
+      }
+    } else {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--red);">Error: ${e.message}</td></tr>`;
+    }
+  }
 }
 
 function docRow(d) {
@@ -2387,6 +2700,9 @@ async function loadAllDocLists() {
   loadAllReceipts();
 }
 
+// ── window.loadClientDirectory exposed for settings button ──
+window.loadClientDirectory = loadClientDirectory;
+
 async function loadListFor(type, tbodyId) {
   const tbody = document.getElementById(tbodyId);
   if (!tbody || !ownerUid) return;
@@ -2403,7 +2719,26 @@ async function loadListFor(type, tbodyId) {
       return;
     }
     tbody.innerHTML = snap.docs.map(d => docRow(d)).join('');
-  } catch { tbody.innerHTML = `<tr><td colspan="6" style="color:var(--red);padding:20px;">Error loading.</td></tr>`; }
+  } catch(e) {
+    if (e.code === 'failed-precondition' || e.message?.includes('index')) {
+      // Index still building — fall back to simple query
+      try {
+        const snap2 = await getDocs(query(
+          collection(db,'erp_documents'),
+          where('ownerUid','==',ownerUid),
+          where('docType','==',type),
+          limit(50)
+        ));
+        tbody.innerHTML = snap2.empty
+          ? `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">No ${type}s yet.</td></tr>`
+          : snap2.docs.map(d => docRow(d)).join('');
+      } catch {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted);">Index building… refresh in 1-2 minutes.</td></tr>`;
+      }
+    } else {
+      tbody.innerHTML = `<tr><td colspan="6" style="color:var(--red);padding:20px;">Error: ${e.message}</td></tr>`;
+    }
+  }
 }
 
 async function loadAllInvoices()   { await loadListFor('invoice','allInvoicesList'); }
@@ -2465,21 +2800,141 @@ window.downloadDocPDF = async function(docId) {
   setTimeout(() => downloadPDF(), 500);
 };
 
-// ── PARTY AUTOCOMPLETE ─────────────────────────────────
+// ── PARTY DIRECTORY SYSTEM ────────────────────────────
+// Stores saved party details in Firestore: clients/{ownerUid}/parties/{id}
+// Party suggestion dropdown with autofill of address + GSTIN
+
+let partyDirectory = []; // in-memory cache
+
 async function loadPartyAutocomplete() {
   if (!ownerUid) return;
   try {
-    const snap = await getDocs(query(
+    // Load saved parties from dedicated collection
+    const savedSnap = await getDocs(
+      collection(db, 'clients', ownerUid, 'parties')
+    );
+    const savedParties = savedSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    // Also gather names from past invoices (for guests not in directory)
+    const invSnap = await getDocs(query(
       collection(db,'erp_documents'),
       where('ownerUid','==',ownerUid),
-      limit(100)
+      limit(200)
     ));
-    const parties = new Set();
-    snap.forEach(d => { if(d.data().toName) parties.add(d.data().toName); });
-    const list = document.getElementById('partyList');
-    list.innerHTML = [...parties].map(p => `<option value="${p}"/>`).join('');
-  } catch {}
+    const pastNames = new Set();
+    invSnap.forEach(d => { if (d.data().toName) pastNames.add(d.data().toName); });
+
+    // Merge: saved parties (with full data) + past names without saved record
+    const savedNames = new Set(savedParties.map(p => p.name));
+    const guestParties = [...pastNames]
+      .filter(n => !savedNames.has(n))
+      .map(n => ({ name: n, addr: '', gstin: '', isGuest: true }));
+
+    partyDirectory = [...savedParties, ...guestParties];
+  } catch(e) {
+    partyDirectory = [];
+  }
 }
+
+window.onPartyInput = function(val) {
+  const box = document.getElementById('partySuggestBox');
+  if (!box) return;
+  const q = val.toLowerCase().trim();
+  const matches = partyDirectory.filter(p =>
+    p.name && p.name.toLowerCase().includes(q)
+  ).slice(0, 8);
+
+  if (!q && !matches.length) { box.style.display = 'none'; return; }
+
+  let html = matches.map(p => `
+    <div class="party-suggest-item" onmousedown="selectParty(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+      <div class="party-suggest-name">${p.name}</div>
+      ${p.gstin ? `<div class="party-suggest-gstin">GSTIN: ${p.gstin}</div>` : ''}
+      ${p.addr  ? `<div class="party-suggest-gstin">${p.addr.substring(0,40)}…</div>` : ''}
+    </div>`).join('');
+
+  // "Save as new party" option
+  if (val.trim() && !matches.find(p => p.name.toLowerCase() === val.toLowerCase())) {
+    html += `<div class="party-suggest-save" onmousedown="saveNewParty('${val.replace(/'/g,"\'")}')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Save "${val}" to Client Directory
+    </div>`;
+  }
+
+  box.innerHTML = html || `<div style="padding:12px 14px;font-size:13px;color:var(--muted);">No matches found</div>`;
+  box.style.display = 'block';
+};
+
+window.selectParty = function(partyObj) {
+  // partyObj may come as string from onmousedown attribute
+  const p = typeof partyObj === 'string' ? JSON.parse(partyObj) : partyObj;
+  document.getElementById('f-toName').value        = p.name  || '';
+  document.getElementById('f-toAddr').value        = p.addr  || '';
+  document.getElementById('f-toGSTIN').value       = p.gstin || '';
+  document.getElementById('f-placeOfSupply').value = p.placeOfSupply || '';
+  closePartySuggest();
+};
+
+window.closePartySuggest = function() {
+  const box = document.getElementById('partySuggestBox');
+  if (box) box.style.display = 'none';
+};
+
+window.saveNewParty = async function(name) {
+  closePartySuggest();
+  const addr  = document.getElementById('f-toAddr').value.trim();
+  const gstin = document.getElementById('f-toGSTIN').value.trim();
+  const pos   = document.getElementById('f-placeOfSupply').value.trim();
+  try {
+    const ref = await addDoc(collection(db,'clients',ownerUid,'parties'), {
+      name, addr, gstin, placeOfSupply: pos,
+      createdAt: serverTimestamp()
+    });
+    partyDirectory.push({ id: ref.id, name, addr, gstin, placeOfSupply: pos });
+    toast(`"${name}" saved to Client Directory!`);
+    renderClientDirectoryList();
+  } catch(e) { toast('Could not save party: ' + e.message, 'err'); }
+};
+
+async function loadClientDirectory() {
+  if (!ownerUid) return;
+  try {
+    const snap = await getDocs(collection(db,'clients',ownerUid,'parties'));
+    partyDirectory = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderClientDirectoryList();
+  } catch(e) { console.warn('Party directory load failed:', e); }
+}
+
+function renderClientDirectoryList() {
+  const el = document.getElementById('clientDirectoryList');
+  if (!el) return;
+  if (!partyDirectory.filter(p => !p.isGuest).length) {
+    el.innerHTML = '<p style="color:var(--muted);font-size:13px;">No saved clients yet. They appear here when you save from the invoice form.</p>';
+    return;
+  }
+  el.innerHTML = partyDirectory
+    .filter(p => !p.isGuest)
+    .map(p => `
+      <div class="client-dir-row">
+        <div>
+          <div class="client-dir-name">${p.name}</div>
+          ${p.addr ? `<div class="client-dir-gstin">${p.addr.substring(0,50)}</div>` : ''}
+        </div>
+        <span class="client-dir-gstin">${p.gstin || '—'}</span>
+        <button class="btn-sm-red" onclick="deleteParty('${p.id}','${(p.name||'').replace(/'/g,"\'")}')">Remove</button>
+      </div>`).join('');
+}
+
+window.deleteParty = async function(id, name) {
+  if (!confirm('Remove "' + name + '" from Client Directory?')) return;
+  try {
+    await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js")
+      .then(m => m.deleteDoc(doc(db,'clients',ownerUid,'parties',id)));
+    partyDirectory = partyDirectory.filter(p => p.id !== id);
+    renderClientDirectoryList();
+    toast(name + ' removed from directory.');
+  } catch(e) { toast('Delete failed: ' + e.message, 'err'); }
+};
 
 // ── REPORTS ────────────────────────────────────────────
 window.generateReport = async function(type) {
