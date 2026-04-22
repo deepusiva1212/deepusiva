@@ -125,7 +125,52 @@ tbody tr:hover td{background:var(--green-pale);}
 .cms-log.ok{background:var(--green-pale);color:var(--green3);border:1px solid rgba(22,163,74,.25);display:block;}
 .cms-log.err{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;display:block;}
 
-@media(max-width:900px){.admin-sidebar{display:none;}.admin-main{margin-left:0;}.stats-row{grid-template-columns:1fr 1fr;}.form-2col,.form-3col{grid-template-columns:1fr;}}
+@media(max-width:900px){
+  .admin-sidebar{transform:translateX(-248px);transition:transform .3s;z-index:300;}
+  .admin-sidebar.mob-open{transform:translateX(0);box-shadow:4px 0 24px rgba(0,0,0,.15);}
+  .admin-main{margin-left:0;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .form-2col,.form-3col{grid-template-columns:1fr;}
+  .mob-topbar-btn{display:flex!important;}
+  .admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:299;}
+  .admin-overlay.show{display:block;}
+  .mob-bottom-action{display:flex!important;}
+}
+@media(min-width:901px){
+  .mob-topbar-btn{display:none!important;}
+  .mob-bottom-action{display:none!important;}
+}
+/* ── MOB HAMBURGER ── */
+.mob-topbar-btn{
+  background:none;border:none;cursor:pointer;
+  display:none;flex-direction:column;gap:5px;padding:6px;
+}
+.mob-topbar-btn span{display:block;width:20px;height:2px;background:var(--text2);border-radius:2px;transition:.3s;}
+/* ── MOB FLOATING ACTION BAR ── */
+.mob-bottom-action{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  height:64px;
+  background:var(--white);
+  border-top:1px solid var(--border);
+  box-shadow:0 -4px 20px rgba(0,0,0,.06);
+  z-index:150;
+  align-items:center;
+  justify-content:space-around;
+  padding:0 8px;
+}
+.mob-action-tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;
+  border:none;background:none;
+  color:var(--muted);font-size:10px;font-weight:600;
+  letter-spacing:.3px;text-transform:uppercase;
+  cursor:pointer;padding:8px 0 10px;
+  font-family:var(--font-body);
+  transition:color .2s;text-decoration:none;
+}
+.mob-action-tab.active{color:var(--green);}
+.mob-action-tab:hover{color:var(--green3);}
 </style>
 </head>
 <body>
@@ -162,29 +207,30 @@ tbody tr:hover td{background:var(--green-pale);}
     </button>
   </nav>
   <div class="sidebar-bottom">
-    <a href="index.html">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      View Main Site
-    </a>
-    <a href="admin-shop.html">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      Shop Admin
-    </a>
-    <a href="admin-erp.html">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      ERP / Billing
-    </a>
-    <button class="btn-signout" onclick="doLogout()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Sign Out
-    </button>
-  </div>
+    <a href="index.html">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      View Main Site
+    </a>
+    <a href="admin-shop.html">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Shop Admin
+    </a>
+    <button class="btn-signout" onclick="doLogout()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sign Out
+    </button>
+  </div>
 </aside>
 
 <!-- ═══ MAIN AREA ═══ -->
 <div class="admin-main">
   <div class="admin-topbar">
-    <h1 id="pageTitle">Overview</h1>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="mob-topbar-btn" id="mobHamburger" onclick="toggleMobSidebar()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <h1 id="pageTitle">Overview</h1>
+    </div>
     <span class="admin-email" id="adminEmail">—</span>
   </div>
 
@@ -525,6 +571,31 @@ tbody tr:hover td{background:var(--green-pale);}
   </div>
 </div>
 
+  <!-- MOBILE BOTTOM ACTION BAR -->
+  <div class="mob-bottom-action" id="mobBottomBar">
+    <button class="mob-action-tab active" id="mob-tab-overview" onclick="mobNav('overview',this)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Home
+    </button>
+    <button class="mob-action-tab" id="mob-tab-approvals" onclick="mobNav('approvals',this)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+      Approve
+      <span id="mob-pending-dot" style="position:absolute;top:8px;width:8px;height:8px;background:var(--red);border-radius:50%;display:none;"></span>
+    </button>
+    <button class="mob-action-tab" id="mob-tab-upload" onclick="mobNav('upload',this)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upload
+    </button>
+    <button class="mob-action-tab" id="mob-tab-clients" onclick="mobNav('clients',this)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Clients
+    </button>
+    <a href="admin-erp.html" class="mob-action-tab">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      ERP
+    </a>
+  </div>
+
 <div class="a-toast" id="aToast"></div>
 
 <script type="module">
@@ -768,6 +839,74 @@ window.doLogout = async function() {
   await signOut(auth);
   window.location.href = 'login.html';
 };
+
+// ── MOBILE SIDEBAR CONTROLS ────────────────────────────
+window.toggleMobSidebar = function() {
+  const sidebar = document.getElementById ? document.querySelector('.admin-sidebar') : null;
+  const overlay = document.getElementById('adminOverlay');
+  if (!sidebar) return;
+  const isOpen = sidebar.classList.contains('mob-open');
+  if (isOpen) {
+    closeMobSidebar();
+  } else {
+    sidebar.classList.add('mob-open');
+    if (overlay) overlay.classList.add('show');
+    // Push a state so hardware back button closes sidebar instead of leaving page
+    history.pushState({ sidebarOpen: true }, '');
+  }
+};
+
+window.closeMobSidebar = function() {
+  const sidebar = document.querySelector('.admin-sidebar');
+  const overlay = document.getElementById('adminOverlay');
+  if (sidebar) sidebar.classList.remove('mob-open');
+  if (overlay) overlay.classList.remove('show');
+};
+
+// ── MOBILE BOTTOM TAB NAV ──────────────────────────────
+window.mobNav = function(pageId, btn) {
+  // Use showPage for the actual content switch
+  showPage(pageId, null);
+  // Update mobile tab active state
+  document.querySelectorAll('.mob-action-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  // Push state for back button trap
+  history.pushState({ page: pageId }, '', '?p=' + pageId);
+};
+
+// ── HARDWARE BACK BUTTON TRAP ──────────────────────────
+// Intercepts Android/iOS back button:
+//  1. If sidebar is open → close sidebar
+//  2. If on inner page → go back to overview
+//  3. If on overview → let it navigate away naturally
+(function setupBackTrap() {
+  // Push an initial state on load so we have something to catch
+  history.replaceState({ page: 'overview' }, '', window.location.href);
+
+  window.addEventListener('popstate', function(e) {
+    if (e.state?.sidebarOpen) {
+      // Back was pressed while sidebar was open → just close it
+      closeMobSidebar();
+      // Re-push overview state to maintain trap
+      history.pushState({ page: 'overview' }, '');
+      return;
+    }
+
+    const currentPage = document.querySelector('.admin-page.active')?.id?.replace('page-','');
+
+    if (currentPage && currentPage !== 'overview') {
+      // On a sub-page → go back to overview
+      e.preventDefault();
+      showPage('overview', null);
+      document.querySelectorAll('.mob-action-tab').forEach(t => t.classList.remove('active'));
+      const homeTab = document.getElementById('mob-tab-overview');
+      if (homeTab) homeTab.classList.add('active');
+      // Push a new state so next back press still has something to catch
+      history.pushState({ page: 'overview' }, '');
+    }
+    // If on overview, let browser navigate away (back to previous page)
+  });
+})();
 
 // ── TOAST ──
 function toast(msg, isErr = false) {

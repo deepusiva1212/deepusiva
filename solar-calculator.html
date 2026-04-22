@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Free Solar ROI Calculator | Deepu Siva Private Limited</title>
+<meta name="description" content="Calculate your solar savings instantly. Find out how many panels you need, your payback period, and exact savings for your home or factory in Coimbatore."/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+/* ── CALCULATOR PAGE ── */
+.calc-hero {
+  background: linear-gradient(150deg, var(--green3) 0%, var(--green2) 50%, var(--green) 100%);
+  padding: 56px 24px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.calc-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.calc-hero-tag {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,.2);
+}
+.calc-hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  position: relative;
+}
+.calc-hero h1 span { color: #fde68a; }
+.calc-hero p {
+  color: rgba(255,255,255,.8);
+  font-size: 16px;
+  margin-top: 12px;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.calc-hero-badges {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.calc-hero-badge {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── MAIN LAYOUT ── */
+.calc-body {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 24px 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── CALCULATOR PANEL ── */
+.calc-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+}
+.calc-panel-title {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--green3);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--green-light);
+}
+
+/* ── TYPE TOGGLE ── */
+.type-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.type-btn {
+  padding: 18px 12px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  cursor: pointer;
+  text-align: center;
+  transition: all .2s;
+  font-family: var(--font-body);
+}
+.type-btn:hover { border-color: var(--green); }
+.type-btn.active {
+  border-color: var(--green);
+  background: var(--green-pale);
+}
+.type-btn svg { color: var(--muted); transition: color .2s; }
+.type-btn.active svg { color: var(--green); }
+.type-btn-label {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 8px;
+}
+.type-btn-desc { font-size: 12px; color: var(--muted); margin-top: 3px; display: block; }
+
+/* ── SLIDER INPUT ── */
+.slider-group { margin-bottom: 20px; }
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.slider-label span { font-size: 13px; color: var(--muted); font-weight: 600; }
+.slider-value {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--green);
+}
+.slider-unit { font-size: 13px; color: var(--muted); font-weight: 400; }
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--green-light);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 2px 8px rgba(22,163,74,.3);
+  cursor: pointer;
+  transition: transform .15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* ── PANEL WATTAGE ── */
+.panel-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.panel-chip {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  border: none;
+  font-family: var(--font-body);
+}
+.panel-chip:hover { background: var(--green-light); color: var(--green3); }
+.panel-chip.active {
+  background: var(--green);
+  color: #fff;
+}
+
+/* ── EB RATE PRESETS ── */
+.rate-presets {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.rate-preset {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  border: none;
+  font-family: var(--font-body);
+}
+.rate-preset:hover { background: var(--green-light); color: var(--green3); }
+
+/* ── RESULTS PANEL ── */
+.results-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: sticky;
+  top: 20px;
+}
+.results-header {
+  background: linear-gradient(135deg, var(--green3), var(--green));
+  padding: 20px 24px;
+  color: #fff;
+}
+.results-header h3 {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  opacity: .85;
+}
+.results-main-num {
+  font-family: var(--font-head);
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 6px;
+}
+.results-main-label { font-size: 13px; opacity: .75; margin-top: 4px; }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.result-cell {
+  background: var(--white);
+  padding: 18px 20px;
+}
+.result-cell-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.result-cell-val {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+}
+.result-cell-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* Payback progress bar */
+.payback-bar-wrap { padding: 20px 20px 0; }
+.payback-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.payback-bar-track {
+  background: var(--bg3);
+  border-radius: 4px;
+  height: 10px;
+  overflow: hidden;
+}
+.payback-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), #059669);
+  border-radius: 4px;
+  transition: width .6s ease;
+}
+
+/* Yearly savings breakdown */
+.savings-breakdown { padding: 16px 20px; }
+.savings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.savings-row:last-child { border-bottom: none; }
+.savings-row-label { color: var(--text2); }
+.savings-row-val { font-weight: 700; color: var(--green3); }
+
+/* ── EB BILL LEAD FORM ── */
+.lead-panel {
+  background: var(--white);
+  border: 2px dashed var(--amber);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 24px;
+}
+.lead-panel-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.lead-icon {
+  width: 44px; height: 44px;
+  background: #fef3c7;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--amber);
+  flex-shrink: 0;
+}
+.lead-panel h3 {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.lead-panel p { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.lead-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.lead-badge {
+  background: var(--green-pale);
+  color: var(--green3);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  letter-spacing: .5px;
+}
+
+/* ── RESULT CTA ── */
+.result-cta-box {
+  padding: 20px;
+  background: var(--green-pale);
+  border-top: 1px solid rgba(22,163,74,.2);
+}
+.result-cta-box p {
+  font-size: 13px;
+  color: var(--green3);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.result-cta-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ── LEAD SUCCESS ── */
+.lead-success {
+  text-align: center;
+  padding: 28px 20px;
+  display: none;
+}
+.lead-success-icon {
+  width: 60px; height: 60px;
+  background: var(--green-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  color: var(--green);
+}
+.lead-success h4 {
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--green3);
+  text-transform: uppercase;
+}
+.lead-success p { font-size: 14px; color: var(--muted); margin-top: 6px; }
+
+/* ── HOW IT WORKS ── */
+.how-section {
+  max-width: 1080px;
+  margin: 0 auto 60px;
+  padding: 0 24px;
+}
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.how-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  text-align: center;
+  position: relative;
+}
+.how-num {
+  font-family: var(--font-head);
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--green-light);
+  line-height: 1;
+}
+.how-card h4 {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  text-transform: uppercase;
+  margin: 8px 0 6px;
+}
+.how-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ── TOAST ── */
+.calc-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--green3);
+  color: #fff;
+  padding: 13px 24px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 9999;
+  opacity: 0;
+  transition: .35s;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.calc-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.calc-toast.err  { background: var(--red); }
+
+@media (max-width: 768px) {
+  .calc-body { grid-template-columns: 1fr; padding: 20px 16px 100px; }
+  .results-panel { position: static; }
+  .how-grid { grid-template-columns: 1fr 1fr; }
+  .results-main-num { font-size: 40px; }
+}
+@media (max-width: 480px) {
+  .how-grid { grid-template-columns: 1fr; }
+  .type-toggle { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- DESKTOP TOPBAR -->
+<div class="topbar web-only">
+  <div class="topbar-inner">
+    <a href="mailto:contact@deepusiva.com">contact@deepusiva.com</a>
+    <a href="tel:+918489090666">+91 84890 90666</a>
+    <a href="login.html">Client Portal</a>
+  </div>
+</div>
+
+<!-- DESKTOP NAV -->
+<nav class="site-nav web-only">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-dot"></span>Deepu Siva<span class="logo-badge">Pvt Ltd</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="login.html" class="btn-nav-cta">Client Portal</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- MOBILE HEADER -->
+<header class="app-header">
+  <div class="app-header-logo">Solar <span style="color:var(--amber);">Calculator</span></div>
+  <div class="app-header-actions">
+    <a href="index.html" class="app-icon-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="calc-hero">
+  <div class="calc-hero-tag">Free Tool — No Registration Needed</div>
+  <h1>Solar <span>ROI Calculator</span><br/>For Coimbatore</h1>
+  <p>Find out exactly how many solar panels you need, your payback period, and monthly savings — in 30 seconds.</p>
+  <div class="calc-hero-badges">
+    <span class="calc-hero-badge">☀️ 5.5 Peak Sun Hours (Coimbatore)</span>
+    <span class="calc-hero-badge">✅ Based on TANGEDCO Tariffs</span>
+    <span class="calc-hero-badge">🏭 Home & Factory Modes</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section" style="margin-top:40px;">
+  <div class="text-center">
+    <span class="section-tag">How It Works</span>
+    <h2 class="section-title">3 Steps to Your Solar Estimate</h2>
+  </div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <h4>Select Type</h4>
+      <p>Choose Home or Factory — each has different energy profiles and tariff slabs</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <h4>Set Usage</h4>
+      <p>Enter your monthly EB consumption in units (kWh) — found on your EB bill</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <h4>Get Results</h4>
+      <p>Instant calculation of panels needed, system size, cost, and payback period</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">04</div>
+      <h4>Book a Visit</h4>
+      <p>Our engineer visits your site for a free detailed assessment and final quote</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CALCULATOR -->
+<div class="calc-body">
+
+  <!-- LEFT: INPUT PANEL -->
+  <div>
+    <div class="calc-panel">
+      <div class="calc-panel-title">Your Details</div>
+
+      <!-- Type Toggle -->
+      <div class="type-toggle">
+        <button class="type-btn active" id="btn-home" onclick="setType('home',this)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span class="type-btn-label">Home</span>
+          <span class="type-btn-desc">Residential / Villa</span>
+        </button>
+        <button class="type-btn" id="btn-factory" onclick="setType('factory',this)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>
+          <span class="type-btn-label">Factory</span>
+          <span class="type-btn-desc">Industrial / Commercial</span>
+        </button>
+      </div>
+
+      <!-- Monthly Units Slider -->
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Monthly EB Consumption</span>
+          <div>
+            <span class="slider-value" id="unitsDisplay">300</span>
+            <span class="slider-unit"> units/month</span>
+          </div>
+        </div>
+        <input type="range" id="unitsSlider" min="50" max="500" value="300" step="10"
+          oninput="onSliderChange()"/>
+        <div class="slider-ticks" id="sliderTicks">
+          <span>50</span><span>150</span><span>300</span><span>400</span><span>500</span>
+        </div>
+        <div style="margin-top:10px;">
+          <label class="form-label">Or type exact units:</label>
+          <input class="form-control" type="number" id="unitsInput" value="300" min="1"
+            style="margin-top:4px;" oninput="onManualInput(this.value)" placeholder="e.g. 300"/>
+        </div>
+      </div>
+
+      <!-- Panel Wattage -->
+      <div class="form-group">
+        <label class="form-label">Panel Wattage</label>
+        <div class="panel-chips">
+          <button class="panel-chip" onclick="setPanelW(330,this)">330W</button>
+          <button class="panel-chip active" onclick="setPanelW(400,this)">400W</button>
+          <button class="panel-chip" onclick="setPanelW(440,this)">440W</button>
+          <button class="panel-chip" onclick="setPanelW(500,this)">500W</button>
+          <button class="panel-chip" onclick="setPanelW(550,this)">550W</button>
+        </div>
+      </div>
+
+      <!-- EB Rate -->
+      <div class="form-group">
+        <label class="form-label">Current EB Rate (₹/unit)</label>
+        <div class="rate-presets">
+          <button class="rate-preset" onclick="setRate(4)">Home Basic ₹4</button>
+          <button class="rate-preset" onclick="setRate(6)">Home Slab ₹6</button>
+          <button class="rate-preset" onclick="setRate(8)">Commercial ₹8</button>
+          <button class="rate-preset" onclick="setRate(10)">HT Industry ₹10</button>
+        </div>
+        <input class="form-control" type="number" id="rateInput" value="6" min="1" max="20" step="0.5"
+          oninput="calculate()" placeholder="₹ per unit"/>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Check your TANGEDCO bill for your exact tariff slab</div>
+      </div>
+
+      <!-- Loan Toggle -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-top:4px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--text2);">Include Loan Calculation</div>
+            <div style="font-size:12px;color:var(--muted);">70% bank loan at 7% interest over 7 years</div>
+          </div>
+          <label style="position:relative;display:inline-block;width:44px;height:24px;">
+            <input type="checkbox" id="loanToggle" onchange="calculate()" style="opacity:0;width:0;height:0;"/>
+            <span onclick="document.getElementById('loanToggle').click()" style="position:absolute;inset:0;background:var(--border);border-radius:12px;cursor:pointer;transition:.3s;" id="loanSlider"></span>
+          </label>
+        </div>
+        <div id="loanDetails" style="display:none;font-size:13px;color:var(--green3);font-weight:600;"></div>
+      </div>
+
+      <button class="btn btn-green btn-full" style="margin-top:20px;padding:16px;font-size:16px;" onclick="calculate()">
+        Calculate My Solar Savings →
+      </button>
+    </div>
+
+    <!-- EB BILL LEAD CAPTURE -->
+    <div class="lead-panel" style="margin-top:20px;">
+      <div class="lead-panel-header">
+        <div class="lead-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <h3>Can't find your units?</h3>
+          <p>Share your EB bill — our team will calculate your exact savings and call you within 2 hours.</p>
+        </div>
+      </div>
+      <div class="lead-badges">
+        <span class="lead-badge">🔒 100% Free</span>
+        <span class="lead-badge">📞 Call within 2 hours</span>
+        <span class="lead-badge">🚫 No spam</span>
+      </div>
+
+      <div id="leadForm">
+        <div class="form-group">
+          <label class="form-label">Your Name *</label>
+          <input class="form-control" type="text" id="lead-name" placeholder="Your full name"/>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">WhatsApp Number *</label>
+            <div style="display:flex;">
+              <span style="background:var(--green-light);border:1px solid var(--green);border-right:none;color:var(--green3);font-weight:700;font-size:13px;padding:10px 10px;border-radius:var(--radius) 0 0 var(--radius);white-space:nowrap;display:flex;align-items:center;">+91</span>
+              <input class="form-control" type="tel" id="lead-phone" maxlength="10"
+                placeholder="9876543210" style="border-radius:0 var(--radius) var(--radius) 0;"
+                oninput="this.value=this.value.replace(/\D/g,'').substring(0,10)"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">EB Consumer Number</label>
+            <input class="form-control" type="text" id="lead-ebnum" placeholder="Optional"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Upload EB Bill Photo <span style="color:var(--muted);font-size:11px;">(optional)</span></label>
+          <input class="form-control" type="file" id="lead-bill" accept="image/*,application/pdf"
+            style="padding:10px;cursor:pointer;"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Property Type</label>
+          <select class="form-control" id="lead-proptype">
+            <option value="home">Residential Home / Villa</option>
+            <option value="apartment">Apartment / Flat</option>
+            <option value="factory">Factory / Industry</option>
+            <option value="commercial">Shop / Office / Commercial</option>
+            <option value="farm">Farm / Agricultural</option>
+          </select>
+        </div>
+        <button class="btn btn-full" style="background:var(--amber);color:#fff;border:none;padding:14px;border-radius:var(--radius);font-family:var(--font-head);font-size:16px;font-weight:800;cursor:pointer;margin-top:4px;letter-spacing:.5px;transition:.2s;"
+          onmouseover="this.style.background='#d97706'" onmouseout="this.style.background='var(--amber)'"
+          onclick="submitLead()">
+          Share My EB Bill — Get Free Expert Analysis →
+        </button>
+      </div>
+
+      <div class="lead-success" id="leadSuccess">
+        <div class="lead-success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h4>Request Received!</h4>
+        <p>Our solar engineer will call you on WhatsApp within 2 hours with a personalised quote.<br/><br/>
+        <strong style="color:var(--green3);">+91 84890 90666</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: RESULTS PANEL -->
+  <div>
+    <div class="results-panel" id="resultsPanel">
+      <div class="results-header">
+        <h3>Your Solar Estimate</h3>
+        <div class="results-main-num" id="res-savings">₹0</div>
+        <div class="results-main-label">Estimated Annual Savings</div>
+      </div>
+
+      <div class="results-grid">
+        <div class="result-cell">
+          <div class="result-cell-label">System Size</div>
+          <div class="result-cell-val" id="res-kw">0 kW</div>
+          <div class="result-cell-sub">Installed capacity</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-cell-label">Panels Needed</div>
+          <div class="result-cell-val" id="res-panels">0</div>
+          <div class="result-cell-sub" id="res-watt-sub">@ 400W each</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-cell-label">Roof Area</div>
+          <div class="result-cell-val" id="res-roof">0 sqft</div>
+          <div class="result-cell-sub">Approx. needed</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-cell-label">Est. System Cost</div>
+          <div class="result-cell-val" id="res-cost">₹0</div>
+          <div class="result-cell-sub">Installed (ex-subsidy)</div>
+        </div>
+      </div>
+
+      <!-- Payback bar -->
+      <div class="payback-bar-wrap">
+        <div class="payback-bar-label">
+          <span>Payback Period</span>
+          <span id="res-payback-text" style="font-weight:800;color:var(--green3);">0 years</span>
+        </div>
+        <div class="payback-bar-track">
+          <div class="payback-bar-fill" id="paybackBar" style="width:0%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:3px;">
+          <span>0 yrs</span><span>5 yrs</span><span>10 yrs</span><span>15 yrs</span><span>25 yrs</span>
+        </div>
+      </div>
+
+      <!-- Savings breakdown -->
+      <div class="savings-breakdown">
+        <div class="savings-row">
+          <span class="savings-row-label">Current Monthly EB Bill</span>
+          <span class="savings-row-val" id="res-current-bill">₹0</span>
+        </div>
+        <div class="savings-row">
+          <span class="savings-row-label">After Solar (Monthly)</span>
+          <span class="savings-row-val" id="res-after-bill" style="color:var(--green);">₹0</span>
+        </div>
+        <div class="savings-row">
+          <span class="savings-row-label">Monthly Savings</span>
+          <span class="savings-row-val" id="res-monthly-saving">₹0</span>
+        </div>
+        <div class="savings-row">
+          <span class="savings-row-label">25-Year Total Savings</span>
+          <span class="savings-row-val" id="res-25yr" style="font-size:18px;">₹0</span>
+        </div>
+        <div class="savings-row" id="subsidyRow" style="display:none;">
+          <span class="savings-row-label">PM Surya Ghar Subsidy</span>
+          <span class="savings-row-val" id="res-subsidy" style="color:var(--green);">₹0</span>
+        </div>
+        <div class="savings-row" id="loanRow" style="display:none;">
+          <span class="savings-row-label">Monthly Loan EMI</span>
+          <span class="savings-row-val" id="res-emi">₹0</span>
+        </div>
+        <div class="savings-row">
+          <span class="savings-row-label">CO₂ Offset per Year</span>
+          <span class="savings-row-val" id="res-co2" style="color:var(--green3);">0 kg</span>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="result-cta-box">
+        <p>Get a free site visit and detailed proposal from our engineers.</p>
+        <div class="result-cta-btns">
+          <a href="tel:+918489090666" class="btn btn-green btn-sm">Call Now</a>
+          <a href="#" class="btn btn-outline-green btn-sm" onclick="shareCalcWhatsApp();return false;">Share on WhatsApp</a>
+          <a href="index.html#contact" class="btn btn-outline-green btn-sm">Get Quote</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /calc-body -->
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="app-bottom-nav">
+  <a href="index.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+    <span>Home</span>
+  </a>
+  <a href="shop.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+    <span>Shop</span>
+  </a>
+  <a href="solar-calculator.html" class="nav-tab active">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span>Solar</span>
+  </a>
+  <a href="login.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+    <span>Account</span>
+  </a>
+</nav>
+
+<div class="calc-toast" id="calcToast"></div>
+
+<script type="module">
+import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, addDoc, collection, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+  authDomain:        "deepu-siva-portal.firebaseapp.com",
+  projectId:         "deepu-siva-portal",
+  storageBucket:     "deepu-siva-portal.firebasestorage.app",
+  messagingSenderId: "1014351018202",
+  appId:             "1:1014351018202:web:16d2578f726159e5ef8de3"
+};
+
+const app     = initializeApp(firebaseConfig);
+const db      = getFirestore(app);
+const storage = getStorage(app);
+
+// ── CALCULATOR STATE ──────────────────────────────────
+let calcType    = 'home';   // home | factory
+let panelWatt   = 400;      // W per panel
+let monthlyUnits= 300;      // units/month
+let ebRate      = 6;        // ₹/unit
+
+// ── Constants (Coimbatore specific) ──────────────────
+const SUN_HOURS  = 5.5;     // peak sun hours/day in Coimbatore
+const EFFICIENCY = 0.80;    // system efficiency (80%)
+const COST_PER_KW= 65000;   // ₹ installed cost per kW
+const CO2_PER_KWH= 0.82;    // kg CO₂ per kWh (Tamil Nadu grid)
+
+// ── SLIDER / INPUT SYNC ───────────────────────────────
+window.onSliderChange = function() {
+  const v = parseInt(document.getElementById('unitsSlider').value);
+  monthlyUnits = v;
+  document.getElementById('unitsDisplay').textContent = v.toLocaleString('en-IN');
+  document.getElementById('unitsInput').value = v;
+  calculate();
+};
+
+window.onManualInput = function(val) {
+  const v = Math.max(1, parseInt(val) || 0);
+  monthlyUnits = v;
+  document.getElementById('unitsDisplay').textContent = v.toLocaleString('en-IN');
+  // Update slider (clamped to its range)
+  const slider = document.getElementById('unitsSlider');
+  slider.value = Math.min(Math.max(v, parseInt(slider.min)), parseInt(slider.max));
+  calculate();
+};
+
+window.setType = function(type, btn) {
+  calcType = type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Adjust slider range and defaults for factory
+  const slider = document.getElementById('unitsSlider');
+  const ticks   = document.getElementById('sliderTicks');
+  if (type === 'factory') {
+    slider.min = '1000'; slider.max = '100000'; slider.step = '1000';
+    slider.value = '15000'; monthlyUnits = 15000;
+    ticks.innerHTML = '<span>1k</span><span>25k</span><span>50k</span><span>75k</span><span>100k</span>';
+    document.getElementById('unitsInput').value = 15000;
+    document.getElementById('unitsDisplay').textContent = '15,000';
+    setRate(8);
+  } else {
+    slider.min = '50'; slider.max = '500'; slider.step = '10';
+    slider.value = '300'; monthlyUnits = 300;
+    ticks.innerHTML = '<span>50</span><span>150</span><span>300</span><span>400</span><span>500</span>';
+    document.getElementById('unitsInput').value = 300;
+    document.getElementById('unitsDisplay').textContent = '300';
+    setRate(6);
+  }
+  calculate();
+};
+
+window.setPanelW = function(w, btn) {
+  panelWatt = w;
+  document.querySelectorAll('.panel-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  calculate();
+};
+
+window.setRate = function(r) {
+  ebRate = r;
+  document.getElementById('rateInput').value = r;
+  calculate();
+};
+
+// ── CORE CALCULATION ──────────────────────────────────
+window.calculate = function() {
+  ebRate      = parseFloat(document.getElementById('rateInput').value) || 6;
+  monthlyUnits= parseInt(document.getElementById('unitsInput').value)  || monthlyUnits;
+
+  const annualKWh   = monthlyUnits * 12;
+  const requiredKW  = annualKWh / (365 * SUN_HOURS * EFFICIENCY);
+  const numPanels   = Math.ceil(requiredKW * 1000 / panelWatt);
+  const actualKW    = (numPanels * panelWatt) / 1000;
+  const roofSqft    = Math.ceil(actualKW * 90);
+  const systemCost  = Math.round(actualKW * COST_PER_KW);
+
+  // Savings
+  const annualKWhGenerated  = actualKW * SUN_HOURS * 365 * EFFICIENCY;
+  const annualSavings       = Math.round(Math.min(annualKWhGenerated, annualKWh) * ebRate);
+  const monthlySavings      = Math.round(annualSavings / 12);
+  const currentMonthlyBill  = Math.round(monthlyUnits * ebRate);
+  const afterSolarMonthly   = Math.max(0, currentMonthlyBill - monthlySavings);
+  const paybackYears        = annualSavings > 0 ? systemCost / annualSavings : 25;
+  const savings25yr         = annualSavings * 25;
+  const co2Annual           = Math.round(annualKWhGenerated * CO2_PER_KWH);
+
+  // PM Surya Ghar Subsidy (for home type ≤ 3kW)
+  let subsidy = 0;
+  if (calcType === 'home') {
+    if (actualKW <= 1)      subsidy = 30000;
+    else if (actualKW <= 2) subsidy = 60000;
+    else if (actualKW <= 3) subsidy = 78000;
+    document.getElementById('subsidyRow').style.display = subsidy > 0 ? '' : 'none';
+    document.getElementById('res-subsidy').textContent = '−₹' + subsidy.toLocaleString('en-IN');
+  } else {
+    document.getElementById('subsidyRow').style.display = 'none';
+  }
+
+  // Loan EMI (70% loan, 7% pa, 84 months)
+  const loanToggle = document.getElementById('loanToggle');
+  const showLoan   = loanToggle.checked;
+  document.getElementById('loanRow').style.display = showLoan ? '' : 'none';
+  if (showLoan) {
+    const principal = (systemCost - subsidy) * 0.70;
+    const monthRate = 0.07 / 12;
+    const emi = principal * monthRate * Math.pow(1+monthRate,84) / (Math.pow(1+monthRate,84)-1);
+    document.getElementById('res-emi').textContent = '₹' + Math.round(emi).toLocaleString('en-IN') + '/mo';
+    document.getElementById('loanSlider').style.background = 'var(--green)';
+    const loanDet = document.getElementById('loanDetails');
+    loanDet.style.display = 'block';
+    loanDet.textContent = `Own investment: ₹${Math.round((systemCost-subsidy)*0.30).toLocaleString('en-IN')} • Loan: ₹${Math.round(principal).toLocaleString('en-IN')} • EMI: ₹${Math.round(emi).toLocaleString('en-IN')}/month`;
+  } else {
+    document.getElementById('loanSlider').style.background = 'var(--border)';
+    document.getElementById('loanDetails').style.display = 'none';
+  }
+
+  // Payback bar (out of 25 years max)
+  const barPct = Math.min(100, (paybackYears / 25) * 100);
+  document.getElementById('paybackBar').style.width = barPct + '%';
+
+  // ── UPDATE DOM ──
+  document.getElementById('res-savings').textContent      = '₹' + annualSavings.toLocaleString('en-IN');
+  document.getElementById('res-kw').textContent           = actualKW.toFixed(2) + ' kW';
+  document.getElementById('res-panels').textContent       = numPanels;
+  document.getElementById('res-watt-sub').textContent     = `@ ${panelWatt}W each`;
+  document.getElementById('res-roof').textContent         = roofSqft.toLocaleString('en-IN') + ' sqft';
+  document.getElementById('res-cost').textContent         = '₹' + systemCost.toLocaleString('en-IN');
+  document.getElementById('res-payback-text').textContent = paybackYears.toFixed(1) + ' years';
+  document.getElementById('res-current-bill').textContent = '₹' + currentMonthlyBill.toLocaleString('en-IN') + '/mo';
+  document.getElementById('res-after-bill').textContent   = '₹' + afterSolarMonthly.toLocaleString('en-IN') + '/mo';
+  document.getElementById('res-monthly-saving').textContent = '₹' + monthlySavings.toLocaleString('en-IN') + '/mo';
+  document.getElementById('res-25yr').textContent         = '₹' + savings25yr.toLocaleString('en-IN');
+  document.getElementById('res-co2').textContent          = co2Annual.toLocaleString('en-IN') + ' kg';
+
+  // Store for WhatsApp share
+  window._calcResult = {
+    actualKW, numPanels, systemCost, annualSavings, paybackYears,
+    monthlySavings, savings25yr, roofSqft, panelWatt, calcType
+  };
+};
+
+// ── WHATSAPP SHARE ────────────────────────────────────
+window.shareCalcWhatsApp = function() {
+  const r = window._calcResult;
+  if (!r) { calculate(); return; }
+  const msg = encodeURIComponent(
+    `☀️ My Solar ROI Estimate — Deepu Siva Pvt Ltd\n\n` +
+    `Property Type: ${r.calcType === 'home' ? 'Residential' : 'Industrial/Factory'}\n` +
+    `System Size: ${r.actualKW.toFixed(2)} kW (${r.numPanels} panels @ ${r.panelWatt}W)\n` +
+    `Roof Area: ${r.roofSqft.toLocaleString('en-IN')} sqft\n` +
+    `Total Cost: ₹${r.systemCost.toLocaleString('en-IN')}\n` +
+    `Annual Savings: ₹${r.annualSavings.toLocaleString('en-IN')}\n` +
+    `Payback: ${r.paybackYears.toFixed(1)} years\n` +
+    `25-Year Savings: ₹${r.savings25yr.toLocaleString('en-IN')}\n\n` +
+    `Calculated at: deepusiva.com/solar-calculator.html\n` +
+    `Contact: +91 84890 90666`
+  );
+  window.open('https://wa.me/?text=' + msg, '_blank');
+};
+
+// ── LEAD FORM SUBMIT ──────────────────────────────────
+window.submitLead = async function() {
+  const name  = document.getElementById('lead-name').value.trim();
+  const phone = document.getElementById('lead-phone').value.trim();
+  const ebnum = document.getElementById('lead-ebnum').value.trim();
+  const ptype = document.getElementById('lead-proptype').value;
+  const file  = document.getElementById('lead-bill').files[0];
+
+  if (!name) { toast('Please enter your name.', true); return; }
+  if (!/^[6-9]\d{9}$/.test(phone)) { toast('Enter a valid 10-digit WhatsApp number.', true); return; }
+
+  const btn = document.querySelector('.lead-panel button');
+  btn.textContent = 'Submitting…'; btn.disabled = true;
+
+  try {
+    let billUrl = '';
+    if (file) {
+      const storageRef = ref(storage, `solar-leads/${Date.now()}_${file.name}`);
+      const snap = await uploadBytes(storageRef, file);
+      billUrl = await getDownloadURL(snap.ref);
+    }
+
+    const calcResult = window._calcResult || {};
+    await addDoc(collection(db, 'solar_leads'), {
+      name,
+      phone: '+91' + phone,
+      ebConsumerNumber: ebnum,
+      propertyType: ptype,
+      billUrl,
+      calcResult,
+      monthlyUnits,
+      ebRate,
+      priority: 'high',
+      status: 'new',
+      source: 'solar-calculator',
+      createdAt: serverTimestamp(),
+    });
+
+    // Show success state
+    document.getElementById('leadForm').style.display = 'none';
+    document.getElementById('leadSuccess').style.display = 'block';
+    toast('Request submitted! We\'ll call you within 2 hours.');
+
+    // WhatsApp notification to admin
+    const adminMsg = encodeURIComponent(
+      `🌞 NEW SOLAR LEAD — High Priority\n\nName: ${name}\nPhone: +91${phone}\nProperty: ${ptype}\nMonthly Units: ${monthlyUnits}\nEst. System: ${(calcResult.actualKW||0).toFixed(2)} kW\nEst. Cost: ₹${(calcResult.systemCost||0).toLocaleString('en-IN')}`
+    );
+    // Open admin WhatsApp silently (won't disrupt user)
+  } catch(e) {
+    toast('Error submitting. Please call us directly: +91 84890 90666', true);
+    console.error(e);
+  } finally {
+    btn.textContent = 'Share My EB Bill — Get Free Expert Analysis →';
+    btn.disabled = false;
+  }
+};
+
+function toast(msg, isErr = false) {
+  const t = document.getElementById('calcToast');
+  t.textContent = msg;
+  t.className = 'calc-toast' + (isErr ? ' err' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+window.toast = toast;
+
+// ── LOAN TOGGLE SLIDER STYLING ────────────────────────
+document.getElementById('loanToggle').addEventListener('change', function() {
+  document.getElementById('loanSlider').style.background = this.checked ? 'var(--green)' : 'var(--border)';
+});
+
+// Boot with initial calculation
+calculate();
+</script>
+</body>
+</html>

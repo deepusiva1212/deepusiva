@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shop | Deepu Siva Private Limited</title>
+<meta name="description" content="Industrial solar & fabrication materials for B2B, or everyday products for retail — choose your path."/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+/* ── TWO DOORS PAGE ── */
+.entry-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.entry-hero {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 24px 36px;
+  text-align: center;
+}
+.entry-hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 800;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.entry-hero h1 em { color: var(--green); font-style: normal; }
+.entry-hero p {
+  color: var(--muted);
+  font-size: 16px;
+  margin-top: 10px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── DOOR GRID ── */
+.doors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  flex: 1;
+  min-height: 60vh;
+}
+.door-card {
+  position: relative;
+  padding: 56px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .3s;
+  text-decoration: none;
+  overflow: hidden;
+  border: none;
+  border-right: 1px solid var(--border);
+}
+.door-card:last-child { border-right: none; }
+
+/* B2B Card — Green */
+.door-b2b {
+  background: linear-gradient(160deg, var(--green3) 0%, var(--green2) 60%, var(--green) 100%);
+  color: #fff;
+}
+.door-b2b::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,.08) 0%, transparent 60%);
+}
+
+/* B2C Card — White / Amber accent */
+.door-b2c {
+  background: var(--white);
+  color: var(--text);
+  border-top: 4px solid var(--amber);
+}
+.door-b2c::before {
+  content: '';
+  position: absolute;
+  bottom: -20px; right: -20px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(245,158,11,.07) 0%, transparent 70%);
+}
+
+.door-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.door-b2b .door-tag { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.25); }
+.door-b2c .door-tag { background: #fef3c7; color: var(--amber); }
+
+.door-icon {
+  width: 72px; height: 72px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+  transition: transform .3s;
+}
+.door-b2b .door-icon { background: rgba(255,255,255,.15); color: #fff; }
+.door-b2c .door-icon { background: #fef3c7; color: var(--amber); }
+.door-card:hover .door-icon { transform: scale(1.1); }
+
+.door-title {
+  font-family: var(--font-head);
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  position: relative;
+}
+.door-b2b .door-title { color: #fff; }
+.door-b2c .door-title { color: var(--text); }
+
+.door-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 380px;
+  margin-bottom: 28px;
+  position: relative;
+}
+.door-b2b .door-desc { color: rgba(255,255,255,.8); }
+.door-b2c .door-desc { color: var(--muted); }
+
+/* Feature pills */
+.door-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+  position: relative;
+}
+.door-feat-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.door-b2b .door-feat-pill { background: rgba(255,255,255,.12); color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.15); }
+.door-b2c .door-feat-pill { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+
+/* CTA Button */
+.door-cta {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 16px 32px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all .25s;
+  position: relative;
+  text-decoration: none;
+}
+.door-b2b .door-cta { background: #fff; color: var(--green3); }
+.door-b2b .door-cta:hover { background: var(--green-pale); transform: translateX(4px); }
+.door-b2c .door-cta { background: var(--amber); color: #fff; }
+.door-b2c .door-cta:hover { background: #d97706; transform: translateX(4px); }
+
+.door-cta-arrow {
+  transition: transform .25s;
+}
+.door-card:hover .door-cta-arrow { transform: translateX(4px); }
+
+/* Hover overlay effect */
+.door-b2b:hover { filter: brightness(1.04); }
+.door-b2c:hover { background: #fafffe; }
+
+/* ── BOTTOM BAR ── */
+.entry-bottom {
+  background: var(--bg3);
+  border-top: 1px solid var(--border);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: var(--muted);
+}
+.entry-bottom a {
+  color: var(--green);
+  font-weight: 600;
+  text-decoration: none;
+}
+.entry-bottom a:hover { text-decoration: underline; }
+.entry-bottom-sep {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+/* ── DIVIDER LINE (mobile) ── */
+.door-divider {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+.door-divider span {
+  background: var(--white);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+.door-divider::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--border);
+}
+
+@media (max-width: 768px) {
+  .doors-grid {
+    grid-template-columns: 1fr;
+    min-height: unset;
+  }
+  .door-card {
+    padding: 36px 24px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .door-card:last-child { border-bottom: none; }
+  .door-divider { display: block; }
+  .entry-hero { padding: 32px 24px 24px; }
+}
+</style>
+</head>
+<body class="entry-page">
+
+<!-- DESKTOP TOPBAR -->
+<div class="topbar web-only">
+  <div class="topbar-inner">
+    <a href="mailto:contact@deepusiva.com">contact@deepusiva.com</a>
+    <a href="tel:+918489090666">+91 84890 90666</a>
+    <a href="login.html">Client Portal</a>
+  </div>
+</div>
+
+<!-- DESKTOP NAV -->
+<nav class="site-nav web-only">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-dot"></span>Deepu Siva<span class="logo-badge">Pvt Ltd</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="shop-entry.html" class="active">Shop</a></li>
+      <li><a href="solar-calculator.html">Solar Calculator</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="login.html" class="btn-nav-cta">Client Portal</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- MOBILE HEADER -->
+<header class="app-header">
+  <div class="app-header-logo">Deepu <span style="color:var(--amber);">Siva</span> Shop</div>
+  <div class="app-header-actions">
+    <a href="index.html" class="app-icon-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="entry-hero">
+  <h1>Choose Your <em>Shopping Path</em></h1>
+  <p>We serve both industrial clients and retail customers. Select the experience that fits your needs.</p>
+</div>
+
+<!-- TWO DOORS -->
+<div class="doors-grid">
+
+  <!-- DOOR 1: B2B INDUSTRIAL -->
+  <a href="shop.html?mode=b2b" class="door-card door-b2b" onclick="setShopMode('b2b')">
+    <span class="door-tag">B2B Industrial</span>
+    <div class="door-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>
+    </div>
+    <div class="door-title">Industrial &<br/>Solar Solutions</div>
+    <div class="door-desc">For factories, contractors and project managers. Buy structural steel, roofing sheets, solar mounting systems and fabrication materials.</div>
+    <div class="door-features">
+      <span class="door-feat-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        GST Invoice Included
+      </span>
+      <span class="door-feat-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        GSTIN Validated Checkout
+      </span>
+      <span class="door-feat-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Bulk Pricing Available
+      </span>
+      <span class="door-feat-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        SGST + CGST Breakdown
+      </span>
+    </div>
+    <span class="door-cta">
+      Industrial Shop
+      <svg class="door-cta-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </span>
+  </a>
+
+  <!-- DOOR 2: B2C RETAIL -->
+  <a href="shop.html?mode=b2c" class="door-card door-b2c" onclick="setShopMode('b2c')">
+    <span class="door-tag">B2C Retail</span>
+    <div class="door-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </div>
+    <div class="door-title">Agro &<br/>Retail Essentials</div>
+    <div class="door-desc">For homeowners, farmers and retail buyers. Browse everyday products, agro essentials and home materials with simple, transparent pricing.</div>
+    <div class="door-features">
+      <span class="door-feat-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        GST-Inclusive Pricing
+      </span>
+      <span class="door-feat-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Simple Fast Checkout
+      </span>
+      <span class="door-feat-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Home Delivery TN
+      </span>
+      <span class="door-feat-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        No GSTIN Required
+      </span>
+    </div>
+    <span class="door-cta">
+      Retail Shop
+      <svg class="door-cta-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </span>
+  </a>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="entry-bottom">
+  <span>Not sure which one?</span>
+  <a href="tel:+918489090666">Call us: +91 84890 90666</a>
+  <div class="entry-bottom-sep"></div>
+  <a href="https://wa.me/918489090666">WhatsApp</a>
+  <div class="entry-bottom-sep"></div>
+  <a href="solar-calculator.html">Free Solar Calculator</a>
+  <div class="entry-bottom-sep"></div>
+  <a href="login.html">Client Portal</a>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="app-bottom-nav">
+  <a href="index.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+    <span>Home</span>
+  </a>
+  <a href="shop-entry.html" class="nav-tab active">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+    <span>Shop</span>
+  </a>
+  <a href="solar-calculator.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></span>
+    <span>Solar</span>
+  </a>
+  <a href="login.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+    <span>Account</span>
+  </a>
+</nav>
+
+<script>
+// Save shop mode to localStorage so shop.html can read it
+function setShopMode(mode) {
+  localStorage.setItem('dsShopMode', mode);
+}
+// If already came from a mode, redirect directly next time
+const lastMode = localStorage.getItem('dsShopMode');
+if (lastMode && window.location.search === '') {
+  // Don't auto-redirect — let user consciously choose each visit
+}
+</script>
+</body>
+</html>
