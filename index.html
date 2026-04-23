@@ -16,6 +16,121 @@
 <meta property="og:url" content="https://deepusiva.com/"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"Deepu Siva Private Limited","telephone":"+918489090666","email":"contact@deepusiva.com","address":{"@type":"PostalAddress","addressLocality":"Coimbatore","addressRegion":"Tamil Nadu","addressCountry":"IN"}}</script>
 <style>
+/* ═══════════════════════════════════════════
+   LIVE THEME ENGINE — Dark Mode + Accent Colors
+   Driven by localStorage + Firestore cms/settings
+═══════════════════════════════════════════ */
+
+/* ── DARK MODE ── */
+body.dark-mode {
+  --bg:           #0d1117;
+  --bg2:          #161b22;
+  --bg3:          #21262d;
+  --text:         #f0f6fc;
+  --text2:        #c9d1d9;
+  --border:       #30363d;
+  --border2:      #484f58;
+  --white:        #161b22;
+  --muted:        #8b949e;
+}
+body.dark-mode .site-nav,
+body.dark-mode .topbar { background: #0d1117; border-color: #30363d; }
+body.dark-mode .svc-card,
+body.dark-mode .proj-card,
+body.dark-mode .why-badge,
+body.dark-mode .erp-stat,
+body.dark-mode .ind-card { background: #161b22; border-color: #30363d; }
+body.dark-mode .hero-pattern { opacity: .04; }
+body.dark-mode #home { background: linear-gradient(150deg,#0d1117 0%,#161b22 100%); }
+
+/* ── ACCENT: BLUE ── */
+body.accent-blue {
+  --green:        #2563eb;
+  --green2:       #1d4ed8;
+  --green3:       #1e3a8a;
+  --green-light:  #dbeafe;
+  --green-pale:   #eff6ff;
+}
+/* ── ACCENT: GOLD ── */
+body.accent-gold {
+  --green:        #d97706;
+  --green2:       #b45309;
+  --green3:       #92400e;
+  --green-light:  #fef3c7;
+  --green-pale:   #fffbeb;
+}
+/* ── ACCENT: RED ── */
+body.accent-red {
+  --green:        #dc2626;
+  --green2:       #b91c1c;
+  --green3:       #991b1b;
+  --green-light:  #fee2e2;
+  --green-pale:   #fff5f5;
+}
+/* Default green accent — no class needed */
+
+/* ── DYNAMIC BANNER ── */
+#cms-banner {
+  display: none;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  max-height: 320px;
+}
+#cms-banner img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+#cms-banner-close {
+  position: absolute;
+  top: 10px; right: 14px;
+  background: rgba(0,0,0,.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+  z-index: 10;
+}
+#cms-banner-close:hover { background: rgba(0,0,0,.75); }
+#cms-banner-text {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,.65));
+  color: #fff;
+  padding: 20px 24px 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ── THEME TOGGLE BUTTON (floating) ── */
+#themeToggleBtn {
+  position: fixed;
+  bottom: 90px;
+  left: 16px;
+  width: 42px; height: 42px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 800;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  transition: all .2s;
+  color: var(--text2);
+}
+#themeToggleBtn:hover { transform: scale(1.1); border-color: var(--green); }
+
+/* ── COUNTER ANIMATION ── */
+.stat-num[data-target] { transition: none; }
+.count-animated { display: inline-block; }
+
 /* ── HERO ── */
 #home {
   position: relative;
@@ -393,6 +508,19 @@
 </head>
 <body>
 
+<!-- ─── DYNAMIC BANNER (hidden until CMS sets a URL) ─── -->
+<div id="cms-banner" style="display:none;width:100%;overflow:hidden;position:relative;max-height:320px;">
+  <button id="cms-banner-close" onclick="closeBanner()" style="position:absolute;top:10px;right:14px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;">✕</button>
+  <img id="cms-banner-img" src="" alt="" style="width:100%;height:320px;object-fit:cover;object-position:center;display:block;"/>
+  <div id="cms-banner-text" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));color:#fff;padding:20px 24px 16px;font-size:16px;font-weight:600;"></div>
+</div>
+
+<!-- ─── FLOATING THEME TOGGLE ─── -->
+<button id="themeToggleBtn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" aria-label="Toggle theme" style="position:fixed;bottom:90px;left:16px;width:42px;height:42px;background:var(--white);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:800;box-shadow:0 2px 12px rgba(0,0,0,.12);transition:all .2s;color:var(--text2);">
+  <svg id="themeIcon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  <svg id="themeIcon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+</button>
+
 <!-- ═══ DESKTOP TOPBAR ═══ -->
 <div class="topbar web-only">
   <div class="topbar-inner">
@@ -583,10 +711,10 @@
         <a href="#contact" class="btn btn-green" style="margin-top:28px;">Contact Us →</a>
       </div>
       <div class="about-stats">
-        <div class="about-stat"><div class="stat-num">10+</div><div class="stat-lbl">Years in Business</div></div>
-        <div class="about-stat"><div class="stat-num">200+</div><div class="stat-lbl">Projects Completed</div></div>
-        <div class="about-stat"><div class="stat-num">150+</div><div class="stat-lbl">Happy Clients</div></div>
-        <div class="about-stat"><div class="stat-num">50+</div><div class="stat-lbl">Expert Team Members</div></div>
+        <div class="about-stat"><div class="stat-num" data-target="10" data-suffix="+">10+</div><div class="stat-lbl">Years in Business</div></div>
+        <div class="about-stat"><div class="stat-num" data-target="200" data-suffix="+">200+</div><div class="stat-lbl">Projects Completed</div></div>
+        <div class="about-stat"><div class="stat-num" data-target="150" data-suffix="+">150+</div><div class="stat-lbl">Happy Clients</div></div>
+        <div class="about-stat"><div class="stat-num" data-target="50" data-suffix="+">50+</div><div class="stat-lbl">Expert Team Members</div></div>
       </div>
     </div>
   </div>
@@ -620,7 +748,7 @@
         <span class="section-tag">Why Choose Us</span>
         <h2 class="section-title">The Deepu Siva Advantage</h2>
         <div class="divider"></div>
-        <div class="why-items">
+        <div class="why-items" data-aos="fade-up" data-aos-duration="800">
           <div class="why-item"><div class="why-num">01</div><div><h4>In-House Fabrication</h4><p>Our fully equipped workshop ensures quality control at every step — no outsourcing, no delays.</p></div></div>
           <div class="why-item"><div class="why-num">02</div><div><h4>Expert Engineering Team</h4><p>Qualified civil and structural engineers with proven expertise across hundreds of industrial projects.</p></div></div>
           <div class="why-item"><div class="why-num">03</div><div><h4>Competitive Pricing</h4><p>Direct manufacturing advantage — superior quality at honest, transparent pricing every time.</p></div></div>
@@ -645,7 +773,7 @@
       <h2 class="section-title">Our Project Process</h2>
       <div class="divider"></div>
     </div>
-    <div class="process-row">
+    <div class="process-row" data-aos="fade-up">
       <div class="process-step"><div class="step-num">01</div><h4>Consultation</h4><p>We study your requirements and site conditions in detail.</p></div>
       <div class="process-step"><div class="step-num">02</div><h4>Design & Quote</h4><p>Engineering drawings and transparent cost estimate.</p></div>
       <div class="process-step"><div class="step-num">03</div><h4>Fabrication</h4><p>Precision fabrication in our in-house workshop with QC.</p></div>
@@ -664,7 +792,7 @@
       <h2 class="section-title">Our Clientele Sectors</h2>
       <div class="divider"></div>
     </div>
-    <div class="industries-grid">
+    <div class="industries-grid" data-aos="fade-up" data-aos-duration="600">
       <div class="ind-card"><div class="ind-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg></div><h4>Manufacturing</h4></div>
       <div class="ind-card"><div class="ind-icon">🌾</div><h4>Agriculture</h4></div>
       <div class="ind-card"><div class="ind-icon">🏢</div><h4>Commercial</h4></div>
@@ -685,7 +813,7 @@
       <h2 class="section-title">Our Recent Projects</h2>
       <div class="divider"></div>
     </div>
-    <div class="projects-grid">
+    <div class="projects-grid" data-aos="fade-up" data-aos-duration="800">
       <div class="proj-card"><div class="proj-thumb proj-thumb-1"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg></div><div class="proj-info"><div class="proj-cat">Metal Fabrication</div><h4>Industrial Platform</h4><p>MS structural platform with handrails and staircase for a manufacturing unit.</p></div></div>
       <div class="proj-card"><div class="proj-thumb proj-thumb-2"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="proj-info"><div class="proj-cat">Industrial Roofing</div><h4>Warehouse Roofing — 5000 sqm</h4><p>GI sheet roofing with insulated panels for a large warehouse facility.</p></div></div>
       <div class="proj-card"><div class="proj-thumb proj-thumb-3"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div><div class="proj-info"><div class="proj-cat">Solar Structures</div><h4>1 MW Rooftop Solar</h4><p>Hot-dip galvanised mounting structure for a 1 MW industrial solar plant.</p></div></div>
@@ -771,9 +899,21 @@
       <div class="footer-logo">Deepu Siva <span class="footer-logo-badge">Pvt Ltd</span></div>
       <p>A premier metal fabrication and industrial construction company based in Coimbatore, Tamil Nadu. Built on a decade of expertise and dedication.</p>
       <div class="footer-social">
-        <a href="#" class="social-ico">in</a>
-        <a href="#" class="social-ico">f</a>
-        <a href="https://wa.me/918489090666" class="social-ico">✉</a>
+        <a href="https://www.linkedin.com/company/deepusiva" class="social-ico" id="social-linkedin" target="_blank" rel="noopener" title="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.instagram.com/deepusivapvtltd" class="social-ico" id="social-instagram" target="_blank" rel="noopener" title="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.facebook.com/deepusivapvtltd" class="social-ico" id="social-facebook" target="_blank" rel="noopener" title="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/918489090666" class="social-ico" id="social-whatsapp" target="_blank" rel="noopener" title="WhatsApp">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@deepusivapvtltd" class="social-ico" id="social-youtube" target="_blank" rel="noopener" title="YouTube">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.5C5.12 20 12 20 12 20s6.88 0 8.59-.5a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </a>
       </div>
     </div>
     <div class="footer-col">
@@ -838,10 +978,15 @@
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-// Init AOS scroll animations
+// ════════════════════════════════════════════════
+//  DEEPU SIVA — Page Engine
+//  Theme | Dark Mode | Counter | CMS Banner
+// ════════════════════════════════════════════════
+
+// ── AOS ──
 AOS.init({ once: true, offset: 60, easing: 'ease-out-quad' });
 
-// Desktop nav active on scroll
+// ── NAV ACTIVE ON SCROLL ──
 const sections = document.querySelectorAll('section[id]');
 const navAs = document.querySelectorAll('.nav-links a');
 window.addEventListener('scroll', () => {
@@ -849,6 +994,231 @@ window.addEventListener('scroll', () => {
   sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
   navAs.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
 });
+
+// ══ THEME ENGINE ══════════════════════════════
+const THEME_KEY  = 'ds_theme';
+const ACCENT_KEY = 'ds_accent';
+const ACCENTS    = ['', 'accent-blue', 'accent-gold', 'accent-red']; // '' = default green
+
+function applyTheme() {
+  const dark   = localStorage.getItem(THEME_KEY)  === 'dark';
+  const accent = localStorage.getItem(ACCENT_KEY) || '';
+  document.body.classList.toggle('dark-mode', dark);
+  // Remove all accent classes, add new one
+  ACCENTS.forEach(a => { if (a) document.body.classList.remove(a); });
+  if (accent) document.body.classList.add(accent);
+  // Swap theme icon
+  const sun  = document.getElementById('themeIcon-sun');
+  const moon = document.getElementById('themeIcon-moon');
+  if (sun)  sun.style.display  = dark ? 'block' : 'none';
+  if (moon) moon.style.display = dark ? 'none'  : 'block';
+}
+
+window.toggleDarkMode = function() {
+  const isDark = document.body.classList.contains('dark-mode');
+  localStorage.setItem(THEME_KEY, isDark ? 'light' : 'dark');
+  applyTheme();
+};
+
+window.setAccentColor = function(accent) {
+  localStorage.setItem(ACCENT_KEY, accent);
+  applyTheme();
+};
+
+// Apply on load immediately (prevents flash)
+applyTheme();
+
+// ══ BANNER ════════════════════════════════════
+window.closeBanner = function() {
+  const b = document.getElementById('cms-banner');
+  if (b) { b.style.display = 'none'; }
+  sessionStorage.setItem('ds_banner_closed', '1');
+};
+
+// ══ COUNTER ANIMATION ═════════════════════════
+// Fires when the stats section scrolls into view
+function animateCounters() {
+  const nums = document.querySelectorAll('.stat-num[data-target]');
+  if (!nums.length) return;
+  nums.forEach(el => {
+    if (el.dataset.animated) return;
+    el.dataset.animated = '1';
+    const target = parseInt(el.dataset.target) || 0;
+    const suffix = el.dataset.suffix || '';
+    const duration = 1800;
+    const step = 16;
+    const increment = target / (duration / step);
+    let current = 0;
+    const timer = setInterval(() => {
+      current = Math.min(current + increment, target);
+      el.textContent = Math.round(current) + suffix;
+      if (current >= target) clearInterval(timer);
+    }, step);
+  });
+}
+
+// Observe the about section for counter trigger
+const aboutSection = document.querySelector('#about');
+if (aboutSection && 'IntersectionObserver' in window) {
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) animateCounters(); });
+  }, { threshold: 0.2 }).observe(aboutSection);
+} else {
+  // Fallback: run on scroll
+  window.addEventListener('scroll', function once() {
+    if (!aboutSection) return;
+    const rect = aboutSection.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.8) {
+      animateCounters();
+      window.removeEventListener('scroll', once);
+    }
+  });
+}
 </script>
+
+<!-- ─── CMS LOADER: loads portfolio, video widget, social links, banner, stats ─── -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, getDocs, query, orderBy, limit }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+  authDomain:        "deepu-siva-portal.firebaseapp.com",
+  projectId:         "deepu-siva-portal",
+  storageBucket:     "deepu-siva-portal.firebasestorage.app",
+  messagingSenderId: "1014351018202",
+  appId:             "1:1014351018202:web:16d2578f726159e5ef8de3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── LOAD CMS SETTINGS (banner, social, stats, theme) ──
+async function loadCmsSettings() {
+  try {
+    const snap    = await getDoc(doc(db, 'cms', 'settings'));
+    if (!snap.exists()) return;
+    const data    = snap.data();
+
+    // ── BANNER ──
+    const bannerUrl  = data.bannerUrl  || '';
+    const bannerText = data.bannerText || '';
+    if (bannerUrl && !sessionStorage.getItem('ds_banner_closed')) {
+      const banner = document.getElementById('cms-banner');
+      const img    = document.getElementById('cms-banner-img');
+      const txt    = document.getElementById('cms-banner-text');
+      if (banner && img) {
+        img.src              = bannerUrl;
+        banner.style.display = 'block';
+        if (txt && bannerText) txt.textContent = bannerText;
+      }
+    }
+
+    // ── SOCIAL LINKS ──
+    const links = data.socialLinks || {};
+    const platforms = ['instagram','facebook','youtube','linkedin','twitter','whatsapp'];
+    platforms.forEach(p => {
+      const el = document.getElementById('social-' + p);
+      if (el && links[p]) { el.href = links[p]; }
+    });
+
+    // ── STATS ──
+    const stats = data.siteStats || {};
+    const statMap = {
+      years:    { els: ['stat-years'],    val: stats.years    || 10  },
+      projects: { els: ['stat-projects'], val: stats.projects || 200 },
+      clients:  { els: ['stat-clients'],  val: stats.clients  || 150 },
+      team:     { els: ['stat-team'],     val: stats.team     || 50  },
+    };
+    Object.entries(statMap).forEach(([key, { els, val }]) => {
+      els.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.dataset.target = val;
+          el.textContent    = val + '+';
+        }
+      });
+    });
+
+    // ── THEME FROM CMS (optional — admin can set site-wide accent) ──
+    if (data.siteAccent) {
+      localStorage.setItem('ds_accent', data.siteAccent === 'green' ? '' : 'accent-' + data.siteAccent);
+      if (typeof applyTheme === 'function') applyTheme();
+    }
+
+  } catch(e) { /* CMS load failure is silent — page works without it */ }
+}
+
+// ── PORTFOLIO ──
+async function loadPortfolio() {
+  const grid = document.getElementById('dynamicProjectsGrid');
+  if (!grid) return;
+  try {
+    const snap = await getDocs(query(collection(db, 'portfolio'), orderBy('order','asc'), limit(6)));
+    if (snap.empty) return;
+    const catColors = {
+      'Metal Fabrication':     'linear-gradient(135deg,#e8f5e9,#c8e6c9)',
+      'Industrial Roofing':    'linear-gradient(135deg,#fff8e1,#ffecb3)',
+      'Solar Structures':      'linear-gradient(135deg,#e3f2fd,#bbdefb)',
+      'Structural Engineering':'linear-gradient(135deg,#fce4ec,#f8bbd0)',
+    };
+    grid.innerHTML = snap.docs.map(d => {
+      const p  = d.data();
+      const bg = catColors[p.category] || 'linear-gradient(135deg,#e8f5e9,#c8e6c9)';
+      return `
+        <a href="project.html?id=${d.id}" class="proj-card" style="text-decoration:none;">
+          <div class="proj-thumb" style="background:${bg};display:flex;align-items:center;justify-content:center;overflow:hidden;">
+            ${p.imageUrl
+              ? `<img src="${p.imageUrl}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover;"/>`
+              : `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.5;color:#16a34a;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
+          </div>
+          <div class="proj-info">
+            <div class="proj-cat">${p.category || 'Project'}</div>
+            <h4>${p.title}</h4>
+            <p>${(p.shortDesc||'').substring(0,80)}${(p.shortDesc||'').length>80?'…':''}</p>
+          </div>
+        </a>`;
+    }).join('');
+  } catch(e) { /* keep static fallback */ }
+}
+
+// ── VIDEO WIDGET ──
+async function loadVideoWidget() {
+  try {
+    const snap = await getDoc(doc(db, 'cms', 'settings'));
+    if (!snap.exists()) return;
+    const url = snap.data().videoUrl || '';
+    if (!url) return;
+    const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    const igMatch = url.match(/instagram\.com\/reel\/([a-zA-Z0-9_-]+)/);
+    const embedUrl = ytMatch ? `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0`
+                   : igMatch ? `https://www.instagram.com/reel/${igMatch[1]}/embed/`
+                   : null;
+    if (!embedUrl) return;
+    const widget = document.createElement('div');
+    widget.id = 'cmsVideoWidget';
+    widget.innerHTML = `
+      <style>
+        #cmsVideoWidget{position:fixed;bottom:90px;right:20px;width:280px;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.2);z-index:850;overflow:hidden;border:1px solid rgba(0,0,0,.1);transition:transform .3s,opacity .3s;}
+        #vw-head{background:#16a34a;color:#fff;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;font-family:sans-serif;font-size:13px;font-weight:700;}
+        #vw-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;}
+        #vw-frame{display:block;width:100%;height:168px;border:none;}
+        @media(max-width:768px){#cmsVideoWidget{width:240px;bottom:76px;right:12px;}#vw-frame{height:140px;}}
+      </style>
+      <div id="vw-head">
+        <div>Latest from Us</div>
+        <button id="vw-close" onclick="document.getElementById('cmsVideoWidget').remove();">✕</button>
+      </div>
+      <iframe id="vw-frame" src="${embedUrl}" allowfullscreen loading="lazy"></iframe>`;
+    setTimeout(() => document.body.appendChild(widget), 3000);
+  } catch(e) {}
+}
+
+loadCmsSettings();
+loadPortfolio();
+loadVideoWidget();
+</script>
+<script type="module" src="cms-loader.js"></script>
 </body>
 </html>
