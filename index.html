@@ -43,6 +43,22 @@ body.dark-mode .ind-card { background: #161b22; border-color: #30363d; }
 body.dark-mode .hero-pattern { opacity: .04; }
 body.dark-mode #home { background: linear-gradient(150deg,#0d1117 0%,#161b22 100%); }
 
+   /* SURGICAL FIX FOR FLOATING BUTTONS */
+.float-whatsapp {
+  position: fixed !important;
+  bottom: 100px !important; 
+  right: 20px !important;  
+  z-index: 9999 !important;
+}
+
+#cmsVideoWidget {
+  position: fixed !important;
+  bottom: 100px !important;
+  left: 20px !important;   
+  right: auto !important;  
+  z-index: 9998 !important;
+}
+   
 /* ── ACCENT: BLUE ── */
 body.accent-blue {
   --green:        #2563eb;
