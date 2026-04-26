@@ -1693,16 +1693,11 @@
 
 <script type="module">
 import CONFIG from './config.js';
-import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, browserLocalPersistence, setPersistence }
-  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import {
-  getFirestore, collection, addDoc, updateDoc, getDoc, getDocs,
-  doc, query, orderBy, limit, where, runTransaction, serverTimestamp, setDoc
-} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, browserLocalPersistence, setPersistence } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, updateDoc, getDoc, getDocs, doc, query, orderBy, limit, where, runTransaction, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-   // ── HSN MANAGER ────────────────────────────────────────
+// ── 1. HSN MANAGER (MOVED TO TOP) ──
 const DEFAULT_HSN = [
   { code:'7308', desc:'Structures of iron/steel' },
   { code:'7210', desc:'GI Roofing Sheets' },
@@ -1711,21 +1706,40 @@ const DEFAULT_HSN = [
   { code:'9954', desc:'Construction Services' },
   { code:'9988', desc:'Fabrication/Manufacturing Services' },
 ];
-   
+
+// ── 2. FIREBASE CONFIG ──
 const firebaseConfig = {
-  apiKey:            "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
-  authDomain:        "deepu-siva-portal.firebaseapp.com",
-  projectId:         "deepu-siva-portal",
-  storageBucket:     "deepu-siva-portal.firebasestorage.app",
+  apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+  authDomain: "deepu-siva-portal.firebaseapp.com",
+  projectId: "deepu-siva-portal",
+  storageBucket: "deepu-siva-portal.firebasestorage.app",
   messagingSenderId: "1014351018202",
   appId: CONFIG.APP_ID
 };
 
-
-
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
+
+   // ── 3. DIRECTOR'S SECURE GATE ──
+await setPersistence(auth, browserLocalPersistence);
+await auth.authStateReady();
+const _user = auth.currentUser;
+
+if (!_user) {
+    window.location.replace('login.html');
+} else {
+    if (_user.email !== CONFIG.DIRECTOR_EMAIL) {
+        alert("Unauthorized Access: This system is for the Director only.");
+        window.location.replace('index.html');
+    } else {
+        console.log("Identity Verified. Initializing ERP...");
+        await bootERP(_user);
+    }
+}
 
 // ── Tell Firebase to always persist session in localStorage ──
 // This must be set BEFORE auth.authStateReady() is called
