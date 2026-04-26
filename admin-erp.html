@@ -1692,6 +1692,7 @@
 <div class="erp-toast" id="erpToast"></div>
 
 <script type="module">
+import CONFIG from './config.js';
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut, browserLocalPersistence, setPersistence }
@@ -1707,16 +1708,10 @@ const firebaseConfig = {
   projectId:         "deepu-siva-portal",
   storageBucket:     "deepu-siva-portal.firebasestorage.app",
   messagingSenderId: "1014351018202",
-  appId:             "1:1014351018202:web:16d2578f726159e5ef8de3"
+  appId: CONFIG.APP_ID
 };
 
-const ADMIN_EMAILS = [
-  "deepadharsan.rajavel@gmail.com",
-  "deepusiva.pvt@gmail.com",
-  "contact@deepusiva.com",
-  "deepusiva2017@gmail.com",
-  "deepusiva947@gmail.com"
-];
+
 
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -1876,38 +1871,23 @@ window.syncOfflineInvoices = async function() {
   }
 };
 
-// ── AUTH GUARD — FIXED ─────────────────────────────────
-// auth.authStateReady() waits until Firebase has FULLY restored
-// the session from localStorage before we check anything.
-// This eliminates the race condition where onAuthStateChanged
-// fired null first and incorrectly kicked the user out.
+// ── DIRECTOR'S SECURE GATE ──
 await auth.authStateReady();
-
 const _user = auth.currentUser;
-if (!_user) {
-  window.location.replace('login.html');
-} else {
-  const _email = (_user.email || '').toLowerCase();
-  const _isMaster = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(_email);
 
-  if (_isMaster) {
-    // FAST PASS — email in hardcoded list, grant instantly, no DB query
-    await bootERP(_user);
-  } else {
-    // FALLBACK — check Firestore role field
-    try {
-      const _snap = await getDoc(doc(db, 'users', _user.uid));
-      if (_snap.exists() && _snap.data().role === 'admin') {
-        await bootERP(_user);
-      } else {
-        alert('Access Denied. Admin accounts only.');
+if (!_user) {
+    // Not logged in -> send to login
+    window.location.replace('login.html');
+} else {
+    // 1. SECURITY CHECK: Verify against the Vault
+    if (_user.email !== CONFIG.DIRECTOR_EMAIL) {
+        alert("Unauthorized Access: This system is for the Director of Deepu Siva Private Limited only.");
         window.location.replace('index.html');
-      }
-    } catch(e) {
-      alert('Could not verify access. Check your connection and try again.');
-      window.location.replace('login.html');
+    } else {
+        // 2. SUCCESS: It is the Director, start the system
+        console.log("Identity Verified. Initializing ERP System...");
+        await bootERP(_user);
     }
-  }
 }
 
 async function bootERP(user) {
