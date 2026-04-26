@@ -368,6 +368,7 @@
 <div class="shop-toast" id="shopToast"></div>
 
 <script type="module">
+import CONFIG from './config.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -407,7 +408,7 @@ async function loadProducts() {
     // 2. Create the Secure Query for your specific products
     const q = query(
       collection(db, 'products'), 
-      where('ownerUid', '==', 'JWR6AvoYHUUPchhCjQ9jFoJXk293'),
+      where('ownerUid', '==', CONFIG.DIRECTOR_UID),
       where('shopType', '==', mode) // Only shows items for the selected shop
     );
 
