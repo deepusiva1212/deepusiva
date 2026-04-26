@@ -729,6 +729,7 @@ tbody tr:hover td{background:var(--green-pale);}
 <div class="a-toast" id="aToast"></div>
 
 <script type="module">
+import CONFIG from './config.js';
 import { auth, db, storage, requireAdmin } from './ds-firebase.js';
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import {
@@ -739,7 +740,14 @@ import { ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
 // ── BOOT ──
+// ── SECURE BOOT ──
 requireAdmin(async (user) => {
+  // Security Gate: Verify the logged-in email matches the Director Vault
+  if (user.email !== CONFIG.DIRECTOR_EMAIL) {
+      alert("Access Denied: You are not authorized to view the Director Portal.");
+      window.location.href = 'login.html';
+      return;
+  }
   document.getElementById('adminEmail').textContent = user.email;
   await Promise.all([loadStats(), loadPendingApprovals(), loadClientDropdown(), loadAllClients()]);
 });
