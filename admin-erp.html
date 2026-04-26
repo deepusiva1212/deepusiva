@@ -1702,6 +1702,16 @@ import {
   doc, query, orderBy, limit, where, runTransaction, serverTimestamp, setDoc
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+   // ── HSN MANAGER ────────────────────────────────────────
+const DEFAULT_HSN = [
+  { code:'7308', desc:'Structures of iron/steel' },
+  { code:'7210', desc:'GI Roofing Sheets' },
+  { code:'8541', desc:'Solar Panels' },
+  { code:'6996', desc:'Solar Mounting Structures' },
+  { code:'9954', desc:'Construction Services' },
+  { code:'9988', desc:'Fabrication/Manufacturing Services' },
+];
+   
 const firebaseConfig = {
   apiKey:            "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
   authDomain:        "deepu-siva-portal.firebaseapp.com",
@@ -2246,15 +2256,7 @@ window.copyHSN = function(code, desc) {
   }
 };
 
-// ── HSN MANAGER ────────────────────────────────────────
-const DEFAULT_HSN = [
-  { code:'7308', desc:'Structures of iron/steel' },
-  { code:'7210', desc:'GI Roofing Sheets' },
-  { code:'8541', desc:'Solar Panels' },
-  { code:'6996', desc:'Solar Mounting Structures' },
-  { code:'9954', desc:'Construction Services' },
-  { code:'9988', desc:'Fabrication/Manufacturing Services' },
-];
+
 
 function getHsnCodes() {
   return settings.hsnCodes && settings.hsnCodes.length
