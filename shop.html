@@ -401,7 +401,17 @@ let cart = JSON.parse(localStorage.getItem('dsCart') || '[]');
 // ── LOAD PRODUCTS ──
 async function loadProducts() {
   try {
-    const snap = await getDocs(collection(db, 'products'));
+   // 1. Identify which shop the user entered (Industrial or Retail)
+    const mode = localStorage.getItem('shopMode') || 'B2C'; 
+    
+    // 2. Create the Secure Query for your specific products
+    const q = query(
+      collection(db, 'products'), 
+      where('ownerUid', '==', '1:1014351018202:web:16d2578f726159e5ef8de3'),
+      where('shopType', '==', mode) // Only shows items for the selected shop
+    );
+
+    const snap = await getDocs(q);
     allProducts = [];
     const cats = new Set(['all']);
     snap.forEach(d => {
