@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "whor62121x");
-</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Deepu Siva Private Limited | Metal Fabrication & Solar Structures</title>
@@ -75,6 +68,92 @@ body.accent-red {
   --green-pale:   #fff5f5;
 }
 /* Default green accent — no class needed */
+
+/* ── ACCENT: PURPLE ── */
+body.accent-purple {
+  --green: #7c3aed; --green2: #6d28d9; --green3: #5b21b6;
+  --green-light: #ede9fe; --green-pale: #f5f3ff;
+}
+/* ── ACCENT: TEAL ── */
+body.accent-teal {
+  --green: #0d9488; --green2: #0f766e; --green3: #115e59;
+  --green-light: #ccfbf1; --green-pale: #f0fdfa;
+}
+/* ── ACCENT: ORANGE ── */
+body.accent-orange {
+  --green: #ea580c; --green2: #c2410c; --green3: #9a3412;
+  --green-light: #ffedd5; --green-pale: #fff7ed;
+}
+/* ── ACCENT: PINK ── */
+body.accent-pink {
+  --green: #db2777; --green2: #be185d; --green3: #9d174d;
+  --green-light: #fce7f3; --green-pale: #fdf2f8;
+}
+
+/* ══ INTERACTIVE CANVAS BACKGROUND ══════════════════
+   Controlled via localStorage: ds_bg_effect
+   Designs: off | particles | geometry | stars | grid
+══════════════════════════════════════════════════ */
+#bgCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+#bgCanvas.active { opacity: 1; }
+body > *:not(#bgCanvas) { position: relative; z-index: 1; }
+
+/* ══ MOBILE IMPROVEMENTS ════════════════════════════ */
+@media (max-width: 480px) {
+  .hero h1 { font-size: clamp(28px, 8vw, 42px); }
+  .hero-btns { flex-direction: column; gap: 10px; }
+  .hero-btns a { text-align: center; }
+  .trust-row { gap: 16px; }
+  .trust-num  { font-size: 28px; }
+  .svc-card   { padding: 20px 16px; }
+  .proj-card  { margin-bottom: 4px; }
+  .section    { padding: 40px 0; }
+  .section-title { font-size: clamp(22px, 6vw, 32px); }
+  .why-item   { gap: 12px; }
+  .process-step { padding: 16px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 24px; }
+  .footer-grid  { grid-template-columns: 1fr; gap: 24px; }
+  /* Better tap targets */
+  .btn { min-height: 48px; font-size: 15px; }
+  .nav-tab { min-height: 56px; }
+  /* App-like bottom nav */
+  .app-bottom-nav { height: 68px; padding-bottom: env(safe-area-inset-bottom); }
+  .nav-tab { padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* PWA / App-like feel */
+@media (display-mode: standalone) {
+  .topbar { display: none; }
+  .site-nav { top: 0; padding-top: env(safe-area-inset-top, 0); }
+  .app-bottom-nav { padding-bottom: env(safe-area-inset-bottom, 10px); }
+}
+
+/* Mobile card improvements */
+@media (max-width: 768px) {
+  .proj-card:hover { transform: none; } /* No hover effect on touch */
+  .svc-card:hover  { transform: none; }
+  /* Better scrolling feel */
+  .filter-bar { -webkit-overflow-scrolling: touch; }
+  /* Larger touch targets for social icons */
+  .social-ico { width: 44px; height: 44px; font-size: 18px; }
+}
+
+/* Solar calc mobile */
+@media (max-width: 480px) {
+  .calc-body  { padding: 16px 12px 80px; }
+  .type-toggle { grid-template-columns: 1fr 1fr; }
+  .results-main-num { font-size: 36px; }
+  .results-grid { grid-template-columns: 1fr 1fr; }
+}
+
 
 /* ── DYNAMIC BANNER ── */
 #cms-banner {
@@ -528,6 +607,9 @@ body.accent-red {
   <svg id="themeIcon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
 </button>
 
+<!-- ─── INTERACTIVE BACKGROUND CANVAS ─── -->
+<canvas id="bgCanvas"></canvas>
+
 <!-- ═══ DESKTOP TOPBAR ═══ -->
 <div class="topbar web-only">
   <div class="topbar-inner">
@@ -560,6 +642,7 @@ body.accent-red {
       </li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="shop-entry.html">Shop</a></li>
+      <li><a href="solar-calculator.html">☀️ Solar Calc</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="login.html" class="btn-nav-cta">Client Portal</a></li>
     </ul>
@@ -702,7 +785,7 @@ body.accent-red {
 <!-- ABOUT -->
 <section id="about" class="section web-only">
   <div class="container">
-    <div class="about-grid" data-aos="fade-up">
+    <div class="about-grid" data-aos="fade-right" data-aos-duration="1000">
       <div>
         <span class="section-tag">About Us</span>
         <h2 class="section-title">About Deepu Siva<br/>Private Limited</h2>
@@ -736,10 +819,10 @@ body.accent-red {
       <div class="divider"></div>
       <p class="section-desc">End-to-end solutions from fabrication to installation — for every structural and industrial need.</p>
     </div>
-    <div class="services-grid" data-aos="fade-up" data-aos-duration="800">
-      <div class="svc-card" data-aos="fade-up" data-aos-delay="0"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div><h3>Metal Fabrication</h3><p>Custom steel & metal fabrication for machinery, platforms, frames and structural components. MS, SS, aluminium and alloy steels to exact specs.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
-      <div class="svc-card" data-aos="fade-up" data-aos-delay="100"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Industrial Roofing</h3><p>Heavy-duty GI sheet roofing, standing seam systems, insulated panels and skylight integration for factories, warehouses and industrial plants.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
-      <div class="svc-card" data-aos="fade-up" data-aos-delay="0"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div><h3>Solar Structures</h3><p>Hot-dip galvanised & powder-coated mounting structures for rooftop and ground-mounted solar plants — engineered for wind and seismic loads.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
+    <div class="services-grid" data-aos="fade-up" data-aos-duration="1000" data-aos-offset="80">
+      <div class="svc-card" data-aos="zoom-in" data-aos-delay="0" data-aos-duration="700"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div><h3>Metal Fabrication</h3><p>Custom steel & metal fabrication for machinery, platforms, frames and structural components. MS, SS, aluminium and alloy steels to exact specs.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
+      <div class="svc-card" data-aos="zoom-in" data-aos-delay="120" data-aos-duration="700"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Industrial Roofing</h3><p>Heavy-duty GI sheet roofing, standing seam systems, insulated panels and skylight integration for factories, warehouses and industrial plants.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
+      <div class="svc-card" data-aos="zoom-in" data-aos-delay="240" data-aos-duration="700"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div><h3>Solar Structures</h3><p>Hot-dip galvanised & powder-coated mounting structures for rooftop and ground-mounted solar plants — engineered for wind and seismic loads.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
       <div class="svc-card"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><h3>Structural Engineering</h3><p>Pre-engineered buildings, mezzanine floors, gantry cranes, walkways and heavy-load platforms for industrial applications.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
       <div class="svc-card"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg></div><h3>Industrial Construction</h3><p>Turnkey industrial shed construction — civil, structural steel, roofing and utilities delivered under one roof for faster completion.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
       <div class="svc-card"><div class="svc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/></svg></div><h3>Erection & Installation</h3><p>Skilled site erection for structural steel, pre-engineered buildings and roofing systems with experienced teams and modern equipment.</p><a href="#contact" class="svc-link">Get Quote →</a></div>
@@ -755,7 +838,7 @@ body.accent-red {
         <span class="section-tag">Why Choose Us</span>
         <h2 class="section-title">The Deepu Siva Advantage</h2>
         <div class="divider"></div>
-        <div class="why-items" data-aos="fade-up" data-aos-duration="800">
+        <div class="why-items" data-aos="fade-left" data-aos-duration="1000">
           <div class="why-item"><div class="why-num">01</div><div><h4>In-House Fabrication</h4><p>Our fully equipped workshop ensures quality control at every step — no outsourcing, no delays.</p></div></div>
           <div class="why-item"><div class="why-num">02</div><div><h4>Expert Engineering Team</h4><p>Qualified civil and structural engineers with proven expertise across hundreds of industrial projects.</p></div></div>
           <div class="why-item"><div class="why-num">03</div><div><h4>Competitive Pricing</h4><p>Direct manufacturing advantage — superior quality at honest, transparent pricing every time.</p></div></div>
@@ -780,7 +863,7 @@ body.accent-red {
       <h2 class="section-title">Our Project Process</h2>
       <div class="divider"></div>
     </div>
-    <div class="process-row" data-aos="fade-up">
+    <div class="process-row" data-aos="fade-up" data-aos-duration="1200">
       <div class="process-step"><div class="step-num">01</div><h4>Consultation</h4><p>We study your requirements and site conditions in detail.</p></div>
       <div class="process-step"><div class="step-num">02</div><h4>Design & Quote</h4><p>Engineering drawings and transparent cost estimate.</p></div>
       <div class="process-step"><div class="step-num">03</div><h4>Fabrication</h4><p>Precision fabrication in our in-house workshop with QC.</p></div>
@@ -799,7 +882,7 @@ body.accent-red {
       <h2 class="section-title">Our Clientele Sectors</h2>
       <div class="divider"></div>
     </div>
-    <div class="industries-grid" data-aos="fade-up" data-aos-duration="600">
+    <div class="industries-grid" data-aos="zoom-in" data-aos-duration="900">
       <div class="ind-card"><div class="ind-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg></div><h4>Manufacturing</h4></div>
       <div class="ind-card"><div class="ind-icon">🌾</div><h4>Agriculture</h4></div>
       <div class="ind-card"><div class="ind-icon">🏢</div><h4>Commercial</h4></div>
@@ -820,7 +903,7 @@ body.accent-red {
       <h2 class="section-title">Our Recent Projects</h2>
       <div class="divider"></div>
     </div>
-    <div class="projects-grid" data-aos="fade-up" data-aos-duration="800">
+    <div class="projects-grid" id="dynamicProjectsGrid" data-aos="flip-up" data-aos-duration="1000" data-aos-offset="100">
       <div class="proj-card"><div class="proj-thumb proj-thumb-1"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg></div><div class="proj-info"><div class="proj-cat">Metal Fabrication</div><h4>Industrial Platform</h4><p>MS structural platform with handrails and staircase for a manufacturing unit.</p></div></div>
       <div class="proj-card"><div class="proj-thumb proj-thumb-2"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="proj-info"><div class="proj-cat">Industrial Roofing</div><h4>Warehouse Roofing — 5000 sqm</h4><p>GI sheet roofing with insulated panels for a large warehouse facility.</p></div></div>
       <div class="proj-card"><div class="proj-thumb proj-thumb-3"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div><div class="proj-info"><div class="proj-cat">Solar Structures</div><h4>1 MW Rooftop Solar</h4><p>Hot-dip galvanised mounting structure for a 1 MW industrial solar plant.</p></div></div>
@@ -987,11 +1070,18 @@ body.accent-red {
 <script>
 // ════════════════════════════════════════════════
 //  DEEPU SIVA — Page Engine
-//  Theme | Dark Mode | Counter | CMS Banner
+//  Theme | Dark Mode | Counter | Canvas BG | CMS
 // ════════════════════════════════════════════════
 
-// ── AOS ──
-AOS.init({ once: true, offset: 60, easing: 'ease-out-quad' });
+// ── AOS — slower, smoother ──
+AOS.init({
+  once: true,
+  offset: 80,
+  duration: 900,
+  easing: 'ease-out-cubic',
+  delay: 0,
+  mirror: false
+});
 
 // ── NAV ACTIVE ON SCROLL ──
 const sections = document.querySelectorAll('section[id]');
@@ -1005,7 +1095,7 @@ window.addEventListener('scroll', () => {
 // ══ THEME ENGINE ══════════════════════════════
 const THEME_KEY  = 'ds_theme';
 const ACCENT_KEY = 'ds_accent';
-const ACCENTS    = ['', 'accent-blue', 'accent-gold', 'accent-red']; // '' = default green
+const ACCENTS    = ['', 'accent-blue', 'accent-gold', 'accent-red', 'accent-purple', 'accent-teal', 'accent-orange', 'accent-pink']; // '' = default green
 
 function applyTheme() {
   const dark   = localStorage.getItem(THEME_KEY)  === 'dark';
@@ -1083,6 +1173,334 @@ if (aboutSection && 'IntersectionObserver' in window) {
 }
 </script>
 
+<!-- ─── INTERACTIVE BACKGROUND ENGINE ─── -->
+<script>
+// ══════════════════════════════════════════════════════
+//  CANVAS BACKGROUND ENGINE
+//  Designs: particles | geometry | stars | grid | waves
+//  Controlled by localStorage: ds_bg_effect
+//  Admin toggles via Firestore → cms/settings.bgEffect
+// ══════════════════════════════════════════════════════
+const BG_KEY = 'ds_bg_effect';
+let bgAnimId = null;
+let mouseX = 0, mouseY = 0;
+
+window.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+// Touch support
+window.addEventListener('touchmove', e => {
+  mouseX = e.touches[0].clientX;
+  mouseY = e.touches[0].clientY;
+}, { passive: true });
+
+function startBgEffect(design) {
+  const canvas = document.getElementById('bgCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Stop previous
+  if (bgAnimId) cancelAnimationFrame(bgAnimId);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (!design || design === 'off') {
+    canvas.classList.remove('active');
+    return;
+  }
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  canvas.classList.add('active');
+
+  const isDark = document.body.classList.contains('dark-mode');
+  // Get current accent color from CSS variables
+  const style   = getComputedStyle(document.body);
+  const accent  = style.getPropertyValue('--green').trim() || '#16a34a';
+
+  if (design === 'particles') runParticles(ctx, canvas, accent, isDark);
+  else if (design === 'geometry') runGeometry(ctx, canvas, accent, isDark);
+  else if (design === 'stars')    runStars(ctx, canvas, accent, isDark);
+  else if (design === 'grid')     runGrid(ctx, canvas, accent, isDark);
+  else if (design === 'waves')    runWaves(ctx, canvas, accent, isDark);
+}
+
+// ── DESIGN 1: PARTICLES (mouse-connected dots) ──
+function runParticles(ctx, cv, accent, dark) {
+  const N = Math.min(80, Math.floor(cv.width * cv.height / 12000));
+  const alpha = dark ? 0.25 : 0.18;
+  const particles = Array.from({length: N}, () => ({
+    x: Math.random() * cv.width,
+    y: Math.random() * cv.height,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: Math.random() * 2.5 + 1,
+  }));
+
+  function frame() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const mx = mouseX, my = mouseY;
+
+    particles.forEach(p => {
+      // Gentle attraction to mouse
+      const dx = mx - p.x, dy = my - p.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 160) {
+        p.vx += dx * 0.00015;
+        p.vy += dy * 0.00015;
+      }
+      p.x += p.vx; p.y += p.vy;
+      // Dampen
+      p.vx *= 0.99; p.vy *= 0.99;
+      // Wrap
+      if (p.x < 0) p.x = cv.width; if (p.x > cv.width) p.x = 0;
+      if (p.y < 0) p.y = cv.height; if (p.y > cv.height) p.y = 0;
+      // Draw dot
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = accent + Math.floor(alpha * 255).toString(16).padStart(2,'0');
+      ctx.fill();
+    });
+
+    // Connect nearby particles + mouse
+    [...particles, {x: mx, y: my, isMouse: true}].forEach((a, i) => {
+      [...particles, {x: mx, y: my, isMouse: true}].forEach((b, j) => {
+        if (j <= i) return;
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d  = Math.sqrt(dx*dx + dy*dy);
+        const maxD = (a.isMouse || b.isMouse) ? 140 : 100;
+        if (d < maxD) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = accent + Math.floor((1 - d/maxD) * alpha * 255).toString(16).padStart(2,'0');
+          ctx.lineWidth = (a.isMouse || b.isMouse) ? 1.5 : 0.8;
+          ctx.stroke();
+        }
+      });
+    });
+
+    bgAnimId = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ── DESIGN 2: FLOATING GEOMETRY ──
+function runGeometry(ctx, cv, accent, dark) {
+  const alpha = dark ? 0.2 : 0.12;
+  const shapes = Array.from({length: 24}, (_, i) => ({
+    x: Math.random() * cv.width,
+    y: Math.random() * cv.height,
+    size: Math.random() * 40 + 15,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    rot: Math.random() * Math.PI * 2,
+    vrot: (Math.random() - 0.5) * 0.006,
+    type: i % 3, // 0=triangle 1=hexagon 2=diamond
+  }));
+
+  function hexPath(ctx, cx, cy, r) {
+    ctx.beginPath();
+    for (let i=0; i<6; i++) {
+      const a = (Math.PI/3)*i - Math.PI/6;
+      i === 0 ? ctx.moveTo(cx+r*Math.cos(a), cy+r*Math.sin(a))
+              : ctx.lineTo(cx+r*Math.cos(a), cy+r*Math.sin(a));
+    }
+    ctx.closePath();
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const mx = mouseX, my = mouseY;
+
+    shapes.forEach(s => {
+      const dx = mx - s.x, dy = my - s.y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 200) { s.vx += dx * 0.00008; s.vy += dy * 0.00008; }
+      s.x += s.vx; s.y += s.vy; s.rot += s.vrot;
+      s.vx *= 0.995; s.vy *= 0.995;
+      if (s.x < -60) s.x = cv.width + 60;
+      if (s.x > cv.width + 60) s.x = -60;
+      if (s.y < -60) s.y = cv.height + 60;
+      if (s.y > cv.height + 60) s.y = -60;
+
+      ctx.save();
+      ctx.translate(s.x, s.y);
+      ctx.rotate(s.rot);
+      ctx.strokeStyle = accent + Math.floor(alpha * 255).toString(16).padStart(2,'0');
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      if (s.type === 0) { // triangle
+        ctx.moveTo(0, -s.size); ctx.lineTo(s.size*.866, s.size*.5); ctx.lineTo(-s.size*.866, s.size*.5); ctx.closePath();
+      } else if (s.type === 1) { // hexagon
+        for (let i=0; i<6; i++) {
+          const a = (Math.PI/3)*i; const px = s.size*Math.cos(a), py = s.size*Math.sin(a);
+          i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+        }
+        ctx.closePath();
+      } else { // diamond
+        ctx.moveTo(0,-s.size); ctx.lineTo(s.size*.6,0); ctx.lineTo(0,s.size); ctx.lineTo(-s.size*.6,0); ctx.closePath();
+      }
+      ctx.stroke();
+      ctx.restore();
+    });
+    bgAnimId = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ── DESIGN 3: STARS PARALLAX ──
+function runStars(ctx, cv, accent, dark) {
+  const layers = [
+    Array.from({length: 80},  () => ({x:Math.random()*cv.width, y:Math.random()*cv.height, r:Math.random()*1+0.5,  speed:0.015})),
+    Array.from({length: 50},  () => ({x:Math.random()*cv.width, y:Math.random()*cv.height, r:Math.random()*2+1,    speed:0.04})),
+    Array.from({length: 20},  () => ({x:Math.random()*cv.width, y:Math.random()*cv.height, r:Math.random()*3+1.5,  speed:0.08})),
+  ];
+  let ox=0, oy=0;
+  const alpha = dark ? 0.6 : 0.35;
+
+  function frame() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const tx = (mouseX - cv.width/2)  * 0.06;
+    const ty = (mouseY - cv.height/2) * 0.06;
+    ox += (tx - ox) * 0.04;
+    oy += (ty - oy) * 0.04;
+
+    layers.forEach(layer => {
+      layer.forEach(s => {
+        const px = (s.x + ox * s.speed * 20 + cv.width)  % cv.width;
+        const py = (s.y + oy * s.speed * 20 + cv.height) % cv.height;
+        ctx.beginPath();
+        ctx.arc(px, py, s.r, 0, Math.PI*2);
+        ctx.fillStyle = dark
+          ? '#ffffff' + Math.floor(alpha * 255).toString(16).padStart(2,'0')
+          : accent    + Math.floor(alpha * 0.6 * 255).toString(16).padStart(2,'0');
+        ctx.fill();
+      });
+    });
+    bgAnimId = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ── DESIGN 4: GRID WARP ──
+function runGrid(ctx, cv, accent, dark) {
+  const SPACING = 52;
+  const alpha = dark ? 0.18 : 0.10;
+  let t = 0;
+
+  function frame() {
+    t += 0.008;
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const mx = mouseX, my = mouseY;
+
+    ctx.strokeStyle = accent + Math.floor(alpha * 255).toString(16).padStart(2,'0');
+    ctx.lineWidth   = 0.8;
+
+    const cols = Math.ceil(cv.width  / SPACING) + 2;
+    const rows = Math.ceil(cv.height / SPACING) + 2;
+
+    for (let r = 0; r <= rows; r++) {
+      ctx.beginPath();
+      for (let c = 0; c <= cols; c++) {
+        const bx = (c - 0.5) * SPACING;
+        const by = r * SPACING;
+        const dx = mx - bx, dy = my - by;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const push = Math.max(0, 1 - dist / 180) * 22;
+        const wave = Math.sin(c * 0.5 + t) * 4;
+        const px = bx + (dx / (dist||1)) * push;
+        const py = by + (dy / (dist||1)) * push + wave;
+        c === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+    }
+
+    for (let c = 0; c <= cols; c++) {
+      ctx.beginPath();
+      for (let r = 0; r <= rows; r++) {
+        const bx = (c - 0.5) * SPACING;
+        const by = r * SPACING;
+        const dx = mx - bx, dy = my - by;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const push = Math.max(0, 1 - dist / 180) * 22;
+        const wave = Math.sin(r * 0.5 + t) * 4;
+        const px = bx + (dx / (dist||1)) * push;
+        const py = by + (dy / (dist||1)) * push + wave;
+        r === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+    }
+
+    bgAnimId = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ── DESIGN 5: WAVES ──
+function runWaves(ctx, cv, accent, dark) {
+  let t = 0;
+  const alpha = dark ? 0.25 : 0.14;
+
+  function frame() {
+    t += 0.012;
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const my = mouseY / cv.height;
+
+    for (let layer = 0; layer < 4; layer++) {
+      const freq = 0.004 + layer * 0.002;
+      const amp  = 30 + layer * 20 + my * 20;
+      const phase = t * (1 + layer * 0.3);
+      const yBase = cv.height * (0.25 + layer * 0.18);
+
+      ctx.beginPath();
+      ctx.moveTo(0, yBase);
+      for (let x = 0; x <= cv.width; x += 4) {
+        const y = yBase + Math.sin(x * freq + phase) * amp
+                        + Math.sin(x * freq * 2.1 + phase * 1.3) * (amp * 0.4);
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(cv.width, cv.height);
+      ctx.lineTo(0, cv.height);
+      ctx.closePath();
+      ctx.fillStyle = accent + Math.floor(alpha * (1 - layer*0.18) * 255).toString(16).padStart(2,'0');
+      ctx.fill();
+    }
+
+    bgAnimId = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ── INIT BACKGROUND ──
+function initBg() {
+  const effect = localStorage.getItem(BG_KEY) || 'off';
+  startBgEffect(effect);
+}
+window.setBgEffect = function(design) {
+  localStorage.setItem(BG_KEY, design);
+  startBgEffect(design);
+};
+
+// Restart on theme change so colors match
+const _origToggle = window.toggleDarkMode;
+window.toggleDarkMode = function() {
+  if (_origToggle) _origToggle();
+  setTimeout(() => {
+    const effect = localStorage.getItem(BG_KEY) || 'off';
+    if (effect !== 'off') startBgEffect(effect);
+  }, 100);
+};
+
+// Boot
+window.addEventListener('DOMContentLoaded', initBg);
+</script>
+
 <!-- ─── CMS LOADER: loads portfolio, video widget, social links, banner, stats ─── -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -1148,10 +1566,23 @@ async function loadCmsSettings() {
       });
     });
 
-    // ── THEME FROM CMS (optional — admin can set site-wide accent) ──
+    // ── THEME FROM CMS ──
+    if (data.siteTheme) {
+      localStorage.setItem('ds_theme', data.siteTheme);
+    }
     if (data.siteAccent) {
       localStorage.setItem('ds_accent', data.siteAccent === 'green' ? '' : 'accent-' + data.siteAccent);
-      if (typeof applyTheme === 'function') applyTheme();
+    }
+    if (typeof applyTheme === 'function') applyTheme();
+
+    // ── BACKGROUND EFFECT FROM CMS ──
+    if (data.bgEffect !== undefined) {
+      const currentBg = localStorage.getItem('ds_bg_effect') || 'off';
+      // CMS setting overrides local — admin controls it for all visitors
+      localStorage.setItem('ds_bg_effect', data.bgEffect);
+      if (typeof startBgEffect === 'function' && data.bgEffect !== currentBg) {
+        startBgEffect(data.bgEffect);
+      }
     }
 
   } catch(e) { /* CMS load failure is silent — page works without it */ }
@@ -1226,6 +1657,5 @@ loadCmsSettings();
 loadPortfolio();
 loadVideoWidget();
 </script>
-<script type="module" src="cms-loader.js"></script>
 </body>
 </html>

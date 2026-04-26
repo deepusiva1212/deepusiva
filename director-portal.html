@@ -594,19 +594,30 @@ tbody tr:hover td{background:var(--green-pale);}
             <div class="settings-section-title">Accent Colour</div>
             <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Changes the primary colour of buttons, highlights and links across the entire website.</p>
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-              <button onclick="setAccentCMS('green')" style="padding:16px 10px;border-radius:var(--radius);border:2px solid transparent;background:#16a34a;color:#fff;font-family:var(--font-head);font-size:13px;font-weight:800;cursor:pointer;text-transform:uppercase;" id="accentGreen">
-                Green ✓
-              </button>
-              <button onclick="setAccentCMS('blue')" style="padding:16px 10px;border-radius:var(--radius);border:2px solid transparent;background:#2563eb;color:#fff;font-family:var(--font-head);font-size:13px;font-weight:800;cursor:pointer;text-transform:uppercase;" id="accentBlue">
-                Blue
-              </button>
-              <button onclick="setAccentCMS('gold')" style="padding:16px 10px;border-radius:var(--radius);border:2px solid transparent;background:#d97706;color:#fff;font-family:var(--font-head);font-size:13px;font-weight:800;cursor:pointer;text-transform:uppercase;" id="accentGold">
-                Gold
-              </button>
-              <button onclick="setAccentCMS('red')" style="padding:16px 10px;border-radius:var(--radius);border:2px solid transparent;background:#dc2626;color:#fff;font-family:var(--font-head);font-size:13px;font-weight:800;cursor:pointer;text-transform:uppercase;" id="accentRed">
-                Red
-              </button>
+              <button onclick="setAccentCMS('green')"  id="accentGreen"  style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#16a34a;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Green</button>
+              <button onclick="setAccentCMS('blue')"   id="accentBlue"   style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#2563eb;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Blue</button>
+              <button onclick="setAccentCMS('gold')"   id="accentGold"   style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#d97706;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Gold</button>
+              <button onclick="setAccentCMS('red')"    id="accentRed"    style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#dc2626;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Red</button>
+              <button onclick="setAccentCMS('purple')" id="accentPurple" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#7c3aed;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Purple</button>
+              <button onclick="setAccentCMS('teal')"   id="accentTeal"   style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#0d9488;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Teal</button>
+              <button onclick="setAccentCMS('orange')" id="accentOrange" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#ea580c;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Orange</button>
+              <button onclick="setAccentCMS('pink')"   id="accentPink"   style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#db2777;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Pink</button>
             </div>
+          </div>
+
+          <!-- ── BACKGROUND EFFECT ── -->
+          <div class="settings-section" style="margin-top:24px;">
+            <div class="settings-section-title">Interactive Background Effect</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">The background reacts to mouse/touch movement. Choose a design or turn it off.</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px;">
+              <button onclick="setBgCMS('off')"       id="bg-off"       class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Off</button>
+              <button onclick="setBgCMS('particles')" id="bg-particles" class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Particles</button>
+              <button onclick="setBgCMS('geometry')"  id="bg-geometry"  class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Geometry</button>
+              <button onclick="setBgCMS('stars')"     id="bg-stars"     class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Stars</button>
+              <button onclick="setBgCMS('grid')"      id="bg-grid"      class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Grid Warp</button>
+              <button onclick="setBgCMS('waves')"     id="bg-waves"     class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Waves</button>
+            </div>
+            <p style="font-size:11px;color:var(--muted);">Tip: "Particles" is the Google gravity-like effect. "Grid Warp" follows the mouse most dramatically.</p>
           </div>
 
           <div class="cms-log" id="log-theme"></div>
@@ -1430,23 +1441,52 @@ window.removeBanner = async function() {
 // ─── THEME MANAGER ────────────────────────────────
 async function loadThemeSettings() {
   try {
-    const snap   = await getDoc(doc(db,'cms','settings'));
-    const data   = snap.exists() ? snap.data() : {};
-    const theme  = data.siteTheme  || 'light';
-    const accent = data.siteAccent || 'green';
-    _highlightTheme(theme, accent);
+    const snap    = await getDoc(doc(db,'cms','settings'));
+    const data    = snap.exists() ? snap.data() : {};
+    const theme   = data.siteTheme  || 'light';
+    const accent  = data.siteAccent || 'green';
+    const bgEff   = data.bgEffect   || 'off';
+    _highlightTheme(theme, accent, bgEff);
   } catch(e) {}
 }
 
-function _highlightTheme(theme, accent) {
+window.setBgCMS = async function(design) {
+  const log = document.getElementById('log-theme');
+  try {
+    await setDoc(doc(db,'cms','settings'), { bgEffect: design }, { merge: true });
+    // Update highlight
+    const snap   = await getDoc(doc(db,'cms','settings'));
+    const data   = snap.exists() ? snap.data() : {};
+    _highlightTheme(data.siteTheme||'light', data.siteAccent||'green', design);
+    log.className   = 'cms-log ok';
+    log.textContent = design === 'off'
+      ? '✅ Background effect disabled. Clean look restored.'
+      : '✅ Background set to "' + design + '". Visitors will see this on the homepage.';
+    toast('Background: ' + design);
+  } catch(e) { log.className='cms-log err'; log.textContent='❌ '+e.message; }
+};
+
+function _highlightTheme(theme, accent, bgEffect) {
   const lightBtn = document.getElementById('themeLight');
   const darkBtn  = document.getElementById('themeDark');
-  if (lightBtn) lightBtn.style.outline = theme === 'light' ? '3px solid var(--green)'  : 'none';
+  if (lightBtn) lightBtn.style.outline = theme === 'light' ? '3px solid var(--green)' : 'none';
   if (darkBtn)  darkBtn.style.outline  = theme === 'dark'  ? '3px solid #4ade80' : 'none';
-  ['green','blue','gold','red'].forEach(a => {
+  // All 8 accent colors
+  ['green','blue','gold','red','purple','teal','orange','pink'].forEach(a => {
     const btn = document.getElementById('accent' + a.charAt(0).toUpperCase() + a.slice(1));
     if (btn) btn.style.outline = a === accent ? '3px solid #fff' : 'none';
   });
+  // Background effect buttons
+  if (bgEffect !== undefined) {
+    ['off','particles','geometry','stars','grid','waves'].forEach(d => {
+      const btn = document.getElementById('bg-' + d);
+      if (btn) {
+        btn.style.outline    = d === bgEffect ? '3px solid var(--green)' : 'none';
+        btn.style.background = d === bgEffect ? 'var(--green-pale)' : 'var(--bg3)';
+        btn.style.color      = d === bgEffect ? 'var(--green3)' : 'var(--text2)';
+      }
+    });
+  }
 }
 
 window.setThemeCMS = async function(theme) {
@@ -1466,9 +1506,9 @@ window.setAccentCMS = async function(accent) {
   const log = document.getElementById('log-theme');
   try {
     await setDoc(doc(db,'cms','settings'), { siteAccent: accent }, { merge: true });
-    const snap  = await getDoc(doc(db,'cms','settings'));
-    const theme = snap.exists() ? (snap.data().siteTheme||'light') : 'light';
-    _highlightTheme(theme, accent);
+    const snap    = await getDoc(doc(db,'cms','settings'));
+    const data    = snap.exists() ? snap.data() : {};
+    _highlightTheme(data.siteTheme||'light', accent, data.bgEffect||'off');
     log.className   = 'cms-log ok';
     log.textContent = '✅ Accent colour changed to ' + accent + '. Homepage reflects this immediately.';
     toast('Accent: ' + accent + ' ✓');
