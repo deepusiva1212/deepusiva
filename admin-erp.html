@@ -2044,7 +2044,17 @@
 <div class="erp-toast" id="erpToast"></div>
 
 <script type="module">
-import CONFIG from './config.js';
+// ── CONFIG VAULT — fault-tolerant import ──────────────
+// If config.js is missing the page still works.
+// Never hard-code private data below — use CONFIG.*
+let CONFIG = { DIRECTOR_EMAIL: '', DIRECTOR_UID: '', APP_ID: '' };
+try {
+  const mod = await import('./config.js');
+  CONFIG = mod.default || mod;
+} catch(e) {
+  console.warn('config.js not found — using fallback auth. Upload config.js to your repo.');
+}
+
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut, browserLocalPersistence, setPersistence }
@@ -2231,38 +2241,65 @@ window.syncOfflineInvoices = async function() {
 };
 
 // ── AUTH GUARD — FIXED ─────────────────────────────────
-// auth.authStateReady() waits until Firebase has FULLY restored
-// the session from localStorage before we check anything.
-// This eliminates the race condition where onAuthStateChanged
-// fired null first and incorrectly kicked the user out.
-await auth.authStateReady();
+// ── SHOW ERROR IN OVERLAY (never hang silently) ──────
+function showOverlayError(msg) {
+  const ol = document.getElementById('auth-overlay');
+  if (ol) ol.innerHTML = `
+    <div style="text-align:center;padding:24px;max-width:360px;">
+      <div style="width:52px;height:52px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;
+           justify-content:center;margin:0 auto 16px;color:#dc2626;font-size:24px;">✕</div>
+      <p style="font-family:sans-serif;font-size:15px;color:#1e293b;font-weight:600;margin-bottom:8px;">${msg}</p>
+      <a href="login.html" style="color:#16a34a;font-size:14px;text-decoration:none;font-weight:600;">← Back to Login</a>
+    </div>`;
+}
 
-const _user = auth.currentUser;
-if (!_user) {
-  window.location.replace('login.html');
-} else {
-  const _email = (_user.email || '').toLowerCase();
-  const _isMaster = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(_email)
-    || _email === (CONFIG.DIRECTOR_EMAIL || '').toLowerCase();
+// ── SAFETY TIMEOUT — 12 seconds max, then show error ──
+const _authTimeout = setTimeout(() => {
+  showOverlayError('Taking too long to load.<br/>Check your internet connection and try refreshing.');
+}, 12000);
 
-  if (_isMaster) {
-    // FAST PASS — email matched CONFIG.DIRECTOR_EMAIL or admin list
-    await bootERP(_user);
+try {
+  // auth.authStateReady() waits until Firebase has FULLY restored
+  // the session from localStorage — no race condition possible.
+  await auth.authStateReady();
+  clearTimeout(_authTimeout);
+
+  const _user = auth.currentUser;
+
+  if (!_user) {
+    // Genuinely not logged in
+    window.location.replace('login.html');
   } else {
-    // FALLBACK — check Firestore role field
-    try {
-      const _snap = await getDoc(doc(db, 'users', _user.uid));
-      if (_snap.exists() && _snap.data().role === 'admin') {
-        await bootERP(_user);
-      } else {
-        alert('Access Denied. Admin accounts only.');
-        window.location.replace('index.html');
+    const _email    = (_user.email || '').toLowerCase();
+    const _cfgEmail = (CONFIG.DIRECTOR_EMAIL || '').toLowerCase();
+
+    // FAST PASS: check hardcoded list first — no Firestore needed
+    const _isMaster = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(_email)
+      || (_cfgEmail && _email === _cfgEmail);
+
+    if (_isMaster) {
+      await bootERP(_user);
+    } else {
+      // FALLBACK: check Firestore role field
+      try {
+        const _snap = await getDoc(doc(db, 'users', _user.uid));
+        if (_snap.exists() && _snap.data().role === 'admin') {
+          await bootERP(_user);
+        } else {
+          showOverlayError('Access Denied.<br/>This page is for admin accounts only.');
+          setTimeout(() => window.location.replace('index.html'), 2500);
+        }
+      } catch(fsErr) {
+        // Firestore failed but email check should have caught admin —
+        // if we're here the user is genuinely not an admin
+        showOverlayError('Could not verify access.<br/>Check your internet connection.');
       }
-    } catch(e) {
-      alert('Could not verify access. Check your connection and try again.');
-      window.location.replace('login.html');
     }
   }
+} catch(authErr) {
+  clearTimeout(_authTimeout);
+  console.error('Auth error:', authErr);
+  showOverlayError('Authentication error.<br/>' + authErr.message);
 }
 
 async function bootERP(user) {
