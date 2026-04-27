@@ -1707,5 +1707,27 @@ loadCmsSettings();
 loadPortfolio();
 loadVideoWidget();
 </script>
+   <script type="module">
+    import CONFIG from './config.js';
+
+    // 1. Inject the Access Key into the hidden form field
+    const keyInput = document.getElementById('web3_access_key');
+    if (keyInput && CONFIG.WEB3_ACCESS_KEY) {
+        keyInput.value = CONFIG.WEB3_ACCESS_KEY;
+    }
+
+    // 2. Track Form Submissions as "Leads" in Google Analytics
+    const form = document.getElementById('contactForm');
+    if (form) {
+        form.addEventListener('submit', function() {
+            // This matches the 'Generate Leads' objective you set in Analytics
+            gtag('event', 'generate_lead', {
+                'business_unit': 'Deepu_Siva_Pvt_Ltd',
+                'lead_type': 'Contact_Form',
+                'location': 'Coimbatore'
+            });
+        });
+    }
+</script>
 </body>
 </html>
