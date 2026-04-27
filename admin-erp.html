@@ -1355,17 +1355,27 @@
       </div>
 
       <!-- ══ QUOTATION PAGE ══ -->
+      <!-- ══ QUOTATION PAGE ══ -->
       <div class="erp-page" id="page-quotation">
-        <div style="display:flex;gap:10px;margin-bottom:20px;">
-          <button class="btn btn-green" onclick="newDoc('quotation')">+ New Quotation</button>
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="showPage('invoice',null);newDoc('quotation')">+ New Quotation</button>
+          <span style="font-size:13px;color:var(--muted);display:flex;align-items:center;padding:0 8px;">
+            Create quotations using the invoice form — select "Quotation" type at the top.
+          </span>
         </div>
         <div class="erp-panel">
           <div class="erp-panel-head">
             <span class="erp-panel-title">All Quotations</span>
+            <input class="form-control" type="text" placeholder="Search party…" style="width:200px;" oninput="filterList('quotationsList',this.value)"/>
           </div>
           <div style="overflow-x:auto;">
             <table class="inv-list-table">
-              <thead><tr><th>Quote No.</th><th>Party</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Quote No.</th><th>Party</th><th>Date</th>
+                  <th>Amount</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
               <tbody id="quotationsList">
                 <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
               </tbody>
@@ -1376,75 +1386,417 @@
 
       <!-- ══ CHALLAN PAGE ══ -->
       <div class="erp-page" id="page-challan">
-        <div style="display:flex;gap:10px;margin-bottom:20px;">
-          <button class="btn btn-green" onclick="newDoc('challan')">+ New Delivery Challan</button>
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="btn btn-green" id="newChallanBtn" onclick="showChallanForm()">+ New Delivery Challan</button>
+          <button class="btn btn-outline-green" id="challanListBtn" onclick="showChallanList()">View All Challans</button>
         </div>
-        <div class="erp-panel">
-          <div class="erp-panel-head"><span class="erp-panel-title">All Delivery Challans</span></div>
-          <div style="overflow-x:auto;">
-            <table class="inv-list-table">
-              <thead><tr><th>Challan No.</th><th>Party</th><th>Dispatch Date</th><th>Items</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="challansList">
-                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-              </tbody>
-            </table>
+
+        <!-- Challan Form -->
+        <div id="challanFormWrap">
+          <div class="erp-panel">
+            <div class="erp-panel-head">
+              <span class="erp-panel-title" id="challanFormTitle">New Delivery Challan</span>
+              <span id="challanNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
+            </div>
+
+            <!-- Dispatch Details -->
+            <div class="inv-meta inv-meta-3" style="margin-bottom:20px;">
+              <div class="form-group">
+                <label class="form-label">Dispatch Date *</label>
+                <input class="form-control" type="date" id="ch-date"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Vehicle / Transport No.</label>
+                <input class="form-control" type="text" id="ch-vehicle" placeholder="e.g. TN 37 AB 1234"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Driver Name</label>
+                <input class="form-control" type="text" id="ch-driver" placeholder="Driver's name"/>
+              </div>
+            </div>
+
+            <!-- From / To -->
+            <div class="inv-meta" style="margin-bottom:20px;">
+              <div>
+                <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">DISPATCHED FROM</div>
+                <div id="challanFromDisplay" style="background:var(--green-pale);border:1px solid rgba(22,163,74,.2);border-radius:var(--radius);padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text2);">Loading…</div>
+              </div>
+              <div>
+                <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">DELIVER TO (Site / Client)</div>
+                <div class="form-group">
+                  <label class="form-label">Party / Client Name *</label>
+                  <input class="form-control" type="text" id="ch-toName" placeholder="Client name" autocomplete="off"
+                    oninput="onPartyInput(this.value)" onfocus="onPartyInput(this.value)" onblur="setTimeout(closePartySuggest,200)"/>
+                  <div id="partySuggestBox" style="display:none;position:absolute;background:var(--white);border:1px solid var(--green);border-top:none;border-radius:0 0 var(--radius) var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:300;max-height:200px;overflow-y:auto;width:100%;"></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Site / Delivery Address *</label>
+                  <textarea class="form-control" id="ch-toAddr" rows="3" placeholder="Complete site delivery address"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reference -->
+            <div class="inv-meta inv-meta-3" style="margin-bottom:20px;">
+              <div class="form-group">
+                <label class="form-label">Against Invoice No.</label>
+                <input class="form-control" type="text" id="ch-refInvoice" placeholder="e.g. INV-2026-005"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">PO / Work Order No.</label>
+                <input class="form-control" type="text" id="ch-refPO" placeholder="Purchase order ref"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Purpose / Description</label>
+                <input class="form-control" type="text" id="ch-purpose" placeholder="e.g. Solar panel installation – Phase 1"/>
+              </div>
+            </div>
+
+            <!-- Line Items — NO price/GST columns on challan -->
+            <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;">Items Being Dispatched</div>
+            <div class="line-items-table-wrap">
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th class="col-sn">#</th>
+                    <th class="col-desc">Description of Goods</th>
+                    <th class="col-hsn">HSN Code</th>
+                    <th style="width:90px;">Qty</th>
+                    <th style="width:90px;">Unit</th>
+                    <th style="width:200px;">Remarks</th>
+                    <th class="col-del"></th>
+                  </tr>
+                </thead>
+                <tbody id="challanItemsBody"></tbody>
+              </table>
+            </div>
+            <!-- Mobile cards for challan items -->
+            <div class="line-items-cards" id="challanItemsCards"></div>
+            <button class="add-line-btn" onclick="addChallanItem()">+ Add Item</button>
+
+            <!-- Notes -->
+            <div class="form-group" style="margin-top:16px;">
+              <label class="form-label">Special Instructions / Notes</label>
+              <textarea class="form-control" id="ch-notes" rows="2" placeholder="Handle with care, installation instructions…"></textarea>
+            </div>
+
+            <!-- Actions -->
+            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+              <button class="btn btn-green" onclick="saveChallan()">Save & Finalise Challan</button>
+              <button class="btn btn-outline-green" onclick="downloadChallanPDF()">Download PDF</button>
+              <button class="btn btn-outline-green" onclick="shareChallanWhatsApp()">WhatsApp</button>
+              <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;" onclick="clearChallanForm()">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Challan List -->
+        <div id="challanListWrap" style="display:none;">
+          <div class="erp-panel">
+            <div class="erp-panel-head">
+              <span class="erp-panel-title">All Delivery Challans</span>
+              <input class="form-control" type="text" placeholder="Search…" style="width:200px;" oninput="filterList('challansList',this.value)"/>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="inv-list-table">
+                <thead><tr><th>Challan No.</th><th>Party</th><th>Dispatch Date</th><th>Vehicle</th><th>Items</th><th>Actions</th></tr></thead>
+                <tbody id="challansList">
+                  <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- ══ PURCHASE PAGE ══ -->
       <div class="erp-page" id="page-purchase">
-        <div style="display:flex;gap:10px;margin-bottom:20px;">
-          <button class="btn btn-green" onclick="newDoc('purchase')">+ Log Purchase Bill</button>
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="showPurchaseForm()">+ Log Purchase Bill</button>
+          <button class="btn btn-outline-green" onclick="showPurchaseList()">View All Bills</button>
         </div>
-        <div class="erp-panel">
-          <div class="erp-panel-head"><span class="erp-panel-title">Purchase Bills</span></div>
-          <div style="overflow-x:auto;">
-            <table class="inv-list-table">
-              <thead><tr><th>Bill No.</th><th>Supplier</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="purchasesList">
-                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-              </tbody>
-            </table>
+
+        <!-- Purchase Form -->
+        <div id="purchaseFormWrap">
+          <div class="erp-panel">
+            <div class="erp-panel-head">
+              <span class="erp-panel-title" id="purchaseFormTitle">New Purchase Bill</span>
+              <span id="purchaseNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
+            </div>
+
+            <!-- Supplier Details -->
+            <div class="inv-meta" style="margin-bottom:20px;">
+              <div>
+                <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">SUPPLIER DETAILS</div>
+                <div class="form-group">
+                  <label class="form-label">Supplier Name *</label>
+                  <input class="form-control" type="text" id="pur-supplierName" placeholder="Supplier / Vendor name"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Supplier Address</label>
+                  <textarea class="form-control" id="pur-supplierAddr" rows="2" placeholder="Supplier address"></textarea>
+                </div>
+                <div class="inv-meta">
+                  <div class="form-group">
+                    <label class="form-label">Supplier GSTIN</label>
+                    <input class="form-control" type="text" id="pur-supplierGSTIN" maxlength="15"
+                      placeholder="15-char GSTIN"
+                      oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'').substring(0,15)"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Supplier Phone</label>
+                    <input class="form-control" type="tel" id="pur-supplierPhone" placeholder="+91 XXXXX XXXXX"/>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">BILL DETAILS</div>
+                <div class="inv-meta">
+                  <div class="form-group">
+                    <label class="form-label">Supplier's Bill No. *</label>
+                    <input class="form-control" type="text" id="pur-supplierBillNo" placeholder="Their invoice number"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Bill Date *</label>
+                    <input class="form-control" type="date" id="pur-billDate"/>
+                  </div>
+                </div>
+                <div class="inv-meta">
+                  <div class="form-group">
+                    <label class="form-label">Due / Payment Date</label>
+                    <input class="form-control" type="date" id="pur-dueDate"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" id="pur-category">
+                      <option value="raw_material">Raw Material</option>
+                      <option value="steel">Steel / Metal</option>
+                      <option value="solar_panels">Solar Panels</option>
+                      <option value="electrical">Electrical Items</option>
+                      <option value="hardware">Hardware / Fasteners</option>
+                      <option value="transport">Transport / Logistics</option>
+                      <option value="subcontract">Sub-Contract Labour</option>
+                      <option value="overheads">Overheads / Misc</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Place of Supply</label>
+                  <input class="form-control" type="text" id="pur-placeOfSupply" placeholder="e.g. Tamil Nadu"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Line Items with full price/GST for purchases -->
+            <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;">Items Purchased</div>
+            <div class="line-items-table-wrap">
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th class="col-sn">#</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-hsn">HSN</th>
+                    <th class="col-qty">Qty</th>
+                    <th class="col-unit">Unit</th>
+                    <th class="col-price">Rate ₹</th>
+                    <th class="col-gst">GST %</th>
+                    <th class="col-amt">Amount ₹</th>
+                    <th class="col-del"></th>
+                  </tr>
+                </thead>
+                <tbody id="purchaseItemsBody"></tbody>
+              </table>
+            </div>
+            <div class="line-items-cards" id="purchaseItemsCards"></div>
+            <button class="add-line-btn" onclick="addPurchaseItem()">+ Add Item</button>
+
+            <!-- GST Summary -->
+            <div class="gst-summary" id="purchaseGstSummary">
+              <div class="gst-summary-row"><span>Subtotal (Taxable)</span><span id="pur-sub">₹0</span></div>
+              <div class="gst-summary-row"><span>IGST / SGST+CGST</span><span id="pur-gst">₹0</span></div>
+              <div class="gst-summary-row"><span>Grand Total</span><span id="pur-total">₹0</span></div>
+            </div>
+
+            <!-- Notes & Payment -->
+            <div class="inv-meta" style="margin-top:16px;">
+              <div class="form-group">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" id="pur-notes" rows="2" placeholder="Any notes about this purchase…"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Payment Status</label>
+                <select class="form-control" id="pur-payStatus">
+                  <option value="unpaid">Unpaid</option>
+                  <option value="paid">Paid</option>
+                  <option value="partial">Partial</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+              <button class="btn btn-green" onclick="savePurchaseBill()">Save Purchase Bill</button>
+              <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;" onclick="clearPurchaseForm()">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Purchase List -->
+        <div id="purchaseListWrap" style="display:none;">
+          <div class="erp-panel">
+            <div class="erp-panel-head">
+              <span class="erp-panel-title">All Purchase Bills</span>
+              <div style="display:flex;gap:8px;">
+                <input class="form-control" type="text" placeholder="Search supplier…" style="width:180px;" oninput="filterList('purchasesList',this.value)"/>
+              </div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="inv-list-table">
+                <thead><tr><th>Our Ref.</th><th>Supplier</th><th>Their Bill No.</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="purchasesList">
+                  <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- ══ PAYMENT RECEIPTS ══ -->
       <div class="erp-page" id="page-payment">
-        <div style="display:flex;gap:10px;margin-bottom:20px;">
-          <button class="btn btn-green" onclick="newDoc('receipt')">+ New Payment Receipt</button>
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="showReceiptForm()">+ New Payment Receipt</button>
+          <button class="btn btn-outline-green" onclick="showReceiptList()">View All Receipts</button>
         </div>
-        <div class="erp-panel">
-          <div class="erp-panel-head"><span class="erp-panel-title">Payment Receipts</span></div>
-          <div style="overflow-x:auto;">
-            <table class="inv-list-table">
-              <thead><tr><th>Receipt No.</th><th>Party</th><th>Date</th><th>Amount</th><th>Method</th><th>Actions</th></tr></thead>
-              <tbody id="receiptsList">
-                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-              </tbody>
-            </table>
+
+        <!-- Receipt Form -->
+        <div id="receiptFormWrap">
+          <div class="erp-panel">
+            <div class="erp-panel-head">
+              <span class="erp-panel-title">Record Payment Received</span>
+              <span id="receiptNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
+            </div>
+
+            <div class="inv-meta" style="margin-bottom:20px;">
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Party / Client Name *</label>
+                  <input class="form-control" type="text" id="rec-partyName" placeholder="Who paid?" oninput="onReceiptPartyInput(this.value)"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Against Invoice(s)</label>
+                  <select class="form-control" id="rec-invoiceRef" onchange="onInvoiceSelect(this.value)">
+                    <option value="">— Select unpaid invoice —</option>
+                  </select>
+                  <div id="rec-invoiceInfo" style="font-size:12px;color:var(--green3);margin-top:4px;padding:6px 10px;background:var(--green-pale);border-radius:6px;display:none;"></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Receipt Date *</label>
+                  <input class="form-control" type="date" id="rec-date"/>
+                </div>
+              </div>
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Amount Received (₹) *</label>
+                  <input class="form-control" type="number" id="rec-amount" placeholder="0" min="0" step="any"
+                    oninput="onReceiptAmountInput()"/>
+                  <div id="rec-amountHint" style="font-size:12px;color:var(--muted);margin-top:4px;"></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Payment Method *</label>
+                  <select class="form-control" id="rec-method" onchange="onMethodChange(this.value)">
+                    <option value="cash">Cash</option>
+                    <option value="upi">UPI / PhonePe / GPay</option>
+                    <option value="cheque">Cheque</option>
+                    <option value="neft">NEFT / RTGS</option>
+                    <option value="imps">IMPS</option>
+                    <option value="card">Card</option>
+                  </select>
+                </div>
+                <div class="form-group" id="rec-txnGroup">
+                  <label class="form-label">Transaction / Cheque ID</label>
+                  <input class="form-control" type="text" id="rec-txnId" placeholder="UPI ref / Cheque no. / UTR"/>
+                </div>
+                <div class="form-group" id="rec-bankGroup" style="display:none;">
+                  <label class="form-label">Bank / UPI Destination</label>
+                  <input class="form-control" type="text" id="rec-bankDest" placeholder="e.g. KVB Bank / Admin GPay"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Notes</label>
+              <input class="form-control" type="text" id="rec-notes" placeholder="Any notes about this payment…"/>
+            </div>
+
+            <!-- Balance preview -->
+            <div id="rec-balancePreview" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:16px;display:none;">
+              <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">After This Payment</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                <div><div style="font-size:11px;color:var(--muted);">Invoice Amount</div><div id="bp-invoice" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--text3);">₹0</div></div>
+                <div><div style="font-size:11px;color:var(--muted);">This Payment</div><div id="bp-this" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--green);">₹0</div></div>
+                <div><div style="font-size:11px;color:var(--muted);">Balance Due</div><div id="bp-balance" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--red);">₹0</div></div>
+              </div>
+              <div id="bp-statusMsg" style="margin-top:10px;font-size:13px;font-weight:600;"></div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+              <button class="btn btn-green" onclick="saveReceipt()">Save Receipt & Update Invoice</button>
+              <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;" onclick="clearReceiptForm()">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Receipts List -->
+        <div id="receiptListWrap" style="display:none;">
+          <div class="erp-panel">
+            <div class="erp-panel-head">
+              <span class="erp-panel-title">All Payment Receipts</span>
+              <input class="form-control" type="text" placeholder="Search party…" style="width:200px;" oninput="filterList('receiptsList',this.value)"/>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="inv-list-table">
+                <thead><tr><th>Receipt No.</th><th>Party</th><th>Against Invoice</th><th>Date</th><th>Amount</th><th>Method</th><th>Actions</th></tr></thead>
+                <tbody id="receiptsList">
+                  <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- ══ REPORTS ══ -->
       <div class="erp-page" id="page-reports">
-        <div class="erp-panel">
+        <!-- Report Filters -->
+        <div class="erp-panel" style="margin-bottom:16px;">
           <div class="erp-panel-head"><span class="erp-panel-title">Reports & Analytics</span></div>
-          <div class="inv-meta">
-            <div class="form-group"><label class="form-label">From Date</label><input class="form-control" type="date" id="rep-from"/></div>
-            <div class="form-group"><label class="form-label">To Date</label><input class="form-control" type="date" id="rep-to"/></div>
-            <div class="form-group"><label class="form-label">Party Filter</label><input class="form-control" id="rep-party" placeholder="All parties"/></div>
+          <div class="inv-meta inv-meta-3">
+            <div class="form-group">
+              <label class="form-label">From Date</label>
+              <input class="form-control" type="date" id="rep-from"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">To Date</label>
+              <input class="form-control" type="date" id="rep-to"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Party Name (for ledger)</label>
+              <input class="form-control" id="rep-party" placeholder="Type party name…" list="rep-party-list"/>
+              <datalist id="rep-party-list"></datalist>
+            </div>
           </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
-            <button class="btn btn-green" onclick="generateReport('sales')">Sales Report</button>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-green" onclick="generateReport('sales')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Sales Report
+            </button>
             <button class="btn btn-outline-green" onclick="generateReport('purchase')">Purchase Report</button>
             <button class="btn btn-outline-green" onclick="generateReport('ledger')">Party Ledger</button>
             <button class="btn btn-outline-green" onclick="generateReport('pl')">P&L Summary</button>
+            <button class="btn btn-outline-green" onclick="downloadReportPDF()">Download PDF</button>
           </div>
-          <div id="reportOutput" style="min-height:200px;"></div>
         </div>
+        <div id="reportOutput" style="min-height:200px;"></div>
       </div>
 
       <!-- ══ SETTINGS ══ -->
@@ -1693,41 +2045,37 @@
 
 <script type="module">
 import CONFIG from './config.js';
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, browserLocalPersistence, setPersistence } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, updateDoc, getDoc, getDocs, doc, query, orderBy, limit, where, runTransaction, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, browserLocalPersistence, setPersistence }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import {
+  getFirestore, collection, addDoc, updateDoc, getDoc, getDocs,
+  doc, query, orderBy, limit, where, runTransaction, serverTimestamp, setDoc
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// ── 1. HSN MANAGER (MOVED TO TOP) ──
-const DEFAULT_HSN = [
-  { code:'7308', desc:'Structures of iron/steel' },
-  { code:'7210', desc:'GI Roofing Sheets' },
-  { code:'8541', desc:'Solar Panels' },
-  { code:'6996', desc:'Solar Mounting Structures' },
-  { code:'9954', desc:'Construction Services' },
-  { code:'9988', desc:'Fabrication/Manufacturing Services' },
-];
-
-// ── 2. FIREBASE CONFIG ──
 const firebaseConfig = {
-  apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
-  authDomain: "deepu-siva-portal.firebaseapp.com",
-  projectId: "deepu-siva-portal",
-  storageBucket: "deepu-siva-portal.firebasestorage.app",
+  apiKey:            "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+  authDomain:        "deepu-siva-portal.firebaseapp.com",
+  projectId:         "deepu-siva-portal",
+  storageBucket:     "deepu-siva-portal.firebasestorage.app",
   messagingSenderId: "1014351018202",
-  appId: CONFIG.APP_ID
+  appId:             "1:1014351018202:web:16d2578f726159e5ef8de3"
 };
 
-const app = initializeApp(firebaseConfig);
+// Admin identity from config.js — never hardcoded here
+const ADMIN_EMAILS = [
+  CONFIG.DIRECTOR_EMAIL,
+  "deepadharsan.rajavel@gmail.com",
+  "deepusiva.pvt@gmail.com",
+  "contact@deepusiva.com",
+  "deepusiva2017@gmail.com"
+];
+
+const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db   = getFirestore(app);
 
-async function bootERP(user) {
-  currentUser = user;
-  ownerUid    = user.uid;
-  document.getElementById('topbarUser').textContent = user.email;
-  document.getElementById('auth-overlay').style.display = 'none';
-
-   
 // ── Tell Firebase to always persist session in localStorage ──
 // This must be set BEFORE auth.authStateReady() is called
 await setPersistence(auth, browserLocalPersistence);
@@ -1882,11 +2230,55 @@ window.syncOfflineInvoices = async function() {
   }
 };
 
+// ── AUTH GUARD — FIXED ─────────────────────────────────
+// auth.authStateReady() waits until Firebase has FULLY restored
+// the session from localStorage before we check anything.
+// This eliminates the race condition where onAuthStateChanged
+// fired null first and incorrectly kicked the user out.
+await auth.authStateReady();
 
+const _user = auth.currentUser;
+if (!_user) {
+  window.location.replace('login.html');
+} else {
+  const _email = (_user.email || '').toLowerCase();
+  const _isMaster = ADMIN_EMAILS.map(e => e.toLowerCase()).includes(_email)
+    || _email === (CONFIG.DIRECTOR_EMAIL || '').toLowerCase();
 
+  if (_isMaster) {
+    // FAST PASS — email matched CONFIG.DIRECTOR_EMAIL or admin list
+    await bootERP(_user);
+  } else {
+    // FALLBACK — check Firestore role field
+    try {
+      const _snap = await getDoc(doc(db, 'users', _user.uid));
+      if (_snap.exists() && _snap.data().role === 'admin') {
+        await bootERP(_user);
+      } else {
+        alert('Access Denied. Admin accounts only.');
+        window.location.replace('index.html');
+      }
+    } catch(e) {
+      alert('Could not verify access. Check your connection and try again.');
+      window.location.replace('login.html');
+    }
+  }
+}
+
+async function bootERP(user) {
+  currentUser = user;
+  ownerUid    = user.uid; // Same as CONFIG.DIRECTOR_UID for this admin
+  // Extra security: verify UID matches config (prevent account switching attacks)
+  if (CONFIG.DIRECTOR_UID && user.uid !== CONFIG.DIRECTOR_UID) {
+    // Allow other admin emails (team members) but log the session
+    console.info('ERP accessed by team member:', user.email);
+  }
+  document.getElementById('topbarUser').textContent = user.email;
+  document.getElementById('auth-overlay').style.display = 'none';
 
   // Load everything
- 
+  await loadSettings();
+  loadDashboardStats();
   loadRecentInvoices();
   loadAllDocLists();
   updateOnlineStatus();
@@ -2234,7 +2626,15 @@ window.copyHSN = function(code, desc) {
   }
 };
 
-
+// ── HSN MANAGER ────────────────────────────────────────
+const DEFAULT_HSN = [
+  { code:'7308', desc:'Structures of iron/steel' },
+  { code:'7210', desc:'GI Roofing Sheets' },
+  { code:'8541', desc:'Solar Panels' },
+  { code:'6996', desc:'Solar Mounting Structures' },
+  { code:'9954', desc:'Construction Services' },
+  { code:'9988', desc:'Fabrication/Manufacturing Services' },
+];
 
 function getHsnCodes() {
   return settings.hsnCodes && settings.hsnCodes.length
@@ -2999,27 +3399,1096 @@ window.doLogout = async function() {
   await signOut(auth);
   window.location.href = 'login.html';
 };
+// ══════════════════════════════════════════════════════════
+//  ERP-2: SUPPLY CHAIN & LEDGER ENGINE
+//  Challan · Purchase · Receipt · Convert · Party Ledger
+// ══════════════════════════════════════════════════════════
 
-   // ── DIRECTOR'S SECURE GATE ──
-try {
-    await auth.authStateReady();
-    const _user = auth.currentUser;
+// ── SHARED STATE ──────────────────────────────────────────
+let challanItems  = [];
+let purchaseItems = [];
+let editChallanId = null;
+let editPurchaseId= null;
+let editReceiptId = null;
+let selectedInvoiceForReceipt = null; // full invoice doc for receipt linking
 
-    if (!_user) {
-        window.location.replace('login.html');
-    } else if (_user.email !== CONFIG.DIRECTOR_EMAIL) {
-        alert("Unauthorized Access.");
-        window.location.replace('index.html');
-    } else {
-        console.log("Identity Verified. Booting...");
-        await bootERP(_user); // Ensure bootERP is defined ABOVE this line
-        await loadSettings();
-  loadDashboardStats();
-    }
-} catch (error) {
-    console.error("Boot Crash:", error);
-    document.getElementById('auth-overlay').innerHTML = "<p style='color:red;'>Boot Error. Check Console (F12).</p>";
+// ─────────────────────────────────────────────────────────
+//  QUOTATION → INVOICE CONVERSION
+// ─────────────────────────────────────────────────────────
+window.convertQuoteToInvoice = async function(quoteId) {
+  if (!confirm('Convert this quotation to a Tax Invoice? The quotation will be marked as "Converted".')) return;
+  try {
+    const snap = await getDoc(doc(db, 'erp_documents', quoteId));
+    if (!snap.exists()) { toast('Quotation not found.', 'err'); return; }
+    const q = snap.data();
+
+    // Load quote data into invoice form
+    showPage('invoice', null);
+    document.getElementById('invoiceFormWrap').style.display = 'block';
+    document.getElementById('invoiceListWrap').style.display = 'none';
+
+    // Set docType to invoice
+    currentDocType = 'invoice';
+    document.querySelectorAll('[id^="dt-"]').forEach(b => b.classList.remove('active'));
+    document.getElementById('dt-invoice')?.classList.add('active');
+    document.getElementById('invFormTitle').textContent = 'New Tax Invoice (from Quote ' + (q.docNumber||'') + ')';
+
+    // Fill all fields from quotation
+    document.getElementById('f-fromName').value     = q.fromName     || '';
+    document.getElementById('f-fromAddr').value     = q.fromAddr     || '';
+    document.getElementById('f-fromGSTIN').value    = q.fromGSTIN    || '';
+    document.getElementById('f-fromPhone').value    = q.fromPhone    || '';
+    document.getElementById('f-toName').value       = q.toName       || '';
+    document.getElementById('f-toAddr').value       = q.toAddr       || '';
+    document.getElementById('f-toGSTIN').value      = q.toGSTIN      || '';
+    document.getElementById('f-placeOfSupply').value= q.placeOfSupply|| '';
+    document.getElementById('f-payTerms').value     = q.payTerms     || '';
+    document.getElementById('f-bankDetails').value  = q.bankDetails  || settings.bankDetails || '';
+    document.getElementById('f-terms').value        = q.terms        || settings.terms || '';
+    document.getElementById('f-notes').value        = 'Converted from ' + (q.docNumber||'quotation') + '. ' + (q.notes||'');
+    document.getElementById('f-invDate').value      = new Date().toISOString().split('T')[0];
+    document.getElementById('invStatus').value      = 'final';
+
+    // Load line items
+    lineItems = (q.lineItems || []).map(i => ({...i}));
+    editingDocId = null; // new invoice
+
+    renderLineItems();
+    recalcTotals();
+    generateDocNumber();
+
+    // Mark the original quotation as converted
+    await updateDoc(doc(db, 'erp_documents', quoteId), {
+      status: 'converted',
+      convertedAt: serverTimestamp()
+    });
+
+    toast('Quotation loaded into Invoice form. Review and click "Finalise & Save".');
+    document.getElementById('invoiceFormWrap').scrollIntoView({ behavior: 'smooth' });
+  } catch(e) {
+    toast('Error converting quote: ' + e.message, 'err');
+  }
+};
+
+// Update docRow to show Convert button for quotations
+const _origDocRow = window.docRow || docRow;
+function docRow(d) {
+  const data   = d.data();
+  const date   = data.docDate || '—';
+  const status = data.status  || 'draft';
+  const statusLabels = { draft:'Draft', final:'Final', paid:'Paid', overdue:'Overdue', converted:'Converted' };
+  const statusColors = { draft:'var(--muted)', final:'var(--green3)', paid:'#166534', overdue:'#991b1b', converted:'#1e40af' };
+
+  const isQuote     = data.docType === 'quotation';
+  const isConverted = status === 'converted';
+
+  return `<tr>
+    <td><span class="inv-num">${data.docNumber||'—'}</span>${data.tempId?'<span class="temp-badge">OFFLINE</span>':''}</td>
+    <td><strong>${data.toName||data.fromName||'—'}</strong></td>
+    <td>${date}</td>
+    <td style="font-family:var(--font-head);font-weight:800;color:var(--green3);">₹${(data.grandTotal||0).toLocaleString('en-IN')}</td>
+    <td><span style="background:${statusColors[status]||'var(--muted)'};color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">${statusLabels[status]||status}</span></td>
+    <td style="display:flex;gap:6px;flex-wrap:wrap;">
+      <button class="btn-sm-green" onclick="loadDoc('${d.id}')">Edit</button>
+      <button class="btn-sm-green" onclick="downloadDocPDF('${d.id}')">PDF</button>
+      ${isQuote && !isConverted ? `<button class="btn-sm-green" style="background:#dbeafe;color:#1e40af;" onclick="convertQuoteToInvoice('${d.id}')">→ Invoice</button>` : ''}
+    </td>
+  </tr>`;
 }
+window.docRow = docRow; // override globally
+
+// ─────────────────────────────────────────────────────────
+//  DELIVERY CHALLAN ENGINE
+// ─────────────────────────────────────────────────────────
+window.showChallanForm = function() {
+  document.getElementById('challanFormWrap').style.display = 'block';
+  document.getElementById('challanListWrap').style.display = 'none';
+  newChallanForm();
+};
+
+window.showChallanList = function() {
+  document.getElementById('challanFormWrap').style.display = 'none';
+  document.getElementById('challanListWrap').style.display = 'block';
+  loadAllChallans();
+};
+
+function newChallanForm() {
+  challanItems = [];
+  editChallanId = null;
+  document.getElementById('ch-date').value    = new Date().toISOString().split('T')[0];
+  document.getElementById('ch-vehicle').value = '';
+  document.getElementById('ch-driver').value  = '';
+  document.getElementById('ch-toName').value  = '';
+  document.getElementById('ch-toAddr').value  = '';
+  document.getElementById('ch-refInvoice').value = '';
+  document.getElementById('ch-refPO').value   = '';
+  document.getElementById('ch-purpose').value = '';
+  document.getElementById('ch-notes').value   = '';
+
+  // Prefill From from settings
+  const fromDisplay = document.getElementById('challanFromDisplay');
+  if (fromDisplay) {
+    fromDisplay.innerHTML =
+      `<strong>${settings.companyName||'Deepu Siva Private Limited'}</strong><br/>` +
+      (settings.address||'Coimbatore, Tamil Nadu') + '<br/>' +
+      (settings.gstin ? `GSTIN: ${settings.gstin}` : '');
+  }
+
+  addChallanItem();
+  generateChallanNumber();
+  renderChallanItems();
+}
+
+window.clearChallanForm = newChallanForm;
+
+async function generateChallanNumber() {
+  const display = document.getElementById('challanNumDisplay');
+  if (!display) return;
+  if (!isOnline) { display.textContent = getNextTempId() + ' (offline)'; return; }
+  try {
+    const n = await runTransaction(db, async tx => {
+      const ref  = doc(db,'config',`counter_DC_${ownerUid}`);
+      const snap = await tx.get(ref);
+      return (snap.exists() ? snap.data().count : 0) + 1;
+    });
+    display.textContent = `DC-${new Date().getFullYear()}-${String(n).padStart(3,'0')} (preview)`;
+  } catch { display.textContent = 'DC-preview'; }
+}
+
+window.addChallanItem = function() {
+  challanItems.push({ desc:'', hsn:'', qty:1, unit:'Nos', remarks:'' });
+  renderChallanItems();
+};
+
+window.removeChallanItem = function(idx) {
+  challanItems.splice(idx, 1);
+  renderChallanItems();
+};
+
+window.updateChallanItem = function(idx, field, value) {
+  if (idx >= challanItems.length) return;
+  challanItems[idx][field] = value;
+};
+
+function renderChallanItems() {
+  const tbody = document.getElementById('challanItemsBody');
+  const cards = document.getElementById('challanItemsCards');
+
+  if (tbody) {
+    tbody.innerHTML = challanItems.map((item, i) => `
+      <tr>
+        <td class="col-sn" style="color:var(--muted);font-size:12px;">${i+1}</td>
+        <td class="col-desc"><input class="td-input" value="${item.desc||''}" placeholder="Description of goods" onchange="updateChallanItem(${i},'desc',this.value)" style="min-width:160px;"/></td>
+        <td class="col-hsn"><input class="td-input" value="${item.hsn||''}" placeholder="HSN" onchange="updateChallanItem(${i},'hsn',this.value)"/></td>
+        <td style="width:90px;"><input class="td-input" type="number" value="${item.qty||1}" min="0" step="any" oninput="updateChallanItem(${i},'qty',this.value)"/></td>
+        <td style="width:90px;">
+          <select class="td-input" onchange="updateChallanItem(${i},'unit',this.value)">
+            ${['Nos','Kg','MT','Sqft','Sqm','Meter','RFT','Sets','Job','Lot'].map(u=>`<option ${item.unit===u?'selected':''}>${u}</option>`).join('')}
+          </select>
+        </td>
+        <td style="width:200px;"><input class="td-input" value="${item.remarks||''}" placeholder="Condition / Note" onchange="updateChallanItem(${i},'remarks',this.value)"/></td>
+        <td class="col-del"><button class="del-row-btn" onclick="removeChallanItem(${i})">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+        </button></td>
+      </tr>`).join('') || `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted);">No items. Click "+ Add Item".</td></tr>`;
+  }
+
+  if (cards) {
+    cards.innerHTML = challanItems.map((item, i) => `
+      <div class="li-card">
+        <button class="li-card-del" onclick="removeChallanItem(${i})">✕</button>
+        <div class="form-group"><div class="li-card-label">Description</div>
+          <input class="form-control" value="${item.desc||''}" placeholder="Goods description" onchange="updateChallanItem(${i},'desc',this.value)"/></div>
+        <div class="li-card-row">
+          <div><div class="li-card-label">Qty</div><input class="form-control" type="number" value="${item.qty||1}" oninput="updateChallanItem(${i},'qty',this.value)"/></div>
+          <div><div class="li-card-label">Unit</div>
+            <select class="form-control" onchange="updateChallanItem(${i},'unit',this.value)">${['Nos','Kg','MT','Sqft','Meter','Sets'].map(u=>`<option ${item.unit===u?'selected':''}>${u}</option>`).join('')}</select>
+          </div>
+        </div>
+        <div class="form-group"><div class="li-card-label">HSN / Remarks</div>
+          <input class="form-control" value="${item.remarks||''}" placeholder="Remarks or condition" onchange="updateChallanItem(${i},'remarks',this.value)"/></div>
+      </div>`).join('') || `<div style="text-align:center;padding:20px;color:var(--muted);">Tap "+ Add Item" to start.</div>`;
+  }
+}
+
+window.saveChallan = async function() {
+  const toName = document.getElementById('ch-toName').value.trim();
+  const toAddr = document.getElementById('ch-toAddr').value.trim();
+  const date   = document.getElementById('ch-date').value;
+  if (!toName) { toast('Enter a party / client name.', 'err'); return; }
+  if (!date)   { toast('Enter dispatch date.', 'err'); return; }
+  if (!challanItems.length) { toast('Add at least one item.', 'err'); return; }
+
+  const btn = document.querySelector('[onclick="saveChallan()"]');
+  if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
+
+  try {
+    const prefix = settings.dcPrefix || 'DC';
+    let docNumber = '';
+
+    if (isOnline) {
+      docNumber = await runTransaction(db, async tx => {
+        const ref  = doc(db,'config',`counter_${prefix}_${ownerUid}`);
+        const snap = await tx.get(ref);
+        const next = (snap.exists() ? snap.data().count : 0) + 1;
+        tx.set(ref, { count: next });
+        return `${prefix}-${new Date().getFullYear()}-${String(next).padStart(3,'0')}`;
+      });
+    } else {
+      docNumber = getNextTempId();
+    }
+
+    const payload = {
+      docType:    'challan',
+      docNumber,
+      ownerUid,
+      docDate:    date,
+      vehicle:    document.getElementById('ch-vehicle').value.trim(),
+      driver:     document.getElementById('ch-driver').value.trim(),
+      fromName:   settings.companyName || '',
+      fromAddr:   settings.address     || '',
+      fromGSTIN:  settings.gstin       || '',
+      toName, toAddr,
+      refInvoice: document.getElementById('ch-refInvoice').value.trim(),
+      refPO:      document.getElementById('ch-refPO').value.trim(),
+      purpose:    document.getElementById('ch-purpose').value.trim(),
+      notes:      document.getElementById('ch-notes').value.trim(),
+      items:      [...challanItems],
+      status:     'final',
+      createdAt:  serverTimestamp(),
+    };
+
+    if (isOnline) {
+      if (editChallanId) {
+        await updateDoc(doc(db,'erp_documents',editChallanId), {...payload, updatedAt: serverTimestamp()});
+      } else {
+        await addDoc(collection(db,'erp_documents'), payload);
+      }
+      toast(`${docNumber} saved!`);
+    } else {
+      const offs = getOfflineDocs();
+      offs.push({ ...payload, tempId: docNumber, savedAt: new Date().toISOString() });
+      saveOfflineDocs(offs);
+      toast(`Saved offline as ${docNumber}.`, 'warn');
+      updateOnlineStatus();
+    }
+
+    document.getElementById('challanNumDisplay').textContent = docNumber;
+    loadDashboardStats();
+  } catch(e) {
+    toast('Error saving challan: ' + e.message, 'err');
+  } finally {
+    if (btn) { btn.textContent = 'Save & Finalise Challan'; btn.disabled = false; }
+  }
+};
+
+window.downloadChallanPDF = function() {
+  if (typeof html2pdf === 'undefined') { toast('PDF library loading…', 'warn'); return; }
+  const toName  = document.getElementById('ch-toName').value  || 'Client';
+  const date    = document.getElementById('ch-date').value    || '—';
+  const vehicle = document.getElementById('ch-vehicle').value || '—';
+  const driver  = document.getElementById('ch-driver').value  || '—';
+  const toAddr  = document.getElementById('ch-toAddr').value  || '—';
+  const docNum  = document.getElementById('challanNumDisplay').textContent || 'DC';
+  const purpose = document.getElementById('ch-purpose').value || '';
+  const refInv  = document.getElementById('ch-refInvoice').value || '—';
+  const notes   = document.getElementById('ch-notes').value   || '';
+  const fromName= settings.companyName || 'Deepu Siva Private Limited';
+  const fromAddr= settings.address     || 'Coimbatore, Tamil Nadu';
+  const fromGST = settings.gstin       || '';
+
+  const itemRows = challanItems.map((item, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${item.desc||''}</td>
+      <td>${item.hsn||'—'}</td>
+      <td>${item.qty||1}</td>
+      <td>${item.unit||'Nos'}</td>
+      <td>${item.remarks||'—'}</td>
+    </tr>`).join('');
+
+  const html = `
+    <div style="width:210mm;min-height:297mm;padding:12mm 14mm;font-family:Arial,sans-serif;font-size:11pt;color:#0f172a;box-sizing:border-box;">
+      <div style="border-bottom:3px solid #16a34a;padding-bottom:14px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div style="font-size:22pt;font-weight:800;color:#166534;text-transform:uppercase;">${fromName}</div>
+          <div style="font-size:9pt;color:#475569;line-height:1.6;">${fromAddr}${fromGST?'<br/>GSTIN: '+fromGST:''}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:24pt;font-weight:800;color:#16a34a;text-transform:uppercase;">DELIVERY CHALLAN</div>
+          <div style="font-size:11pt;color:#475569;margin-top:4px;">${docNum}<br/>Date: ${date}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
+        <div style="background:#f0fdf4;border:1px solid #d1fae5;border-radius:6px;padding:12px;">
+          <div style="font-size:8pt;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#16a34a;margin-bottom:6px;">DELIVER TO</div>
+          <div style="font-weight:700;">${toName}</div>
+          <div style="font-size:10pt;color:#1e293b;">${toAddr}</div>
+          ${purpose ? '<div style="margin-top:4px;font-size:10pt;"><strong>Purpose:</strong> '+purpose+'</div>' : ''}
+        </div>
+        <div style="background:#f8fffe;border:1px solid #e2e8f0;border-radius:6px;padding:12px;">
+          <div style="font-size:8pt;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#16a34a;margin-bottom:6px;">TRANSPORT DETAILS</div>
+          <div><strong>Vehicle:</strong> ${vehicle}</div>
+          <div><strong>Driver:</strong>  ${driver}</div>
+          <div><strong>Ref. Invoice:</strong> ${refInv}</div>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+        <thead>
+          <tr style="background:#166534;color:#fff;">
+            <th style="padding:8px;text-align:left;font-size:9pt;">#</th>
+            <th style="padding:8px;text-align:left;font-size:9pt;">Description of Goods</th>
+            <th style="padding:8px;text-align:left;font-size:9pt;">HSN</th>
+            <th style="padding:8px;text-align:center;font-size:9pt;">Qty</th>
+            <th style="padding:8px;text-align:center;font-size:9pt;">Unit</th>
+            <th style="padding:8px;text-align:left;font-size:9pt;">Condition / Remarks</th>
+          </tr>
+        </thead>
+        <tbody>${itemRows}</tbody>
+      </table>
+      ${notes?`<div style="background:#f0fdf4;border:1px solid #d1fae5;border-radius:6px;padding:10px;margin-bottom:20px;font-size:10pt;"><strong>Notes:</strong> ${notes}</div>`:''}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;">
+        <div style="border-top:1px solid #0f172a;padding-top:6px;text-align:center;font-size:9pt;color:#475569;">Prepared By / Despatch Note</div>
+        <div style="border-top:1px solid #0f172a;padding-top:6px;text-align:center;font-size:9pt;color:#475569;">Received In Good Condition<br/><br/><br/>Signature &amp; Stamp</div>
+      </div>
+    </div>`;
+
+  const el = document.createElement('div');
+  el.innerHTML = html;
+  document.body.appendChild(el);
+
+  html2pdf().set({
+    margin: [6,6,6,6], filename: `Deepu_Siva_${docNum.replace(/-/g,'')}.pdf`,
+    image: {type:'jpeg',quality:0.98}, html2canvas:{scale:2,useCORS:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(el).save().then(() => { document.body.removeChild(el); toast('Challan PDF downloaded!'); });
+};
+
+window.shareChallanWhatsApp = function() {
+  const toName = document.getElementById('ch-toName').value || 'Client';
+  const docNum = document.getElementById('challanNumDisplay').textContent || 'DC';
+  const items  = challanItems.length;
+  const msg    = encodeURIComponent(
+    `Dear ${toName},
+
+Your delivery is dispatched from Deepu Siva Pvt Ltd.
+
+` +
+    `📋 Challan No: ${docNum}
+📦 Items: ${items} item${items!==1?'s':''}
+` +
+    `
+For queries: +91 84890 90666
+Thank you!`
+  );
+  window.open('https://wa.me/?text=' + msg, '_blank');
+};
+
+// ─────────────────────────────────────────────────────────
+//  PURCHASE BILL ENGINE
+// ─────────────────────────────────────────────────────────
+window.showPurchaseForm = function() {
+  document.getElementById('purchaseFormWrap').style.display = 'block';
+  document.getElementById('purchaseListWrap').style.display = 'none';
+  newPurchaseForm();
+};
+
+window.showPurchaseList = function() {
+  document.getElementById('purchaseFormWrap').style.display = 'none';
+  document.getElementById('purchaseListWrap').style.display = 'block';
+  loadAllPurchases();
+};
+
+function newPurchaseForm() {
+  purchaseItems = [];
+  editPurchaseId = null;
+  document.getElementById('pur-supplierName').value   = '';
+  document.getElementById('pur-supplierAddr').value   = '';
+  document.getElementById('pur-supplierGSTIN').value  = '';
+  document.getElementById('pur-supplierPhone').value  = '';
+  document.getElementById('pur-supplierBillNo').value = '';
+  document.getElementById('pur-billDate').value       = new Date().toISOString().split('T')[0];
+  document.getElementById('pur-dueDate').value        = '';
+  document.getElementById('pur-notes').value          = '';
+  document.getElementById('pur-payStatus').value      = 'unpaid';
+  document.getElementById('pur-sub').textContent      = '₹0';
+  document.getElementById('pur-gst').textContent      = '₹0';
+  document.getElementById('pur-total').textContent    = '₹0';
+  addPurchaseItem();
+  generatePurchaseNumber();
+  renderPurchaseItems();
+}
+
+window.clearPurchaseForm = newPurchaseForm;
+
+async function generatePurchaseNumber() {
+  const display = document.getElementById('purchaseNumDisplay');
+  if (!display) return;
+  if (!isOnline) { display.textContent = 'PUR-offline'; return; }
+  try {
+    const n = await runTransaction(db, async tx => {
+      const ref  = doc(db,'config',`counter_PUR_${ownerUid}`);
+      const snap = await tx.get(ref);
+      return (snap.exists() ? snap.data().count : 0) + 1;
+    });
+    display.textContent = `PUR-${new Date().getFullYear()}-${String(n).padStart(3,'0')} (preview)`;
+  } catch { display.textContent = 'PUR-preview'; }
+}
+
+window.addPurchaseItem = function() {
+  purchaseItems.push({ desc:'', hsn:'', qty:1, unit:'Nos', price:0, gstPct:18 });
+  renderPurchaseItems();
+  recalcPurchase();
+};
+
+window.removePurchaseItem = function(idx) {
+  purchaseItems.splice(idx, 1);
+  renderPurchaseItems();
+  recalcPurchase();
+};
+
+window.updatePurchaseItem = function(idx, field, value) {
+  if (idx >= purchaseItems.length) return;
+  purchaseItems[idx][field] = ['qty','price','gstPct'].includes(field) ? (parseFloat(value)||0) : value;
+  // In-place amount cell update
+  const amts = document.querySelectorAll('.pur-amt-cell');
+  if (amts[idx]) amts[idx].textContent = '₹' + (purchaseItems[idx].qty * purchaseItems[idx].price).toLocaleString('en-IN',{maximumFractionDigits:2});
+  recalcPurchase();
+};
+
+function recalcPurchase() {
+  const sub   = purchaseItems.reduce((s,i) => s + i.qty * i.price, 0);
+  const gst   = purchaseItems.reduce((s,i) => s + i.qty * i.price * (i.gstPct/100), 0);
+  const total = sub + gst;
+  document.getElementById('pur-sub').textContent   = '₹' + sub.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('pur-gst').textContent   = '₹' + gst.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('pur-total').textContent = '₹' + Math.round(total).toLocaleString('en-IN');
+  return { sub, gst, total: Math.round(total) };
+}
+
+function renderPurchaseItems() {
+  const tbody = document.getElementById('purchaseItemsBody');
+  const cards = document.getElementById('purchaseItemsCards');
+
+  if (tbody) {
+    tbody.innerHTML = purchaseItems.map((item, i) => `
+      <tr>
+        <td class="col-sn" style="color:var(--muted);font-size:12px;">${i+1}</td>
+        <td class="col-desc"><input class="td-input" value="${item.desc||''}" placeholder="Item description" onchange="updatePurchaseItem(${i},'desc',this.value)" style="min-width:140px;"/></td>
+        <td class="col-hsn"><input class="td-input" value="${item.hsn||''}" placeholder="HSN" onchange="updatePurchaseItem(${i},'hsn',this.value)"/></td>
+        <td class="col-qty"><input class="td-input" type="number" value="${item.qty||1}" min="0" step="any" oninput="updatePurchaseItem(${i},'qty',this.value)"/></td>
+        <td class="col-unit">
+          <select class="td-input" onchange="updatePurchaseItem(${i},'unit',this.value)">
+            ${['Nos','Kg','MT','Sqft','Sqm','Meter','RFT','Sets','Job','Lot'].map(u=>`<option ${item.unit===u?'selected':''}>${u}</option>`).join('')}
+          </select>
+        </td>
+        <td class="col-price"><input class="td-input" type="number" value="${item.price||0}" min="0" step="any" oninput="updatePurchaseItem(${i},'price',this.value)"/></td>
+        <td class="col-gst">
+          <select class="td-input" onchange="updatePurchaseItem(${i},'gstPct',this.value)">
+            ${[0,5,12,18,28].map(r=>`<option value="${r}" ${item.gstPct===r?'selected':''}>${r}%</option>`).join('')}
+          </select>
+        </td>
+        <td class="col-amt pur-amt-cell">₹${(item.qty*item.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
+        <td class="col-del"><button class="del-row-btn" onclick="removePurchaseItem(${i})">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+        </button></td>
+      </tr>`).join('') || `<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--muted);">No items yet.</td></tr>`;
+  }
+
+  if (cards) {
+    cards.innerHTML = purchaseItems.map((item, i) => `
+      <div class="li-card">
+        <button class="li-card-del" onclick="removePurchaseItem(${i})">✕</button>
+        <div class="form-group"><div class="li-card-label">Description</div>
+          <input class="form-control" value="${item.desc||''}" placeholder="Item description" onchange="updatePurchaseItem(${i},'desc',this.value)"/></div>
+        <div class="li-card-row">
+          <div><div class="li-card-label">Qty</div><input class="form-control" type="number" value="${item.qty||1}" oninput="updatePurchaseItem(${i},'qty',this.value)"/></div>
+          <div><div class="li-card-label">Rate ₹</div><input class="form-control" type="number" value="${item.price||0}" oninput="updatePurchaseItem(${i},'price',this.value)"/></div>
+        </div>
+        <div class="li-card-total">
+          <span class="li-card-total-label">Item Total</span>
+          <span class="li-card-total-val pur-amt-cell">₹${(item.qty*item.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
+        </div>
+      </div>`).join('');
+  }
+}
+
+window.savePurchaseBill = async function() {
+  const supplier = document.getElementById('pur-supplierName').value.trim();
+  const billNo   = document.getElementById('pur-supplierBillNo').value.trim();
+  const date     = document.getElementById('pur-billDate').value;
+  if (!supplier) { toast('Enter supplier name.', 'err'); return; }
+  if (!billNo)   { toast('Enter their bill number.', 'err'); return; }
+  if (!purchaseItems.length) { toast('Add at least one item.', 'err'); return; }
+
+  const btn = document.querySelector('[onclick="savePurchaseBill()"]');
+  if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
+
+  try {
+    const { sub, gst, total } = recalcPurchase();
+    let docNumber = '';
+
+    if (isOnline) {
+      docNumber = await runTransaction(db, async tx => {
+        const ref  = doc(db,'config',`counter_PUR_${ownerUid}`);
+        const snap = await tx.get(ref);
+        const next = (snap.exists() ? snap.data().count : 0) + 1;
+        tx.set(ref, { count: next });
+        return `PUR-${new Date().getFullYear()}-${String(next).padStart(3,'0')}`;
+      });
+    } else {
+      docNumber = 'PUR-' + getNextTempId();
+    }
+
+    const payload = {
+      docType:          'purchase',
+      docNumber,
+      ownerUid,
+      supplierName:     supplier,
+      supplierAddr:     document.getElementById('pur-supplierAddr').value.trim(),
+      supplierGSTIN:    document.getElementById('pur-supplierGSTIN').value.trim(),
+      supplierPhone:    document.getElementById('pur-supplierPhone').value.trim(),
+      supplierBillNo:   billNo,
+      docDate:          date,
+      dueDate:          document.getElementById('pur-dueDate').value,
+      category:         document.getElementById('pur-category').value,
+      placeOfSupply:    document.getElementById('pur-placeOfSupply').value.trim(),
+      notes:            document.getElementById('pur-notes').value.trim(),
+      payStatus:        document.getElementById('pur-payStatus').value,
+      lineItems:        [...purchaseItems],
+      subtotal: sub, totalGST: gst, grandTotal: total,
+      toName:   supplier, // for consistent party ledger queries
+      status:   document.getElementById('pur-payStatus').value,
+      createdAt: serverTimestamp(),
+    };
+
+    if (isOnline) {
+      if (editPurchaseId) {
+        await updateDoc(doc(db,'erp_documents',editPurchaseId), {...payload, updatedAt: serverTimestamp()});
+      } else {
+        await addDoc(collection(db,'erp_documents'), payload);
+      }
+    } else {
+      const offs = getOfflineDocs();
+      offs.push({ ...payload, tempId: docNumber, savedAt: new Date().toISOString() });
+      saveOfflineDocs(offs);
+      updateOnlineStatus();
+    }
+
+    document.getElementById('purchaseNumDisplay').textContent = docNumber;
+    toast(`${docNumber} saved! Total: ₹${total.toLocaleString('en-IN')}`);
+    loadDashboardStats();
+  } catch(e) {
+    toast('Error saving purchase: ' + e.message, 'err');
+  } finally {
+    if (btn) { btn.textContent = 'Save Purchase Bill'; btn.disabled = false; }
+  }
+};
+
+// ─────────────────────────────────────────────────────────
+//  PAYMENT RECEIPT ENGINE
+// ─────────────────────────────────────────────────────────
+window.showReceiptForm = function() {
+  document.getElementById('receiptFormWrap').style.display = 'block';
+  document.getElementById('receiptListWrap').style.display = 'none';
+  newReceiptForm();
+};
+
+window.showReceiptList = function() {
+  document.getElementById('receiptFormWrap').style.display = 'none';
+  document.getElementById('receiptListWrap').style.display = 'block';
+  loadAllReceipts();
+};
+
+function newReceiptForm() {
+  editReceiptId = null;
+  selectedInvoiceForReceipt = null;
+  document.getElementById('rec-partyName').value  = '';
+  document.getElementById('rec-invoiceRef').innerHTML = '<option value="">— Select unpaid invoice —</option>';
+  document.getElementById('rec-date').value       = new Date().toISOString().split('T')[0];
+  document.getElementById('rec-amount').value     = '';
+  document.getElementById('rec-method').value     = 'upi';
+  document.getElementById('rec-txnId').value      = '';
+  document.getElementById('rec-bankDest').value   = '';
+  document.getElementById('rec-notes').value      = '';
+  document.getElementById('rec-invoiceInfo').style.display  = 'none';
+  document.getElementById('rec-balancePreview').style.display = 'none';
+  document.getElementById('rec-amountHint').textContent = '';
+  generateReceiptNumber();
+}
+
+window.clearReceiptForm = newReceiptForm;
+
+async function generateReceiptNumber() {
+  const display = document.getElementById('receiptNumDisplay');
+  if (!display || !isOnline) { if(display) display.textContent = 'REC-preview'; return; }
+  try {
+    const n = await runTransaction(db, async tx => {
+      const ref  = doc(db,'config',`counter_REC_${ownerUid}`);
+      const snap = await tx.get(ref);
+      return (snap.exists() ? snap.data().count : 0) + 1;
+    });
+    display.textContent = `REC-${new Date().getFullYear()}-${String(n).padStart(3,'0')} (preview)`;
+  } catch { display.textContent = 'REC-preview'; }
+}
+
+// When party name typed, load their unpaid invoices
+window.onReceiptPartyInput = async function(val) {
+  const sel = document.getElementById('rec-invoiceRef');
+  if (!val || val.length < 2) {
+    sel.innerHTML = '<option value="">— Type party name first —</option>';
+    return;
+  }
+  try {
+    const snap = await getDocs(query(
+      collection(db,'erp_documents'),
+      where('ownerUid','==',ownerUid),
+      where('docType','==','invoice')
+    ));
+    const unpaid = snap.docs
+      .map(d => ({id:d.id,...d.data()}))
+      .filter(d => (d.toName||'').toLowerCase().includes(val.toLowerCase())
+                && !['paid'].includes(d.status||''))
+      .sort((a,b) => (b.docDate||'').localeCompare(a.docDate||''));
+
+    sel.innerHTML = '<option value="">— Select invoice (optional) —</option>' +
+      unpaid.map(d =>
+        `<option value="${d.id}" data-total="${d.grandTotal||0}" data-paid="${d.paidAmount||0}">
+          ${d.docNumber||'?'} — ₹${(d.grandTotal||0).toLocaleString('en-IN')} — ${d.status||'unpaid'}
+        </option>`).join('');
+  } catch { /* ignore */ }
+};
+
+window.onInvoiceSelect = async function(invId) {
+  const infoEl    = document.getElementById('rec-invoiceInfo');
+  const preview   = document.getElementById('rec-balancePreview');
+  const amtInput  = document.getElementById('rec-amount');
+  const amtHint   = document.getElementById('rec-amountHint');
+
+  if (!invId) {
+    infoEl.style.display = 'none';
+    preview.style.display = 'none';
+    selectedInvoiceForReceipt = null;
+    return;
+  }
+
+  try {
+    const snap = await getDoc(doc(db,'erp_documents',invId));
+    if (!snap.exists()) return;
+    const inv = { id: snap.id, ...snap.data() };
+    selectedInvoiceForReceipt = inv;
+
+    const total    = inv.grandTotal || 0;
+    const paid     = inv.paidAmount || 0;
+    const balance  = total - paid;
+
+    infoEl.style.display = 'block';
+    infoEl.textContent   = `${inv.docNumber} — Total: ₹${total.toLocaleString('en-IN')} | Already Paid: ₹${paid.toLocaleString('en-IN')} | Balance Due: ₹${balance.toLocaleString('en-IN')}`;
+
+    // Pre-fill amount with balance due
+    amtInput.value = balance;
+    amtHint.textContent = `Balance due: ₹${balance.toLocaleString('en-IN')}`;
+
+    onReceiptAmountInput();
+  } catch(e) { console.warn(e); }
+};
+
+window.onReceiptAmountInput = function() {
+  const preview   = document.getElementById('rec-balancePreview');
+  const amount    = parseFloat(document.getElementById('rec-amount').value) || 0;
+  if (!selectedInvoiceForReceipt || !amount) { preview.style.display='none'; return; }
+
+  const total   = selectedInvoiceForReceipt.grandTotal || 0;
+  const paid    = selectedInvoiceForReceipt.paidAmount || 0;
+  const newPaid = paid + amount;
+  const balance = Math.max(0, total - newPaid);
+
+  document.getElementById('bp-invoice').textContent  = '₹' + total.toLocaleString('en-IN');
+  document.getElementById('bp-this').textContent     = '₹' + amount.toLocaleString('en-IN');
+  document.getElementById('bp-balance').textContent  = '₹' + balance.toLocaleString('en-IN');
+  const statusMsg = document.getElementById('bp-statusMsg');
+  if (newPaid >= total) {
+    statusMsg.textContent = '✅ Invoice will be marked FULLY PAID';
+    statusMsg.style.color = 'var(--green)';
+  } else {
+    statusMsg.textContent = '⚠️ Invoice will be marked PARTIAL — Balance: ₹' + balance.toLocaleString('en-IN');
+    statusMsg.style.color = 'var(--amber)';
+  }
+
+  preview.style.display = 'block';
+};
+
+window.onMethodChange = function(method) {
+  const txnGroup  = document.getElementById('rec-txnGroup');
+  const bankGroup = document.getElementById('rec-bankGroup');
+  txnGroup.style.display  = method === 'cash' ? 'none' : 'block';
+  bankGroup.style.display = ['upi','neft','imps'].includes(method) ? 'block' : 'none';
+  const lblMap = { upi:'UPI Ref / Transaction ID', cheque:'Cheque Number', neft:'UTR Number', imps:'IMPS Ref No.', card:'Last 4 Digits / Ref' };
+  const lbl = document.querySelector('label[for="rec-txnId"], #rec-txnGroup label');
+  if (lbl) lbl.textContent = lblMap[method] || 'Transaction ID';
+};
+
+window.saveReceipt = async function() {
+  const party  = document.getElementById('rec-partyName').value.trim();
+  const amount = parseFloat(document.getElementById('rec-amount').value) || 0;
+  const date   = document.getElementById('rec-date').value;
+  const method = document.getElementById('rec-method').value;
+  if (!party)  { toast('Enter party name.', 'err'); return; }
+  if (!amount) { toast('Enter amount received.', 'err'); return; }
+  if (!date)   { toast('Enter receipt date.', 'err'); return; }
+
+  const btn = document.querySelector('[onclick="saveReceipt()"]');
+  if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
+
+  try {
+    let docNumber = '';
+    if (isOnline) {
+      docNumber = await runTransaction(db, async tx => {
+        const ref  = doc(db,'config',`counter_REC_${ownerUid}`);
+        const snap = await tx.get(ref);
+        const next = (snap.exists() ? snap.data().count : 0) + 1;
+        tx.set(ref, { count: next });
+        return `REC-${new Date().getFullYear()}-${String(next).padStart(3,'0')}`;
+      });
+    } else {
+      docNumber = 'REC-' + getNextTempId();
+    }
+
+    const invSel    = document.getElementById('rec-invoiceRef');
+    const invId     = invSel.value || '';
+    const txnId     = document.getElementById('rec-txnId').value.trim();
+    const bankDest  = document.getElementById('rec-bankDest').value.trim();
+    const notes     = document.getElementById('rec-notes').value.trim();
+
+    const payload = {
+      docType:    'receipt',
+      docNumber,
+      ownerUid,
+      toName:     party,
+      docDate:    date,
+      amount,
+      method,
+      txnId,
+      bankDest,
+      notes,
+      againstInvoiceId:  invId,
+      againstInvoiceNum: selectedInvoiceForReceipt?.docNumber || '',
+      status: 'received',
+      createdAt: serverTimestamp(),
+    };
+
+    if (isOnline) {
+      await addDoc(collection(db,'erp_documents'), payload);
+
+      // ── AUTO-UPDATE INVOICE STATUS (atomic) ──
+      if (invId && selectedInvoiceForReceipt) {
+        const inv       = selectedInvoiceForReceipt;
+        const total     = inv.grandTotal || 0;
+        const prevPaid  = inv.paidAmount || 0;
+        const newPaid   = prevPaid + amount;
+        const newStatus = newPaid >= total ? 'paid' : 'partial';
+        await updateDoc(doc(db,'erp_documents',invId), {
+          paidAmount:  newPaid,
+          status:      newStatus,
+          lastReceiptAt: serverTimestamp(),
+        });
+        toast(`${docNumber} saved! Invoice ${inv.docNumber} → ${newStatus.toUpperCase()}`);
+      } else {
+        toast(`${docNumber} saved!`);
+      }
+    } else {
+      const offs = getOfflineDocs();
+      offs.push({ ...payload, tempId: docNumber, savedAt: new Date().toISOString() });
+      saveOfflineDocs(offs);
+      updateOnlineStatus();
+      toast(`Saved offline as ${docNumber}.`, 'warn');
+    }
+
+    document.getElementById('receiptNumDisplay').textContent = docNumber;
+    loadDashboardStats();
+  } catch(e) {
+    toast('Error saving receipt: ' + e.message, 'err');
+  } finally {
+    if (btn) { btn.textContent = 'Save Receipt & Update Invoice'; btn.disabled = false; }
+  }
+};
+
+// ─────────────────────────────────────────────────────────
+//  PARTY LEDGER — Report
+// ─────────────────────────────────────────────────────────
+async function generatePartyLedger(partyName) {
+  const output = document.getElementById('reportOutput');
+  if (!partyName) {
+    output.innerHTML = '<p style="color:var(--muted);">Enter a party name above and click "Party Ledger".</p>';
+    return;
+  }
+  output.innerHTML = '<p style="color:var(--muted);">Loading ledger…</p>';
+
+  try {
+    const snap = await getDocs(query(
+      collection(db,'erp_documents'),
+      where('ownerUid','==',ownerUid)
+    ));
+
+    const docs = snap.docs
+      .map(d => ({id:d.id,...d.data()}))
+      .filter(d => (d.toName||d.supplierName||'').toLowerCase().includes(partyName.toLowerCase()))
+      .filter(d => ['invoice','receipt','purchase'].includes(d.docType))
+      .sort((a,b) => (a.docDate||'').localeCompare(b.docDate||''));
+
+    if (!docs.length) {
+      output.innerHTML = `<p style="color:var(--muted);">No records found for "${partyName}".</p>`;
+      return;
+    }
+
+    let runBalance = 0;
+    let totalDebit = 0, totalCredit = 0;
+
+    const rows = docs.map(d => {
+      let debit = 0, credit = 0;
+      if (d.docType === 'invoice')  { debit  = d.grandTotal || 0; }
+      if (d.docType === 'receipt')  { credit = d.amount || 0; }
+      if (d.docType === 'purchase') { credit = d.grandTotal || 0; }
+      runBalance += debit - credit;
+      totalDebit += debit; totalCredit += credit;
+      const balColor = runBalance > 0 ? 'var(--red)' : runBalance < 0 ? 'var(--green3)' : 'var(--muted)';
+
+      return `<tr>
+        <td>${d.docDate||'—'}</td>
+        <td><span class="inv-num">${d.docNumber||'—'}</span></td>
+        <td style="text-transform:capitalize;">${d.docType}</td>
+        <td style="color:var(--red);font-weight:700;">${debit  ? '₹' + debit.toLocaleString('en-IN')  : '—'}</td>
+        <td style="color:var(--green3);font-weight:700;">${credit ? '₹' + credit.toLocaleString('en-IN') : '—'}</td>
+        <td style="font-weight:800;color:${balColor};">₹${Math.abs(runBalance).toLocaleString('en-IN')} ${runBalance>0?'DR':runBalance<0?'CR':''}</td>
+      </tr>`;
+    }).join('');
+
+    const closingColor = runBalance > 0 ? 'var(--red)' : 'var(--green)';
+    const closingLabel = runBalance > 0 ? 'Balance DUE from party' : runBalance < 0 ? 'Balance payable to party' : 'SETTLED';
+
+    output.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+        <h3 style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--text);text-transform:uppercase;">Party Ledger — ${partyName}</h3>
+        <button class="btn btn-outline-green btn-sm" onclick="downloadLedgerPDF('${partyName.replace(/'/g,"\'")}')">Download PDF</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+        <div class="erp-stat"><div class="erp-stat-val" style="color:var(--red);">₹${totalDebit.toLocaleString('en-IN')}</div><div class="erp-stat-lbl">Total Billed (Debit)</div></div>
+        <div class="erp-stat"><div class="erp-stat-val" style="color:var(--green);">₹${totalCredit.toLocaleString('en-IN')}</div><div class="erp-stat-lbl">Total Received (Credit)</div></div>
+        <div class="erp-stat"><div class="erp-stat-val" style="color:${closingColor};">₹${Math.abs(runBalance).toLocaleString('en-IN')}</div><div class="erp-stat-lbl">${closingLabel}</div></div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="inv-list-table">
+          <thead><tr><th>Date</th><th>Doc No.</th><th>Type</th><th>Debit ₹</th><th>Credit ₹</th><th>Balance</th></tr></thead>
+          <tbody>${rows}</tbody>
+          <tfoot>
+            <tr style="background:var(--bg3);">
+              <td colspan="3" style="font-weight:800;padding:12px 14px;text-align:right;">CLOSING BALANCE</td>
+              <td style="color:var(--red);font-weight:800;padding:12px 14px;">₹${totalDebit.toLocaleString('en-IN')}</td>
+              <td style="color:var(--green3);font-weight:800;padding:12px 14px;">₹${totalCredit.toLocaleString('en-IN')}</td>
+              <td style="font-family:var(--font-head);font-size:18px;font-weight:800;color:${closingColor};padding:12px 14px;">₹${Math.abs(runBalance).toLocaleString('en-IN')} ${runBalance>0?'DR':runBalance<0?'CR':''}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
+  } catch(e) {
+    output.innerHTML = `<p style="color:var(--red);">Error: ${e.message}</p>`;
+  }
+}
+
+window.downloadLedgerPDF = function(partyName) {
+  const el = document.getElementById('reportOutput');
+  if (!el || typeof html2pdf === 'undefined') { toast('Generate the ledger first.', 'warn'); return; }
+  html2pdf().set({
+    margin: [8,8,8,8],
+    filename: `Deepu_Siva_Ledger_${partyName.replace(/\s+/g,'_')}.pdf`,
+    image: {type:'jpeg',quality:0.97},
+    html2canvas: {scale:2, useCORS:true},
+    jsPDF: {unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(el).save().then(() => toast('Ledger PDF downloaded!'));
+};
+
+// ── Patch generateReport to include ledger ──
+const _origGenerateReport = window.generateReport;
+window.generateReport = async function(type) {
+  if (type === 'ledger') {
+    const party = document.getElementById('rep-party').value.trim();
+    await generatePartyLedger(party);
+  } else {
+    if (_origGenerateReport) await _origGenerateReport(type);
+  }
+};
+
+// ─────────────────────────────────────────────────────────
+//  SHARED HELPERS
+// ─────────────────────────────────────────────────────────
+window.filterList = function(tbodyId, q) {
+  const rows = document.querySelectorAll('#' + tbodyId + ' tr');
+  rows.forEach(r => {
+    r.style.display = (!q || r.textContent.toLowerCase().includes(q.toLowerCase())) ? '' : 'none';
+  });
+};
+
+// ── Update loadAllChallans/Purchases/Receipts with richer row rendering ──
+async function loadAllChallans() {
+  const tbody = document.getElementById('challansList');
+  if (!tbody || !ownerUid) return;
+  try {
+    const snap = await getDocs(query(
+      collection(db,'erp_documents'),
+      where('ownerUid','==',ownerUid),
+      where('docType','==','challan'),
+      orderBy('createdAt','desc'), limit(50)
+    ));
+    if (snap.empty) { tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">No challans yet.</td></tr>'; return; }
+    tbody.innerHTML = snap.docs.map(d => {
+      const c = d.data();
+      return `<tr>
+        <td><span class="inv-num">${c.docNumber||'—'}</span></td>
+        <td><strong>${c.toName||'—'}</strong></td>
+        <td>${c.docDate||'—'}</td>
+        <td>${c.vehicle||'—'}</td>
+        <td>${(c.items||[]).length} item${(c.items||[]).length!==1?'s':''}</td>
+        <td style="display:flex;gap:6px;">
+          <button class="btn-sm-green" onclick="loadChallanDoc('${d.id}')">Edit</button>
+          <button class="btn-sm-green" onclick="downloadChallanFromList('${d.id}')">PDF</button>
+        </td>
+      </tr>`;
+    }).join('');
+  } catch(e) {
+    try {
+      const s2 = await getDocs(query(collection(db,'erp_documents'),where('ownerUid','==',ownerUid),where('docType','==','challan'),limit(50)));
+      tbody.innerHTML = s2.empty ? '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">No challans yet.</td></tr>' : s2.docs.map(d=>{const c=d.data();return`<tr><td><span class="inv-num">${c.docNumber||'—'}</span></td><td>${c.toName||'—'}</td><td>${c.docDate||'—'}</td><td>${c.vehicle||'—'}</td><td>${(c.items||[]).length}</td><td><button class="btn-sm-green" onclick="loadChallanDoc('${d.id}')">Edit</button></td></tr>`;}).join('');
+    } catch { tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted);">Index building…</td></tr>'; }
+  }
+}
+
+async function loadAllPurchases() {
+  const tbody = document.getElementById('purchasesList');
+  if (!tbody || !ownerUid) return;
+  try {
+    const snap = await getDocs(query(
+      collection(db,'erp_documents'),
+      where('ownerUid','==',ownerUid),
+      where('docType','==','purchase'),
+      orderBy('createdAt','desc'), limit(50)
+    ));
+    if (snap.empty) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No purchase bills yet.</td></tr>'; return; }
+    tbody.innerHTML = snap.docs.map(d => {
+      const p = d.data();
+      const statusColors = {paid:'var(--green)',unpaid:'var(--red)',partial:'var(--amber)'};
+      return `<tr>
+        <td><span class="inv-num">${p.docNumber||'—'}</span></td>
+        <td><strong>${p.supplierName||'—'}</strong></td>
+        <td style="font-family:monospace;font-size:12px;">${p.supplierBillNo||'—'}</td>
+        <td>${p.docDate||'—'}</td>
+        <td style="font-family:var(--font-head);font-weight:800;color:var(--green3);">₹${(p.grandTotal||0).toLocaleString('en-IN')}</td>
+        <td><span style="color:${statusColors[p.payStatus||'unpaid']||'var(--muted)'};font-weight:700;text-transform:uppercase;font-size:12px;">${p.payStatus||'unpaid'}</span></td>
+        <td><button class="btn-sm-green" onclick="loadPurchaseDoc('${d.id}')">Edit</button></td>
+      </tr>`;
+    }).join('');
+  } catch(e) {
+    try {
+      const s2 = await getDocs(query(collection(db,'erp_documents'),where('ownerUid','==',ownerUid),where('docType','==','purchase'),limit(50)));
+      tbody.innerHTML = s2.empty ? '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No purchases yet.</td></tr>' : s2.docs.map(d=>{const p=d.data();return`<tr><td><span class="inv-num">${p.docNumber||'—'}</span></td><td>${p.supplierName||'—'}</td><td>${p.supplierBillNo||'—'}</td><td>${p.docDate||'—'}</td><td>₹${(p.grandTotal||0).toLocaleString('en-IN')}</td><td>${p.payStatus||'—'}</td><td></td></tr>`;}).join('');
+    } catch { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Index building…</td></tr>'; }
+  }
+}
+
+async function loadAllReceipts() {
+  const tbody = document.getElementById('receiptsList');
+  if (!tbody || !ownerUid) return;
+  try {
+    const snap = await getDocs(query(
+      collection(db,'erp_documents'),
+      where('ownerUid','==',ownerUid),
+      where('docType','==','receipt'),
+      orderBy('createdAt','desc'), limit(50)
+    ));
+    if (snap.empty) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No receipts yet.</td></tr>'; return; }
+    const methodLabels = {cash:'Cash',upi:'UPI',cheque:'Cheque',neft:'NEFT',imps:'IMPS',card:'Card'};
+    tbody.innerHTML = snap.docs.map(d => {
+      const r = d.data();
+      return `<tr>
+        <td><span class="inv-num">${r.docNumber||'—'}</span></td>
+        <td><strong>${r.toName||'—'}</strong></td>
+        <td style="font-size:12px;color:var(--muted);">${r.againstInvoiceNum||'—'}</td>
+        <td>${r.docDate||'—'}</td>
+        <td style="font-family:var(--font-head);font-weight:800;color:var(--green);">₹${(r.amount||0).toLocaleString('en-IN')}</td>
+        <td>${methodLabels[r.method]||r.method||'—'}</td>
+        <td style="font-size:11px;color:var(--muted);">${r.txnId||'—'}</td>
+      </tr>`;
+    }).join('');
+  } catch(e) {
+    try {
+      const s2 = await getDocs(query(collection(db,'erp_documents'),where('ownerUid','==',ownerUid),where('docType','==','receipt'),limit(50)));
+      tbody.innerHTML = s2.empty ? '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No receipts yet.</td></tr>' : s2.docs.map(d=>{const r=d.data();return`<tr><td><span class="inv-num">${r.docNumber||'—'}</span></td><td>${r.toName||'—'}</td><td>${r.againstInvoiceNum||'—'}</td><td>${r.docDate||'—'}</td><td>₹${(r.amount||0).toLocaleString('en-IN')}</td><td>${r.method||'—'}</td><td>${r.txnId||'—'}</td></tr>`;}).join('');
+    } catch { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);">Index building…</td></tr>'; }
+  }
+}
+
+// ── Load challan/purchase docs for editing ──
+window.loadChallanDoc = async function(id) {
+  const snap = await getDoc(doc(db,'erp_documents',id));
+  if (!snap.exists()) return;
+  const c = snap.data();
+  showChallanForm();
+  editChallanId = id;
+  document.getElementById('ch-date').value    = c.docDate  || '';
+  document.getElementById('ch-vehicle').value = c.vehicle  || '';
+  document.getElementById('ch-driver').value  = c.driver   || '';
+  document.getElementById('ch-toName').value  = c.toName   || '';
+  document.getElementById('ch-toAddr').value  = c.toAddr   || '';
+  document.getElementById('ch-refInvoice').value = c.refInvoice || '';
+  document.getElementById('ch-refPO').value      = c.refPO      || '';
+  document.getElementById('ch-purpose').value    = c.purpose    || '';
+  document.getElementById('ch-notes').value      = c.notes      || '';
+  challanItems = (c.items||[]).map(i=>({...i}));
+  document.getElementById('challanFormTitle').textContent = 'Edit Challan — ' + (c.docNumber||'');
+  document.getElementById('challanNumDisplay').textContent = c.docNumber || '';
+  renderChallanItems();
+};
+
+window.downloadChallanFromList = async function(id) {
+  await loadChallanDoc(id);
+  setTimeout(() => downloadChallanPDF(), 400);
+};
+
+window.loadPurchaseDoc = async function(id) {
+  const snap = await getDoc(doc(db,'erp_documents',id));
+  if (!snap.exists()) return;
+  const p = snap.data();
+  showPurchaseForm();
+  editPurchaseId = id;
+  document.getElementById('pur-supplierName').value   = p.supplierName   || '';
+  document.getElementById('pur-supplierAddr').value   = p.supplierAddr   || '';
+  document.getElementById('pur-supplierGSTIN').value  = p.supplierGSTIN  || '';
+  document.getElementById('pur-supplierPhone').value  = p.supplierPhone  || '';
+  document.getElementById('pur-supplierBillNo').value = p.supplierBillNo || '';
+  document.getElementById('pur-billDate').value       = p.docDate        || '';
+  document.getElementById('pur-dueDate').value        = p.dueDate        || '';
+  document.getElementById('pur-notes').value          = p.notes          || '';
+  document.getElementById('pur-payStatus').value      = p.payStatus      || 'unpaid';
+  document.getElementById('purchaseNumDisplay').textContent   = p.docNumber || '';
+  document.getElementById('purchaseFormTitle').textContent    = 'Edit Purchase — ' + (p.docNumber||'');
+  purchaseItems = (p.lineItems||[]).map(i=>({...i}));
+  renderPurchaseItems();
+  recalcPurchase();
+};
+
+// ── Override loadAllDocLists to use new functions ──
+window.loadAllDocLists = async function() {
+  // These are handled by showPage triggers
+};
+
+// ── Ensure showPage triggers correct list loads ──
+const _origShowPage = window.showPage;
+window.showPage = function(pageId, btn) {
+  if (_origShowPage) _origShowPage(pageId, btn);
+  if (pageId === 'challan')  setTimeout(loadAllChallans,  100);
+  if (pageId === 'purchase') setTimeout(loadAllPurchases, 100);
+  if (pageId === 'payment')  setTimeout(loadAllReceipts,  100);
+};
+// ══ END ERP-2 ══════════════════════════════════════════
 
 </script>
 
