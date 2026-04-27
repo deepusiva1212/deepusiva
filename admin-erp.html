@@ -1882,29 +1882,11 @@ window.syncOfflineInvoices = async function() {
   }
 };
 
-// ── DIRECTOR'S SECURE GATE ──
-await auth.authStateReady();
-const _user = auth.currentUser;
 
-if (!_user) {
-    // Not logged in -> send to login
-    window.location.replace('login.html');
-} else {
-    // 1. SECURITY CHECK: Verify against the Vault
-    if (_user.email !== CONFIG.DIRECTOR_EMAIL) {
-        alert("Unauthorized Access: This system is for the Director of Deepu Siva Private Limited only.");
-        window.location.replace('index.html');
-    } else {
-        // 2. SUCCESS: It is the Director, start the system
-        console.log("Identity Verified. Initializing ERP System...");
-        await bootERP(_user);
-    }
-}
 
 
   // Load everything
-  await loadSettings();
-  loadDashboardStats();
+ 
   loadRecentInvoices();
   loadAllDocLists();
   updateOnlineStatus();
@@ -3031,6 +3013,8 @@ try {
     } else {
         console.log("Identity Verified. Booting...");
         await bootERP(_user); // Ensure bootERP is defined ABOVE this line
+        await loadSettings();
+  loadDashboardStats();
     }
 } catch (error) {
     console.error("Boot Crash:", error);
