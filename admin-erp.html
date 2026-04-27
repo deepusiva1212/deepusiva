@@ -1721,26 +1721,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+async function bootERP(user) {
+  currentUser = user;
+  ownerUid    = user.uid;
+  document.getElementById('topbarUser').textContent = user.email;
+  document.getElementById('auth-overlay').style.display = 'none';
 
-   // ── DIRECTOR'S SECURE GATE ──
-try {
-    await auth.authStateReady();
-    const _user = auth.currentUser;
-
-    if (!_user) {
-        window.location.replace('login.html');
-    } else if (_user.email !== CONFIG.DIRECTOR_EMAIL) {
-        alert("Unauthorized Access.");
-        window.location.replace('index.html');
-    } else {
-        console.log("Identity Verified. Booting...");
-        await bootERP(_user); // Ensure bootERP is defined ABOVE this line
-    }
-} catch (error) {
-    console.error("Boot Crash:", error);
-    document.getElementById('auth-overlay').innerHTML = "<p style='color:red;'>Boot Error. Check Console (F12).</p>";
-}
-
+   
 // ── Tell Firebase to always persist session in localStorage ──
 // This must be set BEFORE auth.authStateReady() is called
 await setPersistence(auth, browserLocalPersistence);
@@ -1914,11 +1901,6 @@ if (!_user) {
     }
 }
 
-async function bootERP(user) {
-  currentUser = user;
-  ownerUid    = user.uid;
-  document.getElementById('topbarUser').textContent = user.email;
-  document.getElementById('auth-overlay').style.display = 'none';
 
   // Load everything
   await loadSettings();
@@ -3035,6 +3017,26 @@ window.doLogout = async function() {
   await signOut(auth);
   window.location.href = 'login.html';
 };
+
+   // ── DIRECTOR'S SECURE GATE ──
+try {
+    await auth.authStateReady();
+    const _user = auth.currentUser;
+
+    if (!_user) {
+        window.location.replace('login.html');
+    } else if (_user.email !== CONFIG.DIRECTOR_EMAIL) {
+        alert("Unauthorized Access.");
+        window.location.replace('index.html');
+    } else {
+        console.log("Identity Verified. Booting...");
+        await bootERP(_user); // Ensure bootERP is defined ABOVE this line
+    }
+} catch (error) {
+    console.error("Boot Crash:", error);
+    document.getElementById('auth-overlay').innerHTML = "<p style='color:red;'>Boot Error. Check Console (F12).</p>";
+}
+
 </script>
 
 <!-- Print styles -->
