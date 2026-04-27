@@ -1,0 +1,9 @@
+# robots.txt for deepusiva.com
+# Tells Google and other search engines what to crawl
+
+User-agent: *
+Allow: /
+Disallow: /login.html
+
+# Sitemap location
+Sitemap: https://deepusiva.com/sitemap.xml
