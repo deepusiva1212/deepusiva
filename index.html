@@ -627,6 +627,22 @@ body > *:not(#bgCanvas) { position: relative; z-index: 1; }
 </style>
 </head>
 <body>
+   <link rel="stylesheet" href="loader.css">
+<div id="smart-loader">
+    <img src="logo.png" style="width:120px; margin-bottom:20px;">
+    <div class="loader-spin"></div>
+    <p>ENGINEERING PRECISION...</p>
+</div>
+
+<script>
+    const loader = document.getElementById('smart-loader');
+    const timeout = setTimeout(() => loader.classList.add('visible'), 500);
+    window.addEventListener('load', () => {
+        clearTimeout(timeout);
+        loader.classList.remove('visible');
+        setTimeout(() => loader.style.display = "none", 400);
+    });
+</script>
 
 <!-- ─── DYNAMIC BANNER (hidden until CMS sets a URL) ─── -->
 <div id="cms-banner" style="display:none;width:100%;overflow:hidden;position:relative;max-height:320px;">
