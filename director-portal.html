@@ -91,6 +91,213 @@ tbody tr:hover td{background:var(--green-pale);}
 .btn-sm-red{background:#fee2e2;color:var(--red);border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;}
 .btn-sm-red:hover{background:var(--red);color:#fff;}
 
+/* ── SOLAR LEADS ── */
+.lead-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 14px;
+  transition: .2s;
+  position: relative;
+}
+.lead-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(22,163,74,.08); }
+.lead-card.priority-high { border-left: 4px solid var(--amber); }
+.lead-card.priority-medium { border-left: 4px solid var(--green); }
+.lead-priority-tag {
+  display: inline-block;
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+}
+.tag-high   { background: #fef3c7; color: #92400e; }
+.tag-medium { background: var(--green-light); color: var(--green3); }
+.tag-new    { background: #fee2e2; color: #991b1b; }
+.tag-called { background: #dbeafe; color: #1e40af; }
+.tag-visit  { background: var(--green-light); color: var(--green3); }
+.tag-won    { background: #d1fae5; color: #065f46; }
+.tag-lost   { background: var(--bg3); color: var(--muted); }
+.lead-name {
+  font-family: var(--font-head); font-size: 18px; font-weight: 800;
+  color: var(--text); text-transform: uppercase;
+}
+.lead-meta { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+.lead-calc-box {
+  background: var(--green-pale);
+  border: 1px solid rgba(22,163,74,.15);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 8px;
+}
+.lead-calc-item label {
+  display: block; font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+}
+.lead-calc-item span {
+  font-family: var(--font-head); font-size: 16px; font-weight: 800; color: var(--green3);
+}
+.lead-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.btn-whatsapp {
+  background: #25d366; color: #fff; border: none;
+  padding: 9px 16px; border-radius: var(--radius);
+  font-family: var(--font-head); font-size: 13px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; gap: 6px;
+  transition: .2s; text-decoration: none;
+}
+.btn-whatsapp:hover { background: #128c7e; }
+.lead-status-sel {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); padding: 8px 12px; border-radius: var(--radius);
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  cursor: pointer; outline: none;
+}
+.lead-bill-img {
+  max-width: 100%; max-height: 180px; object-fit: contain;
+  border-radius: var(--radius); border: 1px solid var(--border);
+  margin-top: 8px; cursor: pointer;
+}
+.lead-filters {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center;
+}
+.lead-stat-row {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 24px;
+}
+.lead-stat {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px; text-align: center;
+}
+.lead-stat-val { font-family: var(--font-head); font-size: 28px; font-weight: 800; }
+.lead-stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+.lead-notes-input {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); padding: 8px 12px; border-radius: var(--radius);
+  font-family: var(--font-body); font-size: 13px; width: 100%;
+  outline: none; resize: none;
+}
+.lead-notes-input:focus { border-color: var(--green); }
+@media(max-width:768px){
+  .lead-calc-box { grid-template-columns: repeat(2,1fr); }
+  .lead-stat-row { grid-template-columns: repeat(3,1fr); }
+}
+
+/* ── NOTIFICATION ENGINE ── */
+.notif-type-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.notif-type-card {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  background: var(--white);
+  font-family: var(--font-body);
+}
+.notif-type-card:hover,
+.notif-type-card.active {
+  border-color: var(--green);
+  background: var(--green-pale);
+}
+.notif-type-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 8px;
+  transition: .2s;
+}
+.notif-type-card.active .notif-type-icon { background: var(--green); color: #fff; }
+.notif-type-card:not(.active) .notif-type-icon { background: var(--bg3); color: var(--green3); }
+.notif-type-label {
+  font-family: var(--font-head);
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px;
+  color: var(--text2);
+}
+.notif-target-row {
+  display: flex; align-items: center;
+  gap: 12px; margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.notif-target-chip {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: var(--white);
+  font-family: var(--font-head);
+  font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px;
+  cursor: pointer; transition: all .2s;
+  color: var(--muted);
+}
+.notif-target-chip.active {
+  border-color: var(--green);
+  background: var(--green);
+  color: #fff;
+}
+.notif-preview-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-top: 20px;
+  display: none;
+}
+.notif-preview-box.show { display: block; }
+.notif-preview-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+}
+.notif-preview-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; flex-shrink: 0;
+}
+.notif-preview-title {
+  font-family: var(--font-head);
+  font-size: 15px; font-weight: 800;
+  color: var(--text); text-transform: uppercase;
+}
+.notif-preview-body {
+  font-size: 14px; color: var(--text2); line-height: 1.6;
+  white-space: pre-line;
+}
+.notif-preview-meta {
+  font-size: 11px; color: var(--muted);
+  margin-top: 8px;
+}
+.notif-history-row {
+  display: flex; align-items: flex-start;
+  gap: 12px; padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.notif-history-row:last-child { border-bottom: none; }
+.notif-history-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin-top: 5px; flex-shrink: 0;
+}
+.notif-history-body { flex: 1; }
+.notif-history-title { font-weight: 700; font-size: 14px; color: var(--text2); }
+.notif-history-meta  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.schedule-row {
+  display: flex; align-items: center;
+  gap: 12px; flex-wrap: wrap;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.schedule-row label { font-size: 14px; font-weight: 600; color: var(--text2); }
+@media(max-width:768px) {
+  .notif-type-grid { grid-template-columns: repeat(2,1fr); }
+}
+
 /* ── TOAST ── */
 .a-toast{position:fixed;bottom:24px;right:24px;background:var(--green3);color:#fff;padding:13px 24px;border-radius:var(--radius);font-weight:600;font-size:14px;z-index:9999;opacity:0;transform:translateY(20px);transition:.35s;box-shadow:0 4px 16px rgba(0,0,0,.15);}
 .a-toast.show{opacity:1;transform:translateY(0);}
@@ -204,6 +411,15 @@ tbody tr:hover td{background:var(--green-pale);}
     <button class="nav-item" onclick="showPage('cms',this)">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
       Website CMS
+    </button>
+    <button class="nav-item" onclick="showPage('notify',this)" id="navNotify">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Notifications
+    </button>
+    <button class="nav-item" onclick="showPage('solar',this)" id="navSolar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      Solar Leads
+      <span class="badge" id="solarLeadBadge" style="display:none;">0</span>
     </button>
   </nav>
   <div class="sidebar-bottom">
@@ -656,6 +872,239 @@ tbody tr:hover td{background:var(--green-pale);}
 
     </div><!-- /page-cms -->
 
+  <!-- ══ SOLAR LEADS PAGE ══ -->
+  <div class="admin-page" id="page-solar">
+
+    <!-- Stats row -->
+    <div class="lead-stat-row">
+      <div class="lead-stat">
+        <div class="lead-stat-val" id="sl-total" style="color:var(--green);">0</div>
+        <div class="lead-stat-lbl">Total Leads</div>
+      </div>
+      <div class="lead-stat">
+        <div class="lead-stat-val" id="sl-new" style="color:var(--red);">0</div>
+        <div class="lead-stat-lbl">New</div>
+      </div>
+      <div class="lead-stat">
+        <div class="lead-stat-val" id="sl-called" style="color:#1e40af;">0</div>
+        <div class="lead-stat-lbl">Called</div>
+      </div>
+      <div class="lead-stat">
+        <div class="lead-stat-val" id="sl-visit" style="color:var(--amber);">0</div>
+        <div class="lead-stat-lbl">Site Visit</div>
+      </div>
+      <div class="lead-stat">
+        <div class="lead-stat-val" id="sl-won" style="color:var(--green3);">0</div>
+        <div class="lead-stat-lbl">Won 🎉</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="lead-filters">
+      <input class="form-control" type="text" id="leadSearch"
+        placeholder="Search by name or phone…" style="max-width:240px;"
+        oninput="filterLeads()"/>
+      <select class="form-control" id="leadStatusFilter" style="width:auto;" onchange="filterLeads()">
+        <option value="all">All Statuses</option>
+        <option value="new">New</option>
+        <option value="called">Called</option>
+        <option value="visit">Site Visit Booked</option>
+        <option value="won">Won</option>
+        <option value="lost">Lost</option>
+      </select>
+      <select class="form-control" id="leadTypeFilter" style="width:auto;" onchange="filterLeads()">
+        <option value="all">All Types</option>
+        <option value="home">Home / Residential</option>
+        <option value="factory">Factory / Industrial</option>
+        <option value="commercial">Commercial</option>
+        <option value="farm">Farm / Agricultural</option>
+      </select>
+      <button class="btn btn-outline-green btn-sm" onclick="loadSolarLeads()">↻ Refresh</button>
+      <span id="leadCount" style="font-size:13px;color:var(--muted);margin-left:auto;"></span>
+    </div>
+
+    <!-- Leads list -->
+    <div id="solarLeadsList">
+      <div class="no-data" style="text-align:center;padding:60px;color:var(--muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:12px;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <p>Loading solar leads…</p>
+      </div>
+    </div>
+
+  </div><!-- /page-solar -->
+
+  <!-- ══ NOTIFICATION ENGINE PAGE ══ -->
+  <div class="admin-page" id="page-notify">
+
+    <!-- ── COMPOSE PANEL ── -->
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="erp-panel-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+        <span style="font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--green3);text-transform:uppercase;">Compose Alert</span>
+        <button class="btn btn-outline-green btn-sm" onclick="showNotifHistory()">View History</button>
+      </div>
+
+      <!-- Notification Type -->
+      <div class="form-label" style="margin-bottom:10px;">Notification Type</div>
+      <div class="notif-type-grid">
+        <button class="notif-type-card active" onclick="setNotifType('info',this)" id="nt-info">
+          <div class="notif-type-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="notif-type-label">Info</div>
+        </button>
+        <button class="notif-type-card" onclick="setNotifType('update',this)" id="nt-update">
+          <div class="notif-type-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+          </div>
+          <div class="notif-type-label">Site Update</div>
+        </button>
+        <button class="notif-type-card" onclick="setNotifType('payment',this)" id="nt-payment">
+          <div class="notif-type-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div class="notif-type-label">Payment</div>
+        </button>
+        <button class="notif-type-card" onclick="setNotifType('urgent',this)" id="nt-urgent">
+          <div class="notif-type-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="notif-type-label">Urgent</div>
+        </button>
+        <button class="notif-type-card" onclick="setNotifType('invoice',this)" id="nt-invoice">
+          <div class="notif-type-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="notif-type-label">Invoice</div>
+        </button>
+        <button class="notif-type-card" onclick="setNotifType('visit',this)" id="nt-visit">
+          <div class="notif-type-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="notif-type-label">Site Visit</div>
+        </button>
+        <button class="notif-type-card" onclick="setNotifType('complete',this)" id="nt-complete">
+          <div class="notif-type-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="notif-type-label">Completed</div>
+        </button>
+        <button class="notif-type-card" onclick="setNotifType('custom',this)" id="nt-custom">
+          <div class="notif-type-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          </div>
+          <div class="notif-type-label">Custom</div>
+        </button>
+      </div>
+
+      <!-- Recipients -->
+      <div class="form-label" style="margin-bottom:10px;">Send To</div>
+      <div class="notif-target-row">
+        <button class="notif-target-chip active" onclick="setNotifTarget('all',this)" id="target-all">All Clients</button>
+        <button class="notif-target-chip" onclick="setNotifTarget('specific',this)" id="target-specific">Specific Client</button>
+        <button class="notif-target-chip" onclick="setNotifTarget('approved',this)" id="target-approved">Approved Only</button>
+      </div>
+
+      <!-- Specific client selector (hidden until "Specific Client" picked) -->
+      <div id="specificClientWrap" style="display:none;margin-bottom:16px;">
+        <label class="form-label">Select Client</label>
+        <select class="form-control" id="notifClientSelect">
+          <option value="">— Loading clients… —</option>
+        </select>
+      </div>
+
+      <!-- Message -->
+      <div class="form-group">
+        <label class="form-label">Notification Title *</label>
+        <input class="form-control" type="text" id="notifTitle"
+          placeholder="e.g. Site Work Starts Monday — Stage 2 Begins"
+          oninput="updateNotifPreview()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message Body *</label>
+        <textarea class="form-control" id="notifBody" rows="4"
+          placeholder="Write your message here. Be specific — date, time, what the client needs to know or do."
+          oninput="updateNotifPreview()"></textarea>
+      </div>
+
+      <!-- Quick templates -->
+      <div style="margin-bottom:16px;">
+        <div class="form-label" style="margin-bottom:8px;">Quick Templates</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="hsn-chip" onclick="applyTemplate('site_start')">Work Starting</button>
+          <button class="hsn-chip" onclick="applyTemplate('invoice_ready')">Invoice Ready</button>
+          <button class="hsn-chip" onclick="applyTemplate('payment_received')">Payment Confirmed</button>
+          <button class="hsn-chip" onclick="applyTemplate('site_visit')">Site Visit Scheduled</button>
+          <button class="hsn-chip" onclick="applyTemplate('project_complete')">Project Complete</button>
+          <button class="hsn-chip" onclick="applyTemplate('material_dispatch')">Material Dispatched</button>
+          <button class="hsn-chip" onclick="applyTemplate('delay_notice')">Delay Notice</button>
+        </div>
+      </div>
+
+      <!-- Schedule (optional) -->
+      <div class="schedule-row">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" id="scheduleToggle" onchange="toggleSchedule()"/>
+          <span>Schedule for later</span>
+        </label>
+        <div id="scheduleDateWrap" style="display:none;display:flex;align-items:center;gap:8px;">
+          <input class="form-control" type="datetime-local" id="scheduleDate" style="width:auto;"/>
+          <span style="font-size:12px;color:var(--muted);">(prep for Cloud Functions)</span>
+        </div>
+      </div>
+
+      <!-- Live Preview -->
+      <div class="notif-preview-box" id="notifPreview">
+        <div class="form-label" style="margin-bottom:12px;color:var(--green3);">Preview — How clients will see it</div>
+        <div style="background:var(--white);border-radius:var(--radius-lg);padding:16px;border:1px solid var(--border);">
+          <div class="notif-preview-header">
+            <div class="notif-preview-icon" id="previewIcon" style="background:var(--green);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <div class="notif-preview-title" id="previewTitle">Your notification title…</div>
+              <div style="font-size:11px;color:var(--muted);">Deepu Siva Pvt Ltd · Just now</div>
+            </div>
+          </div>
+          <div class="notif-preview-body" id="previewBody">Your message will appear here…</div>
+        </div>
+      </div>
+
+      <!-- Action -->
+      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+        <button class="btn btn-green" style="flex:1;padding:14px;" onclick="sendNotification()">
+          Send Notification Now
+        </button>
+        <button class="btn btn-outline-green" onclick="clearNotifForm()">Clear</button>
+      </div>
+      <div class="cms-log" id="notifLog"></div>
+    </div><!-- /compose panel -->
+
+    <!-- ── HISTORY PANEL ── -->
+    <div class="panel" id="notifHistoryPanel" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <h3 style="margin:0;">Sent History</h3>
+        <button class="btn btn-outline-green btn-sm" onclick="hideNotifHistory()">Hide History</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+        <input class="form-control" type="text" placeholder="Filter history…"
+          style="max-width:200px;" oninput="filterNotifHistory(this.value)"/>
+        <select class="form-control" style="width:auto;" onchange="filterNotifHistoryType(this.value)">
+          <option value="all">All Types</option>
+          <option value="info">Info</option>
+          <option value="update">Site Update</option>
+          <option value="payment">Payment</option>
+          <option value="urgent">Urgent</option>
+          <option value="invoice">Invoice</option>
+          <option value="complete">Completed</option>
+        </select>
+      </div>
+      <div id="notifHistoryList">
+        <p style="color:var(--muted);text-align:center;padding:24px;">Loading history…</p>
+      </div>
+    </div><!-- /history -->
+
+  </div><!-- /page-notify -->
+
   </div><!-- /admin-content -->
 </div><!-- /admin-main -->
 
@@ -724,12 +1173,19 @@ tbody tr:hover td{background:var(--green-pale);}
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
       ERP
     </a>
+    <button class="mob-action-tab" id="mob-tab-notify" onclick="mobNav('notify',this)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Alerts
+    </button>
+    <button class="mob-action-tab" id="mob-tab-solar" onclick="mobNav('solar',this)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg>
+      Solar
+    </button>
   </div>
 
 <div class="a-toast" id="aToast"></div>
 
 <script type="module">
-import CONFIG from './config.js';
 import { auth, db, storage, requireAdmin } from './ds-firebase.js';
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import {
@@ -740,14 +1196,7 @@ import { ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
 // ── BOOT ──
-// ── SECURE BOOT ──
 requireAdmin(async (user) => {
-  // Security Gate: Verify the logged-in email matches the Director Vault
-  if (user.email !== CONFIG.DIRECTOR_EMAIL) {
-      alert("Access Denied: You are not authorized to view the Director Portal.");
-      window.location.href = 'login.html';
-      return;
-  }
   document.getElementById('adminEmail').textContent = user.email;
   await Promise.all([loadStats(), loadPendingApprovals(), loadClientDropdown(), loadAllClients()]);
 });
@@ -758,7 +1207,7 @@ window.showPage = function(pageId, btn) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + pageId).classList.add('active');
   if (btn) btn.classList.add('active');
-  const titles = { overview:'Overview', approvals:'Client Approvals', upload:'Upload to Client', clients:'All Clients', cms:'Website CMS' };
+  const titles = { overview:'Overview', approvals:'Client Approvals', upload:'Upload to Client', clients:'All Clients', cms:'Website CMS', solar:'Solar Leads', notify:'Notification Engine' };
   document.getElementById('pageTitle').textContent = titles[pageId] || pageId;
 };
 
@@ -1341,6 +1790,716 @@ async function loadSocialLinks() {
     });
   } catch(e) { console.error('Social load:', e); }
 }
+
+// ══════════════════════════════════════════════════════
+//  SOLAR LEADS ENGINE
+//  Reads from Firestore: solar_leads collection
+//  Features: priority badges, status toggle, WhatsApp
+//  dial, EB bill photo viewer, call notes
+// ══════════════════════════════════════════════════════
+
+let _allLeads = [];
+const PROPERTY_LABELS = {
+  home:       'Residential Home / Villa',
+  apartment:  'Apartment / Flat',
+  factory:    'Factory / Industrial',
+  commercial: 'Shop / Office / Commercial',
+  farm:       'Farm / Agricultural',
+};
+const STATUS_COLORS = {
+  new:    { tag: 'tag-new',    label: 'New' },
+  called: { tag: 'tag-called', label: 'Called' },
+  visit:  { tag: 'tag-visit',  label: 'Site Visit Booked' },
+  won:    { tag: 'tag-won',    label: 'Won ✓' },
+  lost:   { tag: 'tag-lost',   label: 'Lost' },
+};
+
+// ── Hook into showPage ────────────────────────────────
+const _portalOrigShowPage = window.showPage;
+window.showPage = function(pageId, btn) {
+  if (_portalOrigShowPage) _portalOrigShowPage(pageId, btn);
+  if (pageId === 'solar') loadSolarLeads();
+};
+
+// ── LOAD ALL LEADS ────────────────────────────────────
+window.loadSolarLeads = async function() {
+  const list = document.getElementById('solarLeadsList');
+  list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);">Loading leads…</div>';
+
+  try {
+    const snap = await getDocs(
+      query(collection(db, 'solar_leads'), orderBy('createdAt', 'desc'), limit(200))
+    );
+
+    _allLeads = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    updateLeadStats(_allLeads);
+    renderLeads(_allLeads);
+    updateSidebarBadge(_allLeads);
+  } catch(e) {
+    // Fallback if index not ready
+    try {
+      const snap2 = await getDocs(collection(db, 'solar_leads'));
+      _allLeads = snap2.docs.map(d => ({ id: d.id, ...d.data() }));
+      _allLeads.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+      updateLeadStats(_allLeads);
+      renderLeads(_allLeads);
+      updateSidebarBadge(_allLeads);
+    } catch(e2) {
+      list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--red);">Error loading leads: ${e2.message}</div>`;
+    }
+  }
+};
+
+function updateSidebarBadge(leads) {
+  const newCount = leads.filter(l => (l.status || 'new') === 'new').length;
+  const badge = document.getElementById('solarLeadBadge');
+  if (badge) {
+    badge.textContent = newCount;
+    badge.style.display = newCount > 0 ? 'flex' : 'none';
+  }
+}
+
+function updateLeadStats(leads) {
+  const counts = { total: leads.length, new: 0, called: 0, visit: 0, won: 0 };
+  leads.forEach(l => {
+    const s = l.status || 'new';
+    if (counts[s] !== undefined) counts[s]++;
+  });
+  document.getElementById('sl-total').textContent  = counts.total;
+  document.getElementById('sl-new').textContent    = counts.new;
+  document.getElementById('sl-called').textContent = counts.called;
+  document.getElementById('sl-visit').textContent  = counts.visit;
+  document.getElementById('sl-won').textContent    = counts.won;
+}
+
+// ── FILTER LEADS ──────────────────────────────────────
+window.filterLeads = function() {
+  const q      = (document.getElementById('leadSearch')?.value || '').toLowerCase();
+  const status = document.getElementById('leadStatusFilter')?.value || 'all';
+  const type   = document.getElementById('leadTypeFilter')?.value   || 'all';
+
+  const filtered = _allLeads.filter(l => {
+    const matchQ      = !q || (l.name||'').toLowerCase().includes(q)
+                             || (l.phone||'').includes(q);
+    const matchStatus = status === 'all' || (l.status||'new') === status;
+    const matchType   = type   === 'all' || (l.propertyType||'') === type;
+    return matchQ && matchStatus && matchType;
+  });
+
+  renderLeads(filtered);
+  const cnt = document.getElementById('leadCount');
+  if (cnt) cnt.textContent = `Showing ${filtered.length} of ${_allLeads.length}`;
+};
+
+// ── RENDER LEADS ──────────────────────────────────────
+function renderLeads(leads) {
+  const list = document.getElementById('solarLeadsList');
+
+  if (!leads.length) {
+    list.innerHTML = `
+      <div style="text-align:center;padding:60px;color:var(--muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:12px;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <p>No solar leads found.</p>
+      </div>`;
+    return;
+  }
+
+  const formatDate = ts => {
+    if (!ts) return '—';
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  };
+
+  list.innerHTML = leads.map(lead => {
+    const status     = lead.status || 'new';
+    const sc         = STATUS_COLORS[status] || STATUS_COLORS.new;
+    const priority   = lead.priority || 'medium';
+    const calc       = lead.calcResult || {};
+    const propLabel  = PROPERTY_LABELS[lead.propertyType] || lead.propertyType || '—';
+    const phone      = (lead.phone||'').replace('+91','').replace(/\D/g,'');
+    const waPhone    = lead.phone ? lead.phone.replace('+','') : '91' + phone;
+    const waMsg      = encodeURIComponent(
+      `Hi ${lead.name||''},
+
+Thank you for your interest in solar installation at Deepu Siva Pvt Ltd!
+
+` +
+      `☀️ Your estimate:
+` +
+      (calc.actualKW ? `• System Size: ${calc.actualKW.toFixed(2)} kW
+` : '') +
+      (calc.numPanels ? `• Panels: ${calc.numPanels} × ${calc.panelWatt||400}W
+` : '') +
+      (calc.systemCost ? `• Est. Cost: ₹${calc.systemCost.toLocaleString('en-IN')}
+` : '') +
+      (calc.paybackYears ? `• Payback: ${calc.paybackYears.toFixed(1)} years
+` : '') +
+      `
+We'd love to schedule a FREE site visit. When are you available?
+
+` +
+      `📞 +91 84890 90666`
+    );
+
+    return `
+    <div class="lead-card priority-${priority}" id="lead-${lead.id}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <div>
+          <span class="lead-priority-tag ${priority==='high'?'tag-high':'tag-medium'}">${priority.toUpperCase()} PRIORITY</span>
+          <span class="lead-priority-tag ${sc.tag}" style="margin-left:6px;">${sc.label}</span>
+          ${lead.ebConsumerNumber ? `<span class="lead-priority-tag" style="background:#f0f9ff;color:#0369a1;margin-left:6px;">EB: ${lead.ebConsumerNumber}</span>` : ''}
+        </div>
+        <span style="font-size:11px;color:var(--muted);">${formatDate(lead.createdAt)}</span>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+        <div style="flex:1;">
+          <div class="lead-name">${lead.name || 'Unknown'}</div>
+          <div class="lead-meta">
+            📱 ${lead.phone || '—'} &nbsp;|&nbsp; 🏠 ${propLabel}<br/>
+            ${lead.monthlyUnits ? `⚡ ${lead.monthlyUnits.toLocaleString('en-IN')} units/month` : ''}
+            ${lead.ebRate ? ` @ ₹${lead.ebRate}/unit` : ''}
+          </div>
+        </div>
+        ${lead.billUrl ? `
+          <div style="flex-shrink:0;">
+            <a href="${lead.billUrl}" target="_blank" title="View EB Bill">
+              <img src="${lead.billUrl}" class="lead-bill-img" style="max-width:90px;max-height:80px;" alt="EB Bill"/>
+            </a>
+            <div style="font-size:10px;color:var(--green3);text-align:center;font-weight:700;margin-top:2px;">EB BILL ↗</div>
+          </div>` : ''}
+      </div>
+
+      ${calc.actualKW ? `
+      <div class="lead-calc-box">
+        <div class="lead-calc-item">
+          <label>System Size</label>
+          <span>${(calc.actualKW||0).toFixed(2)} kW</span>
+        </div>
+        <div class="lead-calc-item">
+          <label>Panels</label>
+          <span>${calc.numPanels||'—'} × ${calc.panelWatt||400}W</span>
+        </div>
+        <div class="lead-calc-item">
+          <label>Est. Cost</label>
+          <span>₹${(calc.systemCost||0).toLocaleString('en-IN')}</span>
+        </div>
+        <div class="lead-calc-item">
+          <label>Payback</label>
+          <span>${calc.paybackYears ? calc.paybackYears.toFixed(1)+' yrs' : '—'}</span>
+        </div>
+      </div>` : ''}
+
+      ${lead.adminNotes ? `
+      <div style="background:var(--bg3);border-radius:var(--radius);padding:10px 14px;margin-top:10px;font-size:13px;color:var(--text2);">
+        📝 ${lead.adminNotes}
+      </div>` : ''}
+
+      <div class="lead-actions">
+        <a href="https://wa.me/${waPhone}?text=${waMsg}" target="_blank" class="btn-whatsapp">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+          WhatsApp
+        </a>
+        <a href="tel:${lead.phone||''}" class="btn btn-outline-green btn-sm" style="display:inline-flex;align-items:center;gap:6px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.58 3.56a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call
+        </a>
+        <select class="lead-status-sel" onchange="updateLeadStatus('${lead.id}', this.value)">
+          <option value="new"    ${status==='new'   ?'selected':''}>New</option>
+          <option value="called" ${status==='called'?'selected':''}>Called</option>
+          <option value="visit"  ${status==='visit' ?'selected':''}>Site Visit Booked</option>
+          <option value="won"    ${status==='won'   ?'selected':''}>Won ✓</option>
+          <option value="lost"   ${status==='lost'  ?'selected':''}>Lost</option>
+        </select>
+        <button class="btn-sm-green" onclick="openLeadNotes('${lead.id}', this)">+ Note</button>
+        <button class="btn-sm-red" onclick="deleteLead('${lead.id}', '${(lead.name||'Lead').replace(/'/g,"\'")}')">Delete</button>
+      </div>
+
+      <div id="notes-${lead.id}" style="display:none;margin-top:10px;">
+        <textarea class="lead-notes-input" rows="2" id="notesText-${lead.id}"
+          placeholder="Add a note about this lead (site details, quote given, next step…)">${lead.adminNotes||''}</textarea>
+        <div style="display:flex;gap:8px;margin-top:6px;">
+          <button class="btn btn-green btn-sm" onclick="saveLeadNote('${lead.id}')">Save Note</button>
+          <button class="btn btn-outline-green btn-sm" onclick="document.getElementById('notes-${lead.id}').style.display='none'">Cancel</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── UPDATE LEAD STATUS ────────────────────────────────
+window.updateLeadStatus = async function(leadId, newStatus) {
+  try {
+    await updateDoc(doc(db, 'solar_leads', leadId), {
+      status: newStatus, updatedAt: serverTimestamp()
+    });
+    // Update in memory
+    const lead = _allLeads.find(l => l.id === leadId);
+    if (lead) lead.status = newStatus;
+    updateLeadStats(_allLeads);
+    updateSidebarBadge(_allLeads);
+
+    const statusMsg = { new:'marked as New', called:'marked as Called ✓',
+      visit:'Site Visit booked! 🗓️', won:'WON! 🎉 Congratulations!', lost:'marked as Lost' };
+    toast(statusMsg[newStatus] || 'Status updated!', newStatus === 'won' ? '' : '');
+  } catch(e) {
+    toast('Error updating status: ' + e.message, 'err');
+  }
+};
+
+// ── NOTES ────────────────────────────────────────────
+window.openLeadNotes = function(leadId, btn) {
+  const el = document.getElementById('notes-' + leadId);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+};
+
+window.saveLeadNote = async function(leadId) {
+  const txt = document.getElementById('notesText-' + leadId)?.value.trim() || '';
+  try {
+    await updateDoc(doc(db, 'solar_leads', leadId), {
+      adminNotes: txt, updatedAt: serverTimestamp()
+    });
+    const lead = _allLeads.find(l => l.id === leadId);
+    if (lead) lead.adminNotes = txt;
+    document.getElementById('notes-' + leadId).style.display = 'none';
+    toast('Note saved!');
+    // Refresh the card
+    renderLeads(_allLeads.filter(l => {
+      const q = (document.getElementById('leadSearch')?.value||'').toLowerCase();
+      return !q || (l.name||'').toLowerCase().includes(q) || (l.phone||'').includes(q);
+    }));
+  } catch(e) {
+    toast('Error saving note: ' + e.message, 'err');
+  }
+};
+
+// ── DELETE LEAD ───────────────────────────────────────
+window.deleteLead = async function(leadId, name) {
+  if (!confirm(`Delete lead for "${name}"? This cannot be undone.`)) return;
+  try {
+    await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js")
+      .then(m => m.deleteDoc(doc(db, 'solar_leads', leadId)));
+    _allLeads = _allLeads.filter(l => l.id !== leadId);
+    updateLeadStats(_allLeads);
+    updateSidebarBadge(_allLeads);
+    document.getElementById('lead-' + leadId)?.remove();
+    toast(`"${name}" deleted.`);
+  } catch(e) {
+    toast('Delete failed: ' + e.message, 'err');
+  }
+};
+
+// ── LOAD STATS ON OVERVIEW ────────────────────────────
+// Patch loadStats to also show solar lead count
+const _origLoadStats = loadStats;
+async function loadStats() {
+  if (_origLoadStats) await _origLoadStats();
+  try {
+    const snap = await getDocs(collection(db, 'solar_leads'));
+    const newLeads = snap.docs.filter(d => (d.data().status||'new') === 'new').length;
+    // Add solar count to overview if panel exists
+    const ovPanel = document.querySelector('.stats-row');
+    if (ovPanel && !document.getElementById('solar-stat-card')) {
+      const card = document.createElement('div');
+      card.id = 'solar-stat-card';
+      card.className = 'stat-card';
+      card.innerHTML = `
+        <div class="stat-icon" style="background:#fef3c7;color:#92400e;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg>
+        </div>
+        <div class="stat-val" style="color:var(--amber);">${snap.size}</div>
+        <div class="stat-lbl">Solar Leads</div>
+        ${newLeads>0 ? `<div style="font-size:11px;color:var(--red);font-weight:700;margin-top:4px;">${newLeads} new →</div>` : ''}`;
+      card.style.cursor = 'pointer';
+      card.onclick = () => showPage('solar', document.querySelector('[onclick*=solar]'));
+      ovPanel.appendChild(card);
+    }
+    updateSidebarBadge(snap.docs.map(d => ({id:d.id,...d.data()})));
+  } catch(e) { /* silently ignore */ }
+}
+
+// ── ALSO TRIGGER loadSolarLeads from bootAdmin ────────
+const _origBootAdmin = window.bootAdmin;
+
+// ══════════════════════════════════════════════════════
+//  NOTIFICATION ENGINE
+//  Sends alerts to: users/{uid}/notifications/{id}
+//  Clients see badge + list in their dashboard/updates
+// ══════════════════════════════════════════════════════
+
+// ── Type config ──────────────────────────────────────
+const NOTIF_TYPES = {
+  info:     { color:'#2563eb', bg:'#dbeafe', label:'Info',           icon:'ℹ️' },
+  update:   { color:'#16a34a', bg:'#dcfce7', label:'Site Update',    icon:'📊' },
+  payment:  { color:'#7c3aed', bg:'#ede9fe', label:'Payment',        icon:'💳' },
+  urgent:   { color:'#dc2626', bg:'#fee2e2', label:'Urgent',         icon:'⚠️' },
+  invoice:  { color:'#0891b2', bg:'#cffafe', label:'Invoice Ready',  icon:'📄' },
+  visit:    { color:'#d97706', bg:'#fef3c7', label:'Site Visit',     icon:'📅' },
+  complete: { color:'#059669', bg:'#d1fae5', label:'Completed',      icon:'✅' },
+  custom:   { color:'#6b7280', bg:'#f3f4f6', label:'Message',        icon:'💬' },
+};
+
+// ── Quick message templates ───────────────────────────
+const NOTIF_TEMPLATES = {
+  site_start: {
+    title: 'Site Work Starting Soon',
+    body:  'Dear Client,
+
+We are pleased to inform you that work on your project will begin soon. Our team will arrive at the site on the scheduled date.
+
+Please ensure site access is available. Contact us for any queries.
+
+— Deepu Siva Pvt Ltd'
+  },
+  invoice_ready: {
+    title: 'New Invoice Ready for Review',
+    body:  'Dear Client,
+
+A new invoice has been generated for your project and is now available in your client portal under "Bills & Invoices".
+
+Please review and process payment at your earliest convenience.
+
+Thank you for your business!'
+  },
+  payment_received: {
+    title: 'Payment Received — Thank You!',
+    body:  'Dear Client,
+
+We have successfully received your payment. Your transaction has been recorded and your account balance has been updated in the portal.
+
+Thank you for your prompt payment!'
+  },
+  site_visit: {
+    title: 'Site Visit Scheduled',
+    body:  'Dear Client,
+
+Our engineering team has scheduled a site visit to assess your property for the upcoming project.
+
+Please ensure the site is accessible and a point of contact is available. We will confirm the exact time shortly.'
+  },
+  project_complete: {
+    title: 'Project Completed Successfully! 🎉',
+    body:  'Dear Client,
+
+We are delighted to inform you that your project has been completed successfully.
+
+Thank you for choosing Deepu Siva Pvt Ltd. We hope you are satisfied with our work. Please don't hesitate to reach out for any future requirements!'
+  },
+  material_dispatch: {
+    title: 'Materials Dispatched to Your Site',
+    body:  'Dear Client,
+
+Your materials have been dispatched and are on their way to the site. A delivery challan has been shared with our logistics team.
+
+Expected arrival: within the next 24 hours. Please arrange for someone to receive the delivery.'
+  },
+  delay_notice: {
+    title: 'Important Update — Schedule Adjustment',
+    body:  'Dear Client,
+
+We regret to inform you that due to unforeseen circumstances, there will be a brief delay in the project timeline. We sincerely apologize for any inconvenience caused.
+
+Our team is working hard to resume at the earliest. We will keep you updated. Thank you for your patience.'
+  },
+};
+
+// ── State ─────────────────────────────────────────────
+let _notifType   = 'info';
+let _notifTarget = 'all';
+let _notifHistory= [];
+
+// ── Hook into showPage ────────────────────────────────
+const _origNotifShowPage = window.showPage;
+window.showPage = function(pageId, btn) {
+  if (_origNotifShowPage) _origNotifShowPage(pageId, btn);
+  if (pageId === 'notify') {
+    loadNotifClientDropdown();
+    loadNotifHistory();
+  }
+};
+
+// ── Set notification type ────────────────────────────
+window.setNotifType = function(type, btn) {
+  _notifType = type;
+  document.querySelectorAll('.notif-type-card').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateNotifPreview();
+};
+
+// ── Set target ────────────────────────────────────────
+window.setNotifTarget = function(target, btn) {
+  _notifTarget = target;
+  document.querySelectorAll('.notif-target-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const wrap = document.getElementById('specificClientWrap');
+  if (wrap) wrap.style.display = target === 'specific' ? 'block' : 'none';
+};
+
+// ── Schedule toggle ───────────────────────────────────
+window.toggleSchedule = function() {
+  const chk  = document.getElementById('scheduleToggle');
+  const wrap = document.getElementById('scheduleDateWrap');
+  if (wrap) wrap.style.display = chk.checked ? 'flex' : 'none';
+};
+
+// ── Quick templates ───────────────────────────────────
+window.applyTemplate = function(key) {
+  const t = NOTIF_TEMPLATES[key];
+  if (!t) return;
+  document.getElementById('notifTitle').value = t.title;
+  document.getElementById('notifBody').value  = t.body;
+  updateNotifPreview();
+  // Auto-set type based on template
+  const typeMap = {
+    site_start:'update', invoice_ready:'invoice', payment_received:'payment',
+    site_visit:'visit', project_complete:'complete', material_dispatch:'update', delay_notice:'urgent'
+  };
+  const autoType = typeMap[key] || 'info';
+  const typeBtn  = document.getElementById('nt-' + autoType);
+  if (typeBtn) setNotifType(autoType, typeBtn);
+};
+
+// ── Live preview ──────────────────────────────────────
+window.updateNotifPreview = function() {
+  const title  = document.getElementById('notifTitle')?.value.trim() || 'Your notification title…';
+  const body   = document.getElementById('notifBody')?.value.trim()  || 'Your message will appear here…';
+  const cfg    = NOTIF_TYPES[_notifType] || NOTIF_TYPES.info;
+  const preview= document.getElementById('notifPreview');
+
+  document.getElementById('previewTitle').textContent = title;
+  document.getElementById('previewBody').textContent  = body;
+
+  const icon = document.getElementById('previewIcon');
+  if (icon) {
+    icon.style.background = cfg.color;
+    icon.textContent = cfg.icon;
+    icon.style.fontSize = '20px';
+    icon.innerHTML = ''; // clear SVG, use emoji
+    icon.textContent = cfg.icon;
+  }
+
+  if (preview && (title !== 'Your notification title…' || body !== 'Your message will appear here…')) {
+    preview.classList.add('show');
+  }
+};
+
+// ── Load client dropdown ──────────────────────────────
+async function loadNotifClientDropdown() {
+  const sel = document.getElementById('notifClientSelect');
+  if (!sel) return;
+  try {
+    const snap = await getDocs(query(collection(db, 'users'), where('status','==','approved')));
+    sel.innerHTML = '<option value="">— Select a client —</option>';
+    snap.docs.forEach(d => {
+      const u = d.data();
+      const n = u.name || u.fullName || u.email || 'Unknown';
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = `${n} | ${u.email || ''} (${u.company || 'Individual'})`;
+      sel.appendChild(opt);
+    });
+  } catch(e) { console.warn('Notif dropdown:', e); }
+}
+
+// ── SEND NOTIFICATION ─────────────────────────────────
+window.sendNotification = async function() {
+  const title  = document.getElementById('notifTitle')?.value.trim() || '';
+  const body   = document.getElementById('notifBody')?.value.trim()  || '';
+  const log    = document.getElementById('notifLog');
+  const btn    = document.querySelector('[onclick="sendNotification()"]');
+  const sched  = document.getElementById('scheduleToggle')?.checked;
+  const schedDt= document.getElementById('scheduleDate')?.value;
+
+  if (!title) { log.className='cms-log err'; log.textContent='Please enter a notification title.'; return; }
+  if (!body)  { log.className='cms-log err'; log.textContent='Please enter a message body.'; return; }
+
+  log.className = 'cms-log';
+  if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+
+  const cfg = NOTIF_TYPES[_notifType] || NOTIF_TYPES.info;
+
+  const notifPayload = {
+    title,
+    body,
+    type:       _notifType,
+    typeLabel:  cfg.label,
+    color:      cfg.color,
+    icon:       cfg.icon,
+    sentBy:     currentUser?.email || 'Admin',
+    sentAt:     serverTimestamp(),
+    read:       false,
+    scheduled:  sched && schedDt ? schedDt : null,
+  };
+
+  try {
+    // ── Build recipient list ──
+    let recipientIds = [];
+
+    if (_notifTarget === 'all') {
+      const snap = await getDocs(collection(db, 'users'));
+      recipientIds = snap.docs.map(d => d.id);
+    } else if (_notifTarget === 'approved') {
+      const snap = await getDocs(query(collection(db,'users'), where('status','==','approved')));
+      recipientIds = snap.docs.map(d => d.id);
+    } else if (_notifTarget === 'specific') {
+      const uid = document.getElementById('notifClientSelect')?.value;
+      if (!uid) { log.className='cms-log err'; log.textContent='Please select a client.'; return; }
+      recipientIds = [uid];
+    }
+
+    if (!recipientIds.length) {
+      log.className='cms-log err'; log.textContent='No recipients found.'; return;
+    }
+
+    // ── Write to each user's notifications subcollection ──
+    const writes = recipientIds.map(uid =>
+      addDoc(collection(db, 'users', uid, 'notifications'), { ...notifPayload, recipientUid: uid })
+    );
+    await Promise.all(writes);
+
+    // ── Save to admin history ──
+    await addDoc(collection(db, 'notification_history'), {
+      ...notifPayload,
+      targetType:     _notifTarget,
+      recipientCount: recipientIds.length,
+      sentAt:         serverTimestamp(),
+    });
+
+    // ── Success feedback ──
+    const targetLabel = _notifTarget === 'all' ? 'all clients'
+      : _notifTarget === 'approved' ? 'approved clients'
+      : 'selected client';
+
+    log.className   = 'cms-log ok';
+    log.textContent = `✅ Notification sent to ${recipientIds.length} ${targetLabel}! They will see it in their client portal immediately.`;
+    toast(`Notification sent to ${recipientIds.length} client${recipientIds.length!==1?'s':''}!`);
+
+    // Reload history
+    loadNotifHistory();
+
+    // Reset form after 2s
+    setTimeout(() => {
+      log.className = 'cms-log';
+      log.textContent = '';
+    }, 4000);
+
+  } catch(e) {
+    log.className='cms-log err';
+    log.textContent = '❌ Error: ' + e.message;
+    toast('Send failed', 'err');
+  } finally {
+    if (btn) { btn.textContent = 'Send Notification Now'; btn.disabled = false; }
+  }
+};
+
+// ── Clear form ────────────────────────────────────────
+window.clearNotifForm = function() {
+  document.getElementById('notifTitle').value = '';
+  document.getElementById('notifBody').value  = '';
+  document.getElementById('notifLog').className = 'cms-log';
+  document.getElementById('notifPreview').classList.remove('show');
+  _notifType   = 'info';
+  _notifTarget = 'all';
+  document.querySelectorAll('.notif-type-card').forEach(b => b.classList.remove('active'));
+  document.getElementById('nt-info')?.classList.add('active');
+  document.querySelectorAll('.notif-target-chip').forEach(b => b.classList.remove('active'));
+  document.getElementById('target-all')?.classList.add('active');
+  document.getElementById('specificClientWrap').style.display = 'none';
+};
+
+// ── NOTIFICATION HISTORY ──────────────────────────────
+window.showNotifHistory = function() {
+  const panel = document.getElementById('notifHistoryPanel');
+  if (panel) panel.style.display = 'block';
+  loadNotifHistory();
+  panel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+window.hideNotifHistory = function() {
+  const panel = document.getElementById('notifHistoryPanel');
+  if (panel) panel.style.display = 'none';
+};
+
+async function loadNotifHistory() {
+  const list = document.getElementById('notifHistoryList');
+  if (!list) return;
+  try {
+    const snap = await getDocs(
+      query(collection(db, 'notification_history'), orderBy('sentAt','desc'), limit(50))
+    );
+    _notifHistory = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderNotifHistory(_notifHistory);
+  } catch(e) {
+    // Index not ready fallback
+    try {
+      const s2 = await getDocs(collection(db, 'notification_history'));
+      _notifHistory = s2.docs.map(d=>({id:d.id,...d.data()}))
+        .sort((a,b)=>(b.sentAt?.seconds||0)-(a.sentAt?.seconds||0));
+      renderNotifHistory(_notifHistory);
+    } catch(e2) {
+      list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px;">No history yet.</p>';
+    }
+  }
+}
+
+function renderNotifHistory(items) {
+  const list = document.getElementById('notifHistoryList');
+  if (!list) return;
+  if (!items.length) {
+    list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:24px;">No notifications sent yet.</p>';
+    return;
+  }
+  list.innerHTML = items.map(n => {
+    const cfg  = NOTIF_TYPES[n.type] || NOTIF_TYPES.info;
+    const date = n.sentAt?.toDate
+      ? n.sentAt.toDate().toLocaleDateString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})
+      : '—';
+    const targetLabel = n.targetType === 'all' ? 'All Clients'
+      : n.targetType === 'approved' ? 'Approved Clients'
+      : 'Specific Client';
+    return `
+      <div class="notif-history-row" id="nh-${n.id}">
+        <div class="notif-history-dot" style="background:${cfg.color};"></div>
+        <div class="notif-history-body">
+          <div class="notif-history-title">${cfg.icon} ${n.title}</div>
+          <div class="notif-history-meta">
+            ${date} &nbsp;·&nbsp; ${n.typeLabel||'—'} &nbsp;·&nbsp;
+            Sent to: ${targetLabel} (${n.recipientCount||1} recipient${(n.recipientCount||1)!==1?'s':''})
+          </div>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px;line-height:1.5;">
+            ${(n.body||'').substring(0,120)}${(n.body||'').length>120?'…':''}
+          </div>
+        </div>
+        <button class="btn-sm-red" style="flex-shrink:0;" onclick="deleteNotifHistory('${n.id}')">Delete</button>
+      </div>`;
+  }).join('');
+}
+
+window.filterNotifHistory = function(q) {
+  const filtered = _notifHistory.filter(n =>
+    !q || n.title.toLowerCase().includes(q.toLowerCase())
+       || (n.body||'').toLowerCase().includes(q.toLowerCase())
+  );
+  renderNotifHistory(filtered);
+};
+
+window.filterNotifHistoryType = function(type) {
+  const filtered = type === 'all'
+    ? _notifHistory
+    : _notifHistory.filter(n => n.type === type);
+  renderNotifHistory(filtered);
+};
+
+window.deleteNotifHistory = async function(id) {
+  if (!confirm('Delete this history entry?')) return;
+  try {
+    await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js")
+      .then(m => m.deleteDoc(doc(db, 'notification_history', id)));
+    _notifHistory = _notifHistory.filter(n => n.id !== id);
+    document.getElementById('nh-' + id)?.remove();
+    toast('History entry deleted.');
+  } catch(e) { toast('Delete failed: ' + e.message, 'err'); }
+};
 
 window.saveSocialLinks = async function() {
   const log = document.getElementById('log-social');
