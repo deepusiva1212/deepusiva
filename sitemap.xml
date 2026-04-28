@@ -4,7 +4,7 @@
   <!-- Main page -->
   <url>
     <loc>https://deepusiva.com/</loc>
-    <lastmod>2025-04-27</lastmod>
+    <lastmod>2025-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -12,7 +12,7 @@
   <!-- Projects page -->
   <url>
     <loc>https://deepusiva.com/projects.html</loc>
-    <lastmod>2025-04-27</lastmod>
+    <lastmod>2025-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -20,7 +20,7 @@
   <!-- Login page -->
   <url>
     <loc>https://deepusiva.com/login.html</loc>
-    <lastmod>2025-04-27</lastmod>
+    <lastmod>2025-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
