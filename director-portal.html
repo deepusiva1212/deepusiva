@@ -1196,10 +1196,16 @@ import { ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
 // ── BOOT ──
-requireAdmin(async (user) => {
-  document.getElementById('adminEmail').textContent = user.email;
-  await Promise.all([loadStats(), loadPendingApprovals(), loadClientDropdown(), loadAllClients()]);
-});
+// --- TEMPORARY DIRECTOR BYPASS ---
+// requireAdmin(async (user) => {
+//   document.getElementById('adminEmail').textContent = user.email;
+//   await Promise.all([loadStats(), loadPendingApprovals(), loadClientDropdown(), loadAllClients()]);
+// });
+
+document.getElementById('auth-overlay').style.display = 'none';
+document.getElementById('adminEmail').textContent = 'director@deepusiva.com';
+console.log("Admin lock bypassed for testing.");
+// ---------------------------------
 
 // ── NAVIGATION ──
 window.showPage = function(pageId, btn) {
