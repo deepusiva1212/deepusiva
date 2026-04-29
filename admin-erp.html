@@ -3075,20 +3075,27 @@ async function loadRecentInvoices() {
 function docRow(d) {
   const data   = d.data();
   const date   = data.docDate || '—';
-  const status = data.status || 'draft';
-  const statusLabels = { draft:'Draft', final:'Final', paid:'Paid', overdue:'Overdue' };
+  const status = data.status  || 'draft';
+  const statusLabels = { draft:'Draft', final:'Final', paid:'Paid', overdue:'Overdue', converted:'Converted' };
+  const statusColors = { draft:'var(--muted)', final:'var(--green3)', paid:'#166534', overdue:'#991b1b', converted:'#1e40af' };
+
+  const isQuote     = data.docType === 'quotation';
+  const isConverted = status === 'converted';
+
   return `<tr>
-    <td><span class="inv-num">${data.docNumber || '—'}</span>${data.tempId ? `<span class="temp-badge">OFFLINE</span>` : ''}</td>
-    <td><strong>${data.toName || '—'}</strong></td>
+    <td><span class="inv-num">${data.docNumber||'—'}</span>${data.tempId?'<span class="temp-badge">OFFLINE</span>':''}</td>
+    <td><strong>${data.toName||data.fromName||'—'}</strong></td>
     <td>${date}</td>
     <td style="font-family:var(--font-head);font-weight:800;color:var(--green3);">₹${(data.grandTotal||0).toLocaleString('en-IN')}</td>
-    <td><span class="badge badge-${status}" style="padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">${statusLabels[status]||status}</span></td>
-    <td style="display:flex;gap:6px;">
+    <td><span style="background:${statusColors[status]||'var(--muted)'};color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">${statusLabels[status]||status}</span></td>
+    <td style="display:flex;gap:6px;flex-wrap:wrap;">
       <button class="btn-sm-green" onclick="loadDoc('${d.id}')">Edit</button>
       <button class="btn-sm-green" onclick="downloadDocPDF('${d.id}')">PDF</button>
+      ${isQuote && !isConverted ? `<button class="btn-sm-green" style="background:#dbeafe;color:#1e40af;" onclick="convertQuoteToInvoice('${d.id}')">→ Invoice</button>` : ''}
     </td>
   </tr>`;
 }
+window.docRow = docRow;
 
 async function loadAllDocLists() {
   loadAllInvoices();
@@ -3507,32 +3514,7 @@ window.convertQuoteToInvoice = async function(quoteId) {
   }
 };
 
-// Update docRow to show Convert button for quotations
-const _origDocRow = window.docRow || docRow;
-function docRow(d) {
-  const data   = d.data();
-  const date   = data.docDate || '—';
-  const status = data.status  || 'draft';
-  const statusLabels = { draft:'Draft', final:'Final', paid:'Paid', overdue:'Overdue', converted:'Converted' };
-  const statusColors = { draft:'var(--muted)', final:'var(--green3)', paid:'#166534', overdue:'#991b1b', converted:'#1e40af' };
-
-  const isQuote     = data.docType === 'quotation';
-  const isConverted = status === 'converted';
-
-  return `<tr>
-    <td><span class="inv-num">${data.docNumber||'—'}</span>${data.tempId?'<span class="temp-badge">OFFLINE</span>':''}</td>
-    <td><strong>${data.toName||data.fromName||'—'}</strong></td>
-    <td>${date}</td>
-    <td style="font-family:var(--font-head);font-weight:800;color:var(--green3);">₹${(data.grandTotal||0).toLocaleString('en-IN')}</td>
-    <td><span style="background:${statusColors[status]||'var(--muted)'};color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">${statusLabels[status]||status}</span></td>
-    <td style="display:flex;gap:6px;flex-wrap:wrap;">
-      <button class="btn-sm-green" onclick="loadDoc('${d.id}')">Edit</button>
-      <button class="btn-sm-green" onclick="downloadDocPDF('${d.id}')">PDF</button>
-      ${isQuote && !isConverted ? `<button class="btn-sm-green" style="background:#dbeafe;color:#1e40af;" onclick="convertQuoteToInvoice('${d.id}')">→ Invoice</button>` : ''}
-    </td>
-  </tr>`;
-}
-window.docRow = docRow; // override globally
+   
 
 // ─────────────────────────────────────────────────────────
 //  DELIVERY CHALLAN ENGINE
