@@ -2090,10 +2090,8 @@ window.deleteLead = async function(leadId, name) {
 };
 
 // ── LOAD STATS ON OVERVIEW ────────────────────────────
-// Patch loadStats to also show solar lead count
-const _origLoadStats = loadStats;
-async function loadStats() {
-  if (_origLoadStats) await _origLoadStats();
+// Build the solar card without conflicting with loadStats
+async function buildSolarOverviewStats() {
   try {
     const snap = await getDocs(collection(db, 'solar_leads'));
     const newLeads = snap.docs.filter(d => (d.data().status||'new') === 'new').length;
@@ -2117,6 +2115,9 @@ async function loadStats() {
     updateSidebarBadge(snap.docs.map(d => ({id:d.id,...d.data()})));
   } catch(e) { /* silently ignore */ }
 }
+
+// Call it once on load to build the card
+setTimeout(buildSolarOverviewStats, 1000);
 
 // ── ALSO TRIGGER loadSolarLeads from bootAdmin ────────
 const _origBootAdmin = window.bootAdmin;
