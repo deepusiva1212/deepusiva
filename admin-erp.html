@@ -3146,13 +3146,12 @@ async function loadListFor(type, tbodyId) {
   }
 }
 
-async function loadAllInvoices()   { await loadListFor('invoice','allInvoicesList'); }
-async function loadAllQuotations() { await loadListFor('quotation','quotationsList'); }
+
 async function loadAllChallans()   { await loadListFor('challan','challansList'); }
 async function loadAllPurchases()  { await loadListFor('purchase','purchasesList'); }
 async function loadAllReceipts()   { await loadListFor('receipt','receiptsList'); }
 
-window.filterInvoices = function(q) {
+
   const rows = document.querySelectorAll('#allInvoicesList tr');
   rows.forEach(row => {
     row.style.display = q === '' || row.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
