@@ -7,17 +7,56 @@
 <link rel="stylesheet" href="style.css"/>
 <style>
 #auth-overlay{position:fixed;inset:0;background:var(--white);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
-.spinner{width:44px;height:44px;border:3px solid var(--green-light);border-top-color:var(--green);border-radius:50%;animation:spin 0.8s linear infinite;}
+.spinner{width:44px;height:44px;border:3px solid var(--green-light);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 #auth-overlay p{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .portal-header{background:var(--white);border-bottom:3px solid var(--green);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(22,163,74,.08);}
 .portal-logo{font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--green3);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:8px;}
 .portal-logo .dot{width:8px;height:8px;background:var(--amber);border-radius:50%;}
-.portal-nav{display:flex;align-items:center;gap:12px;}
+.portal-nav{display:flex;align-items:center;gap:8px;}
 .portal-nav a{font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:var(--radius);transition:.2s;}
 .portal-nav a:hover{background:var(--green-pale);color:var(--green3);}
 .btn-logout{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;transition:.2s;font-family:var(--font-body);}
 .btn-logout:hover{background:var(--red);border-color:var(--red);color:#fff;}
+
+/* ── BELL BUTTON ── */
+.bell-btn{position:relative;background:none;border:none;cursor:pointer;padding:8px;border-radius:var(--radius);color:var(--muted);display:flex;align-items:center;justify-content:center;transition:.2s;}
+.bell-btn:hover{background:var(--green-pale);color:var(--green3);}
+.bell-badge{position:absolute;top:4px;right:4px;width:18px;height:18px;background:var(--red);color:#fff;border-radius:50%;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;border:2px solid var(--white);}
+.bell-badge.show{display:flex;}
+
+/* ── NOTIFICATION PANEL ── */
+.notif-panel{display:none;position:fixed;top:64px;right:16px;width:360px;max-height:75vh;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 12px 40px rgba(0,0,0,.15);z-index:500;flex-direction:column;overflow:hidden;}
+.notif-panel.open{display:flex;}
+.notif-panel-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.notif-panel-head h3{font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--green3);text-transform:uppercase;margin:0;}
+.mark-all-btn{background:none;border:none;color:var(--green);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-body);}
+.notif-scroll{flex:1;overflow-y:auto;padding:8px 0;}
+.notif-item{padding:14px 20px;border-bottom:1px solid var(--border);cursor:default;transition:.15s;}
+.notif-item:last-child{border-bottom:none;}
+.notif-item.unread{background:var(--green-pale);}
+.notif-item:hover{background:var(--bg3);}
+.notif-item-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.notif-dot{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.notif-item-title{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text);text-transform:uppercase;line-height:1.2;}
+.notif-item-unread-dot{width:8px;height:8px;background:var(--red);border-radius:50%;flex-shrink:0;margin-left:auto;}
+.notif-item-body{font-size:13px;color:var(--text2);line-height:1.5;margin-left:46px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.notif-item-time{font-size:11px;color:var(--muted);margin-left:46px;margin-top:4px;}
+.notif-empty{text-align:center;padding:40px 20px;color:var(--muted);}
+
+/* ── NOTIFICATION FULL LIST PAGE ── */
+#notifPage{display:none;}
+.notif-full-item{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;transition:.2s;}
+.notif-full-item.unread{border-left:4px solid var(--green);}
+.notif-full-item:hover{border-color:var(--green);}
+.notif-full-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.notif-full-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.notif-full-title{font-family:var(--font-head);font-size:17px;font-weight:800;color:var(--text);text-transform:uppercase;}
+.notif-full-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+.notif-full-body{font-size:14px;color:var(--text2);line-height:1.7;white-space:pre-line;padding-left:56px;}
+.notif-unread-badge{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:auto;}
+
+/* existing styles */
 .welcome-banner{background:linear-gradient(150deg,var(--green3) 0%,var(--green) 100%);padding:40px 24px;color:#fff;position:relative;overflow:hidden;}
 .welcome-banner h1{font-family:var(--font-head);font-size:clamp(24px,4vw,36px);font-weight:800;text-transform:uppercase;margin:0;}
 .welcome-banner h1 em{color:var(--amber);font-style:normal;}
@@ -25,11 +64,13 @@
 .dash-content{max-width:900px;margin:0 auto;padding:36px 24px 80px;}
 .dash-section-title{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
 .action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:36px;}
-.action-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 20px;text-align:center;cursor:pointer;text-decoration:none;display:block;transition:all .25s;}
+.action-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 20px;text-align:center;cursor:pointer;text-decoration:none;display:block;transition:all .25s;position:relative;}
 .action-card:hover{border-color:var(--green);transform:translateY(-4px);box-shadow:0 8px 24px rgba(22,163,74,.12);}
 .action-icon{width:56px;height:56px;background:var(--green-pale);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--green3);transition:.25s;}
 .action-card:hover .action-icon{background:var(--green);color:#fff;}
 .action-card span{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;}
+.action-notif-badge{position:absolute;top:12px;right:12px;background:var(--red);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center;}
+.action-notif-badge.show{display:flex;}
 .status-bar{background:var(--green-pale);border:1px solid rgba(22,163,74,.2);border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:28px;}
 .status-dot{width:10px;height:10px;background:var(--green);border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(22,163,74,.2);}
 .status-bar p{font-size:14px;color:var(--green3);font-weight:500;}
@@ -37,31 +78,79 @@
 .info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;}
 .info-card label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
 .info-card p{font-size:15px;font-weight:600;color:var(--text2);}
-@media(max-width:768px){.action-grid{grid-template-columns:repeat(2,1fr);}.quick-info-grid{grid-template-columns:1fr;}.dash-content{padding:20px 16px 100px;}}
+@media(max-width:768px){
+  .action-grid{grid-template-columns:repeat(2,1fr);}
+  .quick-info-grid{grid-template-columns:1fr;}
+  .dash-content{padding:20px 16px 100px;}
+  .notif-panel{right:8px;width:calc(100vw - 16px);}
+}
 </style>
 </head>
 <body>
 <div id="auth-overlay"><div class="spinner"></div><p>Verifying your session…</p></div>
+
+<!-- NOTIFICATION PANEL (dropdown) -->
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-panel-head">
+    <h3>Notifications <span id="unreadCountBadge" style="background:var(--red);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;display:none;"></span></h3>
+    <button class="mark-all-btn" onclick="markAllRead()">Mark all read</button>
+  </div>
+  <div class="notif-scroll" id="notifList">
+    <div class="notif-empty">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:10px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <p>No notifications yet.</p>
+    </div>
+  </div>
+  <div style="padding:12px 16px;border-top:1px solid var(--border);">
+    <button onclick="viewAllNotifications()" style="width:100%;background:var(--green-pale);border:none;color:var(--green3);padding:10px;border-radius:var(--radius);font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;">View All Notifications</button>
+  </div>
+</div>
+
 <header class="portal-header">
   <div class="portal-logo"><span class="dot"></span>Deepu Siva Portal</div>
   <nav class="portal-nav">
-    <a href="profile.html" style="font-weight: 700; color: var(--green3); text-decoration: none; border: 2px solid var(--green3); padding: 6px 14px; border-radius: 8px;">👤 My Profile</a>
+    <!-- Bell Button -->
+    <button class="bell-btn" onclick="toggleNotifPanel()" title="Notifications">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="bell-badge" id="bellBadge"></span>
+    </button>
     <a href="index.html">← Main Site</a>
     <button class="btn-logout" onclick="doLogout()">Sign Out</button>
   </nav>
 </header>
+
 <div class="welcome-banner">
   <h1>Welcome Back, <em id="userName">Client</em>!</h1>
-  <p>Manage your project documents, payments and site updates below.</p>
+  <p id="welcomeSub">Manage your project documents, payments and site updates below.</p>
 </div>
-<div class="dash-content">
+
+<!-- MAIN DASHBOARD -->
+<div id="mainDash" class="dash-content">
   <div class="status-bar"><div class="status-dot"></div><p>Your account is <strong>active</strong>. All project data synced in real-time.</p></div>
   <div class="dash-section-title">My Project Portal</div>
   <div class="action-grid">
-    <a href="my-bills.html" class="action-card"><div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><span>My Bills</span></a>
-    <a href="payments.html" class="action-card"><div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><span>Payments</span></a>
-    <a href="my-sites.html" class="action-card"><div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><span>Site Locations</span></a>
-    <a href="updates.html" class="action-card"><div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div><span>Site Updates</span></a>
+    <a href="my-bills.html" class="action-card">
+      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <span>My Bills</span>
+    </a>
+    <a href="payments.html" class="action-card">
+      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <span>Payments</span>
+    </a>
+    <a href="my-sites.html" class="action-card">
+      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <span>Site Locations</span>
+    </a>
+    <a href="updates.html" class="action-card">
+      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+      <span>Site Updates</span>
+    </a>
+    <!-- Notifications action card -->
+    <button class="action-card" onclick="viewAllNotifications()" style="border:none;font-family:var(--font-body);width:100%;">
+      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+      <span>Notifications</span>
+      <div class="action-notif-badge" id="notifActionBadge"></div>
+    </button>
   </div>
   <div class="dash-section-title">Account Info</div>
   <div class="quick-info-grid">
@@ -73,27 +162,220 @@
     <a href="https://wa.me/918489090666" target="_blank" style="background:#fff;color:var(--green3);padding:10px 20px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none;">WhatsApp Us</a>
   </div>
 </div>
+
+<!-- ALL NOTIFICATIONS PAGE (shown when "View All" clicked) -->
+<div id="notifPage" class="dash-content" style="display:none;">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+    <button onclick="backToDash()" style="background:none;border:none;color:var(--green);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:var(--font-body);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Dashboard
+    </button>
+    <h2 style="font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;margin:0;">All Notifications</h2>
+    <button onclick="markAllRead()" style="margin-left:auto;background:var(--green-pale);border:1px solid rgba(22,163,74,.2);color:var(--green3);padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-body);">Mark All Read</button>
+  </div>
+  <div id="notifFullList"></div>
+</div>
+
 <nav class="app-bottom-nav">
   <a href="index.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span>Home</span></a>
   <a href="my-bills.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span>Bills</span></a>
   <a href="dashboard.html" class="nav-tab active"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span><span>Dashboard</span></a>
   <a href="updates.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></span><span>Updates</span></a>
+  <!-- Notifications tab with badge -->
+  <button onclick="viewAllNotifications()" class="nav-tab" style="font-family:var(--font-body);border:none;background:none;cursor:pointer;position:relative;">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span id="mobNotifBadge" style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--red);color:#fff;border-radius:50%;font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center;">0</span></span>
+    <span>Alerts</span>
+  </button>
 </nav>
+
 <script type="module">
 import { auth, db, requireAuth } from './ds-firebase.js';
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import {
+  doc, getDoc, collection, query, orderBy, onSnapshot,
+  updateDoc, writeBatch, getDocs, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+let currentUser = null;
+let _notifications = [];
+
+const NOTIF_TYPES = {
+  info:     { color:'#2563eb', bg:'#dbeafe', icon:'ℹ️' },
+  update:   { color:'#16a34a', bg:'#dcfce7', icon:'📊' },
+  payment:  { color:'#7c3aed', bg:'#ede9fe', icon:'💳' },
+  urgent:   { color:'#dc2626', bg:'#fee2e2', icon:'⚠️' },
+  invoice:  { color:'#0891b2', bg:'#cffafe', icon:'📄' },
+  visit:    { color:'#d97706', bg:'#fef3c7', icon:'📅' },
+  complete: { color:'#059669', bg:'#d1fae5', icon:'✅' },
+  custom:   { color:'#6b7280', bg:'#f3f4f6', icon:'💬' },
+};
+
 requireAuth(async (user) => {
+  currentUser = user;
   document.getElementById('userEmail').textContent = user.email;
   try {
     const snap = await getDoc(doc(db, 'users', user.uid));
     if (snap.exists()) {
       const d = snap.data();
-      document.getElementById('userName').textContent = d.name || d.fullName || user.email.split('@')[0];
+      const name = d.name || d.fullName || user.email.split('@')[0];
+      document.getElementById('userName').textContent = name;
     }
-  } catch(e) { document.getElementById('userName').textContent = user.email.split('@')[0]; }
+  } catch(e) {
+    document.getElementById('userName').textContent = user.email.split('@')[0];
+  }
+
+  // ── REAL-TIME NOTIFICATIONS ──
+  const notifQuery = query(
+    collection(db, 'users', user.uid, 'notifications'),
+    orderBy('sentAt', 'desc')
+  );
+
+  onSnapshot(notifQuery, (snap) => {
+    _notifications = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    updateBadges(_notifications);
+    renderDropdownNotifs(_notifications.slice(0, 8));
+  }, (err) => {
+    // Fallback without orderBy
+    getDocs(collection(db, 'users', user.uid, 'notifications')).then(s => {
+      _notifications = s.docs.map(d=>({id:d.id,...d.data()}))
+        .sort((a,b)=>(b.sentAt?.seconds||0)-(a.sentAt?.seconds||0));
+      updateBadges(_notifications);
+      renderDropdownNotifs(_notifications.slice(0,8));
+    });
+  });
 });
-window.doLogout = async function() { await signOut(auth); window.location.href = 'login.html'; };
+
+function updateBadges(notifs) {
+  const unread = notifs.filter(n => !n.read).length;
+  const bell   = document.getElementById('bellBadge');
+  const action = document.getElementById('notifActionBadge');
+  const mob    = document.getElementById('mobNotifBadge');
+  const topBadge = document.getElementById('unreadCountBadge');
+
+  if (bell) { bell.textContent = unread; bell.classList.toggle('show', unread > 0); }
+  if (action){ action.textContent = unread; action.classList.toggle('show', unread > 0); }
+  if (mob)  { mob.textContent = unread; mob.style.display = unread > 0 ? 'flex' : 'none'; }
+  if (topBadge) { topBadge.textContent = unread + ' new'; topBadge.style.display = unread > 0 ? 'inline' : 'none'; }
+}
+
+function renderDropdownNotifs(notifs) {
+  const list = document.getElementById('notifList');
+  if (!notifs.length) {
+    list.innerHTML = `<div class="notif-empty">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:10px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <p>No notifications yet.<br/>Your project manager will send updates here.</p></div>`;
+    return;
+  }
+  list.innerHTML = notifs.map(n => {
+    const cfg   = NOTIF_TYPES[n.type] || NOTIF_TYPES.info;
+    const timeStr = n.sentAt?.toDate
+      ? timeAgo(n.sentAt.toDate())
+      : 'Recently';
+    return `<div class="notif-item ${n.read?'':'unread'}" onclick="markRead('${n.id}')">
+      <div class="notif-item-header">
+        <div class="notif-dot" style="background:${cfg.bg};font-size:16px;">${cfg.icon}</div>
+        <div class="notif-item-title">${n.title||'Notification'}</div>
+        ${!n.read ? '<div class="notif-item-unread-dot"></div>' : ''}
+      </div>
+      <div class="notif-item-body">${n.body||''}</div>
+      <div class="notif-item-time">${timeStr}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderFullNotifs(notifs) {
+  const list = document.getElementById('notifFullList');
+  if (!notifs.length) {
+    list.innerHTML = `<div style="text-align:center;padding:60px;color:var(--muted);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:16px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <p>No notifications yet.<br/>Your project manager will send project updates here.</p></div>`;
+    return;
+  }
+  list.innerHTML = notifs.map(n => {
+    const cfg  = NOTIF_TYPES[n.type] || NOTIF_TYPES.info;
+    const date = n.sentAt?.toDate
+      ? n.sentAt.toDate().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})
+      : '—';
+    return `<div class="notif-full-item ${n.read?'':'unread'}" onclick="markRead('${n.id}');this.classList.remove('unread');">
+      <div class="notif-full-header">
+        <div class="notif-full-icon" style="background:${cfg.bg};">${cfg.icon}</div>
+        <div>
+          <div class="notif-full-title">${n.title||'Notification'}</div>
+          <div class="notif-full-meta">${date} &nbsp;·&nbsp; ${n.typeLabel||'Message'}</div>
+        </div>
+        ${!n.read ? '<span class="notif-unread-badge">New</span>' : ''}
+      </div>
+      <div class="notif-full-body">${n.body||''}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── MARK READ ──
+window.markRead = async function(notifId) {
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid, 'notifications', notifId), {
+      read: true, readAt: serverTimestamp()
+    });
+  } catch(e) { console.warn('markRead:', e); }
+};
+
+window.markAllRead = async function() {
+  if (!currentUser || !_notifications.length) return;
+  try {
+    const batch = writeBatch(db);
+    _notifications.filter(n => !n.read).forEach(n => {
+      batch.update(doc(db,'users',currentUser.uid,'notifications',n.id), { read: true });
+    });
+    await batch.commit();
+  } catch(e) { console.warn('markAllRead:', e); }
+};
+
+// ── NAVIGATION ──
+window.toggleNotifPanel = function() {
+  const panel = document.getElementById('notifPanel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    renderDropdownNotifs(_notifications.slice(0,8));
+  }
+};
+
+// Close panel when clicking outside
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('notifPanel');
+  const bell  = document.querySelector('.bell-btn');
+  if (panel.classList.contains('open') && !panel.contains(e.target) && !bell.contains(e.target)) {
+    panel.classList.remove('open');
+  }
+});
+
+window.viewAllNotifications = function() {
+  document.getElementById('mainDash').style.display = 'none';
+  document.getElementById('notifPage').style.display = 'block';
+  document.getElementById('notifPanel').classList.remove('open');
+  renderFullNotifs(_notifications);
+};
+
+window.backToDash = function() {
+  document.getElementById('notifPage').style.display = 'none';
+  document.getElementById('mainDash').style.display = 'block';
+};
+
+// ── TIME AGO ──
+function timeAgo(date) {
+  const diff = Date.now() - date.getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1)  return 'Just now';
+  if (mins < 60) return mins + ' min ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24)  return hrs + ' hr ago';
+  return Math.floor(hrs / 24) + ' days ago';
+}
+
+window.doLogout = async function() {
+  await signOut(auth);
+  window.location.href = 'login.html';
+};
 </script>
 </body>
 </html>

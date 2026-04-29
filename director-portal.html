@@ -1195,6 +1195,11 @@ import {
 import { ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
+// ── BOOT ──
+requireAdmin(async (user) => {
+  document.getElementById('adminEmail').textContent = user.email;
+  await Promise.all([loadStats(), loadPendingApprovals(), loadClientDropdown(), loadAllClients()]);
+});
 
 // ── NAVIGATION ──
 window.showPage = function(pageId, btn) {
