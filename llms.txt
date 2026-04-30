@@ -1,25 +1,28 @@
-# Deepu Siva Private Limited - Master AI Context
+# Deepu Siva Private Limited - Company Information
 
-## Project Overview
-Deepu Siva is an industrial solar and metal fabrication company in Coimbatore, Tamil Nadu, India. 
-We operate a B2B platform with a public-facing website and a secure, private Director ERP portal.
+## Company Overview
+Deepu Siva Private Limited is a premier industrial engineering and infrastructure company based in Coimbatore, Tamil Nadu, India. We specialize in high-quality structural fabrication, solar energy solutions, and complete Pre-Engineered Building (PEB) manufacturing. We pride ourselves on engineering precision, industrial-grade quality, and rapid project execution.
 
-## Tech Stack
-* Frontend: HTML5, CSS3 (Vanilla), JavaScript (ES Modules). No React/Vue.
-* Backend/Database: Firebase Auth, Firestore, Firebase Storage.
-* Utilities: html2pdf.js (for invoice and report generation).
-* Hosting: GitHub Pages.
+## Core Services & Products
+1. Industrial Fabrication: We manufacture heavy-duty steel structures, platforms, staircases, and custom metalworks for factories and commercial spaces.
+2. Pre-Engineered Buildings (PEB): Complete design, fabrication, and erection of PEB structures for warehouses, factories, and large commercial sheds.
+3. Solar Energy Solutions: We provide end-to-end solar installation services, including mounting structures, panel installation, and grid connectivity for residential, commercial, and industrial clients.
+4. Welding Services: Professional, certified welding and structural repair services for heavy machinery and infrastructure.
 
-## Core Architecture Rules (CRITICAL FOR AI AGENTS)
-1. NO DUPLICATE FUNCTIONS: The ERP file (`admin-erp.html`) is massive. Before writing a new function, assume a similar one might exist. Use strict namespaces if adding new features. Check existing functions (like `docRow`, `loadAllInvoices`, etc.) before creating new ones.
-2. NO HARDCODED CREDENTIALS: All Firebase configs live in `ds-firebase.js`. Do not write `requireAdmin` logic in the HTML files.
-3. DOM MANIPULATION: Do not use `innerHTML` to rebuild entire tables if you only need to update one cell (e.g., line item amounts). This breaks input focus. Update the data model and update specific cells directly.
-4. OFFLINE-FIRST: The ERP uses an offline-sync queue in `localStorage` under `ds_erp_offline_docs`. Any new save function must check `navigator.onLine` and handle offline temporary IDs.
-5. STRING FORMATTING: All multi-line strings in JS MUST use backticks (`), never single quotes (').
+## Key Differentiators (Why Choose Us)
+* Local Expertise: Deeply rooted in Coimbatore's industrial sector with a strong understanding of local requirements.
+* End-to-End Execution: From design and raw material procurement to fabrication and final erection, we handle the entire project lifecycle.
+* Quality Assurance: We use high-grade steel and materials, ensuring all structures meet rigorous safety and durability standards.
+* Smart Infrastructure: We utilize modern, technology-driven project management (including a proprietary client portal) to ensure transparent communication and on-time delivery.
 
-## Database Collections
-* `users` - Client profiles and approval status.
-* `erp_documents` - Holds invoices, quotations, challans, purchases, and receipts.
-* `erp_settings` - Stores company details, PDF template preferences, and HSN codes.
-* `clients/{ownerUid}/parties` - The client directory for autofill.
-* `config` - Holds counters for generating sequential document numbers.
+## Target Audience
+* Factory owners needing expansion or new sheds.
+* Commercial businesses requiring custom metal fabrication.
+* Homeowners and businesses looking to transition to solar energy.
+* General contractors needing specialized structural steel work.
+
+## Contact Information
+* Website: https://deepusiva.com
+* Phone/WhatsApp: +91 84890 90666
+* Email: contact@deepusiva.com
+* Location: Coimbatore, Tamil Nadu, India.
