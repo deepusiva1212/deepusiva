@@ -1,0 +1,24 @@
+# Deepu Siva Private Limited - Master AI Context
+
+## Project Overview
+Deepu Siva is an industrial solar and metal fabrication company in Coimbatore, India. 
+We operate a B2B platform with a public-facing website and a secure, private Director ERP portal.
+
+## Tech Stack
+* Frontend: HTML5, CSS3 (Vanilla), JavaScript (ES Modules). No React/Vue.
+* Backend/Database: Firebase Auth, Firestore, Firebase Storage.
+* Utilities: html2pdf.js (for invoice generation).
+* Hosting: GitHub Pages.
+
+## Core Architecture Rules (CRITICAL FOR AI AGENTS)
+1. NO DUPLICATE FUNCTIONS: The ERP file is massive. Before writing a new function, assume a similar one might exist. Use strict namespaces if adding new features.
+2. NO HARDCODED CREDENTIALS: All Firebase configs live in `ds-firebase.js`. Do not write `requireAdmin` logic in the HTML files.
+3. DOM MANIPULATION: Do not use `innerHTML` to rebuild entire tables if you only need to update one cell (e.g., line item amounts). This breaks input focus.
+4. OFFLINE-FIRST: The ERP uses an offline-sync queue in `localStorage` under `ds_erp_offline_docs`. Any new save function must check `navigator.onLine` and handle offline temporary IDs.
+5. STRING FORMATTING: All multi-line strings in JS MUST use backticks (`), never single quotes (').
+
+## Database Collections
+* `users` - Client profiles and approval status.
+* `erp_documents` - Holds invoices, quotations, challans, purchases, and receipts.
+* `erp_settings` - Stores company details, PDF template preferences, and HSN codes.
+* `clients/{ownerUid}/parties` - The client directory for autofill.
