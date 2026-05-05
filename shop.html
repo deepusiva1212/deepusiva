@@ -3,14 +3,81 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Shop | Deepu Siva Private Limited</title>
-<meta name="description" content="Browse and order industrial products from Deepu Siva Private Limited."/>
+<title>Shop | Deepu Siva Private Limited — Industrial &amp; Retail</title>
+<meta name="description" content="Order industrial fabrication materials, solar mounting hardware and retail essentials from Deepu Siva Private Limited, Coimbatore. B2B GST invoicing available."/>
+<meta name="keywords" content="buy steel Coimbatore, solar mounting hardware, GI roofing sheet buy online, industrial materials Tamil Nadu, Deepu Siva shop"/>
+<meta property="og:title" content="Shop | Deepu Siva Private Limited"/>
+<meta property="og:description" content="Industrial and retail products — order online with GST invoicing from Coimbatore."/>
 <link rel="stylesheet" href="style.css"/>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>(function(){ emailjs.init("VdClloIwy1E4G5CmG"); })();</script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
-.shop-hero{background:linear-gradient(150deg,var(--green-pale) 0%,#e8f5e9 60%,#fff 100%);border-bottom:1px solid var(--border);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden;}
+/* ── SHOP MODE BANNER ── */
+.mode-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.mode-banner.b2b {
+  background: var(--green3);
+  color: #fff;
+}
+.mode-banner.b2c {
+  background: var(--amber);
+  color: #fff;
+}
+.mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.mode-switch-btn {
+  background: rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.4);
+  color: #fff;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: .2s;
+  white-space: nowrap;
+}
+.mode-switch-btn:hover { background: rgba(255,255,255,.35); }
+
+/* B2C mode overrides */
+body.mode-b2c .b2b-section-label:has(#addr-gstin),
+body.mode-b2c #addr-gstin,
+body.mode-b2c #addr-company,
+body.mode-b2c .b2b-field { display: none !important; }
+
+body.mode-b2c .gst-breakdown-box::after {
+  content: 'Price includes all taxes';
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* B2C product cards show inclusive price */
+body.mode-b2c .product-price .excl-label { display: none; }
+body.mode-b2c .product-price .incl-label { display: inline; }
+.product-price .incl-label { display: none; }
+
+.shop-hero{background:linear-gradient(150deg,var(--green-pale) 0%,#e8f5e9 60%,#fff 100%);border-bottom:1px solid var(--border);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden;}background:linear-gradient(150deg,var(--green-pale) 0%,#e8f5e9 60%,#fff 100%);border-bottom:1px solid var(--border);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden;}
 .shop-hero::before{content:'🛍️';position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:100px;opacity:.07;}
 .shop-hero h1{font-family:var(--font-head);font-size:clamp(30px,5vw,52px);font-weight:800;color:var(--green3);text-transform:uppercase;letter-spacing:1px;}
 .shop-hero h1 em{color:var(--green);font-style:normal;}
@@ -172,10 +239,20 @@
   </div>
 </header>
 
+<!-- MODE BANNER -->
+<div class="mode-banner b2b" id="modeBanner">
+  <div class="mode-badge">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+    <span id="modeBannerLabel">B2B Industrial Mode</span>
+  </div>
+  <div style="font-size:12px;opacity:.85;" id="modeBannerDesc">GST invoice included · SGST + CGST breakdown · Bulk pricing available</div>
+  <a href="shop-entry.html" class="mode-switch-btn">Switch Mode</a>
+</div>
+
 <!-- HERO -->
-<div class="shop-hero">
-  <h1>Our <em>Products</em> & Materials</h1>
-  <p>Browse our industrial range — add to cart and order securely online</p>
+<div class="shop-hero" id="shopHero">
+  <h1 id="shopHeroTitle">Our <em>Products</em> & Materials</h1>
+  <p id="shopHeroDesc">Browse our industrial range — add to cart and order securely online</p>
 </div>
 
 <!-- FILTERS -->
@@ -305,10 +382,11 @@
       <div class="review-box" id="reviewItems"></div>
       <div class="review-block" style="margin-top:14px;">GST Invoice Breakdown</div>
       <div class="gst-breakdown-box">
-        <div class="gst-row"><span>Base Amount (Taxable Value)</span><span id="bd-base">₹0</span></div>
+        <div class="gst-row"><span id="bd-base-label">Base Amount (Taxable Value)</span><span id="bd-base">₹0</span></div>
         <div class="gst-row"><span>SGST @ 9% <span class="muted">State GST</span></span><span id="bd-sgst">₹0</span></div>
         <div class="gst-row"><span>CGST @ 9% <span class="muted">Central GST</span></span><span id="bd-cgst">₹0</span></div>
         <div class="gst-row"><span>Shipping</span><span style="color:var(--green);font-size:13px;font-family:var(--font-body);font-weight:600;">FREE</span></div>
+        <div class="gst-row" id="bd-mode-note" style="display:none;"><span colspan="2" style="font-size:11px;color:var(--muted);">GST-inclusive pricing — tax included in product price</span></div>
         <div class="gst-row"><span>Grand Total Payable</span><span id="bd-total">₹0</span></div>
       </div>
     </div>
@@ -368,7 +446,6 @@
 <div class="shop-toast" id="shopToast"></div>
 
 <script type="module">
-import CONFIG from './config.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc, doc, getDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -402,17 +479,7 @@ let cart = JSON.parse(localStorage.getItem('dsCart') || '[]');
 // ── LOAD PRODUCTS ──
 async function loadProducts() {
   try {
-   // 1. Identify which shop the user entered (Industrial or Retail)
-    const mode = localStorage.getItem('shopMode') || 'B2C'; 
-    
-    // 2. Create the Secure Query for your specific products
-    const q = query(
-      collection(db, 'products'), 
-      where('ownerUid', '==', CONFIG.DIRECTOR_UID),
-      where('shopType', '==', mode) // Only shows items for the selected shop
-    );
-
-    const snap = await getDocs(q);
+    const snap = await getDocs(collection(db, 'products'));
     allProducts = [];
     const cats = new Set(['all']);
     snap.forEach(d => {
@@ -452,7 +519,22 @@ function renderProducts(list) {
         <div class="product-cat">${p.category || 'Product'}</div>
         <div class="product-name">${p.name}</div>
         <div class="product-desc">${p.description || ''}</div>
-        <div class="product-price">₹${Number(p.price).toLocaleString('en-IN')} <span>/ ${p.unit || 'unit'}</span></div>
+        <div class="product-price">
+          ${(() => {
+            const mode = localStorage.getItem('dsShopMode') || 'b2b';
+            const base = Number(p.price);
+            if (mode === 'b2c') {
+              const rate = (p.gstRate || 18) / 100;
+              const incl = Math.round(base * (1 + rate));
+              return '₹' + incl.toLocaleString('en-IN') +
+                     ' <span>/ ' + (p.unit||'unit') + '</span>' +
+                     ' <small style="font-size:10px;color:var(--muted);display:block;margin-top:2px;">Incl. GST</small>';
+            }
+            return '₹' + base.toLocaleString('en-IN') +
+                   ' <span>/ ' + (p.unit||'unit') + '</span>' +
+                   ' <small style="font-size:10px;color:var(--muted);display:block;margin-top:2px;">+ GST</small>';
+          })()}
+        </div>
         <button class="add-to-cart-btn" id="btn-${p.id}" onclick="addToCart('${p.id}')">+ Add to Cart</button>
       </div>
     </div>`).join('');
@@ -494,8 +576,21 @@ window.removeFromCart = function(id) {
 
 function saveCart() { localStorage.setItem('dsCart', JSON.stringify(cart)); }
 
-// ── GST CALCULATION — SGST 9% + CGST 9% = 18% total ──
+// ── GST CALCULATION — mode-aware ──────────────────
+// B2B: prices are exclusive, add SGST 9% + CGST 9%
+// B2C: prices are inclusive, back-calculate GST
 function calcTotals() {
+  const mode = localStorage.getItem('dsShopMode') || 'b2b';
+  if (mode === 'b2c') {
+    // B2C: price already includes GST — back-calculate
+    const total    = cart.reduce((s, i) => s + i.price * (1 + (i.gstRate||18)/100) * i.qty, 0);
+    const totalRnd = Math.round(total);
+    const subtotal = Math.round(totalRnd / 1.18);
+    const sgst     = Math.round((totalRnd - subtotal) / 2);
+    const cgst     = totalRnd - subtotal - sgst;
+    return { subtotal, sgst, cgst, gst: sgst + cgst, total: totalRnd };
+  }
+  // B2B: prices exclusive — add GST
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const sgst     = Math.round(subtotal * 0.09);
   const cgst     = Math.round(subtotal * 0.09);
@@ -521,7 +616,13 @@ function updateCartUI() {
   if (s1) s1.textContent = '₹' + subtotal.toLocaleString('en-IN');
   if (g1) g1.textContent = '₹' + gst.toLocaleString('en-IN') + ' (SGST+CGST)';
   if (t1) t1.textContent = '₹' + total.toLocaleString('en-IN');
-  // Panel 3 GST breakdown
+  // Panel 3 GST breakdown — show mode note for B2C
+  const mode = localStorage.getItem('dsShopMode') || 'b2b';
+  const bdModeNote = document.getElementById('bd-mode-note');
+  const bdBaseLabel = document.getElementById('bd-base-label');
+  if (bdModeNote) bdModeNote.style.display = mode === 'b2c' ? 'flex' : 'none';
+  if (bdBaseLabel) bdBaseLabel.textContent = mode === 'b2c' ? 'Price (incl. GST)' : 'Base Amount (Taxable Value)';
+
   const bdBase = document.getElementById('bd-base');
   const bdSgst = document.getElementById('bd-sgst');
   const bdCgst = document.getElementById('bd-cgst');
@@ -727,7 +828,8 @@ window.goToStep = function(step) {
       showToast('City and State are required. Check PIN code.', true);
       document.getElementById('addr-city').focus(); return;
     }
-    if (gstin && !gstinRegex.test(gstin)) {
+    const shopMode = localStorage.getItem('dsShopMode') || 'b2b';
+    if (shopMode === 'b2b' && gstin && !gstinRegex.test(gstin)) {
       showToast('GSTIN format is invalid. Please check and correct.', true);
       document.getElementById('addr-gstin').focus(); return;
     }
@@ -847,6 +949,90 @@ window.showToast = function(msg, isErr = false) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 };
+
+// ══════════════════════════════════════════════
+//  TWO DOORS MODE ENGINE
+//  Reads ?mode=b2b or ?mode=b2c from URL
+//  Falls back to localStorage: dsShopMode
+// ══════════════════════════════════════════════
+
+function detectAndApplyMode() {
+  const params = new URLSearchParams(window.location.search);
+  const urlMode = params.get('mode');
+  // URL param takes priority — save it
+  if (urlMode === 'b2b' || urlMode === 'b2c') {
+    localStorage.setItem('dsShopMode', urlMode);
+  }
+  const mode = localStorage.getItem('dsShopMode') || 'b2b';
+  applyShopMode(mode);
+}
+
+function applyShopMode(mode) {
+  const banner    = document.getElementById('modeBanner');
+  const bannerLbl = document.getElementById('modeBannerLabel');
+  const bannerDesc= document.getElementById('modeBannerDesc');
+  const heroTitle = document.getElementById('shopHeroTitle');
+  const heroDesc  = document.getElementById('shopHeroDesc');
+
+  if (mode === 'b2c') {
+    // ── B2C RETAIL MODE ──
+    document.body.classList.add('mode-b2c');
+    document.body.classList.remove('mode-b2b');
+    if (banner) {
+      banner.className = 'mode-banner b2c';
+    }
+    if (bannerLbl)  bannerLbl.textContent  = 'B2C Retail Mode';
+    if (bannerDesc) bannerDesc.textContent = 'GST-inclusive pricing · Simple checkout · No GSTIN required';
+    if (heroTitle)  heroTitle.innerHTML    = 'Agro & Retail <em>Essentials</em>';
+    if (heroDesc)   heroDesc.textContent   = 'Simple retail shopping — transparent pricing, fast checkout';
+    document.title = 'Retail Shop | Deepu Siva Private Limited';
+
+    // Hide B2B-only form fields
+    const b2bSections = document.querySelectorAll('.b2b-section-label');
+    b2bSections.forEach(el => {
+      // Hide the B2B Details section
+      if (el.textContent && el.textContent.includes('B2B')) {
+        el.style.display = 'none';
+        // Also hide next sibling form groups (company + gstin)
+        let next = el.nextElementSibling;
+        while (next && !next.classList.contains('b2b-section-label') && !next.classList.contains('btn-cart-next') && !next.classList.contains('cart-actions')) {
+          if (next.querySelector('#addr-company') || next.querySelector('#addr-gstin')) {
+            next.style.display = 'none';
+          }
+          next = next.nextElementSibling;
+        }
+      }
+    });
+
+  } else {
+    // ── B2B INDUSTRIAL MODE (default) ──
+    document.body.classList.add('mode-b2b');
+    document.body.classList.remove('mode-b2c');
+    if (banner) banner.className = 'mode-banner b2b';
+    if (bannerLbl)  bannerLbl.textContent  = 'B2B Industrial Mode';
+    if (bannerDesc) bannerDesc.textContent = 'GST invoice included · SGST + CGST breakdown · Bulk pricing available';
+    if (heroTitle)  heroTitle.innerHTML    = 'Industrial <em>Products</em> & Materials';
+    if (heroDesc)   heroDesc.textContent   = 'Browse our industrial range — add to cart and order securely online';
+    document.title = 'Industrial Shop | Deepu Siva Private Limited';
+  }
+}
+
+// ── Price display ─────────────────────────────────
+// In B2C mode, show GST-inclusive price
+function getDisplayPrice(product, mode) {
+  const base = parseFloat(product.price) || 0;
+  if (mode === 'b2c') {
+    // Calculate inclusive price (base + 18% GST)
+    const gstRate = (product.gstRate || 18) / 100;
+    const inclusive = Math.round(base * (1 + gstRate));
+    return { price: inclusive, label: 'incl. GST' };
+  }
+  return { price: base, label: 'excl. GST' };
+}
+
+// Detect mode on boot
+detectAndApplyMode();
+const _currentMode = localStorage.getItem('dsShopMode') || 'b2b';
 
 // ── BOOT ──
 await loadPaymentConfig();
