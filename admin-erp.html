@@ -1235,6 +1235,10 @@
                   <div class="form-group"><label class="form-label">GSTIN</label><input class="form-control" id="f-toGSTIN" placeholder="Client GSTIN (optional)"/></div>
                   <div class="form-group"><label class="form-label">Place of Supply</label><input class="form-control" id="f-placeOfSupply" placeholder="e.g. Tamil Nadu"/></div>
                 </div>
+                 <div class="form-group" style="margin-top:12px;">
+        <label class="form-label">Client Email * <span style="color:var(--muted);font-size:10px;">(Required for Dashboard)</span></label>
+        <input class="form-control" type="email" id="clientEmail" placeholder="client@example.com" required />
+                    </div>
               </div>
             </div>
 
@@ -2812,6 +2816,9 @@ window.saveInvoice = async function(status = 'draft') {
   if (!toName) { toast('Please enter a party / client name.', 'err'); return; }
   if (!lineItems.length) { toast('Please add at least one line item.', 'err'); return; }
 
+   const clientEmail = document.getElementById('clientEmail').value.trim().toLowerCase();
+  if (!clientEmail) { toast('Client Email is required for the dashboard.', 'err'); return; }
+
   const totals = recalcTotals();
   const payload = {
     docType:      currentDocType,
@@ -2827,6 +2834,8 @@ window.saveInvoice = async function(status = 'draft') {
     toAddr:       document.getElementById('f-toAddr').value.trim(),
     toGSTIN:      document.getElementById('f-toGSTIN').value.trim(),
     placeOfSupply:document.getElementById('f-placeOfSupply').value.trim(),
+     clientKey:    clientEmail,
+    clientEmail:  clientEmail,
     payTerms:     document.getElementById('f-payTerms').value.trim(),
     bankDetails:  document.getElementById('f-bankDetails').value.trim(),
     terms:        document.getElementById('f-terms').value.trim(),
