@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About Us | Deepu Siva Private Limited</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  .about-hero {
+    background: linear-gradient(150deg, var(--green-pale) 0%, #e8f5e9 100%);
+    padding: 80px 24px 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .about-hero h1 {
+    font-family: var(--font-head);
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    color: var(--green3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .about-hero p { color: var(--muted); font-size: 18px; margin-top: 12px; max-width: 600px; margin-left: auto; margin-right: auto;}
+  
+  .story-section { padding: 60px 24px; max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .story-content h2 { font-family: var(--font-head); font-size: 28px; color: var(--text); margin-bottom: 16px; text-transform: uppercase; }
+  .story-content p { font-size: 15px; color: var(--text2); line-height: 1.8; margin-bottom: 16px; }
+  
+  .photo-frame {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    box-shadow: 0 10px 30px rgba(22,163,74,.1);
+  }
+  .photo-frame img { width: 100%; border-radius: var(--radius); display: block; object-fit: cover; }
+  
+  .leadership-section { background: var(--bg3); padding: 60px 24px; }
+  .leadership-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+  .leader-card { text-align: center; }
+  .leader-photo { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid var(--green-light); margin: 0 auto 20px; background: #e2e8f0; }
+  .leader-card h3 { font-family: var(--font-head); font-size: 22px; color: var(--green3); text-transform: uppercase; }
+  .leader-card h4 { font-size: 13px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; }
+  .leader-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  @media (max-width: 768px) {
+    .story-section { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar web-only">
+  <div class="topbar-inner">
+    <a href="mailto:contact@deepusiva.com">✉ contact@deepusiva.com</a>
+    <a href="tel:+918489090666">📞 +91 84890 90666</a>
+    <a href="login.html">🔐 Client Login</a>
+  </div>
+</div>
+
+<nav class="site-nav web-only">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><span class="logo-dot"></span>Deepu Siva<span class="logo-badge">Pvt Ltd</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="shop-entry.html">Shop</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="app-header">
+  <div class="app-header-logo">Deepu <span>Siva</span></div>
+  <div class="app-header-actions"><a href="shop.html" class="app-icon-btn">🛍</a></div>
+</header>
+
+<div class="about-hero">
+  <h1>Our Legacy & Vision</h1>
+  <p>Building the industrial and solar infrastructure of tomorrow, backed by years of trusted engineering excellence.</p>
+</div>
+
+<div class="story-section">
+  <div class="story-content">
+    <h2>A Foundation of Trust</h2>
+    <p>The journey of Deepu Siva Private Limited is built upon a strong foundation of hard work, engineering precision, and unwavering dedication to quality. Tracing our roots back to the establishment of D.S. Electricals, we have spent years mastering the complexities of industrial project execution.</p>
+    <p>Today, as a fully incorporated Private Limited company based in Coimbatore, we have expanded our expertise to become a leading force in heavy metal fabrication, industrial roofing, and advanced solar mounting structures.</p>
+    <p>Our transition from a trusted local enterprise to a comprehensive corporate engineering partner reflects our commitment to scaling our operations while maintaining the family-driven values of integrity and client satisfaction.</p>
+  </div>
+  <div class="photo-frame">
+    <img src="company-photo.jpg" alt="Deepu Siva Workshop and Team" style="height: 350px;">
+  </div>
+</div>
+
+<div class="leadership-section">
+  <div style="text-align:center; margin-bottom: 40px;">
+    <h2 style="font-family:var(--font-head); font-size:32px; color:var(--text); text-transform:uppercase;">Leadership Team</h2>
+    <div style="width: 60px; height: 3px; background: var(--green); margin: 12px auto;"></div>
+  </div>
+  
+  <div class="leadership-grid">
+    <div class="leader-card">
+      <img src="rajavel-photo.jpg" alt="Rajavel Palaniyappan" class="leader-photo">
+      <h3>Rajavel Palaniyappan</h3>
+      <h4>Founder & Visionary</h4>
+      <p>The guiding force behind our engineering standards. With decades of hands-on experience starting from D.S. Electricals, his uncompromising approach to quality and safety forms the bedrock of every structure we fabricate and erect today.</p>
+    </div>
+
+    <div class="leader-card">
+      <img src="deepu-photo.jpg" alt="Deepadharsan Rajavel" class="leader-photo">
+      <h3>Deepadharsan Rajavel</h3>
+      <h4>Managing Director</h4>
+      <p>Driving the corporate expansion, digital transformation, and modern operational strategies of Deepu Siva Pvt Ltd. Focused on adopting cutting-edge technologies and expanding our footprint across the solar and industrial sectors.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer web-only" style="margin-top: 0;">
+  <div class="footer-bottom" style="text-align: center; padding: 20px;">
+    <p>© 2026 Deepu Siva Private Limited. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<nav class="app-bottom-nav">
+  <a href="index.html" class="nav-tab"><span class="tab-icon">🏠</span><span>Home</span></a>
+  <a href="shop.html" class="nav-tab"><span class="tab-icon">🛍️</span><span>Shop</span></a>
+  <a href="login.html" class="nav-tab"><span class="tab-icon">👤</span><span>Account</span></a>
+</nav>
+
+</body>
+</html>
