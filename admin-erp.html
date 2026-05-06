@@ -4012,8 +4012,6 @@ window.convertQuoteToInvoice = async function(quoteId) {
   }
 };
 
-// Update docRow to show Convert button for quotations
-const _origDocRow = window.docRow || docRow;
 function docRow(d) {
   const data   = d.data();
   const date   = data.docDate || '—';
@@ -4037,7 +4035,6 @@ function docRow(d) {
     </td>
   </tr>`;
 }
-window.docRow = docRow; // override globally
 
 // ─────────────────────────────────────────────────────────
 //  DELIVERY CHALLAN ENGINE
