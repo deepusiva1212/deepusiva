@@ -1742,7 +1742,7 @@
             <!-- Balance preview -->
             <div id="rec-balancePreview" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:16px;display:none;">
               <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">After This Payment</div>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
                 <div><div style="font-size:11px;color:var(--muted);">Invoice Amount</div><div id="bp-invoice" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--text3);">₹0</div></div>
                 <div><div style="font-size:11px;color:var(--muted);">This Payment</div><div id="bp-this" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--green);">₹0</div></div>
                 <div><div style="font-size:11px;color:var(--muted);">Balance Due</div><div id="bp-balance" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--red);">₹0</div></div>
@@ -1963,7 +1963,7 @@
               <input class="form-control" type="email" id="adminReportEmail" placeholder="you@deepusiva.com"/>
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4px;">
             <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;border:1px solid var(--border);">
               <input type="checkbox" id="tog-daily" onchange="saveAuditorSettings()"/>
               <div>
@@ -2057,7 +2057,7 @@
           <!-- ── PDF TEMPLATE ── -->
           <div class="settings-section">
             <div class="settings-section-title">PDF Invoice Template</div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
               <label class="template-card" id="tmpl-classic">
                 <input type="radio" name="pdfTemplate" value="classic" style="display:none;"/>
                 <div class="template-preview" style="border-top:4px solid var(--green3);">
@@ -2080,6 +2080,15 @@
                   <div style="font-size:11px;font-weight:800;color:var(--amber);text-transform:uppercase;">Colorful</div>
                   <div style="font-size:10px;color:var(--muted);margin-top:3px;">Bold header, green rows</div>
                   <div style="height:40px;background:#fef3c7;border-radius:4px;margin-top:8px;"></div>
+                   </label> <label class="template-card" id="tmpl-tally">
+                <input type="radio" name="pdfTemplate" value="tally" style="display:none;"/>
+                <div class="template-preview" style="border-top:4px solid #0f172a;">
+                  <div style="font-size:11px;font-weight:800;color:#0f172a;text-transform:uppercase;">Tally Grid</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:3px;">Standard Indian Format</div>
+                  <div style="height:40px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:4px;margin-top:8px; display:flex; flex-direction:column; gap:2px; padding:4px;">
+                     <div style="height:4px; background:#e2e8f0; width:100%;"></div>
+                     <div style="height:4px; background:#e2e8f0; width:100%;"></div>
+                  </div>
                 </div>
               </label>
             </div>
@@ -2089,7 +2098,7 @@
           <div class="settings-section">
             <div class="settings-section-title">PDF Column Visibility</div>
             <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Toggle which columns appear in your printed/downloaded invoice.</p>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
               <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-hsn" checked/> Show HSN Code</label>
               <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-unit" checked/> Show Unit</label>
               <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-rate" checked/> Show Unit Rate</label>
@@ -3064,7 +3073,14 @@ window.confirmPortalPush = async function() {
 };
 
 // ── PDF GENERATION ─────────────────────────────────────
-function buildPrintTemplate() {
+window.buildPrintTemplate = function() {
+  const templateWrap = document.getElementById('printTemplate');
+  
+  // Memorize the original HTML structure the first time this runs
+  if (!window.originalPrintTemplateHTML) {
+    window.originalPrintTemplateHTML = templateWrap.innerHTML;
+  }
+
   const totals   = recalcTotals();
   const docNum   = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','');
   const docDate  = document.getElementById('f-invDate').value;
@@ -3072,127 +3088,218 @@ function buildPrintTemplate() {
   const docType  = currentDocType === 'quotation' ? 'QUOTATION'
                  : currentDocType === 'challan'   ? 'DELIVERY CHALLAN'
                  : 'TAX INVOICE';
-  const tmpl     = settings.pdfTemplate || 'classic';
-  const cols     = settings.pdfColumns  || {};
-  const showHSN  = cols.hsn     !== false;
-  const showUnit = cols.unit    !== false;
-  const showRate = cols.rate    !== false;
-  const showGpct = cols.gstpct  !== false;
-  const showBank = cols.bank    !== false;
+  
+  const tmpl = settings.pdfTemplate || 'classic';
 
-  // Apply template theme to print template
-  const header = document.querySelector('#printTemplate .pt-header');
-  if (header) {
-    if (tmpl === 'modern') {
-      header.style.cssText = 'background:var(--green);padding:16px 20px;border-radius:8px 8px 0 0;border-bottom:none;';
-      document.querySelector('.pt-company-name') && (document.querySelector('.pt-company-name').style.color = '#fff');
-      document.querySelector('.pt-doc-type') && (document.querySelector('.pt-doc-type').style.color = '#fff');
-    } else if (tmpl === 'colorful') {
-      header.style.cssText = 'background:linear-gradient(135deg,#166534,#16a34a);padding:16px 20px;border-radius:8px 8px 0 0;border-bottom:none;';
-      document.querySelector('.pt-company-name') && (document.querySelector('.pt-company-name').style.color = '#fff');
-      document.querySelector('.pt-doc-type') && (document.querySelector('.pt-doc-type').style.color = '#f59e0b');
-    } else {
-      header.style.cssText = '';
+  // ═════════════════════════════════════════════════════
+  // BRANCH 1: STANDARD TALLY (GRID) FORMAT
+  // ═════════════════════════════════════════════════════
+  if (tmpl === 'tally') {
+    const fromName = document.getElementById('f-fromName').value || 'Deepu Siva Private Limited';
+    const fromAddr = document.getElementById('f-fromAddr').value || '';
+    const fromGST  = document.getElementById('f-fromGSTIN').value || '';
+    const fromPhone= document.getElementById('f-fromPhone').value || '';
+    
+    const toName   = document.getElementById('f-toName').value || '';
+    const toAddr   = document.getElementById('f-toAddr').value || '';
+    const toGSTIN  = document.getElementById('f-toGSTIN').value || '';
+    const placeOfSupply = document.getElementById('f-placeOfSupply').value || '';
+
+    let itemRows = '';
+    lineItems.forEach((item, index) => {
+      itemRows += `
+        <tr style="border-bottom: 1px solid #000;">
+          <td style="padding:6px; border-right: 1px solid #000; text-align:center;">${index + 1}</td>
+          <td style="padding:6px; border-right: 1px solid #000;"><strong>${item.desc}</strong></td>
+          <td style="padding:6px; border-right: 1px solid #000; text-align:center;">${item.hsn || ''}</td>
+          <td style="padding:6px; border-right: 1px solid #000; text-align:center;">${item.qty} ${item.unit || 'Nos'}</td>
+          <td style="padding:6px; border-right: 1px solid #000; text-align:right;">₹${parseFloat(item.price).toLocaleString('en-IN')}</td>
+          <td style="padding:6px; border-right: 1px solid #000; text-align:center;">${item.gstPct}%</td>
+          <td style="padding:6px; text-align:right;">₹${(item.qty * item.price).toLocaleString('en-IN')}</td>
+        </tr>`;
+    });
+
+    templateWrap.innerHTML = `
+    <div style="font-family: Arial, sans-serif; font-size: 10pt; color: #000; background: #fff; line-height: 1.4; padding: 0;">
+      <div style="border: 1px solid #000;">
+        <div style="text-align: center; font-size: 14pt; font-weight: bold; border-bottom: 1px solid #000; padding: 6px; letter-spacing: 1px;">
+          ${docType}
+        </div>
+        <div style="display: flex; border-bottom: 1px solid #000;">
+          <div style="flex: 1; border-right: 1px solid #000; padding: 8px;">
+            <div style="font-size: 12pt; font-weight: bold; color: #000;">${fromName}</div>
+            <div>${fromAddr}</div>
+            <div>Phone: ${fromPhone}</div>
+            ${fromGST ? `<div style="margin-top: 4px;"><strong>GSTIN/UIN:</strong> ${fromGST}</div>` : ''}
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column;">
+            <div style="display: flex; border-bottom: 1px solid #000; flex: 1;">
+              <div style="flex: 1; border-right: 1px solid #000; padding: 6px;">
+                <div>Invoice No.</div>
+                <div style="font-weight: bold; font-size: 11pt;">${docNum}</div>
+              </div>
+              <div style="flex: 1; padding: 6px;">
+                <div>Dated</div>
+                <div style="font-weight: bold; font-size: 11pt;">${docDate}</div>
+              </div>
+            </div>
+            <div style="padding: 6px; flex: 1;">
+              <div>Place of Supply</div>
+              <div style="font-weight: bold;">${placeOfSupply}</div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; border-bottom: 1px solid #000;">
+          <div style="flex: 1; padding: 8px;">
+            <div style="font-size: 9pt;">Billed to / Buyer</div>
+            <div style="font-size: 11pt; font-weight: bold; margin-top: 2px;">${toName}</div>
+            <div>${toAddr}</div>
+            ${toGSTIN ? `<div style="margin-top: 4px;"><strong>GSTIN/UIN:</strong> ${toGSTIN}</div>` : ''}
+          </div>
+        </div>
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr style="border-bottom: 1px solid #000; background: #f8fafc;">
+              <th style="padding: 6px; border-right: 1px solid #000; text-align: center; width: 5%;">#</th>
+              <th style="padding: 6px; border-right: 1px solid #000; width: 35%;">Description of Goods</th>
+              <th style="padding: 6px; border-right: 1px solid #000; text-align: center; width: 10%;">HSN/SAC</th>
+              <th style="padding: 6px; border-right: 1px solid #000; text-align: center; width: 10%;">Qty</th>
+              <th style="padding: 6px; border-right: 1px solid #000; text-align: right; width: 12%;">Rate</th>
+              <th style="padding: 6px; border-right: 1px solid #000; text-align: center; width: 8%;">GST</th>
+              <th style="padding: 6px; text-align: right; width: 20%;">Amount</th>
+            </tr>
+          </thead>
+          <tbody style="vertical-align: top;">
+            ${itemRows}
+          </tbody>
+          <tfoot style="border-top: 1px solid #000;">
+            <tr>
+              <td colspan="6" style="padding: 6px; border-right: 1px solid #000; text-align: right;"><strong>Subtotal</strong></td>
+              <td style="padding: 6px; text-align: right; font-weight: bold;">₹${totals.subtotal.toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
+            </tr>
+            ${totals.cgst > 0 ? `
+            <tr>
+              <td colspan="6" style="padding: 4px 6px; border-right: 1px solid #000; text-align: right;">CGST</td>
+              <td style="padding: 4px 6px; text-align: right;">₹${totals.cgst.toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
+            </tr>
+            <tr>
+              <td colspan="6" style="padding: 4px 6px; border-right: 1px solid #000; text-align: right;">SGST</td>
+              <td style="padding: 4px 6px; text-align: right;">₹${totals.sgst.toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
+            </tr>` : ''}
+            ${totals.igst > 0 ? `
+            <tr>
+              <td colspan="6" style="padding: 4px 6px; border-right: 1px solid #000; text-align: right;">IGST</td>
+              <td style="padding: 4px 6px; text-align: right;">₹${totals.igst.toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
+            </tr>` : ''}
+            <tr style="border-top: 1px solid #000; background: #f0fdf4;">
+              <td colspan="6" style="padding: 8px 6px; border-right: 1px solid #000; text-align: right;"><strong>Grand Total</strong></td>
+              <td style="padding: 8px 6px; text-align: right; font-size: 12pt; font-weight: bold;">₹${totals.rounded.toLocaleString('en-IN')}</td>
+            </tr>
+          </tfoot>
+        </table>
+        <div style="display: flex; border-top: 1px solid #000;">
+          <div style="flex: 2; padding: 8px; border-right: 1px solid #000;">
+            <div style="font-size: 9pt;">Amount Chargeable (in words)</div>
+            <div style="font-weight: bold; margin-bottom: 12px; font-style: italic;">INR ${numberToWords(totals.rounded)} Only</div>
+            <div style="font-size: 9pt; margin-top: 10px; border-top: 1px dashed #ccc; padding-top: 4px;">Bank Details / Notes</div>
+            <div style="white-space: pre-wrap;">${document.getElementById('f-bankDetails').value || ''}</div>
+          </div>
+          <div style="flex: 1; padding: 8px; position: relative; text-align: right;">
+            <div style="font-weight: bold; margin-top: 16px; font-size: 10pt;">for ${fromName}</div>
+            <div style="position: absolute; bottom: 8px; right: 8px; font-size: 9pt; color: #475569;">Authorised Signatory</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  } 
+  
+  // ═════════════════════════════════════════════════════
+  // BRANCH 2: CLASSIC / MODERN / COLORFUL FORMAT
+  // ═════════════════════════════════════════════════════
+  else {
+    // 1. Restore the original HTML structure!
+    templateWrap.innerHTML = window.originalPrintTemplateHTML;
+
+    // 2. Run your original code exactly as it was
+    const cols     = settings.pdfColumns  || {};
+    const showHSN  = cols.hsn     !== false;
+    const showUnit = cols.unit    !== false;
+    const showRate = cols.rate    !== false;
+    const showGpct = cols.gstpct  !== false;
+    const showBank = cols.bank    !== false;
+
+    const header = document.querySelector('#printTemplate .pt-header');
+    if (header) {
+      if (tmpl === 'modern') {
+        header.style.cssText = 'background:var(--green);padding:16px 20px;border-radius:8px 8px 0 0;border-bottom:none;';
+        document.querySelector('.pt-company-name') && (document.querySelector('.pt-company-name').style.color = '#fff');
+        document.querySelector('.pt-doc-type') && (document.querySelector('.pt-doc-type').style.color = '#fff');
+      } else if (tmpl === 'colorful') {
+        header.style.cssText = 'background:linear-gradient(135deg,#166534,#16a34a);padding:16px 20px;border-radius:8px 8px 0 0;border-bottom:none;';
+        document.querySelector('.pt-company-name') && (document.querySelector('.pt-company-name').style.color = '#fff');
+        document.querySelector('.pt-doc-type') && (document.querySelector('.pt-doc-type').style.color = '#f59e0b');
+      } else {
+        header.style.cssText = '';
+      }
     }
-  }
 
-  document.getElementById('pt-docType').textContent = docType;
-  document.getElementById('pt-docNum').innerHTML    = `<strong>${docNum}</strong><br/>Date: ${docDate}${dueDate ? `<br/>Due: ${dueDate}` : ''}`;
-  document.getElementById('pt-fromName').textContent = document.getElementById('f-fromName').value;
-  document.getElementById('pt-fromDetails').innerHTML = [
-    document.getElementById('f-fromAddr').value,
-    document.getElementById('f-fromGSTIN').value ? `GSTIN: ${document.getElementById('f-fromGSTIN').value}` : '',
-    document.getElementById('f-fromPhone').value,
-  ].filter(Boolean).join('<br/>');
-  document.getElementById('pt-toDetails').innerHTML = [
-    `<strong>${document.getElementById('f-toName').value}</strong>`,
-    document.getElementById('f-toAddr').value,
-    document.getElementById('f-toGSTIN').value ? `GSTIN: ${document.getElementById('f-toGSTIN').value}` : '',
-    document.getElementById('f-placeOfSupply').value ? `Place of Supply: ${document.getElementById('f-placeOfSupply').value}` : '',
-  ].filter(Boolean).join('<br/>');
-  document.getElementById('pt-invDetails').innerHTML = `
-    <strong>Terms:</strong> ${document.getElementById('f-payTerms').value || '—'}<br/>
-    <strong>Notes:</strong> ${document.getElementById('f-notes').value || '—'}`;
+    document.getElementById('pt-docType').textContent = docType;
+    document.getElementById('pt-docNum').innerHTML    = `<strong>${docNum}</strong><br/>Date: ${docDate}${dueDate ? `<br/>Due: ${dueDate}` : ''}`;
+    document.getElementById('pt-fromName').textContent = document.getElementById('f-fromName').value;
+    document.getElementById('pt-fromDetails').innerHTML = [
+      document.getElementById('f-fromAddr').value,
+      document.getElementById('f-fromGSTIN').value ? `GSTIN: ${document.getElementById('f-fromGSTIN').value}` : '',
+      document.getElementById('f-fromPhone').value,
+    ].filter(Boolean).join('<br/>');
+    document.getElementById('pt-toDetails').innerHTML = [
+      `<strong>${document.getElementById('f-toName').value}</strong>`,
+      document.getElementById('f-toAddr').value,
+      document.getElementById('f-toGSTIN').value ? `GSTIN: ${document.getElementById('f-toGSTIN').value}` : '',
+      document.getElementById('f-placeOfSupply').value ? `Place of Supply: ${document.getElementById('f-placeOfSupply').value}` : '',
+    ].filter(Boolean).join('<br/>');
+    document.getElementById('pt-invDetails').innerHTML = `
+      <strong>Terms:</strong> ${document.getElementById('f-payTerms').value || '—'}<br/>
+      <strong>Notes:</strong> ${document.getElementById('f-notes').value || '—'}`;
 
-  // Line items in template
-  // Build column headers dynamically based on column settings
-  const ptThead = document.querySelector('#printTemplate .pt-table thead tr');
-  if (ptThead) {
-    ptThead.innerHTML =
-      '<th style="width:30px;">#</th>' +
-      '<th>Description</th>' +
-      (showHSN  ? '<th style="width:70px;">HSN</th>' : '') +
-      '<th style="width:45px;">Qty</th>' +
-      (showUnit ? '<th style="width:55px;">Unit</th>' : '') +
-      (showRate ? '<th style="width:90px;text-align:right;">Rate ₹</th>' : '') +
-      (showGpct ? '<th style="width:55px;text-align:center;">GST%</th>' : '') +
-      '<th style="width:100px;text-align:right;">Amount ₹</th>';
-  }
+    const ptThead = document.querySelector('#printTemplate .pt-table thead tr');
+    if (ptThead) {
+      ptThead.innerHTML =
+        '<th style="width:30px;">#</th>' +
+        '<th>Description</th>' +
+        (showHSN  ? '<th style="width:70px;">HSN</th>' : '') +
+        '<th style="width:45px;">Qty</th>' +
+        (showUnit ? '<th style="width:55px;">Unit</th>' : '') +
+        (showRate ? '<th style="width:90px;text-align:right;">Rate ₹</th>' : '') +
+        (showGpct ? '<th style="width:55px;text-align:center;">GST%</th>' : '') +
+        '<th style="width:100px;text-align:right;">Amount ₹</th>';
+    }
 
-  document.getElementById('pt-lineItems').innerHTML = lineItems.map((item, i) => `
-    <tr>
-      <td>${i+1}</td>
-      <td>${item.desc}</td>
-      ${showHSN  ? `<td>${item.hsn}</td>` : ''}
-      <td>${item.qty}</td>
-      ${showUnit ? `<td>${item.unit}</td>` : ''}
-      ${showRate ? `<td style="text-align:right;">₹${item.price.toLocaleString('en-IN',{maximumFractionDigits:2})}</td>` : ''}
-      ${showGpct ? `<td style="text-align:center;">${item.gstPct}%</td>` : ''}
-      <td>₹${(item.qty*item.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
-    </tr>`).join('');
+    document.getElementById('pt-lineItems').innerHTML = lineItems.map((item, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${item.desc}</td>
+        ${showHSN  ? `<td>${item.hsn}</td>` : ''}
+        <td>${item.qty}</td>
+        ${showUnit ? `<td>${item.unit}</td>` : ''}
+        ${showRate ? `<td style="text-align:right;">₹${item.price.toLocaleString('en-IN',{maximumFractionDigits:2})}</td>` : ''}
+        ${showGpct ? `<td style="text-align:center;">${item.gstPct}%</td>` : ''}
+        <td>₹${(item.qty*item.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</td>
+      </tr>`).join('');
 
-  document.getElementById('pt-sub').textContent   = '₹' + totals.subtotal.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('pt-sgst').textContent  = '₹' + totals.sgst.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('pt-cgst').textContent  = '₹' + totals.cgst.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('pt-round').textContent = totals.roundOff.toFixed(2);
-  document.getElementById('pt-total').textContent = '₹' + totals.rounded.toLocaleString('en-IN');
-  document.getElementById('pt-inwords').textContent = 'Amount in words: ' + numberToWords(totals.rounded) + ' Rupees Only';
-  const bankSection = document.querySelector('#printTemplate .pt-bank-box');
-  if (bankSection) bankSection.style.display = showBank ? '' : 'none';
-  document.getElementById('pt-bankDetails').textContent = document.getElementById('f-bankDetails').value || 'Contact us for bank details';
-  document.getElementById('pt-terms').textContent = document.getElementById('f-terms').value || '—';
-  document.getElementById('pt-notes').textContent = document.getElementById('f-notes').value || '';
-  document.getElementById('pt-sigName').textContent = `For ${document.getElementById('f-fromName').value}`;
-}
-
-window.previewAndPrint = function() {
-  buildPrintTemplate();
-  document.getElementById('printTemplate').classList.add('visible');
-  window.print();
-  setTimeout(() => document.getElementById('printTemplate').classList.remove('visible'), 2000);
-};
-
-window.downloadPDF = function() {
-  if (typeof html2pdf === 'undefined') {
-    toast('PDF library loading… try again in a moment.', 'warn'); return;
-  }
-  
-  // 1. Prepare the invoice data
-  buildPrintTemplate();
-  
-  // 2. Create a temporary, perfect A4-sized wrapper (just like the Reports page uses)
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'position: absolute; top: 0; left: 0; width: 210mm; background: white; z-index: -1000;';
-  wrapper.innerHTML = document.getElementById('printTemplate').innerHTML;
-  document.body.appendChild(wrapper);
-
-  const docNum = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','') || 'DRAFT';
-  const fname  = `Deepu_Siva_${docNum.replace(/-/g,'')}.pdf`;
-
-  // 3. Snap the PDF picture with scrollY: 0 to prevent the blank page bug!
-  html2pdf().set({
-    margin:      [8, 8, 8, 8],
-    filename:    fname,
-    image:       { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, windowWidth: 1024, scrollY: 0 },
-    jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(wrapper).save().then(() => {
+    document.getElementById('pt-sub').textContent   = '₹' + totals.subtotal.toLocaleString('en-IN',{maximumFractionDigits:2});
+    document.getElementById('pt-sgst').textContent  = '₹' + totals.sgst.toLocaleString('en-IN',{maximumFractionDigits:2});
+    document.getElementById('pt-cgst').textContent  = '₹' + totals.cgst.toLocaleString('en-IN',{maximumFractionDigits:2});
+    document.getElementById('pt-round').textContent = totals.roundOff.toFixed(2);
+    document.getElementById('pt-total').textContent = '₹' + totals.rounded.toLocaleString('en-IN');
+    document.getElementById('pt-inwords').textContent = 'Amount in words: ' + numberToWords(totals.rounded) + ' Rupees Only';
     
-    // 4. Destroy the temporary wrapper so it doesn't mess up the screen
-    document.body.removeChild(wrapper);
-    toast(`${fname} downloaded!`);
-    
-  });
+    const bankSection = document.querySelector('#printTemplate .pt-bank-box');
+    if (bankSection) bankSection.style.display = showBank ? '' : 'none';
+    document.getElementById('pt-bankDetails').textContent = document.getElementById('f-bankDetails').value || 'Contact us for bank details';
+    document.getElementById('pt-terms').textContent = document.getElementById('f-terms').value || '—';
+    document.getElementById('pt-notes').textContent = document.getElementById('f-notes').value || '';
+    document.getElementById('pt-sigName').textContent = `For ${document.getElementById('f-fromName').value}`;
+  }
 };
    
 window.shareWhatsApp = function() {
@@ -3702,7 +3809,7 @@ window.generateReport = async function(type) {
       output.innerHTML = `
         <div class="erp-panel">
           <div class="erp-panel-head"><span class="erp-panel-title">Purchase Report — ${docs.length} Bill${docs.length!==1?'s':''}</span></div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
             ${statCards([
               {val:'₹'+total.toLocaleString('en-IN'), lbl:'Total Purchased', color:'var(--red)'},
               {val:'₹'+gst.toLocaleString('en-IN'),   lbl:'Input GST Credit'},
@@ -3885,7 +3992,7 @@ window.generateReport = async function(type) {
       output.innerHTML = `
         <div class="erp-panel">
           <div class="erp-panel-head"><span class="erp-panel-title">Monthly Sales Summary</span></div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
             ${statCards([
               {val:'₹'+grandSales.toLocaleString('en-IN'), lbl:'Total Sales (Period)'},
               {val:'₹'+grandPur.toLocaleString('en-IN'),   lbl:'Total Purchases', color:'var(--red)'},
@@ -4987,7 +5094,7 @@ async function generatePartyLedger(partyName) {
         <h3 style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--text);text-transform:uppercase;">Party Ledger — ${partyName}</h3>
         <button class="btn btn-outline-green btn-sm" onclick="downloadLedgerPDF('${partyName.replace(/'/g,"\'")}')">Download PDF</button>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
         <div class="erp-stat"><div class="erp-stat-val" style="color:var(--red);">₹${totalDebit.toLocaleString('en-IN')}</div><div class="erp-stat-lbl">Total Billed (Debit)</div></div>
         <div class="erp-stat"><div class="erp-stat-val" style="color:var(--green);">₹${totalCredit.toLocaleString('en-IN')}</div><div class="erp-stat-lbl">Total Received (Credit)</div></div>
         <div class="erp-stat"><div class="erp-stat-val" style="color:${closingColor};">₹${Math.abs(runBalance).toLocaleString('en-IN')}</div><div class="erp-stat-lbl">${closingLabel}</div></div>
