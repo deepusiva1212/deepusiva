@@ -1487,6 +1487,7 @@
             <!-- Actions -->
             <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
               <button class="btn btn-green" onclick="saveChallan()">Save & Finalise Challan</button>
+               <button class="btn btn-outline-green" onclick="previewChallan()">Preview PDF</button>
               <button class="btn btn-outline-green" onclick="downloadChallanPDF()">Download PDF</button>
               <button class="btn btn-outline-green" onclick="shareChallanWhatsApp()">WhatsApp</button>
               <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;" onclick="clearChallanForm()">Clear</button>
@@ -3053,7 +3054,7 @@ window.downloadPDF = function() {
     margin:      [8, 8, 8, 8],
     filename:    fname,
     image:       { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true },
+    html2canvas: { scale: 2, useCORS: true, windowWidth: 1024 },
     jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
   }).from(el).save().then(() => {
     el.classList.remove('visible');
@@ -4202,6 +4203,68 @@ window.saveChallan = async function() {
   }
 };
 
+window.previewChallan = function() {
+  const toName  = document.getElementById('ch-toName').value  || 'Client';
+  const date    = document.getElementById('ch-date').value    || '—';
+  const vehicle = document.getElementById('ch-vehicle').value || '—';
+  const driver  = document.getElementById('ch-driver').value  || '—';
+  const toAddr  = document.getElementById('ch-toAddr').value  || '—';
+  const docNum  = document.getElementById('challanNumDisplay').textContent || 'DC';
+  const purpose = document.getElementById('ch-purpose').value || '';
+  const refInv  = document.getElementById('ch-refInvoice').value || '—';
+  const notes   = document.getElementById('ch-notes').value   || '';
+  const fromName= settings.companyName || 'Deepu Siva Private Limited';
+  const fromAddr= settings.address     || 'Coimbatore, Tamil Nadu';
+  const fromGST = settings.gstin       || '';
+
+  const itemRows = challanItems.map((item, i) => `
+    <tr>
+      <td style="padding:8px;border-bottom:1px solid #e2e8f0;">${i+1}</td>
+      <td style="padding:8px;border-bottom:1px solid #e2e8f0;">${item.desc||''}</td>
+      <td style="padding:8px;border-bottom:1px solid #e2e8f0;">${item.hsn||'—'}</td>
+      <td style="padding:8px;border-bottom:1px solid #e2e8f0;text-align:center;">${item.qty||1}</td>
+      <td style="padding:8px;border-bottom:1px solid #e2e8f0;text-align:center;">${item.unit||'Nos'}</td>
+      <td style="padding:8px;border-bottom:1px solid #e2e8f0;">${item.remarks||'—'}</td>
+    </tr>`).join('');
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;font-size:11pt;color:#0f172a;max-width:210mm;margin:0 auto;">
+      <div style="border-bottom:3px solid #16a34a;padding-bottom:14px;margin-bottom:18px;display:flex;justify-content:space-between;">
+        <div>
+          <div style="font-size:22pt;font-weight:800;color:#166534;">${fromName}</div>
+          <div style="font-size:9pt;color:#475569;">${fromAddr}${fromGST?'<br/>GSTIN: '+fromGST:''}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:24pt;font-weight:800;color:#16a34a;">DELIVERY CHALLAN</div>
+          <div style="font-size:11pt;color:#475569;">${docNum}<br/>Date: ${date}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;margin-bottom:18px;">
+        <div style="flex:1;background:#f0fdf4;border:1px solid #d1fae5;padding:12px;border-radius:6px;">
+          <div style="font-size:8pt;font-weight:700;color:#16a34a;margin-bottom:6px;">DELIVER TO</div>
+          <div style="font-weight:700;">${toName}</div>
+          <div>${toAddr}</div>
+          ${purpose ? '<div style="margin-top:4px;"><strong>Purpose:</strong> '+purpose+'</div>' : ''}
+        </div>
+        <div style="flex:1;background:#f8fffe;border:1px solid #e2e8f0;padding:12px;border-radius:6px;">
+          <div style="font-size:8pt;font-weight:700;color:#16a34a;margin-bottom:6px;">TRANSPORT DETAILS</div>
+          <div><strong>Vehicle:</strong> ${vehicle}</div>
+          <div><strong>Driver:</strong> ${driver}</div>
+          <div><strong>Ref. Invoice:</strong> ${refInv}</div>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+        <thead><tr style="background:#166534;color:#fff;"><th style="padding:8px;text-align:left;">#</th><th style="padding:8px;text-align:left;">Description</th><th style="padding:8px;text-align:left;">HSN</th><th style="padding:8px;text-align:center;">Qty</th><th style="padding:8px;text-align:center;">Unit</th><th style="padding:8px;text-align:left;">Remarks</th></tr></thead>
+        <tbody>${itemRows}</tbody>
+      </table>
+      ${notes?`<div style="background:#f0fdf4;border:1px solid #d1fae5;padding:10px;margin-bottom:20px;border-radius:6px;"><strong>Notes:</strong> ${notes}</div>`:''}
+    </div>`;
+
+  const printWin = window.open('', '_blank');
+  printWin.document.write(`<html><head><title>${docNum}</title></head><body onload="window.print();window.close()">${html}</body></html>`);
+  printWin.document.close();
+};
+   
 window.downloadChallanPDF = function() {
   if (typeof html2pdf === 'undefined') { toast('PDF library loading…', 'warn'); return; }
   const toName  = document.getElementById('ch-toName').value  || 'Client';
