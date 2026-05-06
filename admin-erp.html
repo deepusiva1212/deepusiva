@@ -1060,6 +1060,12 @@
         Payment Receipts
       </button>
 
+       <div class="nav-section-label">Inventory</div>
+      <button class="erp-nav-item" onclick="showPage('inventory',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        Stock & Items
+      </button>
+
       <div class="nav-section-label">Reports</div>
       <button class="erp-nav-item" onclick="showPage('reports',this)">
         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -1769,9 +1775,125 @@
           </div>
         </div>
       </div>
+<div class="erp-page" id="page-inventory">
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="showInventoryForm()">+ Add New Item</button>
+          <button class="btn btn-outline-green" onclick="showInventoryList()">View All Stock</button>
+        </div>
 
+        <div id="inventoryFormWrap" style="display:none;">
+          <div class="erp-panel">
+            <div class="erp-panel-head">
+              <span class="erp-panel-title" id="invItemFormTitle">Add New Stock Item</span>
+            </div>
+            
+            <div class="inv-meta">
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Item Code / SKU *</label>
+                  <input class="form-control" type="text" id="stk-code" placeholder="e.g. SP-500W" style="text-transform:uppercase;"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Item Description *</label>
+                  <textarea class="form-control" id="stk-desc" rows="2" placeholder="Full product name and description"></textarea>
+                </div>
+                <div class="inv-meta">
+                  <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" id="stk-category">
+                      <option value="Solar Panels">Solar Panels</option>
+                      <option value="Inverters">Inverters</option>
+                      <option value="Structures">Mounting Structures</option>
+                      <option value="Cables">Cables & Wires</option>
+                      <option value="Raw Steel">Raw Steel / Iron</option>
+                      <option value="Hardware">Hardware & Fasteners</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">HSN / SAC Code</label>
+                    <input class="form-control" type="text" id="stk-hsn" placeholder="e.g. 8541"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Current Stock Quantity</label>
+                  <input class="form-control" type="number" id="stk-qty" placeholder="0" style="font-size:18px;font-weight:bold;color:var(--green3);"/>
+                </div>
+              </div>
+
+              <div>
+                <div class="inv-meta">
+                  <div class="form-group">
+                    <label class="form-label">Purchase Price (₹)</label>
+                    <input class="form-control" type="number" id="stk-purchasePrice" placeholder="0.00"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Sales Price (₹) *</label>
+                    <input class="form-control" type="number" id="stk-salesPrice" placeholder="0.00"/>
+                  </div>
+                </div>
+                <div class="inv-meta">
+                  <div class="form-group">
+                    <label class="form-label">Discount Value</label>
+                    <input class="form-control" type="number" id="stk-discount" placeholder="0"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Discount Type</label>
+                    <select class="form-control" id="stk-discountType">
+                      <option value="percentage">% Percentage</option>
+                      <option value="flat">₹ Flat Amount</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Applicable Tax (GST %)</label>
+                  <select class="form-control" id="stk-tax">
+                    <option value="0">0%</option>
+                    <option value="5">5%</option>
+                    <option value="12">12%</option>
+                    <option value="18" selected>18%</option>
+                    <option value="28">28%</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Item Photo (Optional)</label>
+                  <input class="form-control" type="file" id="stk-photo" accept="image/*" onchange="previewStockPhoto(event)" style="padding:8px;"/>
+                  <div id="stk-photo-preview" style="margin-top:10px;height:120px;width:120px;border:1px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg3);">
+                    <span style="font-size:11px;color:var(--muted);">No Image</span>
+                  </div>
+                  <input type="hidden" id="stk-photo-base64"/>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+              <button class="btn btn-green" onclick="saveStockItem()">Save Item to Inventory</button>
+              <button class="btn btn-outline-green" onclick="showInventoryList()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="inventoryListWrap">
+          <div class="erp-panel">
+            <div class="erp-panel-head">
+              <span class="erp-panel-title">Current Inventory</span>
+              <input class="form-control" type="text" placeholder="Search items…" style="width:200px;" oninput="filterList('stockList',this.value)"/>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="inv-list-table">
+                <thead><tr><th>Photo</th><th>Code</th><th>Description</th><th>Category</th><th>Qty</th><th>Sales Price</th><th>Actions</th></tr></thead>
+                <tbody id="stockList">
+                  <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading Inventory…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- ══ REPORTS ══ -->
       <div class="erp-page" id="page-reports">
+         
 
         <!-- ── REPORT CONTROLS ── -->
         <div class="erp-panel" style="margin-bottom:16px;">
@@ -5083,6 +5205,156 @@ window.showPage = function(pageId, btn) {
   if (pageId === 'payment')  setTimeout(loadAllReceipts,  100);
   if (pageId === 'reports')  setTimeout(() => { loadAuditorSettings(); loadReportPartyList(); }, 100);
 };
+
+   // ─────────────────────────────────────────────────────────
+//  INVENTORY & STOCK ENGINE
+// ─────────────────────────────────────────────────────────
+let editStockId = null;
+
+window.showInventoryForm = function() {
+  document.getElementById('inventoryFormWrap').style.display = 'block';
+  document.getElementById('inventoryListWrap').style.display = 'none';
+  if(!editStockId) clearInventoryForm();
+};
+
+window.showInventoryList = function() {
+  document.getElementById('inventoryFormWrap').style.display = 'none';
+  document.getElementById('inventoryListWrap').style.display = 'block';
+  editStockId = null;
+  loadAllInventory();
+};
+
+window.clearInventoryForm = function() {
+  editStockId = null;
+  document.getElementById('invItemFormTitle').textContent = 'Add New Stock Item';
+  ['stk-code','stk-desc','stk-hsn','stk-qty','stk-purchasePrice','stk-salesPrice','stk-discount','stk-photo-base64'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('stk-category').value = 'Solar Panels';
+  document.getElementById('stk-discountType').value = 'percentage';
+  document.getElementById('stk-tax').value = '18';
+  document.getElementById('stk-photo').value = '';
+  document.getElementById('stk-photo-preview').innerHTML = '<span style="font-size:11px;color:var(--muted);">No Image</span>';
+};
+
+// Convert uploaded photo to a lightweight string so Firebase can save it instantly
+window.previewStockPhoto = function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // Compress it slightly by placing in an img tag
+    document.getElementById('stk-photo-preview').innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;"/>`;
+    document.getElementById('stk-photo-base64').value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+window.saveStockItem = async function() {
+  const code = document.getElementById('stk-code').value.trim().toUpperCase();
+  const desc = document.getElementById('stk-desc').value.trim();
+  const salesPrice = parseFloat(document.getElementById('stk-salesPrice').value) || 0;
+  
+  if (!code || !desc) { toast('Item Code and Description are required.', 'err'); return; }
+  
+  const payload = {
+    ownerUid,
+    code, desc,
+    category: document.getElementById('stk-category').value,
+    hsn: document.getElementById('stk-hsn').value.trim(),
+    qty: parseFloat(document.getElementById('stk-qty').value) || 0,
+    purchasePrice: parseFloat(document.getElementById('stk-purchasePrice').value) || 0,
+    salesPrice,
+    discount: parseFloat(document.getElementById('stk-discount').value) || 0,
+    discountType: document.getElementById('stk-discountType').value,
+    taxPct: parseFloat(document.getElementById('stk-tax').value) || 18,
+    photoBase64: document.getElementById('stk-photo-base64').value, // The compressed image string
+    updatedAt: serverTimestamp()
+  };
+
+  try {
+    if (editStockId) {
+      await updateDoc(doc(db,'erp_inventory',editStockId), payload);
+      toast('Item updated successfully!');
+    } else {
+      payload.createdAt = serverTimestamp();
+      await addDoc(collection(db,'erp_inventory'), payload);
+      toast('New item added to stock!');
+    }
+    showInventoryList();
+  } catch(e) {
+    toast('Error saving item: ' + e.message, 'err');
+  }
+};
+
+window.loadAllInventory = async function() {
+  const tbody = document.getElementById('stockList');
+  if (!tbody || !ownerUid) return;
+  try {
+    const snap = await getDocs(query(collection(db,'erp_inventory'), where('ownerUid','==',ownerUid)));
+    if (snap.empty) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">No items in inventory.</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = snap.docs.map(d => {
+      const i = d.data();
+      const imgHtml = i.photoBase64 
+        ? `<img src="${i.photoBase64}" style="width:40px;height:40px;border-radius:4px;object-fit:cover;border:1px solid var(--border);"/>` 
+        : `<div style="width:40px;height:40px;border-radius:4px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);">N/A</div>`;
+      
+      return `<tr>
+        <td>${imgHtml}</td>
+        <td><strong>${i.code}</strong></td>
+        <td>${i.desc}</td>
+        <td><span style="font-size:11px;background:var(--green-pale);color:var(--green3);padding:2px 8px;border-radius:12px;">${i.category}</span></td>
+        <td style="font-weight:bold;color:${i.qty > 0 ? 'var(--green)' : 'var(--red)'};">${i.qty}</td>
+        <td>₹${i.salesPrice.toLocaleString('en-IN')}</td>
+        <td><button class="btn-sm-green" onclick="editInventoryItem('${d.id}')">Edit</button></td>
+      </tr>`;
+    }).join('');
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);text-align:center;">Error loading inventory.</td></tr>`;
+  }
+};
+
+window.editInventoryItem = async function(id) {
+  try {
+    const snap = await getDoc(doc(db,'erp_inventory',id));
+    if (!snap.exists()) return;
+    const i = snap.data();
+    editStockId = id;
+    
+    document.getElementById('stk-code').value = i.code || '';
+    document.getElementById('stk-desc').value = i.desc || '';
+    document.getElementById('stk-category').value = i.category || 'Other';
+    document.getElementById('stk-hsn').value = i.hsn || '';
+    document.getElementById('stk-qty').value = i.qty || 0;
+    document.getElementById('stk-purchasePrice').value = i.purchasePrice || 0;
+    document.getElementById('stk-salesPrice').value = i.salesPrice || 0;
+    document.getElementById('stk-discount').value = i.discount || 0;
+    document.getElementById('stk-discountType').value = i.discountType || 'percentage';
+    document.getElementById('stk-tax').value = i.taxPct || 18;
+    
+    document.getElementById('stk-photo-base64').value = i.photoBase64 || '';
+    if (i.photoBase64) {
+      document.getElementById('stk-photo-preview').innerHTML = `<img src="${i.photoBase64}" style="width:100%;height:100%;object-fit:cover;"/>`;
+    } else {
+      document.getElementById('stk-photo-preview').innerHTML = '<span style="font-size:11px;color:var(--muted);">No Image</span>';
+    }
+    
+    document.getElementById('invItemFormTitle').textContent = 'Edit Item: ' + i.code;
+    showInventoryForm();
+  } catch(e) {
+    toast('Error loading item.', 'err');
+  }
+};
+
+// Trigger inventory load when clicking the sidebar button
+const _origShowPageInv = window.showPage;
+window.showPage = function(pageId, btn) {
+  if (_origShowPageInv) _origShowPageInv(pageId, btn);
+  if (pageId === 'inventory') setTimeout(loadAllInventory, 100);
+};
+   
 // ══ END ERP-2 ══════════════════════════════════════════
 
 </script>
