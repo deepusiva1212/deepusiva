@@ -3850,8 +3850,8 @@ window.exportReportCSV = function() {
       d.docType||''
     ]);
   });
-  const csv  = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('
-');
+  const csv  = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   const link = document.createElement('a');
   link.href  = URL.createObjectURL(blob);
