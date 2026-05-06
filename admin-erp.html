@@ -3045,38 +3045,32 @@ window.downloadPDF = function() {
     toast('PDF library loading… try again in a moment.', 'warn'); return;
   }
   
-  // Build the data
+  // 1. Prepare the invoice data
   buildPrintTemplate();
+  const el = document.getElementById('printTemplate');
   
-  // Grab the template
-  const originalEl = document.getElementById('printTemplate');
-  
-  // CREATE A BULLETPROOF CLONE
-  // This forces the PDF engine to draw a perfect desktop-sized page, 
-  // ignoring how big or small your actual screen is right now.
-  const clone = originalEl.cloneNode(true);
-  clone.style.display = 'block';
-  clone.style.width = '800px'; 
-  clone.style.padding = '20px';
-  clone.style.position = 'absolute';
-  clone.style.left = '-9999px'; // Hide it completely off-screen
-  clone.style.top = '0';
-  document.body.appendChild(clone);
+  // 2. Force it to the top-left of the screen at exactly A4 width (210mm)
+  // This ensures it NEVER squishes, even on mobile!
+  const originalCss = el.style.cssText;
+  el.style.cssText = 'display: block !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 210mm !important; background: white !important; z-index: 9999 !important;';
 
   const docNum = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','') || 'DRAFT';
   const fname  = `Deepu_Siva_${docNum.replace(/-/g,'')}.pdf`;
 
-  // Generate the PDF from the perfect clone
+  // 3. Snap the PDF picture
   html2pdf().set({
-    margin:      [10, 10, 10, 10],
+    margin:      [8, 8, 8, 8],
     filename:    fname,
-    image:       { type: 'jpeg', quality: 1.0 },
+    image:       { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true, windowWidth: 1024 },
     jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(clone).save().then(() => {
-    // Clean up the clone after downloading
-    document.body.removeChild(clone); 
-    toast(`${fname} downloaded perfectly!`);
+  }).from(el).save().then(() => {
+    
+    // 4. Instantly restore it back to being hidden
+    el.style.cssText = originalCss;
+    el.classList.remove('visible');
+    toast(`${fname} downloaded!`);
+    
   });
 };
 
