@@ -3047,33 +3047,32 @@ window.downloadPDF = function() {
   
   // 1. Prepare the invoice data
   buildPrintTemplate();
-  const el = document.getElementById('printTemplate');
   
-  // 2. Force it to the top-left of the screen at exactly A4 width (210mm)
-  // This ensures it NEVER squishes, even on mobile!
-  const originalCss = el.style.cssText;
-  el.style.cssText = 'display: block !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 210mm !important; background: white !important; z-index: 9999 !important;';
+  // 2. Create a temporary, perfect A4-sized wrapper (just like the Reports page uses)
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position: absolute; top: 0; left: 0; width: 210mm; background: white; z-index: -1000;';
+  wrapper.innerHTML = document.getElementById('printTemplate').innerHTML;
+  document.body.appendChild(wrapper);
 
   const docNum = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','') || 'DRAFT';
   const fname  = `Deepu_Siva_${docNum.replace(/-/g,'')}.pdf`;
 
-  // 3. Snap the PDF picture
+  // 3. Snap the PDF picture with scrollY: 0 to prevent the blank page bug!
   html2pdf().set({
     margin:      [8, 8, 8, 8],
     filename:    fname,
     image:       { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, windowWidth: 1024 },
+    html2canvas: { scale: 2, useCORS: true, windowWidth: 1024, scrollY: 0 },
     jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(el).save().then(() => {
+  }).from(wrapper).save().then(() => {
     
-    // 4. Instantly restore it back to being hidden
-    el.style.cssText = originalCss;
-    el.classList.remove('visible');
+    // 4. Destroy the temporary wrapper so it doesn't mess up the screen
+    document.body.removeChild(wrapper);
     toast(`${fname} downloaded!`);
     
   });
 };
-
+   
 window.shareWhatsApp = function() {
   const toName  = document.getElementById('f-toName').value.trim() || 'Client';
   const docNum  = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','') || 'DRAFT';
