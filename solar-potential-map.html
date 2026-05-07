@@ -19,26 +19,27 @@
       border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; display: flex; flex-wrap: wrap;
       box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
-    .solar-map-area { flex: 1.5; min-width: 300px; height: 650px; position: relative; }
+    .solar-map-area { flex: 1.5; min-width: 300px; height: 750px; position: relative; }
     .solar-map-area #solarMap { width: 100%; height: 100%; z-index: 1; }
     
     .solar-results-area {
-      flex: 1; min-width: 350px; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; height: 590px;
+      flex: 1; min-width: 350px; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; height: 690px;
     }
     .sr-title { font-size: 22px; font-weight: 800; color: #166534; margin-bottom: 5px; }
     .sr-subtitle { font-size: 13px; color: #64748b; margin-bottom: 20px; }
     
-    /* Input Controls */
     .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
     .input-group { background: #f1f5f9; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
     .input-group label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 5px; }
     .input-group input { width: 90%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-weight: bold; }
     
     .sr-box { background: #f0fdf4; border: 1px solid #d1fae5; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+    .sr-box.history { background: #fff7ed; border-color: #ffedd5; }
     .sr-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #16a34a; letter-spacing: 1px; }
+    .sr-label.history { color: #c2410c; }
     .sr-big-val { font-size: 28px; font-weight: 800; color: #166534; margin-top: 5px; }
+    .sr-big-val.history { color: #c2410c; }
     
-    /* Weather Forecast Table */
     .forecast-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
     .forecast-table th { text-align: left; padding: 8px; border-bottom: 2px solid #e2e8f0; color: #64748b; }
     .forecast-table td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
@@ -46,6 +47,13 @@
     .btn-action { width: 100%; background: #16a34a; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s; }
     .btn-action.share { background: #3b82f6; }
     .btn-action:hover { opacity: 0.9; }
+
+    /* Tabs */
+    .tabs { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 15px; }
+    .tab { padding: 10px 15px; cursor: pointer; font-weight: bold; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+    .tab.active { color: #166534; border-bottom-color: #166534; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
 </head>
 <body>
@@ -61,12 +69,12 @@
     </div>
     
     <div class="solar-results-area">
-      <div class="sr-title">Custom Solar & Weather Report</div>
-      <div class="sr-subtitle">Click the map, customize your system, and see your 7-day energy forecast.</div>
+      <div class="sr-title">Interactive Solar ROI</div>
+      <div class="sr-subtitle">Click the map to analyze live satellite and historical climate data.</div>
       
       <div class="control-grid">
         <div class="input-group">
-          <label>Desired System (kW)</label>
+          <label>Target System (kW)</label>
           <input type="number" id="sys-kw" value="5" step="0.5" onchange="updateCalculations()">
         </div>
         <div class="input-group">
@@ -75,27 +83,43 @@
         </div>
       </div>
       
-      <div class="sr-box" style="background:#fff; border-color:#e2e8f0;">
-        <div class="sr-label" style="color:#0f172a;">Hardware Required</div>
-        <div style="font-size:18px; font-weight:bold; margin-top:5px;"><span id="calc-panels">10</span> Panels Needed</div>
+      <div class="sr-box" style="background:#fff; border-color:#e2e8f0; padding:10px;">
+        <div style="font-size:14px; font-weight:bold;"><span id="calc-panels" style="color:#166534; font-size:18px;">10</span> Panels Required</div>
       </div>
 
-      <div id="sr-loading" style="color:#16a34a; font-weight:bold; display:none;">⏳ Fetching live satellite data...</div>
+      <div id="sr-loading" style="color:#16a34a; font-weight:bold; display:none;">⏳ Downloading satellite climate data...</div>
 
       <div id="sr-data-container" style="display:none;">
-        <div class="sr-box">
-          <div class="sr-label">7-Day Predictive Generation</div>
-          <div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:14px;">kWh expected this week</span></div>
-        </div>
         
-        <div class="sr-label" style="margin-top:20px;">Live Weather & Solar Forecast</div>
-        <table class="forecast-table">
-          <thead>
-            <tr><th>Date</th><th>Weather</th><th>Sunlight</th><th>Est. Energy</th></tr>
-          </thead>
-          <tbody id="forecast-body">
-            </tbody>
-        </table>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('forecast')">7-Day Forecast</div>
+          <div class="tab" onclick="switchTab('history')">Past 30 Days Proof</div>
+        </div>
+
+        <div id="tab-forecast" class="tab-content active">
+          <div class="sr-box">
+            <div class="sr-label">Upcoming Energy Generation</div>
+            <div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:14px;">kWh this week</span></div>
+          </div>
+          <table class="forecast-table">
+            <thead><tr><th>Date</th><th>Weather</th><th>Energy</th></tr></thead>
+            <tbody id="forecast-body"></tbody>
+          </table>
+        </div>
+
+        <div id="tab-history" class="tab-content">
+          <div class="sr-box history">
+            <div class="sr-label history">Missed Energy Opportunity</div>
+            <div style="font-size:13px; color:#9a3412; margin-bottom:5px;">If you installed this 30 days ago, you would have generated:</div>
+            <div class="sr-big-val history"><span id="sr-hist-energy">0.0</span> <span style="font-size:14px;">kWh of free power</span></div>
+          </div>
+          <div style="font-size:12px; color:#64748b; line-height:1.6;">
+            <strong>Data Summary (Last 30 Days):</strong><br>
+            • Total Sunlight Hours: <span id="hist-sun-hours" style="font-weight:bold; color:#0f172a;">0</span><br>
+            • Total Rainfall: <span id="hist-rain" style="font-weight:bold; color:#0f172a;">0</span> mm<br>
+            <em>*Data sourced from Open-Meteo historical satellite archives for this exact coordinate.</em>
+          </div>
+        </div>
         
         <div style="display:flex; gap:10px; margin-top:20px;">
           <button class="btn-action" onclick="alert('Lead Captured!')">Get a Free Quote</button>
@@ -106,13 +130,20 @@
   </div>
 
   <script>
-    let currentForecastData = null; // Store weather data globally
+    let currentForecastData = null; 
+    let currentHistoricalData = null;
     let mapMarker = null;
 
-    // Standard Weather Codes
     const weatherDesc = {
       0: "☀️ Clear", 1: "🌤️ Mostly Clear", 2: "⛅ Partly Cloudy", 3: "☁️ Overcast",
-      51: "🌧️ Light Drizzle", 61: "🌧️ Light Rain", 63: "🌧️ Mod. Rain", 65: "⛈️ Heavy Rain", 95: "🌩️ Thunderstorm"
+      51: "🌧️ Drizzle", 61: "🌧️ Light Rain", 63: "🌧️ Mod. Rain", 65: "⛈️ Heavy Rain", 95: "🌩️ Storm"
+    };
+
+    window.switchTab = function(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
     };
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -130,12 +161,30 @@
         document.getElementById('sr-data-container').style.display = 'none';
 
         try {
-          // Fetch 7-Day Forecast from Open-Meteo (Free API)
-          const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,sunshine_duration,precipitation_sum&timezone=auto`;
-          const response = await fetch(url);
-          currentForecastData = await response.json();
+          // 1. Fetch Future Forecast
+          const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,sunshine_duration,precipitation_sum&timezone=auto`;
           
-          updateCalculations(); // Run the math
+          // 2. Calculate dates for the last 30 days
+          const today = new Date();
+          const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+          const lastMonth = new Date(today); lastMonth.setDate(lastMonth.getDate() - 30);
+          
+          const formatDate = (date) => date.toISOString().split('T')[0];
+          const start_date = formatDate(lastMonth);
+          const end_date = formatDate(yesterday);
+
+          // 3. Fetch Historical Data (Separate Archive API)
+          const historyUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${start_date}&end_date=${end_date}&daily=sunshine_duration,precipitation_sum&timezone=auto`;
+
+          // Run both API calls at the exact same time for speed
+          const [resForecast, resHistory] = await Promise.all([
+            fetch(forecastUrl), fetch(historyUrl)
+          ]);
+
+          currentForecastData = await resForecast.json();
+          currentHistoricalData = await resHistory.json();
+          
+          updateCalculations(); 
           
           document.getElementById('sr-loading').style.display = 'none';
           document.getElementById('sr-data-container').style.display = 'block';
@@ -146,63 +195,65 @@
       });
     });
 
-    // The core math engine
     window.updateCalculations = function() {
-      if (!currentForecastData) return;
+      if (!currentForecastData || !currentHistoricalData) return;
 
       const sysKw = parseFloat(document.getElementById('sys-kw').value) || 5;
       const panelW = parseFloat(document.getElementById('panel-w').value) || 500;
       
-      // Calculate panels (e.g. 5kW = 5000W / 500W = 10 panels)
-      const totalWatts = sysKw * 1000;
-      const numPanels = Math.ceil(totalWatts / panelW);
-      document.getElementById('calc-panels').textContent = numPanels;
+      document.getElementById('calc-panels').textContent = Math.ceil((sysKw * 1000) / panelW);
 
+      // --- FORECAST MATH ---
       let totalWeekEnergy = 0;
       let tableHTML = '';
-
-      const daily = currentForecastData.daily;
-      for(let i = 0; i < daily.time.length; i++) {
-        const date = new Date(daily.time[i]).toLocaleDateString('en-IN', {weekday: 'short', month: 'short', day: 'numeric'});
-        const code = daily.weathercode[i];
+      const fDaily = currentForecastData.daily;
+      
+      for(let i = 0; i < fDaily.time.length; i++) {
+        const date = new Date(fDaily.time[i]).toLocaleDateString('en-IN', {weekday: 'short', month: 'short', day: 'numeric'});
+        const code = fDaily.weathercode[i];
         const weather = weatherDesc[code] || "☁️ Variable";
-        const rain = daily.precipitation_sum[i];
+        const sunHours = (fDaily.sunshine_duration[i] / 3600);
         
-        // Sunlight comes in seconds, convert to hours
-        const sunHours = (daily.sunshine_duration[i] / 3600);
-        
-        // Efficiency lowers if it is heavily raining or cloudy
         let efficiency = 0.75;
-        if (code >= 50) efficiency = 0.40; // Rain reduces output
-        if (code === 3) efficiency = 0.50; // Overcast reduces output
+        if (code >= 50) efficiency = 0.40; 
+        if (code === 3) efficiency = 0.50; 
 
-        // Formula: kW * hours * efficiency
         const dailyKWh = (sysKw * sunHours * efficiency);
         totalWeekEnergy += dailyKWh;
 
-        tableHTML += `
-          <tr>
-            <td><strong>${date}</strong></td>
-            <td>${weather} ${rain > 0 ? `(${rain}mm)` : ''}</td>
-            <td>${sunHours.toFixed(1)} hrs</td>
-            <td style="color:#166534; font-weight:bold;">${dailyKWh.toFixed(1)} kWh</td>
-          </tr>
-        `;
+        tableHTML += `<tr><td><strong>${date}</strong></td><td>${weather}</td><td style="color:#166534; font-weight:bold;">${dailyKWh.toFixed(1)} kWh</td></tr>`;
       }
-
       document.getElementById('forecast-body').innerHTML = tableHTML;
       document.getElementById('sr-total-energy').textContent = totalWeekEnergy.toFixed(1);
+
+      // --- HISTORICAL MATH (Past 30 Days) ---
+      let histSunSeconds = 0;
+      let histRainSum = 0;
+      const hDaily = currentHistoricalData.daily;
+
+      for(let i = 0; i < hDaily.time.length; i++) {
+        if(hDaily.sunshine_duration[i]) histSunSeconds += hDaily.sunshine_duration[i];
+        if(hDaily.precipitation_sum[i]) histRainSum += hDaily.precipitation_sum[i];
+      }
+
+      const histSunHours = histSunSeconds / 3600;
+      
+      // Standard 75% efficiency average over 30 days
+      const histTotalEnergy = (sysKw * histSunHours * 0.75);
+
+      document.getElementById('hist-sun-hours').textContent = histSunHours.toFixed(0);
+      document.getElementById('hist-rain').textContent = histRainSum.toFixed(1);
+      document.getElementById('sr-hist-energy').textContent = histTotalEnergy.toFixed(0).toLocaleString('en-IN');
     };
 
-    // Mobile Share Feature
     window.shareReport = function() {
       const kw = document.getElementById('sys-kw').value;
       const energy = document.getElementById('sr-total-energy').textContent;
-      const text = `Check out my solar potential! A ${kw}kW system from Deepu Siva Pvt Ltd will generate approx ${energy} kWh of energy for me next week.`;
+      const hist = document.getElementById('sr-hist-energy').textContent;
+      const text = `Check out my solar potential! A ${kw}kW system from Deepu Siva Pvt Ltd would have generated ${hist} kWh of free power last month.`;
       
       if (navigator.share) {
-        navigator.share({ title: 'My Solar Forecast', text: text, url: window.location.href })
-          .catch(console.error);
+        navigator.share({ title: 'My Solar Forecast', text: text, url: window.location.href }).catch(console.error);
       } else {
         alert("Report copied to clipboard!");
         navigator.clipboard.writeText(text);
