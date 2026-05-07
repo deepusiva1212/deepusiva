@@ -3305,7 +3305,48 @@ window.buildPrintTemplate = function() {
   }
 };
  
-   
+
+   window.previewAndPrint = function() {
+  buildPrintTemplate();
+  document.getElementById('printTemplate').classList.add('visible');
+  window.print();
+  setTimeout(() => document.getElementById('printTemplate').classList.remove('visible'), 2000);
+};
+
+window.downloadPDF = function() {
+  if (typeof html2pdf === 'undefined') {
+    toast('PDF library loading… try again in a moment.', 'warn'); return;
+  }
+  
+  // 1. Prepare the invoice data
+  buildPrintTemplate();
+  
+  // 2. Create a temporary, perfect A4-sized wrapper
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position: absolute; top: 0; left: 0; width: 210mm; background: white; z-index: -1000;';
+  wrapper.innerHTML = document.getElementById('printTemplate').innerHTML;
+  document.body.appendChild(wrapper);
+
+  const docNum = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','') || 'DRAFT';
+  const fname  = `Deepu_Siva_${docNum.replace(/-/g,'')}.pdf`;
+
+  // 3. Snap the PDF picture with scrollY: 0
+  html2pdf().set({
+    margin:      [8, 8, 8, 8],
+    filename:    fname,
+    image:       { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, windowWidth: 1024, scrollY: 0 },
+    jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  }).from(wrapper).save().then(() => {
+    
+    // 4. Destroy the temporary wrapper
+    document.body.removeChild(wrapper);
+    toast(`${fname} downloaded!`);
+    
+  });
+};
+
+
 window.shareWhatsApp = function() {
   const toName  = document.getElementById('f-toName').value.trim() || 'Client';
   const docNum  = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','') || 'DRAFT';
