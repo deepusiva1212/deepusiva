@@ -3073,6 +3073,7 @@ window.confirmPortalPush = async function() {
 };
 
 // ── PDF GENERATION ─────────────────────────────────────
+
 window.buildPrintTemplate = function() {
   const templateWrap = document.getElementById('printTemplate');
   
@@ -3081,7 +3082,9 @@ window.buildPrintTemplate = function() {
     window.originalPrintTemplateHTML = templateWrap.innerHTML;
   }
 
+  // 1. CRITICAL: Calculate the math FIRST so both templates can see it!
   const totals   = recalcTotals();
+  
   const docNum   = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','');
   const docDate  = document.getElementById('f-invDate').value;
   const dueDate  = document.getElementById('f-dueDate').value;
@@ -3301,6 +3304,7 @@ window.buildPrintTemplate = function() {
     document.getElementById('pt-sigName').textContent = `For ${document.getElementById('f-fromName').value}`;
   }
 };
+ 
    
 window.shareWhatsApp = function() {
   const toName  = document.getElementById('f-toName').value.trim() || 'Client';
