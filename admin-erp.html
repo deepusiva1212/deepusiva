@@ -3309,8 +3309,12 @@ window.buildPrintTemplate = function() {
    window.previewAndPrint = function() {
   buildPrintTemplate();
   document.getElementById('printTemplate').classList.add('visible');
-  window.print();
-  setTimeout(() => document.getElementById('printTemplate').classList.remove('visible'), 2000);
+  
+  // CRITICAL FIX: Give the browser 400ms to paint the invoice before printing
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => document.getElementById('printTemplate').classList.remove('visible'), 2000);
+  }, 400);
 };
 
 window.downloadPDF = function() {
@@ -3321,29 +3325,29 @@ window.downloadPDF = function() {
   // 1. Prepare the invoice data
   buildPrintTemplate();
   
-  // 2. Create a temporary, perfect A4-sized wrapper
+  // 2. Create the wrapper (No negative z-index! We append it normally so the camera can see it)
   const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'position: absolute; top: 0; left: 0; width: 210mm; background: white; z-index: -1000;';
+  wrapper.style.cssText = 'width: 210mm; background: white; padding: 12mm; font-family: Arial, sans-serif; color: #0f172a;';
   wrapper.innerHTML = document.getElementById('printTemplate').innerHTML;
   document.body.appendChild(wrapper);
 
   const docNum = document.getElementById('invDocNumDisplay').textContent.replace(' (preview)','').replace(' (offline)','') || 'DRAFT';
   const fname  = `Deepu_Siva_${docNum.replace(/-/g,'')}.pdf`;
 
-  // 3. Snap the PDF picture with scrollY: 0
-  html2pdf().set({
-    margin:      [8, 8, 8, 8],
-    filename:    fname,
-    image:       { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, windowWidth: 1024, scrollY: 0 },
-    jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(wrapper).save().then(() => {
-    
-    // 4. Destroy the temporary wrapper
-    document.body.removeChild(wrapper);
-    toast(`${fname} downloaded!`);
-    
-  });
+  // 3. CRITICAL FIX: Give the browser 400ms to align the columns before snapping the picture
+  setTimeout(() => {
+    html2pdf().set({
+      margin:      [8, 8, 8, 8],
+      filename:    fname,
+      image:       { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(wrapper).save().then(() => {
+      // 4. Clean up after the download finishes
+      document.body.removeChild(wrapper);
+      toast(`${fname} downloaded perfectly!`);
+    });
+  }, 400);
 };
 
 
