@@ -6,61 +6,92 @@
   <title>Advanced Solar Simulator | Deepu Siva Private Limited</title>
   
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
   <style>
-    body { margin: 0; font-family: 'Arial', sans-serif; background: #f8fafc; color: #0f172a; }
-    .header { background: #166534; color: #fff; padding: 20px; text-align: center; }
-    .header h1 { margin: 0; font-size: 24px; }
-    .header a { color: #d1fae5; text-decoration: none; font-size: 14px; display: inline-block; margin-top: 10px; }
+    /* ── MODERN 2026 UI DESIGN ── */
+    :root {
+      --primary: #166534; --primary-light: #16a34a; --primary-fade: #f0fdf4;
+      --bg: #f8fafc; --card-bg: #ffffff; --text: #0f172a; --muted: #64748b;
+      --border: #e2e8f0; --shadow: 0 12px 40px rgba(0,0,0,0.08);
+      --radius: 16px;
+    }
+    body { margin: 0; font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+    
+    .header { 
+      background: linear-gradient(135deg, var(--primary), var(--primary-light)); 
+      color: #fff; padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(22,163,74,0.2);
+    }
+    .header h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+    .header a { color: #d1fae5; text-decoration: none; font-size: 14px; font-weight: 600; display: inline-block; margin-top: 8px; transition: 0.2s; }
+    .header a:hover { color: #fff; transform: translateX(-4px); }
     
     .solar-calc-wrap {
-      max-width: 1200px; margin: 40px auto; background: #fff;
-      border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; display: flex; flex-wrap: wrap;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      max-width: 1200px; margin: 40px auto; background: var(--card-bg);
+      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; 
+      display: flex; flex-wrap: wrap; box-shadow: var(--shadow);
     }
-    .solar-map-area { flex: 1.5; min-width: 300px; height: 750px; position: relative; }
+    
+    .solar-map-area { flex: 1.5; min-width: 300px; height: 780px; position: relative; }
     .solar-map-area #solarMap { width: 100%; height: 100%; z-index: 1; }
     
     .solar-results-area {
-      flex: 1; min-width: 350px; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; height: 690px;
+      flex: 1; min-width: 350px; padding: 32px; display: flex; flex-direction: column; 
+      overflow-y: auto; height: 716px; background: #fff;
     }
-    .sr-title { font-size: 22px; font-weight: 800; color: #166534; margin-bottom: 5px; }
-    .sr-subtitle { font-size: 13px; color: #64748b; margin-bottom: 20px; }
     
-    .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    .input-group { background: #f1f5f9; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
-    .input-group label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 5px; }
-    .input-group input { width: 90%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-weight: bold; }
+    .sr-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+    .sr-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
     
-    .sr-box { background: #f0fdf4; border: 1px solid #d1fae5; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+    /* Input Controls */
+    .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .input-group { background: var(--bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); transition: 0.2s; }
+    .input-group:focus-within { border-color: var(--primary-light); box-shadow: 0 0 0 3px var(--primary-fade); }
+    .input-group label { display: block; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;}
+    .input-group input { width: 90%; padding: 6px; border: none; background: transparent; font-size: 18px; font-weight: 800; color: var(--text); outline: none; }
+    
+    .location-tag {
+      display: inline-flex; align-items: center; gap: 6px; background: var(--primary-fade); color: var(--primary);
+      padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-bottom: 20px;
+    }
+
+    .sr-box { background: var(--primary-fade); border: 1px solid #d1fae5; border-radius: 12px; padding: 20px; margin-bottom: 16px; transition: 0.3s; }
     .sr-box.history { background: #fff7ed; border-color: #ffedd5; }
-    .sr-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #16a34a; letter-spacing: 1px; }
-    .sr-label.history { color: #c2410c; }
-    .sr-big-val { font-size: 28px; font-weight: 800; color: #166534; margin-top: 5px; }
+    .sr-label { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--primary-light); letter-spacing: 1px; }
+    .sr-label.history { color: #ea580c; }
+    .sr-big-val { font-size: 32px; font-weight: 900; color: var(--primary); margin-top: 8px; }
     .sr-big-val.history { color: #c2410c; }
     
-    .forecast-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-    .forecast-table th { text-align: left; padding: 8px; border-bottom: 2px solid #e2e8f0; color: #64748b; }
-    .forecast-table td { padding: 8px; border-bottom: 1px solid #e2e8f0; }
-    
-    .btn-action { width: 100%; background: #16a34a; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-    .btn-action.share { background: #3b82f6; }
-    .btn-action:hover { opacity: 0.9; }
-
     /* Tabs */
-    .tabs { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 15px; }
-    .tab { padding: 10px 15px; cursor: pointer; font-weight: bold; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px; }
-    .tab.active { color: #166534; border-bottom-color: #166534; }
-    .tab-content { display: none; }
+    .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 20px; gap: 20px; }
+    .tab { padding: 12px 4px; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: 0.2s; }
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab-content { display: none; animation: fadeIn 0.4s ease; }
     .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .forecast-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+    .forecast-table th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--muted); }
+    .forecast-table td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-weight: 500; }
+    
+    .btn-action { 
+      width: 100%; background: var(--primary-light); color: #fff; border: none; padding: 16px; 
+      border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; 
+      transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(22,163,74,0.3);
+    }
+    .btn-action.share { background: #fff; color: var(--text); border: 2px solid var(--border); box-shadow: none; }
+    .btn-action:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .btn-action.share:hover { border-color: var(--muted); }
   </style>
 </head>
 <body>
 
   <div class="header">
     <h1>Deepu Siva Private Limited</h1>
-    <a href="index.html">← Back to Home</a>
+    <a href="index.html">← Return to Main Website</a>
   </div>
 
   <div class="solar-calc-wrap">
@@ -70,7 +101,7 @@
     
     <div class="solar-results-area">
       <div class="sr-title">Interactive Solar ROI</div>
-      <div class="sr-subtitle">Click the map to analyze live satellite and historical climate data.</div>
+      <div class="sr-subtitle">Use the search bar on the map or click any roof to analyze live satellite and historical climate data.</div>
       
       <div class="control-grid">
         <div class="input-group">
@@ -83,23 +114,49 @@
         </div>
       </div>
       
-      <div class="sr-box" style="background:#fff; border-color:#e2e8f0; padding:10px;">
-        <div style="font-size:14px; font-weight:bold;"><span id="calc-panels" style="color:#166534; font-size:18px;">10</span> Panels Required</div>
+      <div style="background:#fff; border:2px dashed var(--border); padding:16px; border-radius:12px; margin-bottom:20px; text-align:center;">
+        <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase;">Hardware Required</div>
+        <div style="font-size:24px; font-weight:900; color:var(--text); margin-top:4px;"><span id="calc-panels" style="color:var(--primary);">10</span> Panels</div>
       </div>
 
-      <div id="sr-loading" style="color:#16a34a; font-weight:bold; display:none;">⏳ Downloading satellite climate data...</div>
+      <div id="sr-loading" style="color:var(--primary-light); font-weight:bold; display:none; text-align:center; padding: 20px;">
+        ⏳ Connecting to Satellites...
+      </div>
 
       <div id="sr-data-container" style="display:none;">
         
-        <div class="tabs">
-          <div class="tab active" onclick="switchTab('forecast')">7-Day Forecast</div>
-          <div class="tab" onclick="switchTab('history')">Past 30 Days Proof</div>
+        <div class="location-tag">
+          📍 <span id="sr-location-name">Selected Location</span>
         </div>
 
-        <div id="tab-forecast" class="tab-content active">
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('today')">Today's Potential</div>
+          <div class="tab" onclick="switchTab('forecast')">7-Day Forecast</div>
+          <div class="tab" onclick="switchTab('history')">Past 30 Days</div>
+        </div>
+
+        <div id="tab-today" class="tab-content active">
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div class="sr-box" style="flex:1; padding:16px;">
+              <div class="sr-label">Sunrise</div>
+              <div class="sr-big-val" id="sr-sunrise" style="font-size:22px;">--:--</div>
+            </div>
+            <div class="sr-box" style="flex:1; padding:16px;">
+              <div class="sr-label">Sunset</div>
+              <div class="sr-big-val" id="sr-sunset" style="font-size:22px;">--:--</div>
+            </div>
+          </div>
+          <div class="sr-box">
+            <div class="sr-label">Today's Estimated Energy</div>
+            <div class="sr-big-val"><span id="sr-today-energy">0.0</span> <span style="font-size:16px; font-weight:700;">kWh today</span></div>
+            <div style="font-size:13px; color:var(--muted); margin-top:8px;">Based on <span id="sr-today-hours" style="font-weight:bold; color:var(--text);">0</span> hours of daylight.</div>
+          </div>
+        </div>
+
+        <div id="tab-forecast" class="tab-content">
           <div class="sr-box">
             <div class="sr-label">Upcoming Energy Generation</div>
-            <div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:14px;">kWh this week</span></div>
+            <div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:16px; font-weight:700;">kWh this week</span></div>
           </div>
           <table class="forecast-table">
             <thead><tr><th>Date</th><th>Weather</th><th>Energy</th></tr></thead>
@@ -110,20 +167,19 @@
         <div id="tab-history" class="tab-content">
           <div class="sr-box history">
             <div class="sr-label history">Missed Energy Opportunity</div>
-            <div style="font-size:13px; color:#9a3412; margin-bottom:5px;">If you installed this 30 days ago, you would have generated:</div>
-            <div class="sr-big-val history"><span id="sr-hist-energy">0.0</span> <span style="font-size:14px;">kWh of free power</span></div>
+            <div style="font-size:14px; color:#9a3412; margin-bottom:8px;">If you installed this 30 days ago, you would have generated:</div>
+            <div class="sr-big-val history"><span id="sr-hist-energy">0.0</span> <span style="font-size:16px; font-weight:700;">kWh of free power</span></div>
           </div>
-          <div style="font-size:12px; color:#64748b; line-height:1.6;">
-            <strong>Data Summary (Last 30 Days):</strong><br>
-            • Total Sunlight Hours: <span id="hist-sun-hours" style="font-weight:bold; color:#0f172a;">0</span><br>
-            • Total Rainfall: <span id="hist-rain" style="font-weight:bold; color:#0f172a;">0</span> mm<br>
-            <em>*Data sourced from Open-Meteo historical satellite archives for this exact coordinate.</em>
+          <div style="font-size:13px; color:var(--muted); line-height:1.6; background:var(--bg); padding:16px; border-radius:12px;">
+            <strong>Data Summary (Last 30 Days):</strong><br><br>
+            ☀️ Total Sunlight: <span id="hist-sun-hours" style="font-weight:bold; color:var(--text);">0</span> Hours<br>
+            🌧️ Total Rainfall: <span id="hist-rain" style="font-weight:bold; color:var(--text);">0</span> mm<br>
           </div>
         </div>
         
-        <div style="display:flex; gap:10px; margin-top:20px;">
-          <button class="btn-action" onclick="alert('Lead Captured!')">Get a Free Quote</button>
-          <button class="btn-action share" onclick="shareReport()">Share Report</button>
+        <div style="display:flex; gap:12px; margin-top:24px;">
+          <button class="btn-action" onclick="getFreeQuote()">Get a Free Quote</button>
+          <button class="btn-action share" onclick="shareReport()">Share</button>
         </div>
       </div>
     </div>
@@ -147,39 +203,53 @@
     };
 
     document.addEventListener("DOMContentLoaded", function() {
+      // 1. Initialize Map
       const map = L.map('solarMap').setView([11.0168, 76.9558], 10);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
 
-      map.on('click', async function(e) {
-        const lat = e.latlng.lat;
-        const lng = e.latlng.lng;
+      // 2. Add Native Map Search Bar (Geocoder)
+      L.Control.geocoder({
+        defaultMarkGeocode: false,
+        placeholder: "Search for your street or city..."
+      }).on('markgeocode', function(e) {
+        const latlng = e.geocode.center;
+        map.setView(latlng, 15);
+        triggerMapClick(latlng.lat, latlng.lng); // Auto-calculate when searched
+      }).addTo(map);
 
-        if (mapMarker) { mapMarker.setLatLng(e.latlng); } 
-        else { mapMarker = L.marker(e.latlng).addTo(map); }
+      // 3. Map Click Event
+      map.on('click', function(e) {
+        triggerMapClick(e.latlng.lat, e.latlng.lng);
+      });
+
+      async function triggerMapClick(lat, lng) {
+        if (mapMarker) { mapMarker.setLatLng([lat, lng]); } 
+        else { mapMarker = L.marker([lat, lng]).addTo(map); }
 
         document.getElementById('sr-loading').style.display = 'block';
         document.getElementById('sr-data-container').style.display = 'none';
 
         try {
-          // 1. Fetch Future Forecast
-          const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,sunshine_duration,precipitation_sum&timezone=auto`;
+          // A. Reverse Geocode (Get Place Name)
+          const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+          const geoRes = await fetch(geoUrl);
+          const geoData = await geoRes.json();
+          const placeName = geoData.name || geoData.address?.city || geoData.address?.town || geoData.address?.village || geoData.address?.county || "Custom Location";
+          document.getElementById('sr-location-name').textContent = placeName;
+
+          // B. Fetch Future Forecast (Including Sunrise/Sunset for TODAY)
+          const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,sunshine_duration,precipitation_sum,sunrise,sunset&timezone=auto`;
           
-          // 2. Calculate dates for the last 30 days
+          // C. Calculate dates for the last 30 days
           const today = new Date();
           const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
           const lastMonth = new Date(today); lastMonth.setDate(lastMonth.getDate() - 30);
-          
           const formatDate = (date) => date.toISOString().split('T')[0];
-          const start_date = formatDate(lastMonth);
-          const end_date = formatDate(yesterday);
+          
+          const historyUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${formatDate(lastMonth)}&end_date=${formatDate(yesterday)}&daily=sunshine_duration,precipitation_sum&timezone=auto`;
 
-          // 3. Fetch Historical Data (Separate Archive API)
-          const historyUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${start_date}&end_date=${end_date}&daily=sunshine_duration,precipitation_sum&timezone=auto`;
-
-          // Run both API calls at the exact same time for speed
-          const [resForecast, resHistory] = await Promise.all([
-            fetch(forecastUrl), fetch(historyUrl)
-          ]);
+          // Run API calls
+          const [resForecast, resHistory] = await Promise.all([ fetch(forecastUrl), fetch(historyUrl) ]);
 
           currentForecastData = await resForecast.json();
           currentHistoricalData = await resHistory.json();
@@ -192,7 +262,7 @@
           console.error("Error fetching data:", error);
           document.getElementById('sr-loading').innerHTML = "⚠️ Error connecting to satellite. Try again.";
         }
-      });
+      }
     });
 
     window.updateCalculations = function() {
@@ -203,10 +273,31 @@
       
       document.getElementById('calc-panels').textContent = Math.ceil((sysKw * 1000) / panelW);
 
-      // --- FORECAST MATH ---
+      const fDaily = currentForecastData.daily;
+
+      // --- TODAY'S DATA (TAB 1) ---
+      // Open-Meteo returns ISO strings for sunrise/sunset
+      const sunRise = new Date(fDaily.sunrise[0]);
+      const sunSet = new Date(fDaily.sunset[0]);
+      const timeOpts = { hour: 'numeric', minute: '2-digit', hour12: true };
+      
+      document.getElementById('sr-sunrise').textContent = sunRise.toLocaleTimeString('en-IN', timeOpts);
+      document.getElementById('sr-sunset').textContent = sunSet.toLocaleTimeString('en-IN', timeOpts);
+      
+      const todaySunHours = (fDaily.sunshine_duration[0] / 3600);
+      document.getElementById('sr-today-hours').textContent = todaySunHours.toFixed(1);
+      
+      // Today's Energy
+      const todayCode = fDaily.weathercode[0];
+      let tEff = 0.75;
+      if (todayCode >= 50) tEff = 0.40; 
+      if (todayCode === 3) tEff = 0.50; 
+      document.getElementById('sr-today-energy').textContent = (sysKw * todaySunHours * tEff).toFixed(1);
+
+
+      // --- FORECAST MATH (TAB 2) ---
       let totalWeekEnergy = 0;
       let tableHTML = '';
-      const fDaily = currentForecastData.daily;
       
       for(let i = 0; i < fDaily.time.length; i++) {
         const date = new Date(fDaily.time[i]).toLocaleDateString('en-IN', {weekday: 'short', month: 'short', day: 'numeric'});
@@ -221,12 +312,12 @@
         const dailyKWh = (sysKw * sunHours * efficiency);
         totalWeekEnergy += dailyKWh;
 
-        tableHTML += `<tr><td><strong>${date}</strong></td><td>${weather}</td><td style="color:#166534; font-weight:bold;">${dailyKWh.toFixed(1)} kWh</td></tr>`;
+        tableHTML += `<tr><td><strong>${date}</strong></td><td>${weather}</td><td style="color:var(--primary-light); font-weight:800;">${dailyKWh.toFixed(1)} kWh</td></tr>`;
       }
       document.getElementById('forecast-body').innerHTML = tableHTML;
       document.getElementById('sr-total-energy').textContent = totalWeekEnergy.toFixed(1);
 
-      // --- HISTORICAL MATH (Past 30 Days) ---
+      // --- HISTORICAL MATH (TAB 3) ---
       let histSunSeconds = 0;
       let histRainSum = 0;
       const hDaily = currentHistoricalData.daily;
@@ -237,8 +328,6 @@
       }
 
       const histSunHours = histSunSeconds / 3600;
-      
-      // Standard 75% efficiency average over 30 days
       const histTotalEnergy = (sysKw * histSunHours * 0.75);
 
       document.getElementById('hist-sun-hours').textContent = histSunHours.toFixed(0);
@@ -246,11 +335,23 @@
       document.getElementById('sr-hist-energy').textContent = histTotalEnergy.toFixed(0).toLocaleString('en-IN');
     };
 
+    // --- BUTTON ACTIONS ---
+    window.getFreeQuote = function() {
+      const kw = document.getElementById('sys-kw').value;
+      const loc = document.getElementById('sr-location-name').textContent;
+      // Pre-filled WhatsApp message
+      const msg = encodeURIComponent(`Hi Deepu Siva Pvt Ltd! I used your online Solar Simulator. I am interested in getting a free quotation for a ${kw}kW solar system at my location: ${loc}.`);
+      
+      // NOTE: Change the phone number below to your actual business WhatsApp number!
+      const phoneNumber = "918489090666"; 
+      window.open(`https://wa.me/${phoneNumber}?text=${msg}`, '_blank');
+    };
+
     window.shareReport = function() {
       const kw = document.getElementById('sys-kw').value;
+      const loc = document.getElementById('sr-location-name').textContent;
       const energy = document.getElementById('sr-total-energy').textContent;
-      const hist = document.getElementById('sr-hist-energy').textContent;
-      const text = `Check out my solar potential! A ${kw}kW system from Deepu Siva Pvt Ltd would have generated ${hist} kWh of free power last month.`;
+      const text = `Check out my solar potential! A ${kw}kW system in ${loc} will generate approx ${energy} kWh of free energy next week.`;
       
       if (navigator.share) {
         navigator.share({ title: 'My Solar Forecast', text: text, url: window.location.href }).catch(console.error);
