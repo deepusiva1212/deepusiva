@@ -1,9 +1,31 @@
-# robots.txt for deepusiva.com
-# Tells Google and other search engines what to crawl
+# ═══════════════════════════════════════════════
+#  Deepu Siva Private Limited — robots.txt
+#  https://deepusiva.com
+# ═══════════════════════════════════════════════
 
 User-agent: *
+
+# Allow full public site
 Allow: /
-Disallow: /login.html
+
+# Block admin and private pages from crawling
+Disallow: /director-portal.html
+Disallow: /admin-erp.html
+Disallow: /admin-shop.html
+Disallow: /dashboard.html
+Disallow: /my-bills.html
+Disallow: /my-sites.html
+Disallow: /payments.html
+Disallow: /profile.html
+Disallow: /updates.html
+
+# Block utility files
+Disallow: /config.js
+Disallow: /ds-firebase.js
+Disallow: /sw.js
 
 # Sitemap location
 Sitemap: https://deepusiva.com/sitemap.xml
+
+# Crawl delay for bots (1 second)
+Crawl-delay: 1

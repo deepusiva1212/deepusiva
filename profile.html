@@ -113,8 +113,21 @@
     <div class="profile-field">
       <label>Mobile Number</label>
       <span class="val" id="f-phone">—</span>
-      <div class="edit-field"><input type="tel" id="e-phone" placeholder="+91 XXXXX XXXXX"/></div>
+      <div class="edit-field"><input type="tel" id="e-phone" placeholder="+91 XXXXX XXXXX" style="font-size:16px;"/></div>
     </div>
+
+    <div class="profile-field">
+      <label>Address</label>
+      <span class="val" id="f-address">—</span>
+      <div class="edit-field"><textarea id="e-address" rows="2" placeholder="Street, City, State, PIN" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:var(--radius);font-family:var(--font-body);font-size:14px;outline:none;resize:none;transition:.2s;"></textarea></div>
+    </div>
+
+    <div class="profile-field">
+      <label>GSTIN <span style="color:var(--muted);font-size:10px;font-weight:400;">(for GST invoices)</span></label>
+      <span class="val" id="f-gstin">—</span>
+      <div class="edit-field"><input type="text" id="e-gstin" placeholder="22AAAAA0000A1Z5" maxlength="15" style="text-transform:uppercase;font-size:16px;" oninput="this.value=this.value.toUpperCase()"/></div>
+    </div>
+
     <div class="profile-field">
       <label>Email Address</label>
       <span class="val" id="f-email">—</span>
@@ -126,8 +139,28 @@
     </div>
   </div>
 
+  <!-- Notification preferences -->
+  <div class="profile-card" style="margin-top:16px;">
+    <h3 style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border);">Notification Preferences</h3>
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <label style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;">
+        <div><div style="font-size:14px;font-weight:600;color:var(--text2);">Project Updates</div><div style="font-size:12px;color:var(--muted);">Site progress and milestone alerts</div></div>
+        <input type="checkbox" id="pref-updates" checked style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;" onchange="saveNotifPrefs()"/>
+      </label>
+      <label style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;">
+        <div><div style="font-size:14px;font-weight:600;color:var(--text2);">Payment Alerts</div><div style="font-size:12px;color:var(--muted);">Invoice ready and payment confirmation</div></div>
+        <input type="checkbox" id="pref-payment" checked style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;" onchange="saveNotifPrefs()"/>
+      </label>
+      <label style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;cursor:pointer;">
+        <div><div style="font-size:14px;font-weight:600;color:var(--text2);">Urgent Notices</div><div style="font-size:12px;color:var(--muted);">Important announcements from the team</div></div>
+        <input type="checkbox" id="pref-urgent" checked style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;" onchange="saveNotifPrefs()"/>
+      </label>
+    </div>
+    <div id="prefLog" style="font-size:12px;color:var(--green3);margin-top:8px;display:none;">✅ Preferences saved!</div>
+  </div>
+
   <!-- LOGOUT -->
-  <button class="btn-logout-full" onclick="doLogout()">Sign Out of Portal</button>
+  <button class="btn-logout-full" onclick="doLogout()" style="margin-top:16px;">Sign Out of Portal</button>
 
 </div>
 
@@ -186,6 +219,16 @@ requireAuth(async (user) => {
     document.getElementById('e-name').value    = name    !== 'Not set' ? name    : '';
     document.getElementById('e-company').value = company !== 'Not set' ? company : '';
     document.getElementById('e-phone').value   = phone   !== 'Not set' ? phone   : '';
+    const address = d.address || ''; const gstin = d.gstin || '';
+    if (document.getElementById('f-address')) document.getElementById('f-address').textContent = address || '—';
+    if (document.getElementById('f-gstin'))   document.getElementById('f-gstin').textContent   = gstin   || '—';
+    if (document.getElementById('e-address')) document.getElementById('e-address').value = address;
+    if (document.getElementById('e-gstin'))   document.getElementById('e-gstin').value   = gstin;
+    // Load notification prefs
+    const prefs = d.notifPrefs || {};
+    if (document.getElementById('pref-updates')) document.getElementById('pref-updates').checked = prefs.updates !== false;
+    if (document.getElementById('pref-payment')) document.getElementById('pref-payment').checked = prefs.payment !== false;
+    if (document.getElementById('pref-urgent'))  document.getElementById('pref-urgent').checked  = prefs.urgent  !== false;
 
   } catch(e) {
     document.getElementById('f-name').textContent  = user.email.split('@')[0];
@@ -209,6 +252,9 @@ window.saveProfile = async function() {
     const newCompany = document.getElementById('e-company').value.trim();
     const newPhone   = document.getElementById('e-phone').value.trim();
 
+    const newAddress = document.getElementById('e-address')?.value.trim() || '';
+    const newGstin   = document.getElementById('e-gstin')?.value.trim().toUpperCase() || '';
+
     await updateDoc(doc(db, 'users', currentUser.uid), {
       name:        newName,
       fullName:    newName,
@@ -216,12 +262,16 @@ window.saveProfile = async function() {
       companyName: newCompany,
       phone:       newPhone,
       mobile:      newPhone,
+      address:     newAddress,
+      gstin:       newGstin,
     });
 
     // Update view
     document.getElementById('f-name').textContent    = newName    || '—';
     document.getElementById('f-company').textContent = newCompany || '—';
     document.getElementById('f-phone').textContent   = newPhone   || '—';
+    if (document.getElementById('f-address')) document.getElementById('f-address').textContent = newAddress || '—';
+    if (document.getElementById('f-gstin'))   document.getElementById('f-gstin').textContent   = newGstin   || '—';
     document.getElementById('displayName').textContent = newName  || '—';
     const initials = newName.split(' ').map(w=>w[0]||'').join('').substring(0,2).toUpperCase();
     document.getElementById('avatarInitials').textContent = initials || '?';
@@ -233,6 +283,21 @@ window.saveProfile = async function() {
   } finally {
     btn.textContent = 'Save Changes'; btn.disabled = false;
   }
+};
+
+// ── NOTIFICATION PREFS ──
+window.saveNotifPrefs = async function() {
+  if (!currentUser) return;
+  try {
+    const prefs = {
+      updates: document.getElementById('pref-updates')?.checked !== false,
+      payment: document.getElementById('pref-payment')?.checked !== false,
+      urgent:  document.getElementById('pref-urgent')?.checked  !== false,
+    };
+    await updateDoc(doc(db, 'users', currentUser.uid), { notifPrefs: prefs });
+    const log = document.getElementById('prefLog');
+    if (log) { log.style.display = 'block'; setTimeout(() => { log.style.display = 'none'; }, 2500); }
+  } catch(e) { console.warn('Prefs save:', e); }
 };
 
 // ── LOGOUT ──
