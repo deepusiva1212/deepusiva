@@ -502,6 +502,63 @@ input, select, textarea { font-family: var(--font-body); }
 /* ══════════════════════════════════
    MOBILE APP MODE  (≤ 768px)
 ══════════════════════════════════ */
+
+/* ══ ACCENT COLORS — 8 OPTIONS ═══════════════════════
+   Controlled via body.accent-* class
+   Set from Director Portal → Theme tab
+═══════════════════════════════════════════════════ */
+body.accent-blue   { --green:#2563eb; --green2:#1d4ed8; --green3:#1e3a8a; --green-light:#dbeafe; --green-pale:#eff6ff; }
+body.accent-gold   { --green:#d97706; --green2:#b45309; --green3:#92400e; --green-light:#fef3c7; --green-pale:#fffbeb; }
+body.accent-red    { --green:#dc2626; --green2:#b91c1c; --green3:#991b1b; --green-light:#fee2e2; --green-pale:#fff5f5; }
+body.accent-purple { --green:#7c3aed; --green2:#6d28d9; --green3:#5b21b6; --green-light:#ede9fe; --green-pale:#f5f3ff; }
+body.accent-teal   { --green:#0d9488; --green2:#0f766e; --green3:#115e59; --green-light:#ccfbf1; --green-pale:#f0fdfa; }
+body.accent-orange { --green:#ea580c; --green2:#c2410c; --green3:#9a3412; --green-light:#ffedd5; --green-pale:#fff7ed; }
+body.accent-pink   { --green:#db2777; --green2:#be185d; --green3:#9d174d; --green-light:#fce7f3; --green-pale:#fdf2f8; }
+
+/* ══ DARK MODE ══════════════════════════════════════ */
+body.dark-mode {
+  --bg:#0d1117; --bg2:#161b22; --bg3:#21262d;
+  --text:#f0f6fc; --text2:#c9d1d9;
+  --border:#30363d; --border2:#484f58;
+  --white:#161b22; --muted:#8b949e;
+}
+body.dark-mode .site-nav,
+body.dark-mode .topbar          { background:#0d1117; border-color:#30363d; }
+body.dark-mode .svc-card,
+body.dark-mode .proj-card,
+body.dark-mode .why-badge,
+body.dark-mode .ind-card        { background:#161b22; border-color:#30363d; }
+body.dark-mode #home            { background:linear-gradient(150deg,#0d1117 0%,#161b22 100%); }
+
+/* ══ CANVAS BACKGROUND ══════════════════════════════ */
+#bgCanvas {
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none; z-index:0;
+  opacity:0; transition:opacity 1s ease;
+}
+#bgCanvas.active { opacity:1; }
+body > *:not(#bgCanvas) { position:relative; z-index:1; }
+
+/* ══ THEME TOGGLE BUTTON ════════════════════════════ */
+#themeToggleBtn {
+  position:fixed; bottom:90px; left:16px;
+  width:42px; height:42px;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:800;
+  box-shadow:0 2px 12px rgba(0,0,0,.12);
+  transition:all .2s; color:var(--text2);
+}
+#themeToggleBtn:hover { transform:scale(1.1); border-color:var(--green); }
+
+/* ══ DYNAMIC BANNER ═════════════════════════════════ */
+#cms-banner { display:none; width:100%; overflow:hidden; position:relative; max-height:320px; }
+#cms-banner img { width:100%; height:320px; object-fit:cover; object-position:center; display:block; }
+#cms-banner-close { position:absolute; top:10px; right:14px; background:rgba(0,0,0,.5); color:#fff; border:none; border-radius:50%; width:28px; height:28px; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10; }
+#cms-banner-text  { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(0,0,0,.65)); color:#fff; padding:20px 24px 16px; font-size:16px; font-weight:600; }
+
 @media (max-width: 768px) {
 
 /* ══ GLOBAL MOBILE FOUNDATION ══════════════════════ */
