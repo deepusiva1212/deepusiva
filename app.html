@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Deepu Siva"/>
+<meta name="theme-color" content="#16a34a"/>
+<title>Deepu Siva App</title>
+<link rel="manifest" href="manifest.json"/>
+<style>
+/* ═══════════════════════════════════════════════
+   DEEPU SIVA APP — Native-feel PWA
+   Role-based: Director | Client
+   ═══════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --green:#16a34a;--green2:#15803d;--green3:#166534;
+  --green-light:#dcfce7;--green-pale:#f0fdf4;
+  --amber:#f59e0b;--red:#dc2626;--blue:#2563eb;
+  --bg:#f8fafc;--white:#ffffff;--border:#e2e8f0;
+  --text:#0f172a;--text2:#374151;--muted:#6b7280;
+  --radius:12px;--radius-lg:16px;--radius-xl:20px;
+  --nav-h:calc(62px + env(safe-area-inset-bottom,0px));
+  --header-h:calc(56px + env(safe-area-inset-top,0px));
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;display:flex;flex-direction:column;}
+
+/* ═══ SPLASH ════════════════════════════════════ */
+#splash{position:fixed;inset:0;background:linear-gradient(160deg,#0f2318 0%,#16a34a 100%);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,transform .5s;}
+#splash.hide{opacity:0;transform:scale(1.05);pointer-events:none;}
+.splash-logo{width:90px;height:90px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);border-radius:28px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:splashPop .6s cubic-bezier(.34,1.56,.64,1) .2s both;}
+@keyframes splashPop{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.splash-title{font-size:26px;font-weight:800;color:#fff;letter-spacing:.5px;animation:fadeUp .5s .5s both;}
+.splash-sub{font-size:13px;color:rgba(255,255,255,.6);margin-top:6px;letter-spacing:1px;text-transform:uppercase;animation:fadeUp .5s .65s both;}
+.splash-loader{width:40px;height:3px;background:rgba(255,255,255,.2);border-radius:2px;margin-top:48px;overflow:hidden;animation:fadeUp .5s .8s both;}
+.splash-loader-fill{height:100%;background:#fff;border-radius:2px;animation:load 1.5s .8s ease-in-out both;}
+@keyframes load{from{width:0}to{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ═══ APP HEADER ════════════════════════════════ */
+.app-header{background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;height:var(--header-h);padding-top:env(safe-area-inset-top,0px);display:flex;align-items:flex-end;padding-bottom:12px;justify-content:space-between;position:relative;z-index:100;flex-shrink:0;}
+.header-brand{display:flex;align-items:center;gap:10px;}
+.header-brand-icon{width:34px;height:34px;background:var(--green);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.header-title{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.3px;}
+.header-title span{color:var(--green);}
+.header-right{display:flex;align-items:center;gap:8px;}
+.header-icon-btn{width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);position:relative;}
+.header-icon-btn:active{transform:scale(.92);}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--white);}
+
+/* ═══ MAIN CONTENT ══════════════════════════════ */
+.app-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding-bottom:4px;}
+.app-body::-webkit-scrollbar{display:none;}
+
+/* ═══ SCREENS ═══════════════════════════════════ */
+.screen{display:none;animation:screenIn .25s ease both;}
+.screen.active{display:block;}
+@keyframes screenIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* ═══ BOTTOM TAB BAR ════════════════════════════ */
+.tab-bar{background:var(--white);border-top:1px solid var(--border);height:var(--nav-h);padding-bottom:env(safe-area-inset-bottom,0px);display:flex;align-items:flex-start;padding-top:8px;flex-shrink:0;box-shadow:0 -2px 16px rgba(0,0,0,.06);}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.2px;text-transform:uppercase;border:none;background:none;font-family:var(--font);padding:0 2px;transition:color .15s;position:relative;}
+.tab-item.active{color:var(--green);}
+.tab-item:active{transform:scale(.9);}
+.tab-icon{width:28px;height:28px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.tab-item.active .tab-icon{background:var(--green-light);}
+.tab-badge{position:absolute;top:0;right:calc(50% - 22px);background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:10px;border:2px solid var(--white);}
+
+/* ═══ SHARED COMPONENTS ═════════════════════════ */
+/* Section header */
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 8px;}
+.sec-title{font-size:17px;font-weight:700;color:var(--text);}
+.sec-action{font-size:13px;font-weight:600;color:var(--green);cursor:pointer;}
+
+/* Cards */
+.card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;margin-bottom:10px;}
+.card-pad{padding:16px;}
+
+/* Stat strip */
+.stat-strip{display:grid;gap:10px;padding:0 16px 4px;}
+.stat-strip.cols-2{grid-template-columns:1fr 1fr;}
+.stat-strip.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.stat-box{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;text-align:center;}
+.stat-box-val{font-size:26px;font-weight:800;color:var(--green);line-height:1;font-family:var(--font);}
+.stat-box-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:4px;}
+
+/* Hero banner */
+.hero-banner{background:linear-gradient(135deg,var(--green3) 0%,var(--green) 100%);padding:20px 16px;color:#fff;position:relative;overflow:hidden;}
+.hero-banner::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;border:2px solid rgba(255,255,255,.1);border-radius:50%;}
+.hero-banner h2{font-size:20px;font-weight:800;color:#fff;}
+.hero-banner p{font-size:13px;opacity:.8;margin-top:4px;}
+.hero-greeting{font-size:13px;opacity:.7;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
+
+/* Chip / tag */
+.chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.chip-green{background:var(--green-light);color:var(--green3);}
+.chip-amber{background:#fef3c7;color:#92400e;}
+.chip-red{background:#fee2e2;color:#991b1b;}
+.chip-blue{background:#dbeafe;color:#1e40af;}
+.chip-gray{background:#f3f4f6;color:var(--muted);}
+
+/* List items */
+.list-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);}
+.list-item:last-child{border-bottom:none;}
+.list-item:active{background:var(--green-pale);}
+.list-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.list-body{flex:1;min-width:0;}
+.list-title{font-size:15px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.list-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.list-right{text-align:right;flex-shrink:0;}
+.list-val{font-size:15px;font-weight:700;color:var(--text);}
+.list-time{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* Quick actions grid */
+.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:4px 16px 8px;}
+.qa-btn{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 8px;text-align:center;cursor:pointer;transition:.15s;text-decoration:none;display:block;}
+.qa-btn:active{transform:scale(.93);background:var(--green-pale);}
+.qa-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
+.qa-label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.3px;line-height:1.3;}
+
+/* Progress bar */
+.progress-wrap{background:var(--bg);border-radius:4px;height:8px;overflow:hidden;margin:8px 0;}
+.progress-fill{height:100%;border-radius:4px;background:var(--green);transition:width .8s ease;}
+
+/* Notification item */
+.notif-item{padding:14px 16px;border-bottom:1px solid var(--border);cursor:default;}
+.notif-item.unread{background:var(--green-pale);}
+.notif-item:active{background:var(--bg);}
+.notif-icon-wrap{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.notif-title{font-size:14px;font-weight:700;color:var(--text);}
+.notif-body{font-size:12px;color:var(--muted);margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.notif-time{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* Empty state */
+.empty-state{text-align:center;padding:56px 24px;color:var(--muted);}
+.empty-state p{font-size:14px;margin-top:8px;line-height:1.5;}
+
+/* FAB */
+.fab{position:fixed;bottom:calc(var(--nav-h) + 16px);right:16px;width:52px;height:52px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(22,163,74,.35);transition:.2s;z-index:50;}
+.fab:active{transform:scale(.92);}
+
+/* Toast */
+.app-toast{position:fixed;bottom:calc(var(--nav-h) + 10px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;padding:12px 20px;border-radius:var(--radius);font-size:14px;font-weight:600;z-index:200;opacity:0;transition:.3s;white-space:nowrap;pointer-events:none;max-width:calc(100vw - 32px);text-align:center;}
+.app-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.app-toast.ok{background:var(--green3);}
+.app-toast.err{background:var(--red);}
+
+/* Overlay / modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:var(--white);border-radius:24px 24px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding:16px 0 env(safe-area-inset-bottom,16px);}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
+.modal-title{font-size:18px;font-weight:700;color:var(--text);padding:0 16px 14px;border-bottom:1px solid var(--border);}
+
+/* Pull refresh indicator */
+.pull-indicator{text-align:center;padding:12px;font-size:12px;color:var(--muted);display:none;}
+
+/* Auth screen */
+#authScreen{position:fixed;inset:0;background:var(--white);z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+#authScreen.show{display:flex;}
+.auth-logo{width:80px;height:80px;background:linear-gradient(135deg,var(--green3),var(--green));border-radius:24px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
+.auth-title{font-size:26px;font-weight:800;color:var(--text);text-align:center;margin-bottom:6px;}
+.auth-sub{font-size:14px;color:var(--muted);text-align:center;margin-bottom:32px;}
+.auth-form{width:100%;max-width:360px;}
+.auth-input{width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:14px 16px;border-radius:var(--radius-lg);font-family:var(--font);font-size:16px;outline:none;margin-bottom:12px;transition:.2s;}
+.auth-input:focus{border-color:var(--green);}
+.auth-btn{width:100%;background:var(--green);color:#fff;border:none;padding:16px;border-radius:var(--radius-lg);font-family:var(--font);font-size:17px;font-weight:700;cursor:pointer;transition:.2s;}
+.auth-btn:active{background:var(--green2);}
+.auth-btn:disabled{opacity:.6;}
+.auth-err{color:var(--red);font-size:13px;text-align:center;margin-top:8px;display:none;}
+
+/* Section padding */
+.px{padding-left:16px;padding-right:16px;}
+.pt{padding-top:16px;}
+.pb{padding-bottom:16px;}
+
+/* Lead item */
+.lead-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;}
+.lead-item:active{background:var(--green-pale);}
+.lead-avatar{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--amber),#f97316);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800;flex-shrink:0;}
+.lead-avatar.medium{background:linear-gradient(135deg,var(--green2),var(--green));}
+
+/* Invoice item */
+.inv-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);}
+.inv-num{font-family:monospace;font-size:13px;font-weight:700;color:var(--green3);}
+.inv-party{font-size:15px;font-weight:600;color:var(--text);}
+.inv-amt{font-size:16px;font-weight:800;color:var(--green3);text-align:right;}
+
+/* Profile screen */
+.prof-banner{background:linear-gradient(135deg,var(--green3),var(--green));padding:32px 16px 28px;text-align:center;color:#fff;}
+.prof-avatar{width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;font-weight:800;color:#fff;}
+.prof-name{font-size:20px;font-weight:800;color:#fff;}
+.prof-email{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px;}
+.prof-badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-top:8px;}
+.prof-menu-item{display:flex;align-items:center;gap:14px;padding:16px 16px;border-bottom:1px solid var(--border);cursor:pointer;text-decoration:none;}
+.prof-menu-item:active{background:var(--bg);}
+.prof-menu-label{font-size:15px;font-weight:500;color:var(--text);}
+.prof-menu-icon{width:36px;height:36px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--green3);}
+
+/* Role badge */
+.role-director{background:#fef3c7;color:#92400e;}
+.role-client{background:var(--green-light);color:var(--green3);}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="splash-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+  </div>
+  <div class="splash-title">Deepu Siva</div>
+  <div class="splash-sub">Private Limited</div>
+  <div class="splash-loader"><div class="splash-loader-fill"></div></div>
+</div>
+
+<div id="authScreen">
+  <div class="auth-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+  </div>
+  <h1 class="auth-title">Welcome Back</h1>
+  <p class="auth-sub">Sign in to your Deepu Siva account</p>
+  <div class="auth-form">
+    <input class="auth-input" type="email" id="authEmail" placeholder="Email address" autocomplete="email"/>
+    <input class="auth-input" type="password" id="authPassword" placeholder="Password" autocomplete="current-password"/>
+    <button class="auth-btn" id="authBtn" onclick="doSignIn()">Sign In</button>
+    <div class="auth-err" id="authErr"></div>
+    <div style="text-align:center;margin-top:16px;">
+      <a href="login.html" style="font-size:13px;color:var(--green);font-weight:600;">Forgot password? Use browser instead →</a>
+    </div>
+  </div>
+</div>
+
+<div id="appShell" style="display:none;flex-direction:column;height:100dvh;">
+
+  <div class="app-header" id="appHeader">
+    <div class="header-brand">
+      <div class="header-brand-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+      </div>
+      <div class="header-title">Deepu <span>Siva</span></div>
+    </div>
+    <div class="header-right">
+      <div class="header-icon-btn" onclick="showTab('notifications')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot" id="headerNotifDot" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-body" id="appBody">
+
+    <div class="screen" id="screen-home-director">
+      <div class="hero-banner">
+        <div class="hero-greeting">Good day, Director</div>
+        <h2 id="directorName">Deepadharsan</h2>
+        <p>Here's your business at a glance</p>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span class="chip" style="background:rgba(255,255,255,.15);color:#fff;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="10"/></svg>
+            Live Data
+          </span>
+          <span class="chip role-director">Director</span>
+        </div>
+      </div>
+
+      <div class="stat-strip cols-3" style="margin-top:12px;">
+        <div class="stat-box">
+          <div class="stat-box-val" id="d-invoices">—</div>
+          <div class="stat-box-lbl">Invoices</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-val" id="d-leads" style="color:var(--amber);">—</div>
+          <div class="stat-box-lbl">Solar Leads</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-val" id="d-orders" style="color:var(--blue);">—</div>
+          <div class="stat-box-lbl">Orders</div>
+        </div>
+      </div>
+
+      <div class="sec-head"><div class="sec-title">Quick Actions</div></div>
+      <div class="qa-grid">
+        <a href="admin-erp.html" class="qa-btn">
+          <div class="qa-icon" style="background:#dcfce7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+          <div class="qa-label">ERP</div>
+        </a>
+        <a href="director-portal.html" class="qa-btn">
+          <div class="qa-icon" style="background:#fef3c7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+          <div class="qa-label">Portal</div>
+        </a>
+        <a href="admin-shop.html" class="qa-btn">
+          <div class="qa-icon" style="background:#dbeafe;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+          <div class="qa-label">Shop</div>
+        </a>
+        <a href="solar-calculator.html" class="qa-btn">
+          <div class="qa-icon" style="background:#fef3c7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></div>
+          <div class="qa-label">Solar Calc</div>
+        </a>
+      </div>
+
+      <div class="sec-head">
+        <div class="sec-title">🔥 Hot Solar Leads</div>
+        <div class="sec-action" onclick="showTab('solar')">See all</div>
+      </div>
+      <div class="card" style="margin:0 16px 10px;">
+        <div id="hotLeadsList">
+          <div class="empty-state" style="padding:32px 24px;">
+            <p>Loading leads…</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <div class="sec-title">Recent Invoices</div>
+        <a href="admin-erp.html" class="sec-action">Open ERP</a>
+      </div>
+      <div class="card" style="margin:0 16px 20px;">
+        <div id="recentInvList">
+          <div class="empty-state" style="padding:32px 24px;">
+            <p>Loading invoices…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-home-client">
+      <div class="hero-banner">
+        <div class="hero-greeting">Welcome back</div>
+        <h2 id="clientName">Client</h2>
+        <p>Your project dashboard</p>
+        <div style="margin-top:12px;">
+          <span class="chip role-client">Active Account</span>
+        </div>
+      </div>
+
+      <div class="stat-strip cols-3" style="margin-top:12px;">
+        <div class="stat-box">
+          <div class="stat-box-val" id="c-bills">—</div>
+          <div class="stat-box-lbl">Bills</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-val" id="c-paid" style="color:var(--green);">—</div>
+          <div class="stat-box-lbl">Paid</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-val" id="c-updates" style="color:var(--blue);">—</div>
+          <div class="stat-box-lbl">Updates</div>
+        </div>
+      </div>
+
+      <div class="sec-head"><div class="sec-title">Quick Actions</div></div>
+      <div class="qa-grid">
+        <a href="my-bills.html" class="qa-btn">
+          <div class="qa-icon" style="background:#dcfce7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="qa-label">My Bills</div>
+        </a>
+        <a href="payments.html" class="qa-btn">
+          <div class="qa-icon" style="background:#fef3c7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+          <div class="qa-label">Payments</div>
+        </a>
+        <a href="my-sites.html" class="qa-btn">
+          <div class="qa-icon" style="background:#dbeafe;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="qa-label">My Sites</div>
+        </a>
+        <a href="updates.html" class="qa-btn">
+          <div class="qa-icon" style="background:#f3e8ff;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+          <div class="qa-label">Updates</div>
+        </a>
+      </div>
+
+      <div class="sec-head">
+        <div class="sec-title">Latest Updates</div>
+        <a href="updates.html" class="sec-action">See all</a>
+      </div>
+      <div class="card" style="margin:0 16px 10px;">
+        <div id="clientUpdatesList">
+          <div class="empty-state" style="padding:32px 24px;">
+            <p>Loading updates…</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin:4px 16px 24px;">
+        <div style="background:var(--green3);border-radius:var(--radius-lg);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#fff;">Need help?</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:2px;">+91 84890 90666</div>
+          </div>
+          <a href="https://wa.me/918489090666" style="background:#25d366;color:#fff;padding:10px 16px;border-radius:var(--radius);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-solar">
+      <div class="sec-head" style="padding-top:20px;">
+        <div class="sec-title">☀️ Solar Leads</div>
+        <div class="sec-action" onclick="loadSolarLeads()">↻ Refresh</div>
+      </div>
+      <div style="padding:0 16px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;">
+        <button class="chip chip-gray" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('all',this)">All</button>
+        <button class="chip chip-red" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('new',this)">New</button>
+        <button class="chip chip-blue" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('called',this)">Called</button>
+        <button class="chip chip-amber" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('visit',this)">Site Visit</button>
+        <button class="chip chip-green" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('won',this)">Won</button>
+      </div>
+      <div class="card" style="margin:8px 16px 20px;" id="leadsListCard">
+        <div class="empty-state"><p>Loading leads…</p></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-notifications">
+      <div class="sec-head" style="padding-top:20px;">
+        <div class="sec-title">Notifications</div>
+        <div class="sec-action" id="markAllBtn" onclick="markAllNotifRead()">Mark all read</div>
+      </div>
+      <div class="card" style="margin:0 16px 20px;" id="notifListCard">
+        <div class="empty-state"><p>Loading…</p></div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-profile">
+      <div class="prof-banner">
+        <div class="prof-avatar" id="profAvatar">DS</div>
+        <div class="prof-name" id="profName">Loading…</div>
+        <div class="prof-email" id="profEmail">—</div>
+        <div class="prof-badge" id="profRole">—</div>
+      </div>
+      <div class="card" style="margin:16px 16px 8px;">
+        <a href="dashboard.html" class="prof-menu-item">
+          <div class="prof-menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+          <div class="prof-menu-label">Full Portal Dashboard</div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="profile.html" class="prof-menu-item">
+          <div class="prof-menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="prof-menu-label">Edit Profile</div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="index.html" class="prof-menu-item">
+          <div class="prof-menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="prof-menu-label">Main Website</div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="solar-calculator.html" class="prof-menu-item">
+          <div class="prof-menu-icon" style="background:#fef3c7;color:#d97706;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></div>
+          <div class="prof-menu-label">Solar Calculator</div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+      <div class="card" style="margin:0 16px 24px;">
+        <div class="prof-menu-item" onclick="doSignOut()" style="cursor:pointer;">
+          <div class="prof-menu-icon" style="background:#fee2e2;color:var(--red);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+          <div class="prof-menu-label" style="color:var(--red);">Sign Out</div>
+        </div>
+      </div>
+    </div>
+
+  </div><div class="tab-bar" id="tabBar">
+    </div>
+
+</div><div class="app-toast" id="appToast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, browserLocalPersistence, setPersistence }
+  from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import {
+  getFirestore, collection, getDocs, query, orderBy, limit,
+  where, doc, getDoc, updateDoc, onSnapshot, serverTimestamp, writeBatch
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+  authDomain:"deepu-siva-portal.firebaseapp.com",
+  projectId:"deepu-siva-portal",
+  storageBucket:"deepu-siva-portal.firebasestorage.app",
+  messagingSenderId:"1014351018202",
+  appId:"1:1014351018202:web:16d2578f726159e5ef8de3"
+};
+
+const ADMIN_EMAILS = ["deepadharsan.rajavel@gmail.com","deepusiva.pvt@gmail.com","contact@deepusiva.com","deepusiva2017@gmail.com","deepusiva947@gmail.com"];
+
+let CONFIG = {DIRECTOR_EMAIL:'',DIRECTOR_UID:''};
+try { const m = await import('./config.js'); CONFIG = m.default||m; } catch(e) {}
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+await setPersistence(auth, browserLocalPersistence);
+
+// ── STATE ──────────────────────────────────────────
+let currentUser = null;
+let userRole    = 'client'; // 'director' | 'client'
+let userData    = {};
+let _allLeads   = [];
+let _activeTab  = 'home';
+
+// ── SPLASH + BOOT ──────────────────────────────────
+setTimeout(async () => {
+  await auth.authStateReady();
+  const splash = document.getElementById('splash');
+
+  if (!auth.currentUser) {
+    splash.classList.add('hide');
+    setTimeout(() => splash.style.display='none', 600);
+    document.getElementById('authScreen').classList.add('show');
+    return;
+  }
+
+  currentUser = auth.currentUser;
+  await bootApp();
+  splash.classList.add('hide');
+  setTimeout(() => splash.style.display='none', 600);
+}, 1800);
+
+// ── AUTH ────────────────────────────────────────────
+window.doSignIn = async function() {
+  const email    = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const btn      = document.getElementById('authBtn');
+  const err      = document.getElementById('authErr');
+
+  if (!email || !password) { err.textContent='Enter email and password.'; err.style.display='block'; return; }
+  err.style.display='none';
+  btn.textContent='Signing in…'; btn.disabled=true;
+
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    currentUser = cred.user;
+    document.getElementById('authScreen').classList.remove('show');
+    await bootApp();
+  } catch(e) {
+    err.textContent = e.code==='auth/wrong-password'||e.code==='auth/user-not-found'
+      ? 'Invalid email or password.' : e.message;
+    err.style.display='block';
+  } finally {
+    btn.textContent='Sign In'; btn.disabled=false;
+  }
+};
+
+window.doSignOut = async function() {
+  await signOut(auth);
+  window.location.reload();
+};
+
+// ── BOOT APP ────────────────────────────────────────
+async function bootApp() {
+  // Load user data + determine role
+  try {
+    const snap = await getDoc(doc(db,'users',currentUser.uid));
+    userData = snap.exists() ? snap.data() : {};
+  } catch(e) { userData = {}; }
+
+  const email = (currentUser.email||'').toLowerCase();
+  const cfgEmail = (CONFIG.DIRECTOR_EMAIL||'').toLowerCase();
+  const isAdmin = ADMIN_EMAILS.map(e=>e.toLowerCase()).includes(email)
+               || (cfgEmail && email===cfgEmail)
+               || userData.role === 'admin';
+
+  userRole = isAdmin ? 'director' : 'client';
+
+  // Show app shell
+  const shell = document.getElementById('appShell');
+  shell.style.display = 'flex';
+
+  // Build tab bar for role
+  buildTabBar();
+
+  // Set profile info
+  const name = userData.name || userData.fullName || currentUser.email.split('@')[0];
+  document.getElementById('profAvatar').textContent = name.substring(0,2).toUpperCase();
+  document.getElementById('profName').textContent   = name;
+  document.getElementById('profEmail').textContent  = currentUser.email;
+  document.getElementById('profRole').textContent   = isAdmin ? 'Director' : 'Client';
+
+  // Load initial tab
+  if (isAdmin) {
+    document.getElementById('directorName').textContent = name.split(' ')[0];
+    showTab('home');
+    loadDirectorHome();
+  } else {
+    document.getElementById('clientName').textContent = name.split(' ')[0];
+    showTab('home');
+    loadClientHome();
+  }
+
+  // Real-time notifications
+  startNotifListener();
+}
+
+// ── TAB BAR ─────────────────────────────────────────
+function buildTabBar() {
+  const bar = document.getElementById('tabBar');
+  if (userRole === 'director') {
+    bar.innerHTML = `
+      <button class="tab-item active" id="tab-home" onclick="showTab('home')">
+        <div class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        Home
+      </button>
+      <button class="tab-item" id="tab-solar" onclick="showTab('solar')">
+        <div class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div>
+        Solar
+        <span class="tab-badge" id="solar-badge" style="display:none;"></span>
+      </button>
+      <button class="tab-item" id="tab-notifications" onclick="showTab('notifications')">
+        <div class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        Alerts
+        <span class="tab-badge" id="notif-badge" style="display:none;"></span>
+      </button>
+      <button class="tab-item" id="tab-profile" onclick="showTab('profile')">
+        <div class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        Profile
+      </button>`;
+  } else {
+    bar.innerHTML = `
+      <button class="tab-item active" id="tab-home" onclick="showTab('home')">
+        <div class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        Home
+      </button>
+      <button class="tab-item" id="tab-notifications" onclick="showTab('notifications')">
+        <div class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        Alerts
+        <span class="tab-badge" id="notif-badge" style="display:none;"></span>
+      </button>
+      <button class="tab-item" id="tab-profile" onclick="showTab('profile')">
+        <div class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        Profile
+      </button>`;
+  }
+}
+
+// ── SHOW TAB ─────────────────────────────────────────
+window.showTab = function(tab) {
+  _activeTab = tab;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+
+  const screenId = userRole === 'director' && tab === 'home'
+    ? 'screen-home-director' : tab === 'home' ? 'screen-home-client' : 'screen-' + tab;
+  const screen = document.getElementById(screenId);
+  if (screen) screen.classList.add('active');
+
+  const tabEl = document.getElementById('tab-' + tab);
+  if (tabEl) tabEl.classList.add('active');
+
+  // Scroll to top
+  document.getElementById('appBody').scrollTo({top:0,behavior:'instant'});
+
+  // Lazy load
+  if (tab === 'solar') loadSolarLeads();
+  if (tab === 'notifications') loadNotifications();
+};
+
+// ── DIRECTOR HOME ────────────────────────────────────
+async function loadDirectorHome() {
+  try {
+    const [invSnap, leadSnap, orderSnap] = await Promise.all([
+      getDocs(query(collection(db,'erp_documents'), where('ownerUid','==',currentUser.uid), where('docType','==','invoice'), limit(5))),
+      getDocs(collection(db,'solar_leads')),
+      getDocs(collection(db,'orders')),
+    ]);
+
+    document.getElementById('d-invoices').textContent = invSnap.size;
+    document.getElementById('d-leads').textContent    = leadSnap.size;
+    document.getElementById('d-orders').textContent   = orderSnap.size;
+
+    // Hot leads (new/high priority)
+    _allLeads = leadSnap.docs.map(d=>({id:d.id,...d.data()}));
+    const hot = _allLeads.filter(l=>(l.status||'new')==='new' && l.priority==='high').slice(0,4);
+    const hotEl = document.getElementById('hotLeadsList');
+    if (!hot.length) {
+      const allNew = _allLeads.filter(l=>(l.status||'new')==='new').slice(0,4);
+      renderHotLeads(allNew, hotEl);
+    } else {
+      renderHotLeads(hot, hotEl);
+    }
+
+    // Solar badge
+    const newLeads = _allLeads.filter(l=>(l.status||'new')==='new').length;
+    const sb = document.getElementById('solar-badge');
+    if (sb && newLeads>0) { sb.textContent=newLeads; sb.style.display='block'; }
+
+    // Recent invoices
+    const invs = invSnap.docs.map(d=>({id:d.id,...d.data()}))
+      .sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+    const invEl = document.getElementById('recentInvList');
+    if (!invs.length) { invEl.innerHTML='<div class="empty-state" style="padding:24px;"><p>No invoices yet.</p></div>'; }
+    else {
+      invEl.innerHTML = invs.map(inv=>`
+        <div class="inv-item">
+          <div style="flex:1;min-width:0;">
+            <div class="inv-num">${inv.docNumber||'—'}</div>
+            <div class="inv-party">${inv.toName||'—'}</div>
+          </div>
+          <div>
+            <div class="inv-amt">₹${(inv.grandTotal||0).toLocaleString('en-IN')}</div>
+            <div style="text-align:right;margin-top:2px;">
+              <span class="chip ${inv.status==='paid'?'chip-green':inv.status==='final'?'chip-blue':'chip-gray'}">${inv.status||'draft'}</span>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+  } catch(e) { console.error('Director home:', e); }
+}
+
+function renderHotLeads(leads, container) {
+  if (!leads.length) {
+    container.innerHTML = '<div class="empty-state" style="padding:28px;"><p>No new leads. Great job! 🎉</p></div>';
+    return;
+  }
+  container.innerHTML = leads.map(l => {
+    const initials = (l.name||'?').substring(0,2).toUpperCase();
+    const phone    = (l.phone||'').replace('+91','').replace(/\D/g,'');
+    const waPhone  = '91' + phone;
+    const kw       = l.calcResult?.actualKW ? l.calcResult.actualKW.toFixed(1)+'kW' : '—';
+    return `
+      <div class="lead-item">
+        <div class="lead-avatar ${l.priority==='high'?'':'medium'}">${initials}</div>
+        <div class="list-body">
+          <div class="list-title">${l.name||'Unknown'}</div>
+          <div class="list-sub">${l.phone||'—'} · ${kw} · ${l.propertyType||'—'}</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <a href="tel:${l.phone||''}" style="width:34px;height:34px;background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--green3);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.58 3.56a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+          <a href="https://wa.me/${waPhone}" target="_blank" style="width:34px;height:34px;background:#dcfce7;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#16a34a;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+          </a>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── CLIENT HOME ──────────────────────────────────────
+async function loadClientHome() {
+  try {
+    const [billSnap, updateSnap] = await Promise.all([
+      getDocs(collection(db,'users',currentUser.uid,'invoices')),
+      getDocs(query(collection(db,'users',currentUser.uid,'updates'),orderBy('timestamp','desc'),limit(5))),
+    ]);
+
+    const bills = billSnap.docs.map(d=>d.data());
+    const paid  = bills.filter(b=>b.status==='paid').length;
+    document.getElementById('c-bills').textContent   = bills.length;
+    document.getElementById('c-paid').textContent    = paid;
+    document.getElementById('c-updates').textContent = updateSnap.size;
+
+    const updEl = document.getElementById('clientUpdatesList');
+    const updates = updateSnap.docs.map(d=>({id:d.id,...d.data()}));
+    if (!updates.length) {
+      updEl.innerHTML = '<div class="empty-state" style="padding:28px;"><p>No updates yet. Your project manager will post here.</p></div>';
+    } else {
+      updEl.innerHTML = updates.map(u => {
+        const ts = u.timestamp?.toDate ? u.timestamp.toDate().toLocaleDateString('en-IN',{day:'2-digit',month:'short'}) : '—';
+        return `
+          <div class="list-item">
+            <div class="list-icon" style="background:var(--green-pale);color:var(--green3);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+            </div>
+            <div class="list-body">
+              <div class="list-title">${u.title||'Update'}</div>
+              <div class="list-sub">${(u.detail||'').substring(0,50)}${(u.detail||'').length>50?'…':''}</div>
+            </div>
+            <div class="list-right">
+              <div class="list-time">${ts}</div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+  } catch(e) { console.error('Client home:', e); }
+}
+
+// ── SOLAR LEADS ──────────────────────────────────────
+let _leadsFilter = 'all';
+
+window.loadSolarLeads = async function() {
+  const card = document.getElementById('leadsListCard');
+  card.innerHTML = '<div class="empty-state"><p>Loading…</p></div>';
+  try {
+    const snap = await getDocs(collection(db,'solar_leads'));
+    _allLeads  = snap.docs.map(d=>({id:d.id,...d.data()}))
+      .sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+    renderLeadsApp(_allLeads, _leadsFilter);
+  } catch(e) { card.innerHTML=`<div class="empty-state"><p style="color:var(--red);">Error: ${e.message}</p></div>`; }
+};
+
+window.filterLeadsApp = function(status, btn) {
+  _leadsFilter = status;
+  document.querySelectorAll('.screen[id=screen-solar] button').forEach(b => {
+    b.style.fontWeight = b === btn ? '800' : '600';
+    b.style.opacity    = b === btn ? '1' : '.65';
+  });
+  renderLeadsApp(_allLeads, status);
+};
+
+function renderLeadsApp(leads, filter) {
+  const card = document.getElementById('leadsListCard');
+  const filtered = filter==='all' ? leads : leads.filter(l=>(l.status||'new')===filter);
+
+  if (!filtered.length) {
+    card.innerHTML = '<div class="empty-state"><p>No leads for this filter.</p></div>';
+    return;
+  }
+
+  const statusColors = { new:'chip-red', called:'chip-blue', visit:'chip-amber', won:'chip-green', lost:'chip-gray' };
+  card.innerHTML = filtered.map(l => {
+    const initials = (l.name||'?').substring(0,2).toUpperCase();
+    const phone    = (l.phone||'').replace('+91','').replace(/\D/g,'');
+    const kw       = l.calcResult?.actualKW ? l.calcResult.actualKW.toFixed(1)+' kW' : '—';
+    const cost     = l.calcResult?.systemCost ? '₹'+l.calcResult.systemCost.toLocaleString('en-IN') : '—';
+    const sc       = statusColors[l.status||'new'] || 'chip-gray';
+    return `
+      <div class="lead-item">
+        <div class="lead-avatar ${l.priority==='high'?'':'medium'}">${initials}</div>
+        <div class="list-body">
+          <div class="list-title">${l.name||'Unknown'}</div>
+          <div class="list-sub">${l.phone||'—'} · ${kw} · ${cost}</div>
+          <div style="margin-top:4px;">
+            <span class="chip ${sc}">${l.status||'new'}</span>
+            <span class="chip chip-gray" style="margin-left:4px;">${l.propertyType||'—'}</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <a href="tel:${l.phone||''}" style="width:36px;height:36px;background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--green3);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.58 3.56a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+          <a href="https://wa.me/91${phone}" target="_blank" style="width:36px;height:36px;background:#dcfce7;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#16a34a;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+          </a>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── NOTIFICATIONS ────────────────────────────────────
+let _notifUnsub = null;
+let _notifs     = [];
+
+function startNotifListener() {
+  if (!currentUser) return;
+  const q = query(
+    collection(db,'users',currentUser.uid,'notifications'),
+    orderBy('sentAt','desc'),
+    limit(50)
+  );
+  _notifUnsub = onSnapshot(q, snap => {
+    _notifs = snap.docs.map(d=>({id:d.id,...d.data()}));
+    updateNotifBadges();
+    if (_activeTab === 'notifications') renderNotifs();
+  }, err => {
+    // Fallback without orderBy
+    getDocs(collection(db,'users',currentUser.uid,'notifications')).then(s => {
+      _notifs = s.docs.map(d=>({id:d.id,...d.data()}))
+        .sort((a,b)=>(b.sentAt?.seconds||0)-(a.sentAt?.seconds||0));
+      updateNotifBadges();
+    });
+  });
+}
+
+function updateNotifBadges() {
+  const unread = _notifs.filter(n=>!n.read).length;
+  ['notif-badge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent=unread; el.style.display = unread>0 ? 'block':'none'; }
+  });
+  const dot = document.getElementById('headerNotifDot');
+  if (dot) dot.style.display = unread>0 ? 'block':'none';
+}
+
+async function loadNotifications() {
+  renderNotifs();
+}
+
+function renderNotifs() {
+  const card = document.getElementById('notifListCard');
+  if (!_notifs.length) {
+    card.innerHTML = '<div class="empty-state"><p>No notifications yet.<br/>Your project manager will send updates here.</p></div>';
+    return;
+  }
+  const typeIcons = { info:'ℹ️', update:'📊', payment:'💳', urgent:'⚠️', invoice:'📄', visit:'📅', complete:'✅', custom:'💬' };
+  const typeBg    = { info:'#dbeafe', update:var_('--green-light'), payment:'#ede9fe', urgent:'#fee2e2', invoice:'#cffafe', visit:'#fef3c7', complete:'#d1fae5', custom:'#f3f4f6' };
+
+  function var_(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim() || '#dcfce7'; }
+
+  card.innerHTML = _notifs.map(n => {
+    const icon = typeIcons[n.type]||'💬';
+    const bg   = typeBg[n.type]||'#f3f4f6';
+    const ts   = n.sentAt?.toDate ? timeAgo(n.sentAt.toDate()) : '—';
+    return `
+      <div class="notif-item ${n.read?'':'unread'}" onclick="markNotifRead('${n.id}',this)">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div class="notif-icon-wrap" style="background:${bg};">${icon}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="notif-title">${n.title||'Notification'}</div>
+              ${!n.read?'<div style="width:8px;height:8px;background:var(--red);border-radius:50%;flex-shrink:0;margin-left:auto;"></div>':''}
+            </div>
+            <div class="notif-body">${n.body||''}</div>
+            <div class="notif-time">${ts}</div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+window.markNotifRead = async function(id, el) {
+  try {
+    await updateDoc(doc(db,'users',currentUser.uid,'notifications',id), {read:true});
+    el?.classList.remove('unread');
+    const n = _notifs.find(x=>x.id===id);
+    if (n) n.read=true;
+    updateNotifBadges();
+  } catch(e) {}
+};
+
+window.markAllNotifRead = async function() {
+  const unread = _notifs.filter(n=>!n.read);
+  if (!unread.length) return;
+  try {
+    const batch = writeBatch(db);
+    unread.forEach(n => batch.update(doc(db,'users',currentUser.uid,'notifications',n.id), {read:true}));
+    await batch.commit();
+    _notifs.forEach(n=>n.read=true);
+    updateNotifBadges();
+    renderNotifs();
+    toast('All notifications marked as read.');
+  } catch(e) { toast('Error: '+e.message,'err'); }
+};
+
+// ── UTILITIES ────────────────────────────────────────
+function timeAgo(date) {
+  const diff = Date.now() - date.getTime();
+  const m    = Math.floor(diff/60000);
+  if (m<1)   return 'Just now';
+  if (m<60)  return m+'m ago';
+  const h    = Math.floor(m/60);
+  if (h<24)  return h+'h ago';
+  return Math.floor(h/24)+'d ago';
+}
+
+function toast(msg, type='ok') {
+  const t = document.getElementById('appToast');
+  t.textContent = msg;
+  t.className   = 'app-toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
