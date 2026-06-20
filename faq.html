@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FAQ — Solar, Fabrication &amp; Government Scheme Questions | Deepu Siva</title>
+<meta name="description" content="Frequently asked questions about solar rooftop installation, metal fabrication, industrial roofing, and the PM Surya Ghar government subsidy scheme. Deepu Siva Private Limited, Coimbatore."/>
+<meta name="keywords" content="solar FAQ Coimbatore, fabrication questions, PM Surya Ghar FAQ, welding services FAQ, Deepu Siva frequently asked questions"/>
+<link rel="stylesheet" href="style.css"/>
+
+<!-- ╔══════════════════════════════════════════════════╗
+     ║  FAQ PAGE — EASY UPDATE GUIDE                   ║
+     ║  To add a new question:                         ║
+     ║  1. Copy a <div class="faq-item"> block         ║
+     ║  2. Paste it inside the right category section  ║
+     ║  3. Change the question + answer text only      ║
+     ║  No other file needs to change.                 ║
+     ╚══════════════════════════════════════════════════╝ -->
+
+<style>
+.faq-hero {
+  background: linear-gradient(150deg, var(--green-pale) 0%, #e8f5e9 60%, #fff 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 44px 16px 36px;
+  text-align: center;
+}
+.faq-hero h1 { font-family: var(--font-head); font-size: clamp(26px,6vw,42px); font-weight: 800; color: var(--text); text-transform: uppercase; }
+.faq-hero h1 em { color: var(--green); font-style: normal; }
+.faq-hero p { color: var(--muted); font-size: 15px; margin-top: 10px; max-width: 520px; margin-left: auto; margin-right: auto; }
+
+/* Category tabs */
+.faq-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  max-width: 800px;
+  margin: 0 auto;
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 50;
+  border-bottom: 1px solid var(--border);
+}
+.faq-tabs::-webkit-scrollbar { display: none; }
+.faq-tab {
+  flex-shrink: 0;
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  transition: .2s;
+}
+.faq-tab.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+/* FAQ category section */
+.faq-category { max-width: 800px; margin: 0 auto; padding: 8px 16px 36px; }
+.faq-cat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 14px;
+}
+.faq-cat-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.faq-cat-title { font-family: var(--font-head); font-size: 19px; font-weight: 800; color: var(--text); text-transform: uppercase; }
+
+/* FAQ accordion item */
+.faq-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.faq-item.open { border-color: var(--green); }
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text2);
+  user-select: none;
+}
+.faq-question:active { background: var(--bg3); }
+.faq-chevron {
+  flex-shrink: 0;
+  transition: transform .25s;
+  color: var(--green);
+}
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+.faq-item.open .faq-answer { max-height: 600px; }
+.faq-answer-inner {
+  padding: 0 18px 18px;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+/* Search box */
+.faq-search-wrap { max-width: 800px; margin: 0 auto; padding: 0 16px 8px; }
+.faq-search {
+  width: 100%;
+  padding: 14px 18px 14px 44px;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border);
+  font-size: 16px;
+  font-family: var(--font-body);
+  background: var(--white);
+  outline: none;
+  position: relative;
+}
+.faq-search:focus { border-color: var(--green); }
+.faq-search-wrap { position: relative; }
+.faq-search-icon { position: absolute; left: 32px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+
+/* No results */
+.faq-no-results { text-align: center; padding: 40px 20px; color: var(--muted); display: none; }
+
+/* CTA at bottom */
+.faq-cta {
+  background: linear-gradient(135deg, var(--green3), var(--green));
+  margin: 24px 16px 36px;
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.faq-cta h3 { font-family: var(--font-head); font-size: 20px; font-weight: 800; color: #fff; text-transform: uppercase; }
+.faq-cta p { font-size: 14px; color: rgba(255,255,255,.8); margin: 6px 0 16px; }
+.faq-cta-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+@media (max-width: 480px) {
+  .faq-cta-btns { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- DESKTOP NAV -->
+<div class="topbar web-only">
+  <div class="topbar-inner">
+    <a href="mailto:contact@deepusiva.com">contact@deepusiva.com</a>
+    <a href="tel:+918489090666">+91 84890 90666</a>
+    <a href="login.html">Client Portal</a>
+  </div>
+</div>
+<nav class="site-nav web-only">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><span class="logo-dot"></span>Deepu Siva<span class="logo-badge">Pvt Ltd</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="solar-calculator.html">Solar Calculator</a></li>
+      <li><a href="scheme-timer.html">Govt Scheme</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="login.html" class="btn-nav-cta">Client Portal</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- MOBILE HEADER -->
+<header class="app-header">
+  <div class="app-header-logo">Frequently Asked <span>Questions</span></div>
+  <div class="app-header-actions">
+    <a href="index.html" class="app-icon-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="faq-hero">
+  <h1>Got <em>Questions?</em></h1>
+  <p>Everything you need to know about solar rooftop, metal fabrication, and the government subsidy scheme — answered by our team.</p>
+</div>
+
+<!-- SEARCH -->
+<div class="faq-search-wrap">
+  <svg class="faq-search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <input type="text" class="faq-search" id="faqSearch" placeholder="Search questions… e.g. subsidy, warranty, GST" oninput="searchFAQ(this.value)"/>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="faq-tabs" id="faqTabs">
+  <button class="faq-tab active" onclick="filterCategory('all', this)">All Questions</button>
+  <button class="faq-tab" onclick="filterCategory('solar', this)">☀️ Solar Rooftop</button>
+  <button class="faq-tab" onclick="filterCategory('scheme', this)">🏛️ Govt Scheme</button>
+  <button class="faq-tab" onclick="filterCategory('fabrication', this)">🔩 Fabrication</button>
+</div>
+
+<div class="faq-no-results" id="noResults">
+  <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:12px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <p>No questions match your search. Try a different term or <a href="tel:+918489090666" style="color:var(--green);font-weight:700;">call us directly</a>.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CATEGORY 1 — SOLAR ROOFTOP
+     ═══════════════════════════════════════════════════ -->
+<div class="faq-category" data-category="solar">
+  <div class="faq-cat-head">
+    <div class="faq-cat-icon" style="background:#fef3c7;color:#d97706;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </div>
+    <div class="faq-cat-title">Solar Rooftop</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      How much does a solar rooftop system cost in Coimbatore?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      A typical 1kW system costs around ₹65,000–75,000 before subsidy, and a 3kW system costs around ₹1.8–2 lakh before subsidy. After the government subsidy under PM Surya Ghar (up to ₹78,000), your actual cost reduces significantly. Use our free <a href="solar-calculator.html" style="color:var(--green);font-weight:700;">Solar ROI Calculator</a> for an exact estimate based on your electricity bill.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      How many solar panels do I need for my home?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      This depends on your monthly electricity consumption. As a rough guide: a 2BHK home using 200-250 units/month typically needs a 2kW system (4-5 panels of 400-440W each). A larger home using 400+ units/month may need 3-4kW (7-9 panels). Our engineer provides a free site visit to give you an exact recommendation based on roof space and shadow-free area.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      How long do solar panels last and what warranty do you offer?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Solar panels typically come with a 25-year performance warranty from the manufacturer, meaning they continue producing at least 80% of rated output after 25 years. Deepu Siva provides a 5-year workmanship warranty on installation, mounting structure, and wiring. Inverters usually carry a 5-10 year manufacturer warranty separately.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      Will solar panels work during cloudy days or monsoon?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Yes, solar panels still generate electricity on cloudy days, though at reduced efficiency (typically 10-25% of peak output). During monsoon months, overall generation drops but doesn't stop completely. Tamil Nadu receives strong sunlight for most of the year, making solar a reliable investment even with seasonal variation.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      How much roof space do I need for solar panels?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      As a general rule, 1kW of solar requires approximately 80-100 sq ft of shadow-free roof area. So a 3kW system needs roughly 250-300 sq ft. Our free site assessment measures your exact available area and checks for shading from trees, water tanks, or neighboring buildings that could reduce output.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      What maintenance does a solar system need?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Solar systems require minimal maintenance — mainly periodic cleaning of panels (every 2-3 months) to remove dust, which can reduce efficiency by 5-10% if neglected. We recommend an annual inspection of wiring, inverter, and mounting structure. Deepu Siva offers AMC (Annual Maintenance Contract) packages for hassle-free upkeep.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      How long does installation take?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Physical installation of panels, mounting structure, and inverter typically takes 1-2 days for a residential system. However, the complete process including net metering and TANGEDCO approval can take 30-45 days due to government inspection timelines, which we actively follow up on for you.
+    </div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CATEGORY 2 — GOVERNMENT SCHEME
+     ═══════════════════════════════════════════════════ -->
+<div class="faq-category" data-category="scheme">
+  <div class="faq-cat-head">
+    <div class="faq-cat-icon" style="background:var(--green-light);color:var(--green3);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+    </div>
+    <div class="faq-cat-title">Government Scheme</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      What is PM Surya Ghar: Muft Bijli Yojana?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      PM Surya Ghar: Muft Bijli Yojana is a Central Government scheme launched in February 2024 to encourage rooftop solar adoption across India. It provides a direct cash subsidy (Direct Benefit Transfer) into your bank account after installing solar panels — up to ₹78,000 for a 3kW system. The goal is to enable 1 crore households to generate their own electricity and receive up to 300 units of free power per month. See our <a href="scheme-timer.html" style="color:var(--green);font-weight:700;">full scheme details and countdown page</a>.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      Is the scheme still open for new applications?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      New registrations on the official portal were closed from 6 June 2026. However, if you registered before this date, you are still eligible for the subsidy provided your installation is completed before 31 March 2027. Contact us immediately if you registered earlier and haven't installed yet — we can fast-track your installation before the deadline.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      How much subsidy will I actually receive?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      The subsidy is tiered by system size: ₹30,000 for a 1kW system, ₹60,000 for a 2kW system, and ₹78,000 for systems of 3kW or above (this is the maximum, regardless of how much larger the system is). The subsidy typically covers around 40% of the total installation cost.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      How is the subsidy paid — do I get cash or a price reduction?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      The subsidy is transferred directly into your Aadhaar-linked bank account via Direct Benefit Transfer (DBT) — not as a discount on the invoice. This happens after your installation is complete and the net meter inspection is approved by TANGEDCO, typically within 30 days of approval.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      Who is eligible for this scheme?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Indian residential homeowners with a valid electricity (TANGEDCO) connection are eligible. This includes individual houses, apartment owners (with society approval for rooftop access), and farmers with a separate residential connection. Commercial, industrial, and HT (High Tension) connections are NOT eligible under this residential scheme.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      What documents do I need to apply?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      You'll need: Aadhaar card, a recent electricity bill (showing your consumer number), bank account details (Aadhaar-linked, for DBT transfer), and proof of property ownership or residence. Deepu Siva assists with the entire registration process so you don't have to navigate the portal alone.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      Can I also get a bank loan for the remaining cost?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Yes, beneficiaries under PM Surya Ghar are eligible for collateral-free bank loans at concessional interest rates (typically around 7%) for the portion of the cost not covered by subsidy. Several public and private banks participate in this scheme. We can guide you on the loan application process alongside your solar installation.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      Why should I use Deepu Siva instead of applying myself?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Deepu Siva Pvt Ltd is an experienced solar installer in Coimbatore who handles the entire process for you — free site assessment, portal registration assistance, vendor coordination with TANGEDCO, professional installation, net meter follow-up, and subsidy tracking. This saves you significant time and avoids common application errors that delay subsidy payment.
+    </div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CATEGORY 3 — FABRICATION & WELDING
+     ═══════════════════════════════════════════════════ -->
+<div class="faq-category" data-category="fabrication">
+  <div class="faq-cat-head">
+    <div class="faq-cat-icon" style="background:#dbeafe;color:#1e40af;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+    </div>
+    <div class="faq-cat-title">Fabrication &amp; Welding</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      What types of metal fabrication services do you offer?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      We offer custom metal fabrication including structural steel work, industrial sheds, PEB (Pre-Engineered Building) structures, GI roofing sheets, solar mounting structures, gates, railings, and custom industrial equipment fabrication. We work with MS (Mild Steel), GI (Galvanized Iron), and stainless steel.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      Do you provide industrial roofing for factories and warehouses?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Yes, industrial roofing is one of our core specialties. We install GI sheet roofing, insulated roofing panels, and structural steel trusses for factories, warehouses, and industrial sheds across Coimbatore and Tamil Nadu. Our roofing solutions are designed to handle monsoon loads and provide long-term durability.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      Can you build the structure AND install solar panels on top?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Absolutely — this is one of our biggest advantages. We design and fabricate the steel mounting structure AND install the solar panels on top, all from one team. This means better load calculations, faster timelines, and no coordination issues between separate vendors. Many factories choose us specifically for this integrated solar + structure capability.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      What is a PEB structure and do you build them?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      PEB stands for Pre-Engineered Building — a steel structure designed and fabricated in a factory setting, then assembled on-site. PEB structures are faster to construct, more cost-effective, and ideal for warehouses, factories, and large industrial sheds. Yes, we design and erect PEB structures as part of our structural engineering services.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      How is pricing calculated for fabrication work?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Fabrication pricing depends on the type of steel used, total weight/tonnage required, design complexity, and site location. We provide GST-compliant quotations with a detailed breakdown after a site visit and requirement discussion. Bulk material orders are also available through our online shop with B2B pricing.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      What is your typical project timeline for an industrial shed?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Timelines vary by project size, but a typical medium-sized industrial shed (structure + roofing) takes approximately 4-8 weeks from design approval to completion, depending on weather conditions and material availability. We provide a clear project timeline during the quotation stage.
+    </div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">
+      Do you offer GST invoices for B2B fabrication orders?
+      <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="faq-answer"><div class="faq-answer-inner">
+      Yes, all B2B orders come with proper GST tax invoices showing SGST and CGST breakdown. Our online shop supports both B2B mode (with GSTIN, exclusive pricing) and B2C mode (inclusive retail pricing) so businesses and individuals both get the correct invoice format for their needs.
+    </div></div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="faq-cta">
+  <h3>Still Have Questions?</h3>
+  <p>Our team is happy to discuss your specific solar or fabrication project — completely free, no obligation.</p>
+  <div class="faq-cta-btns">
+    <a href="tel:+918489090666" class="btn btn-white btn-lg">Call +91 84890 90666</a>
+    <a href="https://wa.me/918489090666" target="_blank" class="btn btn-amber btn-lg">WhatsApp Us</a>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="app-bottom-nav">
+  <a href="index.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+    <span>Home</span>
+  </a>
+  <a href="solar-calculator.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></span>
+    <span>Calculator</span>
+  </a>
+  <a href="scheme-timer.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+    <span>Scheme</span>
+  </a>
+  <a href="tel:+918489090666" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.58 3.56a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+    <span>Call</span>
+  </a>
+</nav>
+
+<!-- FAQ Schema for Google rich results -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How much does a solar rooftop system cost in Coimbatore?","acceptedAnswer":{"@type":"Answer","text":"A typical 1kW system costs around 65000-75000 rupees before subsidy, and a 3kW system costs around 180000-200000 rupees before subsidy. After government subsidy up to 78000 rupees, actual cost reduces significantly."}},
+    {"@type":"Question","name":"What is PM Surya Ghar Muft Bijli Yojana?","acceptedAnswer":{"@type":"Answer","text":"A Central Government scheme launched in February 2024 providing direct cash subsidy up to 78000 rupees for installing rooftop solar panels, with the goal of enabling 1 crore households to generate their own electricity."}},
+    {"@type":"Question","name":"Is the PM Surya Ghar scheme still open for new applications?","acceptedAnswer":{"@type":"Answer","text":"New registrations closed from 6 June 2026. Households registered before this date remain eligible if installation is completed before 31 March 2027."}},
+    {"@type":"Question","name":"What metal fabrication services does Deepu Siva offer?","acceptedAnswer":{"@type":"Answer","text":"Custom metal fabrication including structural steel work, industrial sheds, PEB structures, GI roofing sheets, and solar mounting structures using MS, GI and stainless steel."}}
+  ]
+}
+</script>
+
+<script>
+// ── FAQ ACCORDION TOGGLE ──
+function toggleFAQ(el) {
+  const item = el.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  // Close all others in same category (accordion behavior per category)
+  item.parentElement.querySelectorAll('.faq-item.open').forEach(i => {
+    if (i !== item) i.classList.remove('open');
+  });
+  item.classList.toggle('open', !wasOpen);
+}
+
+// ── CATEGORY FILTER ──
+function filterCategory(cat, btn) {
+  document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.faq-category').forEach(section => {
+    section.style.display = (cat === 'all' || section.dataset.category === cat) ? 'block' : 'none';
+  });
+  document.getElementById('faqSearch').value = '';
+  document.getElementById('noResults').style.display = 'none';
+}
+
+// ── SEARCH ──
+function searchFAQ(query) {
+  const q = query.trim().toLowerCase();
+  const items = document.querySelectorAll('.faq-item');
+  let anyVisible = false;
+
+  if (!q) {
+    // Reset to active category view
+    const activeTab = document.querySelector('.faq-tab.active');
+    filterCategory(activeTab.textContent.includes('All') ? 'all' : activeTab.textContent.trim().toLowerCase(), activeTab);
+    items.forEach(i => i.style.display = 'block');
+    document.getElementById('noResults').style.display = 'none';
+    return;
+  }
+
+  // Show all categories when searching
+  document.querySelectorAll('.faq-category').forEach(c => c.style.display = 'block');
+  document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    const match = text.includes(q);
+    item.style.display = match ? 'block' : 'none';
+    if (match) anyVisible = true;
+  });
+
+  // Hide empty categories
+  document.querySelectorAll('.faq-category').forEach(cat => {
+    const visibleItems = cat.querySelectorAll('.faq-item[style*="block"]');
+    const hasVisible = Array.from(cat.querySelectorAll('.faq-item')).some(i => i.style.display !== 'none');
+    cat.style.display = hasVisible ? 'block' : 'none';
+  });
+
+  document.getElementById('noResults').style.display = anyVisible ? 'none' : 'block';
+}
+</script>
+</body>
+</html>
