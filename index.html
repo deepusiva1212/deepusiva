@@ -770,9 +770,14 @@ body > *:not(#bgCanvas) { position: relative; z-index: 1; }
       </li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="shop-entry.html">Shop</a></li>
-      <li><a href="solar-calculator.html">Solar Calc</a></li>
-      <li><a href="solar-potential-map.html">Potential Map</a></li>
-      <li><a href="scheme-timer.html" style="color:var(--amber);font-weight:700;">₹78K Subsidy</a></li>
+      <li class="nav-dropdown">
+        <a href="solar-calculator.html">Solar ▾</a>
+        <div class="nav-dropdown-menu">
+          <a href="solar-calculator.html">Solar ROI Calculator</a>
+          <a href="solar-potential-map.html">Solar Potential Map</a>
+          <a href="scheme-timer.html" style="color:var(--amber);font-weight:700;">₹78K Govt Subsidy</a>
+        </div>
+      </li>
       <li><a href="faq.html">FAQ</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="login.html" class="btn-nav-cta">Client Portal</a></li>
@@ -1285,6 +1290,20 @@ window.addEventListener('scroll', () => {
   sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
   navAs.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
 });
+
+// ── FIX: Re-scroll to URL hash after full page load ──
+// Browsers jump to #anchor BEFORE AOS/canvas/CMS-banner finish laying out the
+// page, so the initial jump lands in the wrong place. This re-corrects it.
+function scrollToHashIfPresent() {
+  if (!window.location.hash) return;
+  const target = document.querySelector(window.location.hash);
+  if (!target) return;
+  const navHeight = document.querySelector('.site-nav')?.offsetHeight || 0;
+  const topbarHeight = document.querySelector('.topbar')?.offsetHeight || 0;
+  const y = target.getBoundingClientRect().top + window.pageYOffset - navHeight - topbarHeight - 12;
+  window.scrollTo({ top: y, behavior: 'instant' });
+}
+window.addEventListener('load', () => setTimeout(scrollToHashIfPresent, 350));
 
 // ══ THEME ENGINE ══════════════════════════════
 const THEME_KEY  = 'ds_theme';
