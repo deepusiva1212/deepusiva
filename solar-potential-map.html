@@ -1,365 +1,616 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Solar Simulator | Deepu Siva Private Limited</title>
-  
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Solar Potential Map | Real-Time Satellite &amp; Weather Analysis | Deepu Siva</title>
+<meta name="description" content="Click any location on the map to see real satellite-based solar potential — past 30 days of missed energy, today's generation, and a 7-day forecast. Free tool by Deepu Siva Private Limited, Coimbatore."/>
+<meta name="keywords" content="solar potential map Coimbatore, rooftop solar simulator, solar energy calculator location, satellite solar analysis Tamil Nadu"/>
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-  <style>
-    /* ── MODERN 2026 UI DESIGN ── */
-    :root {
-      --primary: #166534; --primary-light: #16a34a; --primary-fade: #f0fdf4;
-      --bg: #f8fafc; --card-bg: #ffffff; --text: #0f172a; --muted: #64748b;
-      --border: #e2e8f0; --shadow: 0 12px 40px rgba(0,0,0,0.08);
-      --radius: 16px;
-    }
-    body { margin: 0; font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
-    
-    .header { 
-      background: linear-gradient(135deg, var(--primary), var(--primary-light)); 
-      color: #fff; padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(22,163,74,0.2);
-    }
-    .header h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
-    .header a { color: #d1fae5; text-decoration: none; font-size: 14px; font-weight: 600; display: inline-block; margin-top: 8px; transition: 0.2s; }
-    .header a:hover { color: #fff; transform: translateX(-4px); }
-    
-    .solar-calc-wrap {
-      max-width: 1200px; margin: 40px auto; background: var(--card-bg);
-      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; 
-      display: flex; flex-wrap: wrap; box-shadow: var(--shadow);
-    }
-    
-    .solar-map-area { flex: 1.5; min-width: 300px; height: 780px; position: relative; }
-    .solar-map-area #solarMap { width: 100%; height: 100%; z-index: 1; }
-    
-    .solar-results-area {
-      flex: 1; min-width: 350px; padding: 32px; display: flex; flex-direction: column; 
-      overflow-y: auto; height: 716px; background: #fff;
-    }
-    
-    .sr-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
-    .sr-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
-    
-    /* Input Controls */
-    .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-    .input-group { background: var(--bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); transition: 0.2s; }
-    .input-group:focus-within { border-color: var(--primary-light); box-shadow: 0 0 0 3px var(--primary-fade); }
-    .input-group label { display: block; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;}
-    .input-group input { width: 90%; padding: 6px; border: none; background: transparent; font-size: 18px; font-weight: 800; color: var(--text); outline: none; }
-    
-    .location-tag {
-      display: inline-flex; align-items: center; gap: 6px; background: var(--primary-fade); color: var(--primary);
-      padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-bottom: 20px;
-    }
+<style>
+/* ── PAGE-SPECIFIC STYLES — uses site theme vars from style.css ── */
+.map-hero {
+  background: linear-gradient(150deg, var(--green-pale) 0%, #e8f5e9 60%, #fff 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 36px 16px 28px;
+  text-align: center;
+}
+.map-hero h1 { font-family: var(--font-head); font-size: clamp(24px,5.5vw,40px); font-weight: 800; color: var(--text); text-transform: uppercase; }
+.map-hero h1 em { color: var(--green); font-style: normal; }
+.map-hero p { color: var(--muted); font-size: 15px; margin-top: 10px; max-width: 580px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+.map-hero-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
 
-    .sr-box { background: var(--primary-fade); border: 1px solid #d1fae5; border-radius: 12px; padding: 20px; margin-bottom: 16px; transition: 0.3s; }
-    .sr-box.history { background: #fff7ed; border-color: #ffedd5; }
-    .sr-label { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--primary-light); letter-spacing: 1px; }
-    .sr-label.history { color: #ea580c; }
-    .sr-big-val { font-size: 32px; font-weight: 900; color: var(--primary); margin-top: 8px; }
-    .sr-big-val.history { color: #c2410c; }
-    
-    /* Tabs */
-    .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 20px; gap: 20px; }
-    .tab { padding: 12px 4px; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: 0.2s; }
-    .tab:hover { color: var(--text); }
-    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
-    .tab-content { display: none; animation: fadeIn 0.4s ease; }
-    .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+/* Quick city chips */
+.city-chips-wrap { padding: 16px; max-width: 1100px; margin: 0 auto; }
+.city-chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+.city-chips::-webkit-scrollbar { display: none; }
+.city-chip {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  transition: .2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.city-chip:hover, .city-chip:active { border-color: var(--green); background: var(--green-pale); color: var(--green3); }
 
-    .forecast-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
-    .forecast-table th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--muted); }
-    .forecast-table td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-weight: 500; }
-    
-    .btn-action { 
-      width: 100%; background: var(--primary-light); color: #fff; border: none; padding: 16px; 
-      border-radius: 10px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; 
-      transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(22,163,74,0.3);
-    }
-    .btn-action.share { background: #fff; color: var(--text); border: 2px solid var(--border); box-shadow: none; }
-    .btn-action:hover { transform: translateY(-2px); filter: brightness(1.05); }
-    .btn-action.share:hover { border-color: var(--muted); }
-  </style>
+/* Main layout */
+.solar-wrap {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  box-shadow: 0 12px 40px rgba(0,0,0,.06);
+}
+.map-area { flex: 1.4; min-width: 320px; height: 620px; position: relative; }
+.map-area #solarMap { width: 100%; height: 100%; z-index: 1; }
+
+/* Map type toggle */
+.map-type-toggle {
+  position: absolute; top: 12px; right: 12px; z-index: 500;
+  background: var(--white); border-radius: 10px; padding: 4px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.15); display: flex; gap: 2px;
+}
+.map-type-btn {
+  padding: 7px 12px; border-radius: 7px; border: none; background: none;
+  font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted);
+  font-family: var(--font-body);
+}
+.map-type-btn.active { background: var(--green); color: #fff; }
+
+/* Map instructions overlay */
+.map-instructions {
+  position: absolute; bottom: 12px; left: 12px; right: 12px; z-index: 500;
+  background: rgba(255,255,255,.95); backdrop-filter: blur(8px);
+  border-radius: 10px; padding: 10px 14px; font-size: 12px; color: var(--text2);
+  display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 12px rgba(0,0,0,.1);
+  pointer-events: none;
+}
+.map-instructions.hide { display: none; }
+
+.results-area {
+  flex: 1; min-width: 340px; padding: 28px;
+  display: flex; flex-direction: column;
+  overflow-y: auto; max-height: 620px;
+  background: var(--white);
+}
+.sr-title { font-family: var(--font-head); font-size: 22px; font-weight: 800; color: var(--green3); text-transform: uppercase; }
+.sr-subtitle { font-size: 13px; color: var(--muted); margin-top: 4px; margin-bottom: 22px; line-height: 1.6; }
+
+.control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.input-group { background: var(--bg3); padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--border); transition: .2s; }
+.input-group:focus-within { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-pale); }
+.input-group label { display: block; font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; letter-spacing: .5px; }
+.input-group input { width: 90%; padding: 4px 0; border: none; background: transparent; font-size: 18px; font-weight: 800; color: var(--text); outline: none; font-family: var(--font-body); }
+
+.hw-box { background: var(--white); border: 2px dashed var(--border); padding: 14px; border-radius: var(--radius); margin-bottom: 18px; text-align: center; }
+.hw-box-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.hw-box-val { font-size: 22px; font-weight: 900; color: var(--text); margin-top: 4px; }
+.hw-box-val span { color: var(--green); }
+
+.sr-loading { color: var(--green); font-weight: 700; display: none; text-align: center; padding: 40px 20px; }
+.sr-loading .spin-icon { width: 36px; height: 36px; border: 3px solid var(--green-light); border-top-color: var(--green); border-radius: 50%; margin: 0 auto 14px; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.location-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--green-pale); color: var(--green3);
+  padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-bottom: 18px;
+}
+
+/* Tabs */
+.tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 18px; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { padding: 11px 10px; cursor: pointer; font-size: 13px; font-weight: 700; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: .2s; white-space: nowrap; flex-shrink: 0; }
+.tab.active { color: var(--green3); border-bottom-color: var(--green); }
+.tab-content { display: none; animation: fadeUpTab .35s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeUpTab { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.forecast-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+.forecast-table th { text-align: left; padding: 8px; border-bottom: 2px solid var(--border); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+.forecast-table td { padding: 10px 8px; border-bottom: 1px solid var(--border); font-weight: 500; font-size: 13px; }
+
+.sr-box { background: var(--green-pale); border: 1px solid rgba(22,163,74,.15); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+.sr-box.history { background: #fff7ed; border-color: #ffedd5; }
+.sr-box.savings { background: #eff6ff; border-color: #bfdbfe; }
+.sr-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--green3); letter-spacing: 1px; }
+.sr-label.history { color: #ea580c; }
+.sr-label.savings { color: #1e40af; }
+.sr-big-val { font-family: var(--font-head); font-size: 28px; font-weight: 900; color: var(--green3); margin-top: 6px; }
+.sr-big-val.history { color: #c2410c; }
+.sr-big-val.savings { color: #1e40af; }
+.sr-sub-note { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+.mini-stat-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.mini-stat { flex: 1; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; }
+.mini-stat-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.mini-stat-val { font-family: var(--font-head); font-size: 18px; font-weight: 800; color: var(--text); margin-top: 4px; }
+
+/* CO2 + savings comparison strip */
+.impact-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+.impact-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; }
+.impact-icon { width: 32px; height: 32px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; }
+.impact-val { font-family: var(--font-head); font-size: 16px; font-weight: 800; color: var(--green3); }
+.impact-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .3px; margin-top: 2px; }
+
+.subsidy-callout {
+  background: linear-gradient(135deg, var(--green3), var(--green));
+  border-radius: var(--radius-lg); padding: 16px; margin: 14px 0; color: #fff;
+}
+.subsidy-callout h4 { font-family: var(--font-head); font-size: 14px; font-weight: 800; text-transform: uppercase; }
+.subsidy-callout p { font-size: 12px; opacity: .85; margin-top: 4px; line-height: 1.5; }
+.subsidy-callout a { color: #fde68a; font-weight: 700; text-decoration: underline; }
+
+.action-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.action-row .btn { flex: 1; min-width: 140px; justify-content: center; }
+
+/* Empty state before first click */
+.map-empty-state { text-align: center; padding: 50px 20px; color: var(--muted); }
+.map-empty-state svg { opacity: .25; margin-bottom: 12px; }
+.map-empty-state p { font-size: 14px; line-height: 1.6; max-width: 280px; margin: 0 auto; }
+
+@media (max-width: 900px) {
+  .solar-wrap { flex-direction: column; margin: 0 16px 24px; max-width: calc(100% - 32px); }
+  .map-area { height: 380px; }
+  .results-area { max-height: none; }
+}
+@media (max-width: 480px) {
+  .control-grid { grid-template-columns: 1fr 1fr; }
+  .impact-strip { grid-template-columns: 1fr 1fr; }
+  .mini-stat-row { flex-wrap: wrap; }
+  .action-row .btn { min-width: 100%; }
+}
+</style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>Deepu Siva Private Limited</h1>
-    <a href="index.html">← Return to Main Website</a>
+<!-- DESKTOP NAV -->
+<div class="topbar web-only">
+  <div class="topbar-inner">
+    <a href="mailto:contact@deepusiva.com">contact@deepusiva.com</a>
+    <a href="tel:+918489090666">+91 84890 90666</a>
+    <a href="login.html">Client Portal</a>
   </div>
+</div>
+<nav class="site-nav web-only">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><span class="logo-dot"></span>Deepu Siva<span class="logo-badge">Pvt Ltd</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="solar-calculator.html">Solar Calculator</a></li>
+      <li><a href="solar-potential-map.html" style="color:var(--green);">Potential Map</a></li>
+      <li><a href="scheme-timer.html">Govt Scheme</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="login.html" class="btn-nav-cta">Client Portal</a></li>
+    </ul>
+  </div>
+</nav>
 
-  <div class="solar-calc-wrap">
-    <div class="solar-map-area">
-      <div id="solarMap"></div>
+<!-- MOBILE HEADER -->
+<header class="app-header">
+  <div class="app-header-logo">Solar <span>Potential Map</span></div>
+  <div class="app-header-actions">
+    <a href="index.html" class="app-icon-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="map-hero">
+  <h1>See Your Roof's <em>Real Solar Potential</em></h1>
+  <p>Click any location on the satellite map to pull live weather data — see exactly how much energy you missed in the past 30 days, what you'll generate today, and your 7-day forecast.</p>
+  <div class="map-hero-badges">
+    <span class="chip-green" style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;">🛰️ Live Satellite Data</span>
+    <span class="chip-blue" style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#dbeafe;color:#1e40af;">🌦️ Real Weather API</span>
+    <span style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#fef3c7;color:#92400e;">📊 30-Day History</span>
+  </div>
+</div>
+
+<!-- QUICK CITY CHIPS -->
+<div class="city-chips-wrap">
+  <div class="city-chips" id="cityChips">
+    <button class="city-chip" onclick="jumpToCity(11.0168,76.9558,'Coimbatore')">📍 Coimbatore</button>
+    <button class="city-chip" onclick="jumpToCity(13.0827,80.2707,'Chennai')">📍 Chennai</button>
+    <button class="city-chip" onclick="jumpToCity(9.9252,78.1198,'Madurai')">📍 Madurai</button>
+    <button class="city-chip" onclick="jumpToCity(11.6643,78.1460,'Salem')">📍 Salem</button>
+    <button class="city-chip" onclick="jumpToCity(10.7905,78.7047,'Trichy')">📍 Trichy</button>
+    <button class="city-chip" onclick="jumpToCity(8.7642,78.1348,'Tirunelveli')">📍 Tirunelveli</button>
+    <button class="city-chip" onclick="jumpToCity(11.3410,77.7172,'Erode')">📍 Erode</button>
+    <button class="city-chip" onclick="useMyLocation()">📡 Use My Location</button>
+  </div>
+</div>
+
+<!-- MAIN SOLAR WRAP -->
+<div class="solar-wrap">
+  <div class="map-area">
+    <div id="solarMap"></div>
+    <div class="map-type-toggle">
+      <button class="map-type-btn active" id="btn-street" onclick="setMapType('street')">Street</button>
+      <button class="map-type-btn" id="btn-satellite" onclick="setMapType('satellite')">Satellite</button>
     </div>
-    
-    <div class="solar-results-area">
-      <div class="sr-title">Interactive Solar ROI</div>
-      <div class="sr-subtitle">Use the search bar on the map or click any roof to analyze live satellite and historical climate data.</div>
-      
-      <div class="control-grid">
-        <div class="input-group">
-          <label>Target System (kW)</label>
-          <input type="number" id="sys-kw" value="5" step="0.5" onchange="updateCalculations()">
-        </div>
-        <div class="input-group">
-          <label>Panel Power (Watts)</label>
-          <input type="number" id="panel-w" value="500" step="10" onchange="updateCalculations()">
-        </div>
-      </div>
-      
-      <div style="background:#fff; border:2px dashed var(--border); padding:16px; border-radius:12px; margin-bottom:20px; text-align:center;">
-        <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase;">Hardware Required</div>
-        <div style="font-size:24px; font-weight:900; color:var(--text); margin-top:4px;"><span id="calc-panels" style="color:var(--primary);">10</span> Panels</div>
-      </div>
-
-      <div id="sr-loading" style="color:var(--primary-light); font-weight:bold; display:none; text-align:center; padding: 20px;">
-        ⏳ Connecting to Satellites...
-      </div>
-
-      <div id="sr-data-container" style="display:none;">
-        
-        <div class="location-tag">
-          📍 <span id="sr-location-name">Selected Location</span>
-        </div>
-
-        <div class="tabs">
-          <div class="tab active" onclick="switchTab('today')">Today's Potential</div>
-          <div class="tab" onclick="switchTab('forecast')">7-Day Forecast</div>
-          <div class="tab" onclick="switchTab('history')">Past 30 Days</div>
-        </div>
-
-        <div id="tab-today" class="tab-content active">
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <div class="sr-box" style="flex:1; padding:16px;">
-              <div class="sr-label">Sunrise</div>
-              <div class="sr-big-val" id="sr-sunrise" style="font-size:22px;">--:--</div>
-            </div>
-            <div class="sr-box" style="flex:1; padding:16px;">
-              <div class="sr-label">Sunset</div>
-              <div class="sr-big-val" id="sr-sunset" style="font-size:22px;">--:--</div>
-            </div>
-          </div>
-          <div class="sr-box">
-            <div class="sr-label">Today's Estimated Energy</div>
-            <div class="sr-big-val"><span id="sr-today-energy">0.0</span> <span style="font-size:16px; font-weight:700;">kWh today</span></div>
-            <div style="font-size:13px; color:var(--muted); margin-top:8px;">Based on <span id="sr-today-hours" style="font-weight:bold; color:var(--text);">0</span> hours of daylight.</div>
-          </div>
-        </div>
-
-        <div id="tab-forecast" class="tab-content">
-          <div class="sr-box">
-            <div class="sr-label">Upcoming Energy Generation</div>
-            <div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:16px; font-weight:700;">kWh this week</span></div>
-          </div>
-          <table class="forecast-table">
-            <thead><tr><th>Date</th><th>Weather</th><th>Energy</th></tr></thead>
-            <tbody id="forecast-body"></tbody>
-          </table>
-        </div>
-
-        <div id="tab-history" class="tab-content">
-          <div class="sr-box history">
-            <div class="sr-label history">Missed Energy Opportunity</div>
-            <div style="font-size:14px; color:#9a3412; margin-bottom:8px;">If you installed this 30 days ago, you would have generated:</div>
-            <div class="sr-big-val history"><span id="sr-hist-energy">0.0</span> <span style="font-size:16px; font-weight:700;">kWh of free power</span></div>
-          </div>
-          <div style="font-size:13px; color:var(--muted); line-height:1.6; background:var(--bg); padding:16px; border-radius:12px;">
-            <strong>Data Summary (Last 30 Days):</strong><br><br>
-            ☀️ Total Sunlight: <span id="hist-sun-hours" style="font-weight:bold; color:var(--text);">0</span> Hours<br>
-            🌧️ Total Rainfall: <span id="hist-rain" style="font-weight:bold; color:var(--text);">0</span> mm<br>
-          </div>
-        </div>
-        
-        <div style="display:flex; gap:12px; margin-top:24px;">
-          <button class="btn-action" onclick="getFreeQuote()">Get a Free Quote</button>
-          <button class="btn-action share" onclick="shareReport()">Share</button>
-        </div>
-      </div>
+    <div class="map-instructions" id="mapInstructions">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Click anywhere on the map or search above to analyze that location
     </div>
   </div>
 
-  <script>
-    let currentForecastData = null; 
-    let currentHistoricalData = null;
-    let mapMarker = null;
+  <div class="results-area">
+    <div class="sr-title">Interactive Solar ROI</div>
+    <div class="sr-subtitle">Use search, a quick-city chip, or click any roof on the map.</div>
 
-    const weatherDesc = {
-      0: "☀️ Clear", 1: "🌤️ Mostly Clear", 2: "⛅ Partly Cloudy", 3: "☁️ Overcast",
-      51: "🌧️ Drizzle", 61: "🌧️ Light Rain", 63: "🌧️ Mod. Rain", 65: "⛈️ Heavy Rain", 95: "🌩️ Storm"
-    };
+    <div class="control-grid">
+      <div class="input-group">
+        <label>Target System (kW)</label>
+        <input type="number" id="sys-kw" value="5" step="0.5" onchange="updateCalculations()"/>
+      </div>
+      <div class="input-group">
+        <label>Panel Power (Watts)</label>
+        <input type="number" id="panel-w" value="500" step="10" onchange="updateCalculations()"/>
+      </div>
+    </div>
 
-    window.switchTab = function(tabName) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById('tab-' + tabName).classList.add('active');
-    };
+    <div class="hw-box">
+      <div class="hw-box-label">Hardware Required</div>
+      <div class="hw-box-val"><span id="calc-panels">10</span> Panels</div>
+    </div>
 
-    document.addEventListener("DOMContentLoaded", function() {
-      // 1. Initialize Map
-      const map = L.map('solarMap').setView([11.0168, 76.9558], 10);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+    <!-- BEFORE FIRST CLICK -->
+    <div class="map-empty-state" id="emptyState">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <p>Select a location above to see real-time solar potential for that spot.</p>
+    </div>
 
-      // 2. Add Native Map Search Bar (Geocoder)
-      L.Control.geocoder({
-        defaultMarkGeocode: false,
-        placeholder: "Search for your street or city..."
-      }).on('markgeocode', function(e) {
-        const latlng = e.geocode.center;
-        map.setView(latlng, 15);
-        triggerMapClick(latlng.lat, latlng.lng); // Auto-calculate when searched
-      }).addTo(map);
+    <!-- LOADING -->
+    <div id="sr-loading" class="sr-loading">
+      <div class="spin-icon"></div>
+      Connecting to weather satellites…
+    </div>
 
-      // 3. Map Click Event
-      map.on('click', function(e) {
-        triggerMapClick(e.latlng.lat, e.latlng.lng);
-      });
+    <!-- RESULTS -->
+    <div id="sr-data-container" style="display:none;">
 
-      async function triggerMapClick(lat, lng) {
-        if (mapMarker) { mapMarker.setLatLng([lat, lng]); } 
-        else { mapMarker = L.marker([lat, lng]).addTo(map); }
+      <div class="location-tag">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="sr-location-name">Selected Location</span>
+      </div>
 
-        document.getElementById('sr-loading').style.display = 'block';
-        document.getElementById('sr-data-container').style.display = 'none';
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('today',this)">Today</div>
+        <div class="tab" onclick="switchTab('forecast',this)">7-Day Forecast</div>
+        <div class="tab" onclick="switchTab('history',this)">Past 30 Days</div>
+        <div class="tab" onclick="switchTab('savings',this)">💰 Savings</div>
+      </div>
 
-        try {
-          // A. Reverse Geocode (Get Place Name)
-          const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
-          const geoRes = await fetch(geoUrl);
-          const geoData = await geoRes.json();
-          const placeName = geoData.name || geoData.address?.city || geoData.address?.town || geoData.address?.village || geoData.address?.county || "Custom Location";
-          document.getElementById('sr-location-name').textContent = placeName;
+      <!-- TAB: TODAY -->
+      <div id="tab-today" class="tab-content active">
+        <div class="mini-stat-row">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Sunrise</div>
+            <div class="mini-stat-val" id="sr-sunrise">--:--</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Sunset</div>
+            <div class="mini-stat-val" id="sr-sunset">--:--</div>
+          </div>
+        </div>
+        <div class="sr-box">
+          <div class="sr-label">Today's Estimated Energy</div>
+          <div class="sr-big-val"><span id="sr-today-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh today</span></div>
+          <div class="sr-sub-note">Based on <span id="sr-today-hours" style="font-weight:700;color:var(--text2);">0</span> hours of daylight detected via satellite.</div>
+        </div>
+        <div class="impact-strip">
+          <div class="impact-box">
+            <div class="impact-val" id="sr-today-month">0</div>
+            <div class="impact-lbl">Est. kWh / Month</div>
+          </div>
+          <div class="impact-box">
+            <div class="impact-val" id="sr-today-year">0</div>
+            <div class="impact-lbl">Est. kWh / Year</div>
+          </div>
+        </div>
+      </div>
 
-          // B. Fetch Future Forecast (Including Sunrise/Sunset for TODAY)
-          const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,sunshine_duration,precipitation_sum,sunrise,sunset&timezone=auto`;
-          
-          // C. Calculate dates for the last 30 days
-          const today = new Date();
-          const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
-          const lastMonth = new Date(today); lastMonth.setDate(lastMonth.getDate() - 30);
-          const formatDate = (date) => date.toISOString().split('T')[0];
-          
-          const historyUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${formatDate(lastMonth)}&end_date=${formatDate(yesterday)}&daily=sunshine_duration,precipitation_sum&timezone=auto`;
+      <!-- TAB: 7-DAY FORECAST -->
+      <div id="tab-forecast" class="tab-content">
+        <div class="sr-box">
+          <div class="sr-label">Upcoming Energy Generation</div>
+          <div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh this week</span></div>
+        </div>
+        <table class="forecast-table">
+          <thead><tr><th>Date</th><th>Weather</th><th>Energy</th></tr></thead>
+          <tbody id="forecast-body"></tbody>
+        </table>
+      </div>
 
-          // Run API calls
-          const [resForecast, resHistory] = await Promise.all([ fetch(forecastUrl), fetch(historyUrl) ]);
+      <!-- TAB: PAST 30 DAYS -->
+      <div id="tab-history" class="tab-content">
+        <div class="sr-box history">
+          <div class="sr-label history">Missed Energy Opportunity</div>
+          <div class="sr-sub-note" style="color:#9a3412;margin-bottom:6px;">If you'd installed this 30 days ago, you would have generated:</div>
+          <div class="sr-big-val history"><span id="sr-hist-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh of free power</span></div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;background:var(--bg3);padding:16px;border-radius:var(--radius);">
+          <strong style="color:var(--text2);">Data Summary (Last 30 Days):</strong><br/><br/>
+          ☀️ Total Sunlight: <span id="hist-sun-hours" style="font-weight:700;color:var(--text);">0</span> Hours<br/>
+          🌧️ Total Rainfall: <span id="hist-rain" style="font-weight:700;color:var(--text);">0</span> mm
+        </div>
+      </div>
 
-          currentForecastData = await resForecast.json();
-          currentHistoricalData = await resHistory.json();
-          
-          updateCalculations(); 
-          
-          document.getElementById('sr-loading').style.display = 'none';
-          document.getElementById('sr-data-container').style.display = 'block';
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          document.getElementById('sr-loading').innerHTML = "⚠️ Error connecting to satellite. Try again.";
-        }
-      }
-    });
+      <!-- TAB: SAVINGS (NEW) -->
+      <div id="tab-savings" class="tab-content">
+        <div class="sr-box savings">
+          <div class="sr-label savings">Estimated Monthly Bill Savings</div>
+          <div class="sr-big-val savings">₹<span id="sr-monthly-savings">0</span> <span style="font-size:14px;font-weight:700;">per month</span></div>
+          <div class="sr-sub-note">Calculated at ₹8/unit average TANGEDCO rate.</div>
+        </div>
+        <div class="impact-strip">
+          <div class="impact-box">
+            <div class="impact-val" id="sr-annual-savings">₹0</div>
+            <div class="impact-lbl">Annual Savings</div>
+          </div>
+          <div class="impact-box">
+            <div class="impact-val" id="sr-co2-saved">0 kg</div>
+            <div class="impact-lbl">CO₂ Avoided / Year</div>
+          </div>
+        </div>
+        <div class="subsidy-callout">
+          <h4>🏛️ Government Subsidy Available</h4>
+          <p>Your system may qualify for up to <strong style="color:#fde68a;">₹78,000</strong> direct cash subsidy under PM Surya Ghar: Muft Bijli Yojana. <a href="scheme-timer.html">See full scheme details →</a></p>
+        </div>
+      </div>
 
-    window.updateCalculations = function() {
-      if (!currentForecastData || !currentHistoricalData) return;
+      <div class="action-row">
+        <button class="btn btn-green" onclick="getFreeQuote()">Get Free Quote</button>
+        <a href="solar-calculator.html" class="btn btn-outline-green">Full Calculator</a>
+        <button class="btn btn-outline-green" onclick="shareReport()">Share</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-      const sysKw = parseFloat(document.getElementById('sys-kw').value) || 5;
-      const panelW = parseFloat(document.getElementById('panel-w').value) || 500;
-      
-      document.getElementById('calc-panels').textContent = Math.ceil((sysKw * 1000) / panelW);
+<!-- MOBILE BOTTOM NAV -->
+<nav class="app-bottom-nav">
+  <a href="index.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+    <span>Home</span>
+  </a>
+  <a href="solar-calculator.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></span>
+    <span>Calculator</span>
+  </a>
+  <a href="scheme-timer.html" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+    <span>Scheme</span>
+  </a>
+  <a href="tel:+918489090666" class="nav-tab">
+    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.58 3.56a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+    <span>Call</span>
+  </a>
+</nav>
 
-      const fDaily = currentForecastData.daily;
+<script>
+let currentForecastData = null;
+let currentHistoricalData = null;
+let mapMarker = null;
+let map = null;
+let streetLayer = null;
+let satelliteLayer = null;
+let currentMapType = 'street';
 
-      // --- TODAY'S DATA (TAB 1) ---
-      // Open-Meteo returns ISO strings for sunrise/sunset
-      const sunRise = new Date(fDaily.sunrise[0]);
-      const sunSet = new Date(fDaily.sunset[0]);
-      const timeOpts = { hour: 'numeric', minute: '2-digit', hour12: true };
-      
-      document.getElementById('sr-sunrise').textContent = sunRise.toLocaleTimeString('en-IN', timeOpts);
-      document.getElementById('sr-sunset').textContent = sunSet.toLocaleTimeString('en-IN', timeOpts);
-      
-      const todaySunHours = (fDaily.sunshine_duration[0] / 3600);
-      document.getElementById('sr-today-hours').textContent = todaySunHours.toFixed(1);
-      
-      // Today's Energy
-      const todayCode = fDaily.weathercode[0];
-      let tEff = 0.75;
-      if (todayCode >= 50) tEff = 0.40; 
-      if (todayCode === 3) tEff = 0.50; 
-      document.getElementById('sr-today-energy').textContent = (sysKw * todaySunHours * tEff).toFixed(1);
+const weatherDesc = {
+  0: "☀️ Clear", 1: "🌤️ Mostly Clear", 2: "⛅ Partly Cloudy", 3: "☁️ Overcast",
+  51: "🌧️ Drizzle", 61: "🌧️ Light Rain", 63: "🌧️ Mod. Rain", 65: "⛈️ Heavy Rain", 95: "🌩️ Storm"
+};
 
+window.switchTab = function(tabName, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + tabName).classList.add('active');
+};
 
-      // --- FORECAST MATH (TAB 2) ---
-      let totalWeekEnergy = 0;
-      let tableHTML = '';
-      
-      for(let i = 0; i < fDaily.time.length; i++) {
-        const date = new Date(fDaily.time[i]).toLocaleDateString('en-IN', {weekday: 'short', month: 'short', day: 'numeric'});
-        const code = fDaily.weathercode[i];
-        const weather = weatherDesc[code] || "☁️ Variable";
-        const sunHours = (fDaily.sunshine_duration[i] / 3600);
-        
-        let efficiency = 0.75;
-        if (code >= 50) efficiency = 0.40; 
-        if (code === 3) efficiency = 0.50; 
+window.setMapType = function(type) {
+  currentMapType = type;
+  document.getElementById('btn-street').classList.toggle('active', type==='street');
+  document.getElementById('btn-satellite').classList.toggle('active', type==='satellite');
+  if (type === 'satellite') {
+    map.removeLayer(streetLayer);
+    satelliteLayer.addTo(map);
+  } else {
+    map.removeLayer(satelliteLayer);
+    streetLayer.addTo(map);
+  }
+};
 
-        const dailyKWh = (sysKw * sunHours * efficiency);
-        totalWeekEnergy += dailyKWh;
+window.jumpToCity = function(lat, lng, name) {
+  map.setView([lat, lng], 12);
+  triggerMapClick(lat, lng);
+};
 
-        tableHTML += `<tr><td><strong>${date}</strong></td><td>${weather}</td><td style="color:var(--primary-light); font-weight:800;">${dailyKWh.toFixed(1)} kWh</td></tr>`;
-      }
-      document.getElementById('forecast-body').innerHTML = tableHTML;
-      document.getElementById('sr-total-energy').textContent = totalWeekEnergy.toFixed(1);
+window.useMyLocation = function() {
+  if (!navigator.geolocation) { alert('Geolocation not supported by your browser.'); return; }
+  navigator.geolocation.getCurrentPosition(
+    pos => { map.setView([pos.coords.latitude, pos.coords.longitude], 15); triggerMapClick(pos.coords.latitude, pos.coords.longitude); },
+    () => alert('Could not get your location. Please search or click the map instead.')
+  );
+};
 
-      // --- HISTORICAL MATH (TAB 3) ---
-      let histSunSeconds = 0;
-      let histRainSum = 0;
-      const hDaily = currentHistoricalData.daily;
+let triggerMapClick;
 
-      for(let i = 0; i < hDaily.time.length; i++) {
-        if(hDaily.sunshine_duration[i]) histSunSeconds += hDaily.sunshine_duration[i];
-        if(hDaily.precipitation_sum[i]) histRainSum += hDaily.precipitation_sum[i];
-      }
+document.addEventListener("DOMContentLoaded", function() {
+  map = L.map('solarMap').setView([11.0168, 76.9558], 10);
 
-      const histSunHours = histSunSeconds / 3600;
-      const histTotalEnergy = (sysKw * histSunHours * 0.75);
+  streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' });
+  satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' });
+  streetLayer.addTo(map);
 
-      document.getElementById('hist-sun-hours').textContent = histSunHours.toFixed(0);
-      document.getElementById('hist-rain').textContent = histRainSum.toFixed(1);
-      document.getElementById('sr-hist-energy').textContent = histTotalEnergy.toFixed(0).toLocaleString('en-IN');
-    };
+  L.Control.geocoder({
+    defaultMarkGeocode: false,
+    placeholder: "Search for your street or city..."
+  }).on('markgeocode', function(e) {
+    const latlng = e.geocode.center;
+    map.setView(latlng, 15);
+    triggerMapClick(latlng.lat, latlng.lng);
+  }).addTo(map);
 
-    // --- BUTTON ACTIONS ---
-    window.getFreeQuote = function() {
-      const kw = document.getElementById('sys-kw').value;
-      const loc = document.getElementById('sr-location-name').textContent;
-      // Pre-filled WhatsApp message
-      const msg = encodeURIComponent(`Hi Deepu Siva Pvt Ltd! I used your online Solar Simulator. I am interested in getting a free quotation for a ${kw}kW solar system at my location: ${loc}.`);
-      
-      // NOTE: Change the phone number below to your actual business WhatsApp number!
-      const phoneNumber = "918489090666"; 
-      window.open(`https://wa.me/${phoneNumber}?text=${msg}`, '_blank');
-    };
+  map.on('click', function(e) {
+    triggerMapClick(e.latlng.lat, e.latlng.lng);
+  });
 
-    window.shareReport = function() {
-      const kw = document.getElementById('sys-kw').value;
-      const loc = document.getElementById('sr-location-name').textContent;
-      const energy = document.getElementById('sr-total-energy').textContent;
-      const text = `Check out my solar potential! A ${kw}kW system in ${loc} will generate approx ${energy} kWh of free energy next week.`;
-      
-      if (navigator.share) {
-        navigator.share({ title: 'My Solar Forecast', text: text, url: window.location.href }).catch(console.error);
-      } else {
-        alert("Report copied to clipboard!");
-        navigator.clipboard.writeText(text);
-      }
-    };
-  </script>
+  triggerMapClick = async function(lat, lng) {
+    if (mapMarker) { mapMarker.setLatLng([lat, lng]); }
+    else { mapMarker = L.marker([lat, lng]).addTo(map); }
+
+    document.getElementById('mapInstructions').classList.add('hide');
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('sr-loading').style.display = 'block';
+    document.getElementById('sr-data-container').style.display = 'none';
+
+    try {
+      const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+      const geoRes = await fetch(geoUrl);
+      const geoData = await geoRes.json();
+      const placeName = geoData.name || geoData.address?.city || geoData.address?.town || geoData.address?.village || geoData.address?.county || "Custom Location";
+      document.getElementById('sr-location-name').textContent = placeName;
+
+      const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,sunshine_duration,precipitation_sum,sunrise,sunset&timezone=auto`;
+
+      const today = new Date();
+      const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+      const lastMonth = new Date(today); lastMonth.setDate(lastMonth.getDate() - 30);
+      const formatDate = (date) => date.toISOString().split('T')[0];
+
+      const historyUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${formatDate(lastMonth)}&end_date=${formatDate(yesterday)}&daily=sunshine_duration,precipitation_sum&timezone=auto`;
+
+      const [resForecast, resHistory] = await Promise.all([fetch(forecastUrl), fetch(historyUrl)]);
+      currentForecastData = await resForecast.json();
+      currentHistoricalData = await resHistory.json();
+
+      updateCalculations();
+
+      document.getElementById('sr-loading').style.display = 'none';
+      document.getElementById('sr-data-container').style.display = 'block';
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      document.getElementById('sr-loading').innerHTML = '<p style="color:var(--red);">⚠️ Error connecting to satellite. Please try again.</p>';
+    }
+  };
+});
+
+window.updateCalculations = function() {
+  if (!currentForecastData || !currentHistoricalData) return;
+
+  const sysKw = parseFloat(document.getElementById('sys-kw').value) || 5;
+  const panelW = parseFloat(document.getElementById('panel-w').value) || 500;
+
+  document.getElementById('calc-panels').textContent = Math.ceil((sysKw * 1000) / panelW);
+
+  const fDaily = currentForecastData.daily;
+
+  // TODAY
+  const sunRise = new Date(fDaily.sunrise[0]);
+  const sunSet  = new Date(fDaily.sunset[0]);
+  const timeOpts = { hour: 'numeric', minute: '2-digit', hour12: true };
+  document.getElementById('sr-sunrise').textContent = sunRise.toLocaleTimeString('en-IN', timeOpts);
+  document.getElementById('sr-sunset').textContent  = sunSet.toLocaleTimeString('en-IN', timeOpts);
+
+  const todaySunHours = (fDaily.sunshine_duration[0] / 3600);
+  document.getElementById('sr-today-hours').textContent = todaySunHours.toFixed(1);
+
+  const todayCode = fDaily.weathercode[0];
+  let tEff = 0.75;
+  if (todayCode >= 50) tEff = 0.40;
+  if (todayCode === 3) tEff = 0.50;
+  const todayEnergy = sysKw * todaySunHours * tEff;
+  document.getElementById('sr-today-energy').textContent = todayEnergy.toFixed(1);
+  document.getElementById('sr-today-month').textContent  = Math.round(todayEnergy * 30).toLocaleString('en-IN');
+  document.getElementById('sr-today-year').textContent   = Math.round(todayEnergy * 365).toLocaleString('en-IN');
+
+  // FORECAST
+  let totalWeekEnergy = 0;
+  let tableHTML = '';
+  for (let i = 0; i < fDaily.time.length; i++) {
+    const date = new Date(fDaily.time[i]).toLocaleDateString('en-IN', {weekday:'short', month:'short', day:'numeric'});
+    const code = fDaily.weathercode[i];
+    const weather = weatherDesc[code] || "☁️ Variable";
+    const sunHours = (fDaily.sunshine_duration[i] / 3600);
+    let efficiency = 0.75;
+    if (code >= 50) efficiency = 0.40;
+    if (code === 3) efficiency = 0.50;
+    const dailyKWh = sysKw * sunHours * efficiency;
+    totalWeekEnergy += dailyKWh;
+    tableHTML += `<tr><td><strong>${date}</strong></td><td>${weather}</td><td style="color:var(--green);font-weight:800;">${dailyKWh.toFixed(1)} kWh</td></tr>`;
+  }
+  document.getElementById('forecast-body').innerHTML = tableHTML;
+  document.getElementById('sr-total-energy').textContent = totalWeekEnergy.toFixed(1);
+
+  // HISTORY
+  let histSunSeconds = 0, histRainSum = 0;
+  const hDaily = currentHistoricalData.daily;
+  for (let i = 0; i < hDaily.time.length; i++) {
+    if (hDaily.sunshine_duration[i]) histSunSeconds += hDaily.sunshine_duration[i];
+    if (hDaily.precipitation_sum[i]) histRainSum += hDaily.precipitation_sum[i];
+  }
+  const histSunHours = histSunSeconds / 3600;
+  const histTotalEnergy = sysKw * histSunHours * 0.75;
+  document.getElementById('hist-sun-hours').textContent = histSunHours.toFixed(0);
+  document.getElementById('hist-rain').textContent = histRainSum.toFixed(1);
+  document.getElementById('sr-hist-energy').textContent = histTotalEnergy.toFixed(0);
+
+  // SAVINGS (NEW)
+  const monthlyKWh = todayEnergy * 30;
+  const annualKWh  = todayEnergy * 365;
+  const ratePerUnit = 8; // average TANGEDCO domestic rate
+  const monthlySavings = monthlyKWh * ratePerUnit;
+  const annualSavings  = annualKWh * ratePerUnit;
+  const co2PerKWh = 0.82; // kg CO2 per kWh — India grid average
+  const co2Saved  = annualKWh * co2PerKWh;
+
+  document.getElementById('sr-monthly-savings').textContent = Math.round(monthlySavings).toLocaleString('en-IN');
+  document.getElementById('sr-annual-savings').textContent  = '₹' + Math.round(annualSavings).toLocaleString('en-IN');
+  document.getElementById('sr-co2-saved').textContent       = Math.round(co2Saved).toLocaleString('en-IN') + ' kg';
+};
+
+window.getFreeQuote = function() {
+  const kw  = document.getElementById('sys-kw').value;
+  const loc = document.getElementById('sr-location-name').textContent;
+  const msg = encodeURIComponent(`Hi Deepu Siva Pvt Ltd! I used your Solar Potential Map tool. I'm interested in a free quotation for a ${kw}kW solar system at: ${loc}.`);
+  window.open(`https://wa.me/918489090666?text=${msg}`, '_blank');
+};
+
+window.shareReport = function() {
+  const kw     = document.getElementById('sys-kw').value;
+  const loc    = document.getElementById('sr-location-name').textContent;
+  const energy = document.getElementById('sr-total-energy').textContent;
+  const text   = `Check out my solar potential! A ${kw}kW system in ${loc} will generate approx ${energy} kWh of free energy next week. — via Deepu Siva Solar Map`;
+
+  if (navigator.share) {
+    navigator.share({ title: 'My Solar Forecast', text: text, url: window.location.href }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text);
+    alert('Report copied to clipboard!');
+  }
+};
+</script>
 </body>
 </html>
