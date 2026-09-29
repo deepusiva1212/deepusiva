@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Registration | Deepu Siva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Barlow', sans-serif; background: #0d1117; color: #c9d1d9; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+    .reg-box { background: #161b22; padding: 40px; border-radius: 8px; border: 1px solid #21262d; width: 100%; max-width: 550px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    h2 { font-family: 'Barlow Condensed', sans-serif; color: #f0f6fc; font-size: 28px; text-align: center; margin: 0 0 20px 0; letter-spacing: 1px; }
+    
+    /* Social Buttons */
+    .social-btns { display: flex; gap: 10px; margin-bottom: 25px; }
+    .s-btn { flex: 1; padding: 12px; border-radius: 4px; border: 1px solid #30363d; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; background: #1c2128; color: #fff; font-size: 14px; }
+    .s-btn:hover { background: #30363d; }
+    
+    .divider { display: flex; align-items: center; color: #8b949e; font-size: 12px; margin: 20px 0; }
+    .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #30363d; margin: 0 10px; }
+
+    input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 4px; box-sizing: border-box; font-family: 'Barlow', sans-serif; }
+    input:focus { border-color: #f97316; outline: none; }
+    .row { display: flex; gap: 10px; }
+    label { display: block; font-size: 12px; color: #8b949e; margin-bottom: 5px; margin-left: 2px; }
+    
+    button.submit-btn { width: 100%; padding: 15px; background: #f97316; color: #fff; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    #message { margin-top: 15px; text-align: center; font-size: 14px; display: none; }
+    
+    /* Phone Modal */
+    #phoneModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; }
+    .modal-content { background:#161b22; padding:30px; border-radius:8px; width:300px; text-align:center; }
+  </style>
+</head>
+<body>
+
+  <div class="reg-box">
+    <h2>CLIENT ONBOARDING</h2>
+
+    <div class="social-btns">
+      <div class="s-btn" id="googleBtn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Google
+      </div>
+
+      <div class="s-btn" id="facebookBtn" style="background: #1877F2; color: white; border: none;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="18"> Facebook
+      </div>
+
+      <div class="s-btn" id="phoneBtn">📞 Mobile OTP</div>
+    </div>
+    <div class="divider">OR USE EMAIL</div>
+
+    <form id="regForm">
+      <div class="row">
+        <div><label>First Name</label><input type="text" id="fName" required></div>
+        <div><label>Last Name</label><input type="text" id="lName" required></div>
+      </div>
+      <label>Company Name (Optional)</label>
+    <input type="text" id="companyName" placeholder="e.g. RAJA DEEPU SOORIYA PVT LTD">
+
+      <label>Unique Username</label>
+      <input type="text" id="uName" placeholder="e.g. deepu_siva_01" required>
+
+      <label>Country</label>
+      <select id="country">
+        <option value="India">India 🇮🇳</option>
+        <option value="UAE">United Arab Emirates 🇦🇪</option>
+        <option value="USA">USA 🇺🇸</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <div class="row">
+        <div>
+          <label>PIN Code</label>
+          <input type="text" id="pincode" placeholder="6 Digits" maxlength="6" required>
+        </div>
+        <div>
+          <label>City</label>
+          <input type="text" id="city" readonly placeholder="Auto-filled">
+        </div>
+      </div>
+
+      <label>State</label>
+      <input type="text" id="state" readonly placeholder="Auto-filled">
+
+      <label>Full Address</label>
+      <textarea id="addr" rows="2" required></textarea>
+
+      <label>Email ID</label>
+      <input type="email" id="email" required>
+      
+      <label>Create Password</label>
+      <input type="password" id="pass" minlength="6" required>
+      <label>Confirm Password</label>
+<input type="password" id="confirmPass" required>
+
+      <button type="submit" class="submit-btn" id="mainBtn">Submit Application</button>
+      <div id="message"></div>
+    </form>
+  </div>
+
+  <div id="phoneModal">
+    <div class="modal-content">
+      <h3 style="color:#fff">Verify Mobile</h3>
+      <div id="recaptcha-container"></div>
+      <input type="tel" id="phoneNumber" placeholder="+91 99524 27492">
+      <button class="submit-btn" id="sendOTP">Send OTP</button>
+      <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" style="display:none; margin-top:10px;">
+      <button class="submit-btn" id="verifyOTP" style="display:none">Verify & Sign Up</button>
+      <button onclick="document.getElementById('phoneModal').style.display='none'" style="background:none; border:none; color:#8b949e; cursor:pointer; margin-top:10px;">Cancel</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, createUserWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCm0UfXGcDiXk8dmGZ8coKOnnVmaJl6mB0",
+      authDomain: "deepu-siva-portal.firebaseapp.com",
+      projectId: "deepu-siva-portal",
+      storageBucket: "deepu-siva-portal.firebasestorage.app",
+      messagingSenderId: "1014351018202",
+      appId: "1:1014351018202:web:16d2578f726159e5ef8de3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // --- PIN CODE AUTO-FILL LOGIC ---
+    document.getElementById('pincode').addEventListener('input', async (e) => {
+      if(e.target.value.length === 6) {
+        try {
+          const res = await fetch(`https://api.postalpincode.in/pincode/${e.target.value}`);
+          const data = await res.json();
+          if(data[0].Status === "Success") {
+            document.getElementById('city').value = data[0].PostOffice[0].District;
+            document.getElementById('state').value = data[0].PostOffice[0].State;
+          }
+        } catch (err) { console.log("PIN lookup failed"); }
+      }
+    });
+
+    // --- SAVE USER TO FIRESTORE ---
+    async function saveUser(uid, email, method) {
+      await setDoc(doc(db, "users", uid), {
+        firstName: document.getElementById('fName').value,
+        lastName: document.getElementById('lName').value,
+        username: document.getElementById('uName').value,
+        country: document.getElementById('country').value,
+        pincode: document.getElementById('pincode').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        address: document.getElementById('addr').value,
+        email: email,
+        loginMethod: method,
+        status: "pending",
+        date: new Date().toISOString()
+      });
+      document.getElementById('message').innerText = "Application sent! Awaiting admin approval.";
+      document.getElementById('message').style.display = "block";
+      document.getElementById('message').style.color = "#4ade80";
+    }
+
+    // --- EMAIL SIGN UP ---
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // --- 🛡️ NEW SECURITY CHECK START ---
+    const pass = document.getElementById('pass').value;
+    const confirmPass = document.getElementById('confirmPass').value;
+    const messageDiv = document.getElementById('message');
+
+    // Clear previous messages
+    messageDiv.innerText = "";
+    messageDiv.style.display = "block";
+
+    // 1. Check Passwords Match
+    if (pass !== confirmPass) {
+      messageDiv.innerText = "Error: Passwords do not match!";
+      messageDiv.style.color = "#ff4d4d"; 
+      return; 
+    }
+
+    // 2. Validate Strong Password 
+    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+    if (!strongRegex.test(pass)) {
+      messageDiv.innerText = "Weak Password: Must be 8+ characters, include 1 uppercase letter, and 1 number.";
+      messageDiv.style.color = "#ff4d4d"; 
+      return; 
+    }
+    // --- 🛡️ NEW SECURITY CHECK END ---
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('pass').value);
+        await saveUser(userCred.user.uid, userCred.user.email, "email");
+        // --- 📧 ADD THIS LINE FOR SEND VERIFICATION LINK ---
+    await sendEmailVerification(userCred.user);
+    alert("Success! Check your inbox for a verification link.");
+      } catch (err) { alert(err.message); }
+    });
+
+    // --- GOOGLE SIGN UP ---
+    document.getElementById('googleBtn').addEventListener('click', async () => {
+      // Check if they filled the form first!
+      if(!document.getElementById('uName').value) { alert("Please fill in your name and address details first!"); return; }
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        await saveUser(result.user.uid, result.user.email, "google");
+      } catch (err) { alert(err.message); }
+    });
+    // --- PHONE OTP LOGIC ---
+    let confirmationResult;
+
+    // 1. Setup the invisible security check
+    const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'invisible'
+    });
+
+    // 2. Function to Send SMS
+    document.getElementById('sendOTP').addEventListener('click', async () => {
+      const phoneNumber = document.getElementById('phoneNumber').value;
+      const appVerifier = recaptchaVerifier;
+
+      try {
+        confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+        alert("OTP Sent to " + phoneNumber);
+        // Show the OTP input box and Verify button
+        document.getElementById('otpCode').style.display = 'block';
+        document.getElementById('verifyOTP').style.display = 'block';
+        document.getElementById('sendOTP').style.display = 'none';
+      } catch (error) {
+        alert("Error sending SMS: " + error.message);
+      }
+    });
+
+    // 3. Function to Verify Code & Save User
+    document.getElementById('verifyOTP').addEventListener('click', async () => {
+      const code = document.getElementById('otpCode').value;
+      if(!document.getElementById('uName').value) { alert("Fill the form first!"); return; }
+
+      try {
+        const result = await confirmationResult.confirm(code);
+        await saveUser(result.user.uid, "Verified via Phone", "phone_otp");
+        document.getElementById('phoneModal').style.display = 'none';
+      } catch (error) {
+        alert("Invalid OTP Code. Please try again.");
+      }
+    });
+
+    // --- FACEBOOK LOGIN LOGIC ---
+    document.getElementById('facebookBtn').addEventListener('click', async () => {
+      // Check if form is filled
+      if(!document.getElementById('uName').value) { 
+        alert("Please fill in your name and address details first!"); 
+        return; 
+      }
+      
+      const provider = new FacebookAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        // Save to your Director Portal
+        await saveUser(result.user.uid, result.user.email || "Facebook User", "facebook");
+        alert("Application Sent! Please wait for Director approval.");
+      } catch (error) {
+        alert("Facebook Login Error: " + error.message);
+      }
+    });
+    
+    // Open Modal when clicking the main Mobile button
+    document.getElementById('phoneBtn').addEventListener('click', () => {
+      document.getElementById('phoneModal').style.display = 'flex';
+    });
+  </script>
+  <div id="phoneModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; z-index: 1000;">
+    <div style="background:#161b22; padding:30px; border-radius:8px; width:320px; text-align:center; border: 1px solid #30363d;">
+      <h3 style="color:#fff; margin-top:0;">Verify Mobile</h3>
+      <p style="font-size: 13px; color: #8b949e;">Enter number with +91</p>
+      
+      <div id="recaptcha-container"></div>
+      
+      <input type="tel" id="phoneNumber" placeholder="+91 99524 27492" style="margin-top:10px;">
+      <button type="button" class="submit-btn" id="sendOTP">Send OTP</button>
+      
+      <input type="text" id="otpCode" placeholder="6-digit Code" style="display:none; margin-top:10px;">
+      <button type="button" class="submit-btn" id="verifyOTP" style="display:none; background: #4ade80; color: #000;">Verify & Apply</button>
+      
+      <button type="button" onclick="document.getElementById('phoneModal').style.display='none'" style="background:none; border:none; color:#8b949e; cursor:pointer; margin-top:15px; font-size: 14px;">Cancel</button>
+    </div>
+  </div>
+</body>
+</html>
