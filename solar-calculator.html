@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Free Solar ROI Calculator | Deepu Siva Private Limited</title>
-<meta name="description" content="Calculate your solar savings instantly. Find out how many panels you need, your payback period, and exact savings for your home or factory in Coimbatore."/>
+<meta name="description" content="Estimate solar system size, current 2026 indicative market cost, PM Surya Ghar + Tamil Nadu rooftop assistance, savings and payback for homes and factories in Tamil Nadu."/>
 <link rel="stylesheet" href="css/main.css"/>
 <link rel="stylesheet" href="style.css"/>
 <style>
@@ -480,6 +480,8 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   .how-grid { grid-template-columns: 1fr; }
   .type-toggle { grid-template-columns: 1fr 1fr; }
 }
+
+.market-update{margin-top:10px;padding:11px 12px;border:1px solid #dfe8e2;border-radius:12px;background:#f7faf8;display:grid;gap:3px;color:#435048}.market-update strong{font-size:11px;color:#176b36}.market-update span{font-size:11px;line-height:1.45}.market-update small{font-size:10px;color:#77827c}.tn-scheme-card{margin-top:16px;padding:16px;border-radius:16px;border:1px solid #cfe8d7;background:linear-gradient(145deg,#f2fbf5,#ffffff)}.tn-scheme-head{display:flex;gap:10px;align-items:flex-start}.tn-scheme-head>span{font-size:24px}.tn-scheme-head strong{display:block;font-family:var(--font-head);font-size:14px}.tn-scheme-head small{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-top:2px}.tn-scheme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}.tn-scheme-grid div{background:#fff;border:1px solid #e0e8e2;border-radius:10px;padding:9px;text-align:center}.tn-scheme-grid b,.tn-scheme-grid span{display:block}.tn-scheme-grid b{font-size:11px;color:#176b36}.tn-scheme-grid span{font-size:12px;font-weight:800;margin-top:2px}.tn-scheme-card p{font-size:10px;line-height:1.5;color:var(--muted);margin:0 0 7px}.tn-scheme-card a{font-size:11px;font-weight:800;color:var(--green)}
 </style>
 <style>.tool-page-footer{margin-top:50px;background:#111614;color:#cbd5cf;padding:40px 0}.tool-page-footer a{color:#b8c7be}.tool-page-footer .container{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}@media(max-width:700px){.tool-page-footer .container{display:block}.tool-page-footer p{margin-top:8px}}.nav-links a.active{color:#16a34a!important}</style></head>
 <body>
@@ -605,7 +607,12 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         </div>
         <input class="form-control" type="number" id="rateInput" value="6" min="1" max="20" step="0.5"
           oninput="calculate()" placeholder="₹ per unit"/>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Check your TANGEDCO bill for your exact tariff slab</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Use the effective ₹/unit from your latest bill. This calculator does not assume one universal TANGEDCO slab.</div>
+        <div class="market-update" aria-label="Current planning benchmark">
+          <strong>Market benchmark • checked 30 Sep 2026</strong>
+          <span>Residential 1–3 kW: ₹77,500 / ₹1,42,500 / ₹2,00,000. Larger residential systems and C&amp;I use indicative 2026 market benchmarks.</span>
+          <small>Indicative only — final EPC price varies by module, inverter, structure, roof, approvals, GST and site conditions.</small>
+        </div>
       </div>
 
       <!-- Loan Toggle -->
@@ -621,6 +628,17 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
           </label>
         </div>
         <div id="loanDetails" style="display:none;font-size:13px;color:var(--green3);font-weight:600;"></div>
+      </div>
+
+      <div class="tn-scheme-card">
+        <div class="tn-scheme-head"><span>☀️</span><div><strong>Tamil Nadu + PM Surya Ghar</strong><small>Residential rooftop assistance shown on the TN Solar Homes Portal</small></div></div>
+        <div class="tn-scheme-grid">
+          <div><b>1 kW</b><span>₹35,000 total</span></div>
+          <div><b>2 kW</b><span>₹70,000 total</span></div>
+          <div><b>3 kW+</b><span>₹1,00,000 max</span></div>
+        </div>
+        <p>Central CFA: ₹30k / ₹60k / ₹78k. Tamil Nadu top-up shown by the state portal: ₹5k / ₹10k / ₹22k. Eligibility, DCR/ALMM, empanelled-vendor, net-metering and commissioning conditions apply.</p>
+        <a href="https://www.tnebltd.gov.in/usrp/" target="_blank" rel="noopener">Verify current TN Solar Homes rules ↗</a>
       </div>
 
       <button class="btn btn-green btn-full" style="margin-top:20px;padding:16px;font-size:16px;" onclick="calculate()">
@@ -764,7 +782,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         </div>
         <div class="savings-row" id="subsidyRow" style="display:none;">
           <span class="savings-row-label">PM Surya Ghar Subsidy</span>
-          <span class="savings-row-val" id="res-subsidy" style="color:var(--green);">₹0</span>
+          <span><span class="savings-row-val" id="res-subsidy" style="color:var(--green);">₹0</span><small id="res-subsidy-detail" style="display:block;color:var(--muted);font-size:10px;text-align:right;margin-top:2px;"></small></span>
         </div>
         <div class="savings-row" id="loanRow" style="display:none;">
           <span class="savings-row-label">Monthly Loan EMI</span>
@@ -823,12 +841,13 @@ const storage = getStorage(app);
 let calcType    = 'home';   // home | factory
 let panelWatt   = 400;      // W per panel
 let monthlyUnits= 300;      // units/month
-let ebRate      = 6;        // ₹/unit
+let ebRate      = 6;        // user-entered effective ₹/unit
 
 // ── Constants (Coimbatore specific) ──────────────────
 const SUN_HOURS  = 5.5;     // peak sun hours/day in Coimbatore
 const EFFICIENCY = 0.80;    // system efficiency (80%)
-const COST_PER_KW= 65000;   // ₹ installed cost per kW
+const RESIDENTIAL_BENCHMARK = {1:77500, 2:142500, 3:200000, 4:260000, 5:320000, 10:575000}; // indicative 2026 planning benchmarks
+const CNI_BENCHMARK_PER_KW = 45000; // indicative 2026 C&I midpoint; not a quote
 const CO2_PER_KWH= 0.82;    // kg CO₂ per kWh (Tamil Nadu grid)
 
 // ── SLIDER / INPUT SYNC ───────────────────────────────
@@ -899,7 +918,20 @@ window.calculate = function() {
   const numPanels   = Math.ceil(requiredKW * 1000 / panelWatt);
   const actualKW    = (numPanels * panelWatt) / 1000;
   const roofSqft    = Math.ceil(actualKW * 90);
-  const systemCost  = Math.round(actualKW * COST_PER_KW);
+
+  function residentialMarketCost(kw) {
+    const keys = Object.keys(RESIDENTIAL_BENCHMARK).map(Number).sort((a,b)=>a-b);
+    if (kw <= keys[0]) return RESIDENTIAL_BENCHMARK[1] * kw;
+    for (let i=0;i<keys.length-1;i++) {
+      const a=keys[i], b=keys[i+1];
+      if (kw <= b) {
+        const t=(kw-a)/(b-a);
+        return RESIDENTIAL_BENCHMARK[a] + (RESIDENTIAL_BENCHMARK[b]-RESIDENTIAL_BENCHMARK[a])*t;
+      }
+    }
+    return RESIDENTIAL_BENCHMARK[10] + (kw-10)*50000;
+  }
+  const systemCost = Math.round(calcType === 'home' ? residentialMarketCost(actualKW) : actualKW * CNI_BENCHMARK_PER_KW);
 
   // Savings
   const annualKWhGenerated  = actualKW * SUN_HOURS * 365 * EFFICIENCY;
@@ -911,14 +943,16 @@ window.calculate = function() {
   const savings25yr         = annualSavings * 25;
   const co2Annual           = Math.round(annualKWhGenerated * CO2_PER_KWH);
 
-  // PM Surya Ghar Subsidy (for home type ≤ 3kW)
-  let subsidy = 0;
+  // PM Surya Ghar + Tamil Nadu state top-up shown on the TN Solar Homes Portal
+  let centralSubsidy = 0, tnSubsidy = 0, subsidy = 0;
   if (calcType === 'home') {
-    if (actualKW <= 1)      subsidy = 30000;
-    else if (actualKW <= 2) subsidy = 60000;
-    else if (actualKW <= 3) subsidy = 78000;
-    document.getElementById('subsidyRow').style.display = subsidy > 0 ? '' : 'none';
+    if (actualKW <= 1) { centralSubsidy = 30000; tnSubsidy = 5000; }
+    else if (actualKW <= 2) { centralSubsidy = 60000; tnSubsidy = 10000; }
+    else { centralSubsidy = 78000; tnSubsidy = 22000; }
+    subsidy = centralSubsidy + tnSubsidy;
+    document.getElementById('subsidyRow').style.display = '';
     document.getElementById('res-subsidy').textContent = '−₹' + subsidy.toLocaleString('en-IN');
+    document.getElementById('res-subsidy-detail').textContent = `Central ₹${centralSubsidy.toLocaleString('en-IN')} + TN ₹${tnSubsidy.toLocaleString('en-IN')}`;
   } else {
     document.getElementById('subsidyRow').style.display = 'none';
   }
@@ -962,7 +996,7 @@ window.calculate = function() {
   // Store for WhatsApp share
   window._calcResult = {
     actualKW, numPanels, systemCost, annualSavings, paybackYears,
-    monthlySavings, savings25yr, roofSqft, panelWatt, calcType
+    monthlySavings, savings25yr, roofSqft, panelWatt, calcType, subsidy, centralSubsidy, tnSubsidy
   };
 };
 
@@ -976,6 +1010,7 @@ window.shareCalcWhatsApp = function() {
     `System Size: ${r.actualKW.toFixed(2)} kW (${r.numPanels} panels @ ${r.panelWatt}W)\n` +
     `Roof Area: ${r.roofSqft.toLocaleString('en-IN')} sqft\n` +
     `Total Cost: ₹${r.systemCost.toLocaleString('en-IN')}\n` +
+    `Government assistance (if eligible): ₹${(r.subsidy||0).toLocaleString('en-IN')}\n` +
     `Annual Savings: ₹${r.annualSavings.toLocaleString('en-IN')}\n` +
     `Payback: ${r.paybackYears.toFixed(1)} years\n` +
     `25-Year Savings: ₹${r.savings25yr.toLocaleString('en-IN')}\n\n` +

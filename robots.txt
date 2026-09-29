@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /internal/
-Disallow: /config.js
-Disallow: /ds-firebase.js
 Sitemap: https://deepusiva.com/sitemap.xml

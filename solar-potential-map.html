@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Solar Potential Map | Location-Based Weather &amp; Solar Analysis | Deepu Siva</title>
-<meta name="description" content="Click a location to explore the previous 30 days of sunshine data and a 7-day weather-based solar generation estimate. Free tool by Deepu Siva Private Limited, Coimbatore."/>
+<meta name="description" content="Select a location to compare 30 days of historical/reanalysis solar-weather data with a 7-day forecast-based generation estimate. Free tool by Deepu Siva Private Limited, Coimbatore."/>
 <meta name="keywords" content="solar potential map Coimbatore, rooftop solar simulator, solar energy calculator location, satellite solar analysis Tamil Nadu"/>
 <link rel="stylesheet" href="css/main.css"/>
 <link rel="stylesheet" href="style.css"/>
@@ -180,6 +180,10 @@
   .mini-stat-row { flex-wrap: wrap; }
   .action-row .btn { min-width: 100%; }
 }
+
+/* Solar simulator polish */
+.leaflet-container{background:#dfe8e2}.leaflet-control-zoom a,.leaflet-control-geocoder{border:0!important;box-shadow:0 6px 20px rgba(16,23,19,.14)!important}.leaflet-control-geocoder{border-radius:12px!important;overflow:hidden}.leaflet-control-geocoder-form input{font-family:var(--font-body)!important}.solar-pulse{width:22px;height:22px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 0 0 0 rgba(22,163,74,.65);animation:solarPulse 1.8s infinite}.solar-pulse:after{content:'';position:absolute;inset:-9px;border:1px solid rgba(22,163,74,.55);border-radius:50%;animation:solarRing 2.2s infinite}.solar-location-marker{position:relative;width:22px;height:22px}@keyframes solarPulse{0%{box-shadow:0 0 0 0 rgba(22,163,74,.6)}70%{box-shadow:0 0 0 15px rgba(22,163,74,0)}100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}}@keyframes solarRing{0%,100%{transform:scale(.75);opacity:.9}50%{transform:scale(1.15);opacity:.25}}.solar-loading-orbit{width:48px;height:48px;border-radius:50%;border:2px solid rgba(22,163,74,.15);border-top-color:var(--green);border-right-color:var(--green);animation:solarOrbit .8s linear infinite;margin:0 auto 14px;position:relative}.solar-loading-orbit:after{content:'☀';position:absolute;inset:0;display:grid;place-items:center;color:var(--green);font-size:18px}@keyframes solarOrbit{to{transform:rotate(360deg)}}.forecast-table tbody tr{animation:rowIn .45s ease both}.forecast-table tbody tr:nth-child(2){animation-delay:.04s}.forecast-table tbody tr:nth-child(3){animation-delay:.08s}.forecast-table tbody tr:nth-child(4){animation-delay:.12s}.forecast-table tbody tr:nth-child(5){animation-delay:.16s}.forecast-table tbody tr:nth-child(6){animation-delay:.20s}.forecast-table tbody tr:nth-child(7){animation-delay:.24s}@keyframes rowIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}.solar-data-note{padding:10px 12px;border:1px solid #dfe8e2;background:#f7faf8;border-radius:12px;font-size:10px;line-height:1.5;color:var(--muted);margin-top:12px}.solar-energy-bar{height:7px;border-radius:99px;background:#e9efeb;overflow:hidden;margin-top:8px}.solar-energy-bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:inherit;transition:width 1s ease}
+@media(prefers-reduced-motion:reduce){.solar-pulse,.solar-pulse:after,.solar-loading-orbit,.forecast-table tbody tr{animation:none}.solar-energy-bar>span{transition:none}}
 </style>
 <style>.tool-page-footer{margin-top:50px;background:#111614;color:#cbd5cf;padding:40px 0}.tool-page-footer a{color:#b8c7be}.tool-page-footer .container{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}@media(max-width:700px){.tool-page-footer .container{display:block}.tool-page-footer p{margin-top:8px}}.nav-links a.active{color:#16a34a!important}</style></head>
 <body>
@@ -200,7 +204,7 @@
 <!-- HERO -->
 <div class="map-hero">
   <h1>Explore Your Location's <em>Solar Potential</em></h1>
-  <p>Click any location on the satellite map to pull location-based weather data — compare the previous 30 days with today and the next 7 days.</p>
+  <p>Select a location on the map to pull location-based solar-weather data — compare the previous 30 days, today and the next 7 days.</p>
   <div class="map-hero-badges">
     <span class="chip-green" style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;">🗺️ Satellite Map</span>
     <span class="chip-blue" style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#dbeafe;color:#1e40af;">🌦️ Weather Data</span>
@@ -232,7 +236,7 @@
     </div>
     <div class="map-instructions" id="mapInstructions">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Click anywhere on the map or search above to analyze that location
+      Click a roof, search an address, or choose a city to analyze that location
     </div>
   </div>
 
@@ -264,7 +268,7 @@
 
     <!-- LOADING -->
     <div id="sr-loading" class="sr-loading">
-      <div class="spin-icon"></div>
+      <div class="solar-loading-orbit"></div>
       Connecting to weather satellites…
     </div>
 
@@ -298,7 +302,7 @@
         <div class="sr-box">
           <div class="sr-label">Today's Estimated Energy</div>
           <div class="sr-big-val"><span id="sr-today-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh today</span></div>
-          <div class="sr-sub-note">Based on <span id="sr-today-hours" style="font-weight:700;color:var(--text2);">0</span> hours of daylight detected via satellite.</div>
+          <div class="sr-sub-note">Based on <span id="sr-today-hours" style="font-weight:700;color:var(--text2);">0</span> sunshine hours from the weather model; rooftop output is an estimate.</div>
         </div>
         <div class="impact-strip">
           <div class="impact-box">
@@ -317,6 +321,7 @@
         <div class="sr-box">
           <div class="sr-label">Upcoming Energy Generation</div>
           <div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh this week</span></div>
+          <div class="solar-energy-bar" aria-hidden="true"><span id="weekEnergyBar"></span></div>
         </div>
         <table class="forecast-table">
           <thead><tr><th>Date</th><th>Weather</th><th>Energy</th></tr></thead>
@@ -343,7 +348,7 @@
         <div class="sr-box savings">
           <div class="sr-label savings">Estimated Monthly Bill Savings</div>
           <div class="sr-big-val savings">₹<span id="sr-monthly-savings">0</span> <span style="font-size:14px;font-weight:700;">per month</span></div>
-          <div class="sr-sub-note">Calculated at ₹8/unit average TANGEDCO rate.</div>
+          <div class="sr-sub-note">Calculated using the planning tariff entered below; use your latest bill for a more precise estimate.</div>
         </div>
         <div class="impact-strip">
           <div class="impact-box">
@@ -357,10 +362,11 @@
         </div>
         <div class="subsidy-callout">
           <h4>🏛️ Government Subsidy Available</h4>
-          <p>Your system may qualify for up to <strong style="color:#fde68a;">₹78,000</strong> direct cash subsidy under PM Surya Ghar: Muft Bijli Yojana. <a href="scheme-timer.html">See full scheme details →</a></p>
+          <p>Eligible Tamil Nadu residential systems may receive central + state assistance shown on the TN Solar Homes Portal, up to <strong style="color:#fde68a;">₹1,00,000</strong> total for 3 kW+ under the portal’s published structure. <a href="scheme-timer.html">See full scheme details →</a></p>
         </div>
       </div>
 
+      <div class="solar-data-note"><strong>How this estimate works:</strong> weather/reanalysis data is converted to an indicative PV yield using your selected system size. It is not a site survey or guaranteed generation forecast. Roof direction, shade, temperature, inverter losses and equipment affect actual output.</div>
       <div class="action-row">
         <button class="btn btn-green" onclick="getFreeQuote()">Get Free Quote</button>
         <a href="solar-calculator.html" class="btn btn-outline-green">Full Calculator</a>
@@ -440,10 +446,10 @@ window.useMyLocation = function() {
 let triggerMapClick;
 
 document.addEventListener("DOMContentLoaded", function() {
-  map = L.map('solarMap').setView([11.0168, 76.9558], 10);
+  map = L.map('solarMap', {zoomControl:true, scrollWheelZoom:true, preferCanvas:true}).setView([11.0168, 76.9558], 10);
 
-  streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' });
-  satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' });
+  streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors', maxZoom: 19 });
+  satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri', maxZoom: 19 });
   streetLayer.addTo(map);
 
   L.Control.geocoder({
@@ -460,8 +466,9 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   triggerMapClick = async function(lat, lng) {
-    if (mapMarker) { mapMarker.setLatLng([lat, lng]); }
-    else { mapMarker = L.marker([lat, lng]).addTo(map); }
+    const pulseIcon = L.divIcon({className:'solar-location-marker',html:'<span class="solar-pulse"></span>',iconSize:[22,22],iconAnchor:[11,11]});
+    if (mapMarker) { mapMarker.setLatLng([lat, lng]); mapMarker.setIcon(pulseIcon); }
+    else { mapMarker = L.marker([lat, lng], {icon:pulseIcon, riseOnHover:true}).addTo(map); }
 
     document.getElementById('mapInstructions').classList.add('hide');
     document.getElementById('emptyState').style.display = 'none';
@@ -475,14 +482,14 @@ document.addEventListener("DOMContentLoaded", function() {
       const placeName = geoData.name || geoData.address?.city || geoData.address?.town || geoData.address?.village || geoData.address?.county || "Custom Location";
       document.getElementById('sr-location-name').textContent = placeName;
 
-      const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,sunshine_duration,precipitation_sum,sunrise,sunset&timezone=auto`;
+      const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,sunshine_duration,shortwave_radiation_sum,precipitation_sum,sunrise,sunset&timezone=auto`;
 
       const today = new Date();
       const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
       const lastMonth = new Date(today); lastMonth.setDate(lastMonth.getDate() - 30);
       const formatDate = (date) => date.toISOString().split('T')[0];
 
-      const historyUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${formatDate(lastMonth)}&end_date=${formatDate(yesterday)}&daily=sunshine_duration,precipitation_sum&timezone=auto`;
+      const historyUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${formatDate(lastMonth)}&end_date=${formatDate(yesterday)}&daily=sunshine_duration,shortwave_radiation_sum,precipitation_sum&timezone=auto`;
 
       const [resForecast, resHistory] = await Promise.all([fetch(forecastUrl), fetch(historyUrl)]);
       currentForecastData = await resForecast.json();
@@ -494,7 +501,7 @@ document.addEventListener("DOMContentLoaded", function() {
       document.getElementById('sr-data-container').style.display = 'block';
     } catch (error) {
       console.error("Error fetching data:", error);
-      document.getElementById('sr-loading').innerHTML = '<p style="color:var(--red);">⚠️ Error connecting to satellite. Please try again.</p>';
+      document.getElementById('sr-loading').innerHTML = '<p style="color:var(--red);">⚠️ The weather-data service could not be reached. Please try again.</p>';
     }
   };
 });
@@ -502,70 +509,65 @@ document.addEventListener("DOMContentLoaded", function() {
 window.updateCalculations = function() {
   if (!currentForecastData || !currentHistoricalData) return;
 
-  const sysKw = parseFloat(document.getElementById('sys-kw').value) || 5;
-  const panelW = parseFloat(document.getElementById('panel-w').value) || 500;
+  const sysKw = Math.max(0.1, parseFloat(document.getElementById('sys-kw').value) || 5);
+  const panelW = Math.max(250, parseFloat(document.getElementById('panel-w').value) || 500);
+  const ratePerUnit = Math.max(0, parseFloat(document.getElementById('map-rate').value) || 8);
 
   document.getElementById('calc-panels').textContent = Math.ceil((sysKw * 1000) / panelW);
 
-  const fDaily = currentForecastData.daily;
-
-  // TODAY
-  const sunRise = new Date(fDaily.sunrise[0]);
-  const sunSet  = new Date(fDaily.sunset[0]);
+  const fDaily = currentForecastData.daily || {};
+  const sunRise = new Date(fDaily.sunrise?.[0]);
+  const sunSet  = new Date(fDaily.sunset?.[0]);
   const timeOpts = { hour: 'numeric', minute: '2-digit', hour12: true };
-  document.getElementById('sr-sunrise').textContent = sunRise.toLocaleTimeString('en-IN', timeOpts);
-  document.getElementById('sr-sunset').textContent  = sunSet.toLocaleTimeString('en-IN', timeOpts);
+  document.getElementById('sr-sunrise').textContent = Number.isNaN(sunRise.getTime()) ? '--:--' : sunRise.toLocaleTimeString('en-IN', timeOpts);
+  document.getElementById('sr-sunset').textContent  = Number.isNaN(sunSet.getTime()) ? '--:--' : sunSet.toLocaleTimeString('en-IN', timeOpts);
 
-  const todaySunHours = (fDaily.sunshine_duration[0] / 3600);
+  const radiationToYield = (mj) => Math.max(0, Number(mj) || 0) * 0.2777778 * 0.80;
+  const todaySunHours = Math.max(0, Number(fDaily.sunshine_duration?.[0] || 0) / 3600);
+  const todayRadiation = Number(fDaily.shortwave_radiation_sum?.[0] || 0);
+  const todayEnergy = todayRadiation > 0 ? sysKw * radiationToYield(todayRadiation) : sysKw * todaySunHours * 0.80;
+
   document.getElementById('sr-today-hours').textContent = todaySunHours.toFixed(1);
-
-  const todayCode = fDaily.weathercode[0];
-  let tEff = 0.75;
-  if (todayCode >= 50) tEff = 0.40;
-  if (todayCode === 3) tEff = 0.50;
-  const todayEnergy = sysKw * todaySunHours * tEff;
   document.getElementById('sr-today-energy').textContent = todayEnergy.toFixed(1);
   document.getElementById('sr-today-month').textContent  = Math.round(todayEnergy * 30).toLocaleString('en-IN');
   document.getElementById('sr-today-year').textContent   = Math.round(todayEnergy * 365).toLocaleString('en-IN');
 
-  // FORECAST
   let totalWeekEnergy = 0;
   let tableHTML = '';
-  for (let i = 0; i < fDaily.time.length; i++) {
-    const date = new Date(fDaily.time[i]).toLocaleDateString('en-IN', {weekday:'short', month:'short', day:'numeric'});
-    const code = fDaily.weathercode[i];
-    const weather = weatherDesc[code] || "☁️ Variable";
-    const sunHours = (fDaily.sunshine_duration[i] / 3600);
-    let efficiency = 0.75;
-    if (code >= 50) efficiency = 0.40;
-    if (code === 3) efficiency = 0.50;
-    const dailyKWh = sysKw * sunHours * efficiency;
+  const times = fDaily.time || [];
+  for (let i = 0; i < times.length; i++) {
+    const date = new Date(times[i]).toLocaleDateString('en-IN', {weekday:'short', month:'short', day:'numeric'});
+    const code = Number(fDaily.weathercode?.[i] ?? -1);
+    const weather = weatherDesc[code] || '☁️ Variable';
+    const sunHours = Math.max(0, Number(fDaily.sunshine_duration?.[i] || 0) / 3600);
+    const radiation = Number(fDaily.shortwave_radiation_sum?.[i] || 0);
+    const dailyKWh = radiation > 0 ? sysKw * radiationToYield(radiation) : sysKw * sunHours * 0.80;
     totalWeekEnergy += dailyKWh;
     tableHTML += `<tr><td><strong>${date}</strong></td><td>${weather}</td><td style="color:var(--green);font-weight:800;">${dailyKWh.toFixed(1)} kWh</td></tr>`;
   }
   document.getElementById('forecast-body').innerHTML = tableHTML;
   document.getElementById('sr-total-energy').textContent = totalWeekEnergy.toFixed(1);
+  const weekBar = document.getElementById('weekEnergyBar');
+  if (weekBar) weekBar.style.width = Math.min(100, totalWeekEnergy / Math.max(1, sysKw * 7 * 5) * 100) + '%';
 
-  // HISTORY
-  let histSunSeconds = 0, histRainSum = 0;
-  const hDaily = currentHistoricalData.daily;
-  for (let i = 0; i < hDaily.time.length; i++) {
-    if (hDaily.sunshine_duration[i]) histSunSeconds += hDaily.sunshine_duration[i];
-    if (hDaily.precipitation_sum[i]) histRainSum += hDaily.precipitation_sum[i];
+  const hDaily = currentHistoricalData.daily || {};
+  let histSunSeconds = 0, histRainSum = 0, histRadiation = 0;
+  for (let i = 0; i < (hDaily.time || []).length; i++) {
+    histSunSeconds += Number(hDaily.sunshine_duration?.[i] || 0);
+    histRainSum += Number(hDaily.precipitation_sum?.[i] || 0);
+    histRadiation += Number(hDaily.shortwave_radiation_sum?.[i] || 0);
   }
   const histSunHours = histSunSeconds / 3600;
-  const histTotalEnergy = sysKw * histSunHours * 0.75;
+  const histTotalEnergy = histRadiation > 0 ? sysKw * radiationToYield(histRadiation) : sysKw * histSunHours * 0.80;
   document.getElementById('hist-sun-hours').textContent = histSunHours.toFixed(0);
   document.getElementById('hist-rain').textContent = histRainSum.toFixed(1);
   document.getElementById('sr-hist-energy').textContent = histTotalEnergy.toFixed(0);
 
-  // SAVINGS (NEW)
   const monthlyKWh = todayEnergy * 30;
   const annualKWh  = todayEnergy * 365;
-  const ratePerUnit = 8; // average TANGEDCO domestic rate
   const monthlySavings = monthlyKWh * ratePerUnit;
   const annualSavings  = annualKWh * ratePerUnit;
-  const co2PerKWh = 0.82; // kg CO2 per kWh — India grid average
+  const co2PerKWh = 0.82;
   const co2Saved  = annualKWh * co2PerKWh;
 
   document.getElementById('sr-monthly-savings').textContent = Math.round(monthlySavings).toLocaleString('en-IN');
