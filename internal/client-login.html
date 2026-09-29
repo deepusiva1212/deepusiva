@@ -1,12 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head><meta name="robots" content="noindex,nofollow">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<head><meta content="noindex,nofollow,noarchive" name="robots"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Client Login | Deepu Siva Pvt Ltd</title>
-<link rel="stylesheet" href="style.css">
-
+<link href="style.css" rel="stylesheet"/>
 <style>
 body {
   margin: 0;
@@ -89,30 +88,22 @@ button:hover {
 }
 </style>
 </head>
-
 <body>
-
 <div class="login-card">
-  <h1>Deepu Siva</h1>
-  <p>Client Portal Login</p>
-
-  <div class="input-group">
-    <label>Email</label>
-    <input type="email" id="email" placeholder="client@example.com" required>
-  </div>
-
-  <div class="input-group">
-    <label>Password</label>
-    <input type="password" id="password" placeholder="Enter password" required>
-  </div>
-
-  <button id="loginBtn">Login</button>
-
-  <div class="forgot" id="forgotPassword">Forgot Password?</div>
-
-  <div class="error" id="errorMsg"></div>
+<h1>Deepu Siva</h1>
+<p>Client Portal Login</p>
+<div class="input-group">
+<label>Email</label>
+<input id="email" placeholder="client@example.com" required="" type="email"/>
 </div>
-
+<div class="input-group">
+<label>Password</label>
+<input id="password" placeholder="Enter password" required="" type="password"/>
+</div>
+<button id="loginBtn">Login</button>
+<div class="forgot" id="forgotPassword">Forgot Password?</div>
+<div class="error" id="errorMsg"></div>
+</div>
 <script type="module">
 
 import { auth } from "./ds-firebase.js";
@@ -176,6 +167,5 @@ forgotBtn.addEventListener("click", async () => {
 });
 
 </script>
-
 </body>
 </html>

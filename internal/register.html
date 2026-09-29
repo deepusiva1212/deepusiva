@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head><meta name="robots" content="noindex,nofollow">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Registration | Deepu Siva</title>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
+<head><meta content="noindex,nofollow,noarchive" name="robots"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smart Registration | Deepu Siva</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&amp;family=Barlow:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
     body { font-family: 'Barlow', sans-serif; background: #0d1117; color: #c9d1d9; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
     .reg-box { background: #161b22; padding: 40px; border-radius: 8px; border: 1px solid #21262d; width: 100%; max-width: 550px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     h2 { font-family: 'Barlow Condensed', sans-serif; color: #f0f6fc; font-size: 28px; text-align: center; margin: 0 0 20px 0; letter-spacing: 1px; }
@@ -32,85 +33,70 @@
   </style>
 </head>
 <body>
-
-  <div class="reg-box">
-    <h2>CLIENT ONBOARDING</h2>
-
-    <div class="social-btns">
-      <div class="s-btn" id="googleBtn">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Google
+<div class="reg-box">
+<h2>CLIENT ONBOARDING</h2>
+<div class="social-btns">
+<div class="s-btn" id="googleBtn">
+<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"/> Google
       </div>
-
-      <div class="s-btn" id="facebookBtn" style="background: #1877F2; color: white; border: none;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="18"> Facebook
+<div class="s-btn" id="facebookBtn" style="background: #1877F2; color: white; border: none;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="18"/> Facebook
       </div>
-
-      <div class="s-btn" id="phoneBtn">📞 Mobile OTP</div>
-    </div>
-    <div class="divider">OR USE EMAIL</div>
-
-    <form id="regForm">
-      <div class="row">
-        <div><label>First Name</label><input type="text" id="fName" required></div>
-        <div><label>Last Name</label><input type="text" id="lName" required></div>
-      </div>
-      <label>Company Name (Optional)</label>
-    <input type="text" id="companyName" placeholder="e.g. RAJA DEEPU SOORIYA PVT LTD">
-
-      <label>Unique Username</label>
-      <input type="text" id="uName" placeholder="e.g. deepu_siva_01" required>
-
-      <label>Country</label>
-      <select id="country">
-        <option value="India">India 🇮🇳</option>
-        <option value="UAE">United Arab Emirates 🇦🇪</option>
-        <option value="USA">USA 🇺🇸</option>
-        <option value="Other">Other</option>
-      </select>
-
-      <div class="row">
-        <div>
-          <label>PIN Code</label>
-          <input type="text" id="pincode" placeholder="6 Digits" maxlength="6" required>
-        </div>
-        <div>
-          <label>City</label>
-          <input type="text" id="city" readonly placeholder="Auto-filled">
-        </div>
-      </div>
-
-      <label>State</label>
-      <input type="text" id="state" readonly placeholder="Auto-filled">
-
-      <label>Full Address</label>
-      <textarea id="addr" rows="2" required></textarea>
-
-      <label>Email ID</label>
-      <input type="email" id="email" required>
-      
-      <label>Create Password</label>
-      <input type="password" id="pass" minlength="6" required>
-      <label>Confirm Password</label>
-<input type="password" id="confirmPass" required>
-
-      <button type="submit" class="submit-btn" id="mainBtn">Submit Application</button>
-      <div id="message"></div>
-    </form>
-  </div>
-
-  <div id="phoneModal">
-    <div class="modal-content">
-      <h3 style="color:#fff">Verify Mobile</h3>
-      <div id="recaptcha-container"></div>
-      <input type="tel" id="phoneNumber" placeholder="+91 99524 27492">
-      <button class="submit-btn" id="sendOTP">Send OTP</button>
-      <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" style="display:none; margin-top:10px;">
-      <button class="submit-btn" id="verifyOTP" style="display:none">Verify & Sign Up</button>
-      <button onclick="document.getElementById('phoneModal').style.display='none'" style="background:none; border:none; color:#8b949e; cursor:pointer; margin-top:10px;">Cancel</button>
-    </div>
-  </div>
-
-  <script type="module">
+<div class="s-btn" id="phoneBtn">📞 Mobile OTP</div>
+</div>
+<div class="divider">OR USE EMAIL</div>
+<form id="regForm">
+<div class="row">
+<div><label>First Name</label><input id="fName" required="" type="text"/></div>
+<div><label>Last Name</label><input id="lName" required="" type="text"/></div>
+</div>
+<label>Company Name (Optional)</label>
+<input id="companyName" placeholder="e.g. RAJA DEEPU SOORIYA PVT LTD" type="text"/>
+<label>Unique Username</label>
+<input id="uName" placeholder="e.g. deepu_siva_01" required="" type="text"/>
+<label>Country</label>
+<select id="country">
+<option value="India">India 🇮🇳</option>
+<option value="UAE">United Arab Emirates 🇦🇪</option>
+<option value="USA">USA 🇺🇸</option>
+<option value="Other">Other</option>
+</select>
+<div class="row">
+<div>
+<label>PIN Code</label>
+<input id="pincode" maxlength="6" placeholder="6 Digits" required="" type="text"/>
+</div>
+<div>
+<label>City</label>
+<input id="city" placeholder="Auto-filled" readonly="" type="text"/>
+</div>
+</div>
+<label>State</label>
+<input id="state" placeholder="Auto-filled" readonly="" type="text"/>
+<label>Full Address</label>
+<textarea id="addr" required="" rows="2"></textarea>
+<label>Email ID</label>
+<input id="email" required="" type="email"/>
+<label>Create Password</label>
+<input id="pass" minlength="6" required="" type="password"/>
+<label>Confirm Password</label>
+<input id="confirmPass" required="" type="password"/>
+<button class="submit-btn" id="mainBtn" type="submit">Submit Application</button>
+<div id="message"></div>
+</form>
+</div>
+<div id="phoneModal">
+<div class="modal-content">
+<h3 style="color:#fff">Verify Mobile</h3>
+<div id="recaptcha-container"></div>
+<input id="phoneNumber" placeholder="+91 99524 27492" type="tel"/>
+<button class="submit-btn" id="sendOTP">Send OTP</button>
+<input id="otpCode" placeholder="Enter 6-digit OTP" style="display:none; margin-top:10px;" type="text"/>
+<button class="submit-btn" id="verifyOTP" style="display:none">Verify &amp; Sign Up</button>
+<button onclick="document.getElementById('phoneModal').style.display='none'" style="background:none; border:none; color:#8b949e; cursor:pointer; margin-top:10px;">Cancel</button>
+</div>
+</div>
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, createUserWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -272,21 +258,17 @@
       document.getElementById('phoneModal').style.display = 'flex';
     });
   </script>
-  <div id="phoneModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; z-index: 1000;">
-    <div style="background:#161b22; padding:30px; border-radius:8px; width:320px; text-align:center; border: 1px solid #30363d;">
-      <h3 style="color:#fff; margin-top:0;">Verify Mobile</h3>
-      <p style="font-size: 13px; color: #8b949e;">Enter number with +91</p>
-      
-      <div id="recaptcha-container"></div>
-      
-      <input type="tel" id="phoneNumber" placeholder="+91 99524 27492" style="margin-top:10px;">
-      <button type="button" class="submit-btn" id="sendOTP">Send OTP</button>
-      
-      <input type="text" id="otpCode" placeholder="6-digit Code" style="display:none; margin-top:10px;">
-      <button type="button" class="submit-btn" id="verifyOTP" style="display:none; background: #4ade80; color: #000;">Verify & Apply</button>
-      
-      <button type="button" onclick="document.getElementById('phoneModal').style.display='none'" style="background:none; border:none; color:#8b949e; cursor:pointer; margin-top:15px; font-size: 14px;">Cancel</button>
-    </div>
-  </div>
+<div id="phoneModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; z-index: 1000;">
+<div style="background:#161b22; padding:30px; border-radius:8px; width:320px; text-align:center; border: 1px solid #30363d;">
+<h3 style="color:#fff; margin-top:0;">Verify Mobile</h3>
+<p style="font-size: 13px; color: #8b949e;">Enter number with +91</p>
+<div id="recaptcha-container"></div>
+<input id="phoneNumber" placeholder="+91 99524 27492" style="margin-top:10px;" type="tel"/>
+<button class="submit-btn" id="sendOTP" type="button">Send OTP</button>
+<input id="otpCode" placeholder="6-digit Code" style="display:none; margin-top:10px;" type="text"/>
+<button class="submit-btn" id="verifyOTP" style="display:none; background: #4ade80; color: #000;" type="button">Verify &amp; Apply</button>
+<button onclick="document.getElementById('phoneModal').style.display='none'" style="background:none; border:none; color:#8b949e; cursor:pointer; margin-top:15px; font-size: 14px;" type="button">Cancel</button>
+</div>
+</div>
 </body>
 </html>

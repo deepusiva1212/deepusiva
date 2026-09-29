@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head><meta name="robots" content="noindex,nofollow">
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<head><meta content="noindex,nofollow,noarchive" name="robots"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Client Dashboard | Deepu Siva</title>
-<link rel="stylesheet" href="style.css"/>
+<link href="style.css" rel="stylesheet"/>
 <style>
 #auth-overlay{position:fixed;inset:0;background:var(--white);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 .spinner{width:44px;height:44px;border:3px solid var(--green-light);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;}
@@ -85,110 +86,103 @@
   .notif-panel{right:8px;width:calc(100vw - 16px);}
 }
 </style>
-</head>
+</meta></head>
 <body>
 <div id="auth-overlay"><div class="spinner"></div><p>Verifying your session…</p></div>
-
 <!-- NOTIFICATION PANEL (dropdown) -->
 <div class="notif-panel" id="notifPanel">
-  <div class="notif-panel-head">
-    <h3>Notifications <span id="unreadCountBadge" style="background:var(--red);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;display:none;"></span></h3>
-    <button class="mark-all-btn" onclick="markAllRead()">Mark all read</button>
-  </div>
-  <div class="notif-scroll" id="notifList">
-    <div class="notif-empty">
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:10px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <p>No notifications yet.</p>
-    </div>
-  </div>
-  <div style="padding:12px 16px;border-top:1px solid var(--border);">
-    <button onclick="viewAllNotifications()" style="width:100%;background:var(--green-pale);border:none;color:var(--green3);padding:10px;border-radius:var(--radius);font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;">View All Notifications</button>
-  </div>
+<div class="notif-panel-head">
+<h3>Notifications <span id="unreadCountBadge" style="background:var(--red);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;display:none;"></span></h3>
+<button class="mark-all-btn" onclick="markAllRead()">Mark all read</button>
 </div>
-
+<div class="notif-scroll" id="notifList">
+<div class="notif-empty">
+<svg fill="none" height="40" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" style="opacity:.3;margin-bottom:10px;" viewbox="0 0 24 24" width="40" xmlns="http://www.w3.org/2000/svg"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+<p>No notifications yet.</p>
+</div>
+</div>
+<div style="padding:12px 16px;border-top:1px solid var(--border);">
+<button onclick="viewAllNotifications()" style="width:100%;background:var(--green-pale);border:none;color:var(--green3);padding:10px;border-radius:var(--radius);font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;">View All Notifications</button>
+</div>
+</div>
 <header class="portal-header">
-  <div class="portal-logo"><span class="dot"></span>Deepu Siva Portal</div>
-  <nav class="portal-nav">
-    <!-- Bell Button -->
-    <button class="bell-btn" onclick="toggleNotifPanel()" title="Notifications">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      <span class="bell-badge" id="bellBadge"></span>
-    </button>
-    <a href="index.html">← Main Site</a>
-    <button class="btn-logout" onclick="doLogout()">Sign Out</button>
-  </nav>
+<div class="portal-logo"><span class="dot"></span>Deepu Siva Portal</div>
+<nav class="portal-nav">
+<!-- Bell Button -->
+<button class="bell-btn" onclick="toggleNotifPanel()" title="Notifications">
+<svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+<span class="bell-badge" id="bellBadge"></span>
+</button>
+<a href="index.html">← Main Site</a>
+<button class="btn-logout" onclick="doLogout()">Sign Out</button>
+</nav>
 </header>
-
 <div class="welcome-banner">
-  <h1>Welcome Back, <em id="userName">Client</em>!</h1>
-  <p id="welcomeSub">Manage your project documents, payments and site updates below.</p>
+<h1>Welcome Back, <em id="userName">Client</em>!</h1>
+<p id="welcomeSub">Manage your project documents, payments and site updates below.</p>
 </div>
-
 <!-- MAIN DASHBOARD -->
-<div id="mainDash" class="dash-content">
-  <div class="status-bar"><div class="status-dot"></div><p>Your account is <strong>active</strong>. All project data synced in real-time.</p></div>
-  <div class="dash-section-title">My Project Portal</div>
-  <div class="action-grid">
-    <a href="my-bills.html" class="action-card">
-      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-      <span>My Bills</span>
-    </a>
-    <a href="payments.html" class="action-card">
-      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-      <span>Payments</span>
-    </a>
-    <a href="my-sites.html" class="action-card">
-      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-      <span>Site Locations</span>
-    </a>
-    <a href="updates.html" class="action-card">
-      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
-      <span>Site Updates</span>
-    </a>
-    <!-- Notifications action card -->
-    <button class="action-card" onclick="viewAllNotifications()" style="border:none;font-family:var(--font-body);width:100%;">
-      <div class="action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-      <span>Notifications</span>
-      <div class="action-notif-badge" id="notifActionBadge"></div>
-    </button>
-  </div>
-  <div class="dash-section-title">Account Info</div>
-  <div class="quick-info-grid">
-    <div class="info-card"><label>Logged in as</label><p id="userEmail">—</p></div>
-    <div class="info-card"><label>Account Status</label><p style="color:var(--green);">Active and Verified</p></div>
-  </div>
-  <div style="margin-top:24px;background:var(--green);border-radius:var(--radius-lg);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-    <div><p style="color:#fff;font-family:var(--font-head);font-size:18px;font-weight:800;text-transform:uppercase;">Need Help?</p><p style="color:rgba(255,255,255,.8);font-size:13px;margin-top:2px;">Contact your project manager directly</p></div>
-    <a href="https://wa.me/918489090666" target="_blank" style="background:#fff;color:var(--green3);padding:10px 20px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none;">WhatsApp Us</a>
-  </div>
+<div class="dash-content" id="mainDash">
+<div class="status-bar"><div class="status-dot"></div><p>Your account is <strong>active</strong>. All project data synced in real-time.</p></div>
+<div class="dash-section-title">My Project Portal</div>
+<div class="action-grid">
+<a class="action-card" href="my-bills.html">
+<div class="action-icon"><svg fill="none" height="26" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="26" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+<span>My Bills</span>
+</a>
+<a class="action-card" href="payments.html">
+<div class="action-icon"><svg fill="none" height="26" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="26" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" ry="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg></div>
+<span>Payments</span>
+</a>
+<a class="action-card" href="my-sites.html">
+<div class="action-icon"><svg fill="none" height="26" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="26" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+<span>Site Locations</span>
+</a>
+<a class="action-card" href="updates.html">
+<div class="action-icon"><svg fill="none" height="26" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="26" xmlns="http://www.w3.org/2000/svg"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg></div>
+<span>Site Updates</span>
+</a>
+<!-- Notifications action card -->
+<button class="action-card" onclick="viewAllNotifications()" style="border:none;font-family:var(--font-body);width:100%;">
+<div class="action-icon"><svg fill="none" height="26" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="26" xmlns="http://www.w3.org/2000/svg"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
+<span>Notifications</span>
+<div class="action-notif-badge" id="notifActionBadge"></div>
+</button>
 </div>
-
+<div class="dash-section-title">Account Info</div>
+<div class="quick-info-grid">
+<div class="info-card"><label>Logged in as</label><p id="userEmail">—</p></div>
+<div class="info-card"><label>Account Status</label><p style="color:var(--green);">Active and Verified</p></div>
+</div>
+<div style="margin-top:24px;background:var(--green);border-radius:var(--radius-lg);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+<div><p style="color:#fff;font-family:var(--font-head);font-size:18px;font-weight:800;text-transform:uppercase;">Need Help?</p><p style="color:rgba(255,255,255,.8);font-size:13px;margin-top:2px;">Contact your project manager directly</p></div>
+<a href="https://wa.me/918489090666" style="background:#fff;color:var(--green3);padding:10px 20px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;text-decoration:none;" target="_blank">WhatsApp Us</a>
+</div>
+</div>
 <!-- ALL NOTIFICATIONS PAGE (shown when "View All" clicked) -->
-<div id="notifPage" class="dash-content" style="display:none;">
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-    <button onclick="backToDash()" style="background:none;border:none;color:var(--green);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:var(--font-body);">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+<div class="dash-content" id="notifPage" style="display:none;">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+<button onclick="backToDash()" style="background:none;border:none;color:var(--green);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:var(--font-body);">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6"></polyline></svg>
       Back to Dashboard
     </button>
-    <h2 style="font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;margin:0;">All Notifications</h2>
-    <button onclick="markAllRead()" style="margin-left:auto;background:var(--green-pale);border:1px solid rgba(22,163,74,.2);color:var(--green3);padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-body);">Mark All Read</button>
-  </div>
-  <div id="notifFullList"></div>
+<h2 style="font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;margin:0;">All Notifications</h2>
+<button onclick="markAllRead()" style="margin-left:auto;background:var(--green-pale);border:1px solid rgba(22,163,74,.2);color:var(--green3);padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-body);">Mark All Read</button>
 </div>
-
+<div id="notifFullList"></div>
+</div>
 <nav class="app-bottom-nav">
-  <a href="index.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span>Home</span></a>
-  <a href="my-bills.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span>Bills</span></a>
-  <a href="dashboard.html" class="nav-tab active"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span><span>Dashboard</span></a>
-  <a href="updates.html" class="nav-tab"><span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></span><span>Updates</span></a>
-  <!-- Notifications tab with badge -->
-  <button onclick="viewAllNotifications()" class="nav-tab" style="font-family:var(--font-body);border:none;background:none;cursor:pointer;position:relative;">
-    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-    <span id="mobNotifBadge" style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--red);color:#fff;border-radius:50%;font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center;">0</span></span>
-    <span>Alerts</span>
-  </button>
+<a class="nav-tab" href="index.html"><span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></span><span>Home</span></a>
+<a class="nav-tab" href="my-bills.html"><span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></span><span>Bills</span></a>
+<a class="nav-tab active" href="dashboard.html"><span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg></span><span>Dashboard</span></a>
+<a class="nav-tab" href="updates.html"><span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg></span><span>Updates</span></a>
+<!-- Notifications tab with badge -->
+<button class="nav-tab" onclick="viewAllNotifications()" style="font-family:var(--font-body);border:none;background:none;cursor:pointer;position:relative;">
+<span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+<span id="mobNotifBadge" style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--red);color:#fff;border-radius:50%;font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center;">0</span></span>
+<span>Alerts</span>
+</button>
 </nav>
-
 <script type="module">
 import { auth, db, requireAuth } from './ds-firebase.js';
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";

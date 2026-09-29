@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><meta name="robots" content="noindex,nofollow">
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-<meta name="apple-mobile-web-app-title" content="DS ERP"/>
-<meta name="theme-color" content="#16a34a"/>
-<title>ERP | Deepu Siva Private Limited</title>
-<link rel="manifest" href="manifest.json"/>
-<link rel="stylesheet" href="style.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+<html lang="en">
+<head><meta content="noindex,nofollow,noarchive" name="robots"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="DS ERP" name="apple-mobile-web-app-title"/>
+<meta content="#16a34a" name="theme-color"/>
+<title>ERP | Deepu Siva Private Limited</title>
+<link href="manifest.json" rel="manifest"/>
+<link href="style.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 /* ════════════════════════════════════════
    ERP LAYOUT — Green/White Adaptive UX
@@ -990,15 +990,13 @@
 .offline-list-item .party-name { font-size: 14px; color: var(--text2); flex: 1; }
 .offline-list-item .amount { font-family: var(--font-head); font-size: 16px; font-weight: 800; color: var(--green3); }
 </style>
-</head>
+</meta></head>
 <body>
-
 <!-- ─── AUTH OVERLAY ─── -->
 <div id="auth-overlay">
-  <div class="spinner"></div>
-  <p>Loading ERP System…</p>
+<div class="spinner"></div>
+<p>Loading ERP System…</p>
 </div>
-
 <!-- ─── OFFLINE BANNER ─── -->
 <div class="offline-banner" id="offlineBanner">
   You are offline — Working in offline mode. Invoices will sync when connection is restored.
@@ -1006,1250 +1004,1157 @@
 <div class="sync-banner" id="syncBanner">
   Back online! Syncing offline invoices to Firebase…
 </div>
-
 <!-- ─── SIDEBAR OVERLAY (mobile tap to close) ─── -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
 <!-- ─── ERP SHELL ─── -->
 <div class="erp-shell">
-
-  <!-- ═══ SIDEBAR ═══ -->
-  <aside class="erp-sidebar" id="erpSidebar">
-    <div class="sidebar-head">
-      <div class="sidebar-logo">Deepu Siva</div>
-      <div class="sidebar-sub">ERP System</div>
-      <span class="sidebar-version">v1.0 — Offline Ready</span>
-    </div>
-
-    <!-- Online/offline indicator -->
-    <div class="sidebar-online" id="sidebarOnlineStatus">
-      <div class="dot-online" id="statusDot"></div>
-      <span id="statusText">Online</span>
-      <span id="pendingCount" style="margin-left:auto;font-size:11px;color:var(--amber);font-weight:700;display:none;"></span>
-    </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-section-label">Overview</div>
-      <button class="erp-nav-item active" onclick="showPage('dashboard',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="erp-sidebar" id="erpSidebar">
+<div class="sidebar-head">
+<div class="sidebar-logo">Deepu Siva</div>
+<div class="sidebar-sub">ERP System</div>
+<span class="sidebar-version">v1.0 — Offline Ready</span>
+</div>
+<!-- Online/offline indicator -->
+<div class="sidebar-online" id="sidebarOnlineStatus">
+<div class="dot-online" id="statusDot"></div>
+<span id="statusText">Online</span>
+<span id="pendingCount" style="margin-left:auto;font-size:11px;color:var(--amber);font-weight:700;display:none;"></span>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section-label">Overview</div>
+<button class="erp-nav-item active" onclick="showPage('dashboard',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg>
         Dashboard
       </button>
-
-      <div class="nav-section-label">Sales</div>
-      <button class="erp-nav-item" onclick="showPage('quotation',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+<div class="nav-section-label">Sales</div>
+<button class="erp-nav-item" onclick="showPage('quotation',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line></svg>
         Quotations
       </button>
-      <button class="erp-nav-item" onclick="showPage('invoice',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+<button class="erp-nav-item" onclick="showPage('invoice',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" ry="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg>
         Sales Invoices
         <span class="badge" id="draftBadge" style="display:none;">0</span>
-      </button>
-      <button class="erp-nav-item" onclick="showPage('challan',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+</button>
+<button class="erp-nav-item" onclick="showPage('challan',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><rect height="13" width="15" x="1" y="3"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
         Delivery Challans
       </button>
-
-      <div class="nav-section-label">Purchases</div>
-      <button class="erp-nav-item" onclick="showPage('purchase',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+<div class="nav-section-label">Purchases</div>
+<button class="erp-nav-item" onclick="showPage('purchase',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" x2="21" y1="6" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
         Purchase Bills
       </button>
-      <button class="erp-nav-item" onclick="showPage('payment',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+<button class="erp-nav-item" onclick="showPage('payment',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><line x1="12" x2="12" y1="1" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
         Payment Receipts
       </button>
-
-       <div class="nav-section-label">Inventory</div>
-      <button class="erp-nav-item" onclick="showPage('inventory',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-        Stock & Items
+<div class="nav-section-label">Inventory</div>
+<button class="erp-nav-item" onclick="showPage('inventory',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" x2="12" y1="22.08" y2="12"></line></svg>
+        Stock &amp; Items
       </button>
-
-      <div class="nav-section-label">Reports</div>
-      <button class="erp-nav-item" onclick="showPage('reports',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Reports & Ledger
+<div class="nav-section-label">Reports</div>
+<button class="erp-nav-item" onclick="showPage('reports',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
+        Reports &amp; Ledger
       </button>
-
-      <div class="nav-section-label">Admin</div>
-      <button class="erp-nav-item" onclick="showPage('settings',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+<div class="nav-section-label">Admin</div>
+<button class="erp-nav-item" onclick="showPage('settings',this)">
+<svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="17" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path></svg>
         Settings
       </button>
-    </nav>
-
-    <div class="sidebar-bottom">
-      <a href="director-portal.html" class="sidebar-bottom-link">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+</nav>
+<div class="sidebar-bottom">
+<a class="sidebar-bottom-link" href="director-portal.html">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         Admin Portal
       </a>
-      <button class="sidebar-bottom-link danger" onclick="doLogout()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+<button class="sidebar-bottom-link danger" onclick="doLogout()">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
         Sign Out
       </button>
-    </div>
-  </aside>
-
-  <!-- ═══ MAIN ═══ -->
-  <div class="erp-main">
-    <div class="erp-topbar">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <button class="mob-menu-btn" style="display:none;" id="mobMenuBtn" onclick="toggleSidebar()">
-          <span></span><span></span><span></span>
-        </button>
-        <h1 id="erpPageTitle">Dashboard</h1>
-      </div>
-      <div class="topbar-actions">
-        <span class="offline-tag" id="offlineTag">OFFLINE</span>
-        <button class="pending-sync-tag" id="pendingSyncTag" onclick="syncOfflineInvoices()">Sync pending</button>
-        <span class="topbar-user" id="topbarUser">—</span>
-      </div>
-    </div>
-
-    <div class="erp-content">
-
-      <!-- ══ DASHBOARD ══ -->
-      <div class="erp-page active" id="page-dashboard">
-        <div class="erp-stats">
-          <div class="erp-stat">
-            <div class="erp-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-            <div class="erp-stat-val" id="ds-invoices">0</div>
-            <div class="erp-stat-lbl">Total Invoices</div>
-          </div>
-          <div class="erp-stat">
-            <div class="erp-stat-icon" style="background:#fef3c7;color:#92400e;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-            <div class="erp-stat-val" id="ds-revenue" style="color:var(--amber);">₹0</div>
-            <div class="erp-stat-lbl">Total Revenue</div>
-          </div>
-          <div class="erp-stat">
-            <div class="erp-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-            <div class="erp-stat-val" id="ds-quotes">0</div>
-            <div class="erp-stat-lbl">Quotations</div>
-          </div>
-          <div class="erp-stat">
-            <div class="erp-stat-icon" style="background:#fee2e2;color:#991b1b;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-            <div class="erp-stat-val" id="ds-pending" style="color:var(--red);">0</div>
-            <div class="erp-stat-lbl">Offline Pending</div>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-          <button class="qa-card" onclick="showPage('invoice',null);newDoc('invoice')">
-            <div class="qa-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-            <div class="qa-label">New Invoice</div>
-            <div class="qa-desc">Sales tax invoice</div>
-          </button>
-          <button class="qa-card" onclick="showPage('quotation',null);newDoc('quotation')">
-            <div class="qa-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-            <div class="qa-label">New Quotation</div>
-            <div class="qa-desc">Estimate / Quote</div>
-          </button>
-          <button class="qa-card" onclick="showPage('challan',null);newDoc('challan')">
-            <div class="qa-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-            <div class="qa-label">New Challan</div>
-            <div class="qa-desc">Delivery dispatch</div>
-          </button>
-        </div>
-
-        <!-- Pending offline sync -->
-        <div class="erp-panel" id="offlinePendingPanel" style="display:none;">
-          <div class="erp-panel-head">
-            <span class="erp-panel-title" style="color:var(--amber);">Pending Offline Sync</span>
-            <button class="btn btn-green btn-sm" onclick="syncOfflineInvoices()">Sync All Now</button>
-          </div>
-          <div id="offlinePendingList"></div>
-        </div>
-
-        <!-- Recent invoices -->
-        <div class="erp-panel">
-          <div class="erp-panel-head">
-            <span class="erp-panel-title">Recent Invoices</span>
-            <button class="btn btn-outline-green btn-sm" onclick="showPage('invoice',null)">View All</button>
-          </div>
-          <div style="overflow-x:auto;">
-            <table class="inv-list-table">
-              <thead><tr><th>Invoice No.</th><th>Party</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="recentInvoicesList">
-                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ INVOICE PAGE ══ -->
-      <div class="erp-page" id="page-invoice">
-        <!-- Top: New invoice button + list toggle -->
-        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-          <button class="btn btn-green" onclick="newDoc('invoice')" id="newInvBtn">+ New Invoice</button>
-          <button class="btn btn-outline-green" onclick="toggleInvView()" id="invViewToggle">View All Invoices</button>
-        </div>
-
-        <!-- Invoice Form -->
-        <div id="invoiceFormWrap">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title" id="invFormTitle">New Tax Invoice</span>
-              <div style="display:flex;gap:8px;">
-                <span id="invDocNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
-                <select class="form-control" id="invStatus" style="width:auto;">
-                  <option value="draft">Draft</option>
-                  <option value="final">Final</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Document Type -->
-            <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
-              <button class="filter-chip active" onclick="setDocType('invoice','Tax Invoice',this)" id="dt-invoice">Tax Invoice</button>
-              <button class="filter-chip" onclick="setDocType('quotation','Quotation',this)" id="dt-quotation">Quotation</button>
-              <button class="filter-chip" onclick="setDocType('challan','Delivery Challan',this)" id="dt-challan">Delivery Challan</button>
-            </div>
-
-            <!-- ── BILL FROM / TO ── -->
-            <div class="inv-meta">
-              <div>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                  <div class="erp-panel-title" style="font-size:13px;color:var(--green3);">BILL FROM (Your Company)</div>
-                  <a href="#" onclick="showPage('settings',null);return false;" style="font-size:11px;color:var(--green);font-weight:700;text-decoration:none;">Edit in Settings →</a>
-                </div>
-                <!-- Read-only display — edit in Settings tab -->
-                <div id="billFromDisplay" style="background:var(--green-pale);border:1px solid rgba(22,163,74,.2);border-radius:var(--radius);padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text2);">
+</div>
+</aside>
+<!-- ═══ MAIN ═══ -->
+<div class="erp-main">
+<div class="erp-topbar">
+<div style="display:flex;align-items:center;gap:12px;">
+<button class="mob-menu-btn" id="mobMenuBtn" onclick="toggleSidebar()" style="display:none;">
+<span></span><span></span><span></span>
+</button>
+<h1 id="erpPageTitle">Dashboard</h1>
+</div>
+<div class="topbar-actions">
+<span class="offline-tag" id="offlineTag">OFFLINE</span>
+<button class="pending-sync-tag" id="pendingSyncTag" onclick="syncOfflineInvoices()">Sync pending</button>
+<span class="topbar-user" id="topbarUser">—</span>
+</div>
+</div>
+<div class="erp-content">
+<!-- ══ DASHBOARD ══ -->
+<div class="erp-page active" id="page-dashboard">
+<div class="erp-stats">
+<div class="erp-stat">
+<div class="erp-stat-icon"><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" ry="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg></div>
+<div class="erp-stat-val" id="ds-invoices">0</div>
+<div class="erp-stat-lbl">Total Invoices</div>
+</div>
+<div class="erp-stat">
+<div class="erp-stat-icon" style="background:#fef3c7;color:#92400e;"><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><line x1="12" x2="12" y1="1" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+<div class="erp-stat-val" id="ds-revenue" style="color:var(--amber);">₹0</div>
+<div class="erp-stat-lbl">Total Revenue</div>
+</div>
+<div class="erp-stat">
+<div class="erp-stat-icon"><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+<div class="erp-stat-val" id="ds-quotes">0</div>
+<div class="erp-stat-lbl">Quotations</div>
+</div>
+<div class="erp-stat">
+<div class="erp-stat-icon" style="background:#fee2e2;color:#991b1b;"><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></div>
+<div class="erp-stat-val" id="ds-pending" style="color:var(--red);">0</div>
+<div class="erp-stat-lbl">Offline Pending</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="quick-actions">
+<button class="qa-card" onclick="showPage('invoice',null);newDoc('invoice')">
+<div class="qa-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" ry="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg></div>
+<div class="qa-label">New Invoice</div>
+<div class="qa-desc">Sales tax invoice</div>
+</button>
+<button class="qa-card" onclick="showPage('quotation',null);newDoc('quotation')">
+<div class="qa-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+<div class="qa-label">New Quotation</div>
+<div class="qa-desc">Estimate / Quote</div>
+</button>
+<button class="qa-card" onclick="showPage('challan',null);newDoc('challan')">
+<div class="qa-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><rect height="13" width="15" x="1" y="3"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
+<div class="qa-label">New Challan</div>
+<div class="qa-desc">Delivery dispatch</div>
+</button>
+</div>
+<!-- Pending offline sync -->
+<div class="erp-panel" id="offlinePendingPanel" style="display:none;">
+<div class="erp-panel-head">
+<span class="erp-panel-title" style="color:var(--amber);">Pending Offline Sync</span>
+<button class="btn btn-green btn-sm" onclick="syncOfflineInvoices()">Sync All Now</button>
+</div>
+<div id="offlinePendingList"></div>
+</div>
+<!-- Recent invoices -->
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title">Recent Invoices</span>
+<button class="btn btn-outline-green btn-sm" onclick="showPage('invoice',null)">View All</button>
+</div>
+<div style="overflow-x:auto;">
+<table class="inv-list-table">
+<thead><tr><th>Invoice No.</th><th>Party</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody id="recentInvoicesList">
+<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- ══ INVOICE PAGE ══ -->
+<div class="erp-page" id="page-invoice">
+<!-- Top: New invoice button + list toggle -->
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+<button class="btn btn-green" id="newInvBtn" onclick="newDoc('invoice')">+ New Invoice</button>
+<button class="btn btn-outline-green" id="invViewToggle" onclick="toggleInvView()">View All Invoices</button>
+</div>
+<!-- Invoice Form -->
+<div id="invoiceFormWrap">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title" id="invFormTitle">New Tax Invoice</span>
+<div style="display:flex;gap:8px;">
+<span id="invDocNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
+<select class="form-control" id="invStatus" style="width:auto;">
+<option value="draft">Draft</option>
+<option value="final">Final</option>
+</select>
+</div>
+</div>
+<!-- Document Type -->
+<div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+<button class="filter-chip active" id="dt-invoice" onclick="setDocType('invoice','Tax Invoice',this)">Tax Invoice</button>
+<button class="filter-chip" id="dt-quotation" onclick="setDocType('quotation','Quotation',this)">Quotation</button>
+<button class="filter-chip" id="dt-challan" onclick="setDocType('challan','Delivery Challan',this)">Delivery Challan</button>
+</div>
+<!-- ── BILL FROM / TO ── -->
+<div class="inv-meta">
+<div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+<div class="erp-panel-title" style="font-size:13px;color:var(--green3);">BILL FROM (Your Company)</div>
+<a href="#" onclick="showPage('settings',null);return false;" style="font-size:11px;color:var(--green);font-weight:700;text-decoration:none;">Edit in Settings →</a>
+</div>
+<!-- Read-only display — edit in Settings tab -->
+<div id="billFromDisplay" style="background:var(--green-pale);border:1px solid rgba(22,163,74,.2);border-radius:var(--radius);padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text2);">
                   Loading…
                 </div>
-                <!-- Hidden inputs carry values for save/print — never shown -->
-                <input type="hidden" id="f-fromName"/>
-                <input type="hidden" id="f-fromAddr"/>
-                <input type="hidden" id="f-fromGSTIN"/>
-                <input type="hidden" id="f-fromPhone"/>
-              </div>
-              <div>
-                <div class="erp-panel-title" style="font-size:13px;margin-bottom:12px;color:var(--green3);">BILL TO (Party / Client)</div>
-                <div class="form-group" style="position:relative;">
-                  <label class="form-label">Party Name * <span style="color:var(--muted);font-size:10px;">(type to search saved parties)</span></label>
-                  <input class="form-control" id="f-toName" placeholder="Client / Company name" autocomplete="off" oninput="onPartyInput(this.value)" onfocus="onPartyInput(this.value)" onblur="setTimeout(closePartySuggest,200)"/>
-                  <!-- Smart dropdown — replaces datalist for autofill support -->
-                  <div id="partySuggestBox" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);border:1px solid var(--green);border-top:none;border-radius:0 0 var(--radius) var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:300;max-height:220px;overflow-y:auto;"></div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Address</label>
-                  <textarea class="form-control" id="f-toAddr" rows="2" placeholder="Client address"></textarea>
-                </div>
-                <div class="inv-meta">
-                  <div class="form-group"><label class="form-label">GSTIN</label><input class="form-control" id="f-toGSTIN" placeholder="Client GSTIN (optional)"/></div>
-                  <div class="form-group"><label class="form-label">Place of Supply</label><input class="form-control" id="f-placeOfSupply" placeholder="e.g. Tamil Nadu"/></div>
-                </div>
-                 <div class="form-group" style="margin-top:12px;">
-        <label class="form-label">Client Email * <span style="color:var(--muted);font-size:10px;">(Required for Dashboard)</span></label>
-        <input class="form-control" type="email" id="clientEmail" placeholder="client@example.com" required />
-                    </div>
-              </div>
-            </div>
-
-            <!-- ── INVOICE META ── -->
-            <div class="inv-meta inv-meta-3">
-              <div class="form-group">
-                <label class="form-label">Invoice Date *</label>
-                <input class="form-control" type="date" id="f-invDate"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Due Date</label>
-                <input class="form-control" type="date" id="f-dueDate"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Terms of Payment</label>
-                <input class="form-control" id="f-payTerms" placeholder="e.g. Net 30 days"/>
-              </div>
-            </div>
-
-            <!-- ── HSN QUICK PICKS — dynamic from settings ── -->
-            <div style="margin-bottom:16px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                <div class="form-label" style="margin:0;">Common HSN Codes <span style="color:var(--muted);font-weight:400;">(click to apply to last item)</span></div>
-                <a href="#" onclick="showPage('settings',null);return false;" style="font-size:11px;color:var(--green);font-weight:700;text-decoration:none;">Manage in Settings →</a>
-              </div>
-              <div class="hsn-quick" id="hsnQuickBar">
-                <!-- Populated by renderHsnChips() from settings -->
-              </div>
-            </div>
-
-            <!-- ── LINE ITEMS ── -->
-            <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;">Line Items</div>
-
-            <!-- Desktop Table -->
-            <div class="line-items-table-wrap">
-              <table class="line-items-table">
-                <thead>
-                  <tr>
-                    <th class="col-sn">#</th>
-                    <th class="col-desc">Description</th>
-                    <th class="col-hsn">HSN Code</th>
-                    <th class="col-qty">Qty</th>
-                    <th class="col-unit">Unit</th>
-                    <th class="col-price">Unit Price ₹</th>
-                    <th class="col-gst">GST %</th>
-                    <th class="col-amt">Amount ₹</th>
-                    <th class="col-del"></th>
-                  </tr>
-                </thead>
-                <tbody id="lineItemsBody"></tbody>
-              </table>
-            </div>
-
-            <!-- Mobile Cards -->
-            <div class="line-items-cards" id="lineItemsCards"></div>
-
-            <button class="add-line-btn" onclick="addLineItem()">+ Add Line Item</button>
-
-            <!-- GST Summary -->
-            <div class="gst-summary" id="gstSummaryBox">
-              <div class="gst-summary-row"><span>Subtotal (Taxable Value)</span><span id="gs-sub">₹0</span></div>
-              <div class="gst-summary-row"><span>SGST @ 9%</span><span id="gs-sgst">₹0</span></div>
-              <div class="gst-summary-row"><span>CGST @ 9%</span><span id="gs-cgst">₹0</span></div>
-              <div class="gst-summary-row"><span>Round Off</span><span id="gs-round">₹0</span></div>
-              <div class="gst-summary-row"><span>Grand Total</span><span id="gs-total">₹0</span></div>
-            </div>
-
-            <!-- Notes -->
-            <div class="form-group" style="margin-top:16px;">
-              <label class="form-label">Notes / Special Instructions</label>
-              <textarea class="form-control" id="f-notes" rows="2" placeholder="Any special notes for this invoice…"></textarea>
-            </div>
-
-            <!-- Bank Details (from settings) -->
-            <div class="inv-meta" style="margin-top:12px;">
-              <div class="form-group">
-                <label class="form-label">Bank Details</label>
-                <textarea class="form-control" id="f-bankDetails" rows="3" placeholder="Bank Name, Account No, IFSC, Branch"></textarea>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Terms & Conditions</label>
-                <textarea class="form-control" id="f-terms" rows="3" placeholder="Terms of payment and delivery"></textarea>
-              </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
-              <button class="btn btn-green" onclick="saveInvoice('final')" id="finalizeBtn">Finalise & Save</button>
-              <button class="btn btn-outline-green" onclick="saveInvoice('draft')">Save as Draft</button>
-              <button class="btn btn-outline-green" onclick="previewAndPrint()">Preview PDF</button>
-              <button class="btn btn-outline-green" onclick="downloadPDF()">Download PDF</button>
-              <button class="btn btn-outline-green" onclick="shareWhatsApp()">WhatsApp</button>
-              <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;" onclick="clearForm()">Clear Form</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- All Invoices List -->
-        <div id="invoiceListWrap" style="display:none;">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title">All Invoices</span>
-              <div style="display:flex;gap:8px;">
-                <input class="form-control" type="text" placeholder="Search…" style="width:200px;" oninput="filterInvoices(this.value)"/>
-                <button class="btn btn-green btn-sm" onclick="newDoc('invoice');toggleInvView()">+ New</button>
-              </div>
-            </div>
-            <div style="overflow-x:auto;">
-              <table class="inv-list-table">
-                <thead><tr><th>Invoice No.</th><th>Party</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody id="allInvoicesList">
-                  <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ QUOTATION PAGE ══ -->
-      <!-- ══ QUOTATION PAGE ══ -->
-      <div class="erp-page" id="page-quotation">
-        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-          <button class="btn btn-green" onclick="showPage('invoice',null);newDoc('quotation')">+ New Quotation</button>
-          <span style="font-size:13px;color:var(--muted);display:flex;align-items:center;padding:0 8px;">
+<!-- Hidden inputs carry values for save/print — never shown -->
+<input id="f-fromName" type="hidden"/>
+<input id="f-fromAddr" type="hidden"/>
+<input id="f-fromGSTIN" type="hidden"/>
+<input id="f-fromPhone" type="hidden"/>
+</div>
+<div>
+<div class="erp-panel-title" style="font-size:13px;margin-bottom:12px;color:var(--green3);">BILL TO (Party / Client)</div>
+<div class="form-group" style="position:relative;">
+<label class="form-label">Party Name * <span style="color:var(--muted);font-size:10px;">(type to search saved parties)</span></label>
+<input autocomplete="off" class="form-control" id="f-toName" onblur="setTimeout(closePartySuggest,200)" onfocus="onPartyInput(this.value)" oninput="onPartyInput(this.value)" placeholder="Client / Company name"/>
+<!-- Smart dropdown — replaces datalist for autofill support -->
+<div id="partySuggestBox" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);border:1px solid var(--green);border-top:none;border-radius:0 0 var(--radius) var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:300;max-height:220px;overflow-y:auto;"></div>
+</div>
+<div class="form-group">
+<label class="form-label">Address</label>
+<textarea class="form-control" id="f-toAddr" placeholder="Client address" rows="2"></textarea>
+</div>
+<div class="inv-meta">
+<div class="form-group"><label class="form-label">GSTIN</label><input class="form-control" id="f-toGSTIN" placeholder="Client GSTIN (optional)"/></div>
+<div class="form-group"><label class="form-label">Place of Supply</label><input class="form-control" id="f-placeOfSupply" placeholder="e.g. Tamil Nadu"/></div>
+</div>
+<div class="form-group" style="margin-top:12px;">
+<label class="form-label">Client Email * <span style="color:var(--muted);font-size:10px;">(Required for Dashboard)</span></label>
+<input class="form-control" id="clientEmail" placeholder="client@example.com" required="" type="email"/>
+</div>
+</div>
+</div>
+<!-- ── INVOICE META ── -->
+<div class="inv-meta inv-meta-3">
+<div class="form-group">
+<label class="form-label">Invoice Date *</label>
+<input class="form-control" id="f-invDate" type="date"/>
+</div>
+<div class="form-group">
+<label class="form-label">Due Date</label>
+<input class="form-control" id="f-dueDate" type="date"/>
+</div>
+<div class="form-group">
+<label class="form-label">Terms of Payment</label>
+<input class="form-control" id="f-payTerms" placeholder="e.g. Net 30 days"/>
+</div>
+</div>
+<!-- ── HSN QUICK PICKS — dynamic from settings ── -->
+<div style="margin-bottom:16px;">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+<div class="form-label" style="margin:0;">Common HSN Codes <span style="color:var(--muted);font-weight:400;">(click to apply to last item)</span></div>
+<a href="#" onclick="showPage('settings',null);return false;" style="font-size:11px;color:var(--green);font-weight:700;text-decoration:none;">Manage in Settings →</a>
+</div>
+<div class="hsn-quick" id="hsnQuickBar">
+<!-- Populated by renderHsnChips() from settings -->
+</div>
+</div>
+<!-- ── LINE ITEMS ── -->
+<div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;">Line Items</div>
+<!-- Desktop Table -->
+<div class="line-items-table-wrap">
+<table class="line-items-table">
+<thead>
+<tr>
+<th class="col-sn">#</th>
+<th class="col-desc">Description</th>
+<th class="col-hsn">HSN Code</th>
+<th class="col-qty">Qty</th>
+<th class="col-unit">Unit</th>
+<th class="col-price">Unit Price ₹</th>
+<th class="col-gst">GST %</th>
+<th class="col-amt">Amount ₹</th>
+<th class="col-del"></th>
+</tr>
+</thead>
+<tbody id="lineItemsBody"></tbody>
+</table>
+</div>
+<!-- Mobile Cards -->
+<div class="line-items-cards" id="lineItemsCards"></div>
+<button class="add-line-btn" onclick="addLineItem()">+ Add Line Item</button>
+<!-- GST Summary -->
+<div class="gst-summary" id="gstSummaryBox">
+<div class="gst-summary-row"><span>Subtotal (Taxable Value)</span><span id="gs-sub">₹0</span></div>
+<div class="gst-summary-row"><span>SGST @ 9%</span><span id="gs-sgst">₹0</span></div>
+<div class="gst-summary-row"><span>CGST @ 9%</span><span id="gs-cgst">₹0</span></div>
+<div class="gst-summary-row"><span>Round Off</span><span id="gs-round">₹0</span></div>
+<div class="gst-summary-row"><span>Grand Total</span><span id="gs-total">₹0</span></div>
+</div>
+<!-- Notes -->
+<div class="form-group" style="margin-top:16px;">
+<label class="form-label">Notes / Special Instructions</label>
+<textarea class="form-control" id="f-notes" placeholder="Any special notes for this invoice…" rows="2"></textarea>
+</div>
+<!-- Bank Details (from settings) -->
+<div class="inv-meta" style="margin-top:12px;">
+<div class="form-group">
+<label class="form-label">Bank Details</label>
+<textarea class="form-control" id="f-bankDetails" placeholder="Bank Name, Account No, IFSC, Branch" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Terms &amp; Conditions</label>
+<textarea class="form-control" id="f-terms" placeholder="Terms of payment and delivery" rows="3"></textarea>
+</div>
+</div>
+<!-- Action Buttons -->
+<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+<button class="btn btn-green" id="finalizeBtn" onclick="saveInvoice('final')">Finalise &amp; Save</button>
+<button class="btn btn-outline-green" onclick="saveInvoice('draft')">Save as Draft</button>
+<button class="btn btn-outline-green" onclick="previewAndPrint()">Preview PDF</button>
+<button class="btn btn-outline-green" onclick="downloadPDF()">Download PDF</button>
+<button class="btn btn-outline-green" onclick="shareWhatsApp()">WhatsApp</button>
+<button onclick="clearForm()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;">Clear Form</button>
+</div>
+</div>
+</div>
+<!-- All Invoices List -->
+<div id="invoiceListWrap" style="display:none;">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title">All Invoices</span>
+<div style="display:flex;gap:8px;">
+<input class="form-control" oninput="filterInvoices(this.value)" placeholder="Search…" style="width:200px;" type="text"/>
+<button class="btn btn-green btn-sm" onclick="newDoc('invoice');toggleInvView()">+ New</button>
+</div>
+</div>
+<div style="overflow-x:auto;">
+<table class="inv-list-table">
+<thead><tr><th>Invoice No.</th><th>Party</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody id="allInvoicesList">
+<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- ══ QUOTATION PAGE ══ -->
+<!-- ══ QUOTATION PAGE ══ -->
+<div class="erp-page" id="page-quotation">
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="showPage('invoice',null);newDoc('quotation')">+ New Quotation</button>
+<span style="font-size:13px;color:var(--muted);display:flex;align-items:center;padding:0 8px;">
             Create quotations using the invoice form — select "Quotation" type at the top.
           </span>
-        </div>
-        <div class="erp-panel">
-          <div class="erp-panel-head">
-            <span class="erp-panel-title">All Quotations</span>
-            <input class="form-control" type="text" placeholder="Search party…" style="width:200px;" oninput="filterList('quotationsList',this.value)"/>
-          </div>
-          <div style="overflow-x:auto;">
-            <table class="inv-list-table">
-              <thead>
-                <tr>
-                  <th>Quote No.</th><th>Party</th><th>Date</th>
-                  <th>Amount</th><th>Status</th><th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="quotationsList">
-                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ CHALLAN PAGE ══ -->
-      <div class="erp-page" id="page-challan">
-        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-          <button class="btn btn-green" id="newChallanBtn" onclick="showChallanForm()">+ New Delivery Challan</button>
-          <button class="btn btn-outline-green" id="challanListBtn" onclick="showChallanList()">View All Challans</button>
-        </div>
-
-        <!-- Challan Form -->
-        <div id="challanFormWrap">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title" id="challanFormTitle">New Delivery Challan</span>
-              <span id="challanNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
-            </div>
-
-            <!-- Dispatch Details -->
-            <div class="inv-meta inv-meta-3" style="margin-bottom:20px;">
-              <div class="form-group">
-                <label class="form-label">Dispatch Date *</label>
-                <input class="form-control" type="date" id="ch-date"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Vehicle / Transport No.</label>
-                <input class="form-control" type="text" id="ch-vehicle" placeholder="e.g. TN 37 AB 1234"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Driver Name</label>
-                <input class="form-control" type="text" id="ch-driver" placeholder="Driver's name"/>
-              </div>
-            </div>
-
-            <!-- From / To -->
-            <div class="inv-meta" style="margin-bottom:20px;">
-              <div>
-                <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">DISPATCHED FROM</div>
-                <div id="challanFromDisplay" style="background:var(--green-pale);border:1px solid rgba(22,163,74,.2);border-radius:var(--radius);padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text2);">Loading…</div>
-              </div>
-              <div>
-                <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">DELIVER TO (Site / Client)</div>
-                <div class="form-group">
-                  <label class="form-label">Party / Client Name *</label>
-                  <input class="form-control" type="text" id="ch-toName" placeholder="Client name" autocomplete="off"
-                    oninput="onPartyInput(this.value)" onfocus="onPartyInput(this.value)" onblur="setTimeout(closePartySuggest,200)"/>
-                  <div id="partySuggestBox" style="display:none;position:absolute;background:var(--white);border:1px solid var(--green);border-top:none;border-radius:0 0 var(--radius) var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:300;max-height:200px;overflow-y:auto;width:100%;"></div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Site / Delivery Address *</label>
-                  <textarea class="form-control" id="ch-toAddr" rows="3" placeholder="Complete site delivery address"></textarea>
-                </div>
-              </div>
-            </div>
-
-            <!-- Reference -->
-            <div class="inv-meta inv-meta-3" style="margin-bottom:20px;">
-              <div class="form-group">
-                <label class="form-label">Against Invoice No.</label>
-                <input class="form-control" type="text" id="ch-refInvoice" placeholder="e.g. INV-2026-005"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">PO / Work Order No.</label>
-                <input class="form-control" type="text" id="ch-refPO" placeholder="Purchase order ref"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Purpose / Description</label>
-                <input class="form-control" type="text" id="ch-purpose" placeholder="e.g. Solar panel installation – Phase 1"/>
-              </div>
-            </div>
-
-            <!-- Line Items — NO price/GST columns on challan -->
-            <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;">Items Being Dispatched</div>
-            <div class="line-items-table-wrap">
-              <table class="line-items-table">
-                <thead>
-                  <tr>
-                    <th class="col-sn">#</th>
-                    <th class="col-desc">Description of Goods</th>
-                    <th class="col-hsn">HSN Code</th>
-                    <th style="width:90px;">Qty</th>
-                    <th style="width:90px;">Unit</th>
-                    <th style="width:200px;">Remarks</th>
-                    <th class="col-del"></th>
-                  </tr>
-                </thead>
-                <tbody id="challanItemsBody"></tbody>
-              </table>
-            </div>
-            <!-- Mobile cards for challan items -->
-            <div class="line-items-cards" id="challanItemsCards"></div>
-            <button class="add-line-btn" onclick="addChallanItem()">+ Add Item</button>
-
-            <!-- Notes -->
-            <div class="form-group" style="margin-top:16px;">
-              <label class="form-label">Special Instructions / Notes</label>
-              <textarea class="form-control" id="ch-notes" rows="2" placeholder="Handle with care, installation instructions…"></textarea>
-            </div>
-
-            <!-- Actions -->
-            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
-              <button class="btn btn-green" onclick="saveChallan()">Save & Finalise Challan</button>
-               <button class="btn btn-outline-green" onclick="previewChallan()">Preview PDF</button>
-              <button class="btn btn-outline-green" onclick="downloadChallanPDF()">Download PDF</button>
-              <button class="btn btn-outline-green" onclick="shareChallanWhatsApp()">WhatsApp</button>
-              <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;" onclick="clearChallanForm()">Clear</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Challan List -->
-        <div id="challanListWrap" style="display:none;">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title">All Delivery Challans</span>
-              <input class="form-control" type="text" placeholder="Search…" style="width:200px;" oninput="filterList('challansList',this.value)"/>
-            </div>
-            <div style="overflow-x:auto;">
-              <table class="inv-list-table">
-                <thead><tr><th>Challan No.</th><th>Party</th><th>Dispatch Date</th><th>Vehicle</th><th>Items</th><th>Actions</th></tr></thead>
-                <tbody id="challansList">
-                  <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ PURCHASE PAGE ══ -->
-      <div class="erp-page" id="page-purchase">
-        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-          <button class="btn btn-green" onclick="showPurchaseForm()">+ Log Purchase Bill</button>
-          <button class="btn btn-outline-green" onclick="showPurchaseList()">View All Bills</button>
-        </div>
-
-        <!-- Purchase Form -->
-        <div id="purchaseFormWrap">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title" id="purchaseFormTitle">New Purchase Bill</span>
-              <span id="purchaseNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
-            </div>
-
-            <!-- Supplier Details -->
-            <div class="inv-meta" style="margin-bottom:20px;">
-              <div>
-                <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">SUPPLIER DETAILS</div>
-                <div class="form-group">
-                  <label class="form-label">Supplier Name *</label>
-                  <input class="form-control" type="text" id="pur-supplierName" placeholder="Supplier / Vendor name"/>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Supplier Address</label>
-                  <textarea class="form-control" id="pur-supplierAddr" rows="2" placeholder="Supplier address"></textarea>
-                </div>
-                <div class="inv-meta">
-                  <div class="form-group">
-                    <label class="form-label">Supplier GSTIN</label>
-                    <input class="form-control" type="text" id="pur-supplierGSTIN" maxlength="15"
-                      placeholder="15-char GSTIN"
-                      oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'').substring(0,15)"/>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Supplier Phone</label>
-                    <input class="form-control" type="tel" id="pur-supplierPhone" placeholder="+91 XXXXX XXXXX"/>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">BILL DETAILS</div>
-                <div class="inv-meta">
-                  <div class="form-group">
-                    <label class="form-label">Supplier's Bill No. *</label>
-                    <input class="form-control" type="text" id="pur-supplierBillNo" placeholder="Their invoice number"/>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Bill Date *</label>
-                    <input class="form-control" type="date" id="pur-billDate"/>
-                  </div>
-                </div>
-                <div class="inv-meta">
-                  <div class="form-group">
-                    <label class="form-label">Due / Payment Date</label>
-                    <input class="form-control" type="date" id="pur-dueDate"/>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Category</label>
-                    <select class="form-control" id="pur-category">
-                      <option value="raw_material">Raw Material</option>
-                      <option value="steel">Steel / Metal</option>
-                      <option value="solar_panels">Solar Panels</option>
-                      <option value="electrical">Electrical Items</option>
-                      <option value="hardware">Hardware / Fasteners</option>
-                      <option value="transport">Transport / Logistics</option>
-                      <option value="subcontract">Sub-Contract Labour</option>
-                      <option value="overheads">Overheads / Misc</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Place of Supply</label>
-                  <input class="form-control" type="text" id="pur-placeOfSupply" placeholder="e.g. Tamil Nadu"/>
-                </div>
-              </div>
-            </div>
-
-            <!-- Line Items with full price/GST for purchases -->
-            <div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;">Items Purchased</div>
-            <div class="line-items-table-wrap">
-              <table class="line-items-table">
-                <thead>
-                  <tr>
-                    <th class="col-sn">#</th>
-                    <th class="col-desc">Description</th>
-                    <th class="col-hsn">HSN</th>
-                    <th class="col-qty">Qty</th>
-                    <th class="col-unit">Unit</th>
-                    <th class="col-price">Rate ₹</th>
-                    <th class="col-gst">GST %</th>
-                    <th class="col-amt">Amount ₹</th>
-                    <th class="col-del"></th>
-                  </tr>
-                </thead>
-                <tbody id="purchaseItemsBody"></tbody>
-              </table>
-            </div>
-            <div class="line-items-cards" id="purchaseItemsCards"></div>
-            <button class="add-line-btn" onclick="addPurchaseItem()">+ Add Item</button>
-
-            <!-- GST Summary -->
-            <div class="gst-summary" id="purchaseGstSummary">
-              <div class="gst-summary-row"><span>Subtotal (Taxable)</span><span id="pur-sub">₹0</span></div>
-              <div class="gst-summary-row"><span>IGST / SGST+CGST</span><span id="pur-gst">₹0</span></div>
-              <div class="gst-summary-row"><span>Grand Total</span><span id="pur-total">₹0</span></div>
-            </div>
-
-            <!-- Notes & Payment -->
-            <div class="inv-meta" style="margin-top:16px;">
-              <div class="form-group">
-                <label class="form-label">Notes</label>
-                <textarea class="form-control" id="pur-notes" rows="2" placeholder="Any notes about this purchase…"></textarea>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Payment Status</label>
-                <select class="form-control" id="pur-payStatus">
-                  <option value="unpaid">Unpaid</option>
-                  <option value="paid">Paid</option>
-                  <option value="partial">Partial</option>
-                </select>
-              </div>
-            </div>
-
-            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
-              <button class="btn btn-green" onclick="savePurchaseBill()">Save Purchase Bill</button>
-              <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;" onclick="clearPurchaseForm()">Clear</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Purchase List -->
-        <div id="purchaseListWrap" style="display:none;">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title">All Purchase Bills</span>
-              <div style="display:flex;gap:8px;">
-                <input class="form-control" type="text" placeholder="Search supplier…" style="width:180px;" oninput="filterList('purchasesList',this.value)"/>
-              </div>
-            </div>
-            <div style="overflow-x:auto;">
-              <table class="inv-list-table">
-                <thead><tr><th>Our Ref.</th><th>Supplier</th><th>Their Bill No.</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody id="purchasesList">
-                  <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ PAYMENT RECEIPTS ══ -->
-      <div class="erp-page" id="page-payment">
-        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-          <button class="btn btn-green" onclick="showReceiptForm()">+ New Payment Receipt</button>
-          <button class="btn btn-outline-green" onclick="showReceiptList()">View All Receipts</button>
-        </div>
-
-        <!-- Receipt Form -->
-        <div id="receiptFormWrap">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title">Record Payment Received</span>
-              <span id="receiptNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
-            </div>
-
-            <div class="inv-meta" style="margin-bottom:20px;">
-              <div>
-                <div class="form-group">
-                  <label class="form-label">Party / Client Name *</label>
-                  <input class="form-control" type="text" id="rec-partyName" placeholder="Who paid?" oninput="onReceiptPartyInput(this.value)"/>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Against Invoice(s)</label>
-                  <select class="form-control" id="rec-invoiceRef" onchange="onInvoiceSelect(this.value)">
-                    <option value="">— Select unpaid invoice —</option>
-                  </select>
-                  <div id="rec-invoiceInfo" style="font-size:12px;color:var(--green3);margin-top:4px;padding:6px 10px;background:var(--green-pale);border-radius:6px;display:none;"></div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Receipt Date *</label>
-                  <input class="form-control" type="date" id="rec-date"/>
-                </div>
-              </div>
-              <div>
-                <div class="form-group">
-                  <label class="form-label">Amount Received (₹) *</label>
-                  <input class="form-control" type="number" id="rec-amount" placeholder="0" min="0" step="any"
-                    oninput="onReceiptAmountInput()"/>
-                  <div id="rec-amountHint" style="font-size:12px;color:var(--muted);margin-top:4px;"></div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Payment Method *</label>
-                  <select class="form-control" id="rec-method" onchange="onMethodChange(this.value)">
-                    <option value="cash">Cash</option>
-                    <option value="upi">UPI / PhonePe / GPay</option>
-                    <option value="cheque">Cheque</option>
-                    <option value="neft">NEFT / RTGS</option>
-                    <option value="imps">IMPS</option>
-                    <option value="card">Card</option>
-                  </select>
-                </div>
-                <div class="form-group" id="rec-txnGroup">
-                  <label class="form-label">Transaction / Cheque ID</label>
-                  <input class="form-control" type="text" id="rec-txnId" placeholder="UPI ref / Cheque no. / UTR"/>
-                </div>
-                <div class="form-group" id="rec-bankGroup" style="display:none;">
-                  <label class="form-label">Bank / UPI Destination</label>
-                  <input class="form-control" type="text" id="rec-bankDest" placeholder="e.g. KVB Bank / Admin GPay"/>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Notes</label>
-              <input class="form-control" type="text" id="rec-notes" placeholder="Any notes about this payment…"/>
-            </div>
-
-            <!-- Balance preview -->
-            <div id="rec-balancePreview" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:16px;display:none;">
-              <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">After This Payment</div>
-              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
-                <div><div style="font-size:11px;color:var(--muted);">Invoice Amount</div><div id="bp-invoice" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--text3);">₹0</div></div>
-                <div><div style="font-size:11px;color:var(--muted);">This Payment</div><div id="bp-this" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--green);">₹0</div></div>
-                <div><div style="font-size:11px;color:var(--muted);">Balance Due</div><div id="bp-balance" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--red);">₹0</div></div>
-              </div>
-              <div id="bp-statusMsg" style="margin-top:10px;font-size:13px;font-weight:600;"></div>
-            </div>
-
-            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
-              <button class="btn btn-green" onclick="saveReceipt()">Save Receipt & Update Invoice</button>
-              <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;" onclick="clearReceiptForm()">Clear</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Receipts List -->
-        <div id="receiptListWrap" style="display:none;">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title">All Payment Receipts</span>
-              <input class="form-control" type="text" placeholder="Search party…" style="width:200px;" oninput="filterList('receiptsList',this.value)"/>
-            </div>
-            <div style="overflow-x:auto;">
-              <table class="inv-list-table">
-                <thead><tr><th>Receipt No.</th><th>Party</th><th>Against Invoice</th><th>Date</th><th>Amount</th><th>Method</th><th>Actions</th></tr></thead>
-                <tbody id="receiptsList">
-                  <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+</div>
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title">All Quotations</span>
+<input class="form-control" oninput="filterList('quotationsList',this.value)" placeholder="Search party…" style="width:200px;" type="text"/>
+</div>
+<div style="overflow-x:auto;">
+<table class="inv-list-table">
+<thead>
+<tr>
+<th>Quote No.</th><th>Party</th><th>Date</th>
+<th>Amount</th><th>Status</th><th>Actions</th>
+</tr>
+</thead>
+<tbody id="quotationsList">
+<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- ══ CHALLAN PAGE ══ -->
+<div class="erp-page" id="page-challan">
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+<button class="btn btn-green" id="newChallanBtn" onclick="showChallanForm()">+ New Delivery Challan</button>
+<button class="btn btn-outline-green" id="challanListBtn" onclick="showChallanList()">View All Challans</button>
+</div>
+<!-- Challan Form -->
+<div id="challanFormWrap">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title" id="challanFormTitle">New Delivery Challan</span>
+<span id="challanNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
+</div>
+<!-- Dispatch Details -->
+<div class="inv-meta inv-meta-3" style="margin-bottom:20px;">
+<div class="form-group">
+<label class="form-label">Dispatch Date *</label>
+<input class="form-control" id="ch-date" type="date"/>
+</div>
+<div class="form-group">
+<label class="form-label">Vehicle / Transport No.</label>
+<input class="form-control" id="ch-vehicle" placeholder="e.g. TN 37 AB 1234" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Driver Name</label>
+<input class="form-control" id="ch-driver" placeholder="Driver's name" type="text"/>
+</div>
+</div>
+<!-- From / To -->
+<div class="inv-meta" style="margin-bottom:20px;">
+<div>
+<div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">DISPATCHED FROM</div>
+<div id="challanFromDisplay" style="background:var(--green-pale);border:1px solid rgba(22,163,74,.2);border-radius:var(--radius);padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text2);">Loading…</div>
+</div>
+<div>
+<div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">DELIVER TO (Site / Client)</div>
+<div class="form-group">
+<label class="form-label">Party / Client Name *</label>
+<input autocomplete="off" class="form-control" id="ch-toName" onblur="setTimeout(closePartySuggest,200)" onfocus="onPartyInput(this.value)" oninput="onPartyInput(this.value)" placeholder="Client name" type="text"/>
+<div id="partySuggestBox" style="display:none;position:absolute;background:var(--white);border:1px solid var(--green);border-top:none;border-radius:0 0 var(--radius) var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:300;max-height:200px;overflow-y:auto;width:100%;"></div>
+</div>
+<div class="form-group">
+<label class="form-label">Site / Delivery Address *</label>
+<textarea class="form-control" id="ch-toAddr" placeholder="Complete site delivery address" rows="3"></textarea>
+</div>
+</div>
+</div>
+<!-- Reference -->
+<div class="inv-meta inv-meta-3" style="margin-bottom:20px;">
+<div class="form-group">
+<label class="form-label">Against Invoice No.</label>
+<input class="form-control" id="ch-refInvoice" placeholder="e.g. INV-2026-005" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">PO / Work Order No.</label>
+<input class="form-control" id="ch-refPO" placeholder="Purchase order ref" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Purpose / Description</label>
+<input class="form-control" id="ch-purpose" placeholder="e.g. Solar panel installation – Phase 1" type="text"/>
+</div>
+</div>
+<!-- Line Items — NO price/GST columns on challan -->
+<div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;">Items Being Dispatched</div>
+<div class="line-items-table-wrap">
+<table class="line-items-table">
+<thead>
+<tr>
+<th class="col-sn">#</th>
+<th class="col-desc">Description of Goods</th>
+<th class="col-hsn">HSN Code</th>
+<th style="width:90px;">Qty</th>
+<th style="width:90px;">Unit</th>
+<th style="width:200px;">Remarks</th>
+<th class="col-del"></th>
+</tr>
+</thead>
+<tbody id="challanItemsBody"></tbody>
+</table>
+</div>
+<!-- Mobile cards for challan items -->
+<div class="line-items-cards" id="challanItemsCards"></div>
+<button class="add-line-btn" onclick="addChallanItem()">+ Add Item</button>
+<!-- Notes -->
+<div class="form-group" style="margin-top:16px;">
+<label class="form-label">Special Instructions / Notes</label>
+<textarea class="form-control" id="ch-notes" placeholder="Handle with care, installation instructions…" rows="2"></textarea>
+</div>
+<!-- Actions -->
+<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="saveChallan()">Save &amp; Finalise Challan</button>
+<button class="btn btn-outline-green" onclick="previewChallan()">Preview PDF</button>
+<button class="btn btn-outline-green" onclick="downloadChallanPDF()">Download PDF</button>
+<button class="btn btn-outline-green" onclick="shareChallanWhatsApp()">WhatsApp</button>
+<button onclick="clearChallanForm()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;">Clear</button>
+</div>
+</div>
+</div>
+<!-- Challan List -->
+<div id="challanListWrap" style="display:none;">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title">All Delivery Challans</span>
+<input class="form-control" oninput="filterList('challansList',this.value)" placeholder="Search…" style="width:200px;" type="text"/>
+</div>
+<div style="overflow-x:auto;">
+<table class="inv-list-table">
+<thead><tr><th>Challan No.</th><th>Party</th><th>Dispatch Date</th><th>Vehicle</th><th>Items</th><th>Actions</th></tr></thead>
+<tbody id="challansList">
+<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- ══ PURCHASE PAGE ══ -->
+<div class="erp-page" id="page-purchase">
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="showPurchaseForm()">+ Log Purchase Bill</button>
+<button class="btn btn-outline-green" onclick="showPurchaseList()">View All Bills</button>
+</div>
+<!-- Purchase Form -->
+<div id="purchaseFormWrap">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title" id="purchaseFormTitle">New Purchase Bill</span>
+<span id="purchaseNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
+</div>
+<!-- Supplier Details -->
+<div class="inv-meta" style="margin-bottom:20px;">
+<div>
+<div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">SUPPLIER DETAILS</div>
+<div class="form-group">
+<label class="form-label">Supplier Name *</label>
+<input class="form-control" id="pur-supplierName" placeholder="Supplier / Vendor name" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Supplier Address</label>
+<textarea class="form-control" id="pur-supplierAddr" placeholder="Supplier address" rows="2"></textarea>
+</div>
+<div class="inv-meta">
+<div class="form-group">
+<label class="form-label">Supplier GSTIN</label>
+<input class="form-control" id="pur-supplierGSTIN" maxlength="15" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'').substring(0,15)" placeholder="15-char GSTIN" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Supplier Phone</label>
+<input class="form-control" id="pur-supplierPhone" placeholder="+91 XXXXX XXXXX" type="tel"/>
+</div>
+</div>
+</div>
+<div>
+<div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;color:var(--green3);">BILL DETAILS</div>
+<div class="inv-meta">
+<div class="form-group">
+<label class="form-label">Supplier's Bill No. *</label>
+<input class="form-control" id="pur-supplierBillNo" placeholder="Their invoice number" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Bill Date *</label>
+<input class="form-control" id="pur-billDate" type="date"/>
+</div>
+</div>
+<div class="inv-meta">
+<div class="form-group">
+<label class="form-label">Due / Payment Date</label>
+<input class="form-control" id="pur-dueDate" type="date"/>
+</div>
+<div class="form-group">
+<label class="form-label">Category</label>
+<select class="form-control" id="pur-category">
+<option value="raw_material">Raw Material</option>
+<option value="steel">Steel / Metal</option>
+<option value="solar_panels">Solar Panels</option>
+<option value="electrical">Electrical Items</option>
+<option value="hardware">Hardware / Fasteners</option>
+<option value="transport">Transport / Logistics</option>
+<option value="subcontract">Sub-Contract Labour</option>
+<option value="overheads">Overheads / Misc</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Place of Supply</label>
+<input class="form-control" id="pur-placeOfSupply" placeholder="e.g. Tamil Nadu" type="text"/>
+</div>
+</div>
+</div>
+<!-- Line Items with full price/GST for purchases -->
+<div class="erp-panel-title" style="font-size:13px;margin-bottom:10px;">Items Purchased</div>
+<div class="line-items-table-wrap">
+<table class="line-items-table">
+<thead>
+<tr>
+<th class="col-sn">#</th>
+<th class="col-desc">Description</th>
+<th class="col-hsn">HSN</th>
+<th class="col-qty">Qty</th>
+<th class="col-unit">Unit</th>
+<th class="col-price">Rate ₹</th>
+<th class="col-gst">GST %</th>
+<th class="col-amt">Amount ₹</th>
+<th class="col-del"></th>
+</tr>
+</thead>
+<tbody id="purchaseItemsBody"></tbody>
+</table>
+</div>
+<div class="line-items-cards" id="purchaseItemsCards"></div>
+<button class="add-line-btn" onclick="addPurchaseItem()">+ Add Item</button>
+<!-- GST Summary -->
+<div class="gst-summary" id="purchaseGstSummary">
+<div class="gst-summary-row"><span>Subtotal (Taxable)</span><span id="pur-sub">₹0</span></div>
+<div class="gst-summary-row"><span>IGST / SGST+CGST</span><span id="pur-gst">₹0</span></div>
+<div class="gst-summary-row"><span>Grand Total</span><span id="pur-total">₹0</span></div>
+</div>
+<!-- Notes & Payment -->
+<div class="inv-meta" style="margin-top:16px;">
+<div class="form-group">
+<label class="form-label">Notes</label>
+<textarea class="form-control" id="pur-notes" placeholder="Any notes about this purchase…" rows="2"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Payment Status</label>
+<select class="form-control" id="pur-payStatus">
+<option value="unpaid">Unpaid</option>
+<option value="paid">Paid</option>
+<option value="partial">Partial</option>
+</select>
+</div>
+</div>
+<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="savePurchaseBill()">Save Purchase Bill</button>
+<button onclick="clearPurchaseForm()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;">Clear</button>
+</div>
+</div>
+</div>
+<!-- Purchase List -->
+<div id="purchaseListWrap" style="display:none;">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title">All Purchase Bills</span>
+<div style="display:flex;gap:8px;">
+<input class="form-control" oninput="filterList('purchasesList',this.value)" placeholder="Search supplier…" style="width:180px;" type="text"/>
+</div>
+</div>
+<div style="overflow-x:auto;">
+<table class="inv-list-table">
+<thead><tr><th>Our Ref.</th><th>Supplier</th><th>Their Bill No.</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody id="purchasesList">
+<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- ══ PAYMENT RECEIPTS ══ -->
+<div class="erp-page" id="page-payment">
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="showReceiptForm()">+ New Payment Receipt</button>
+<button class="btn btn-outline-green" onclick="showReceiptList()">View All Receipts</button>
+</div>
+<!-- Receipt Form -->
+<div id="receiptFormWrap">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title">Record Payment Received</span>
+<span id="receiptNumDisplay" style="font-family:monospace;font-weight:700;color:var(--green3);font-size:14px;padding:6px 14px;background:var(--green-pale);border-radius:var(--radius);"></span>
+</div>
+<div class="inv-meta" style="margin-bottom:20px;">
+<div>
+<div class="form-group">
+<label class="form-label">Party / Client Name *</label>
+<input class="form-control" id="rec-partyName" oninput="onReceiptPartyInput(this.value)" placeholder="Who paid?" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Against Invoice(s)</label>
+<select class="form-control" id="rec-invoiceRef" onchange="onInvoiceSelect(this.value)">
+<option value="">— Select unpaid invoice —</option>
+</select>
+<div id="rec-invoiceInfo" style="font-size:12px;color:var(--green3);margin-top:4px;padding:6px 10px;background:var(--green-pale);border-radius:6px;display:none;"></div>
+</div>
+<div class="form-group">
+<label class="form-label">Receipt Date *</label>
+<input class="form-control" id="rec-date" type="date"/>
+</div>
+</div>
+<div>
+<div class="form-group">
+<label class="form-label">Amount Received (₹) *</label>
+<input class="form-control" id="rec-amount" min="0" oninput="onReceiptAmountInput()" placeholder="0" step="any" type="number"/>
+<div id="rec-amountHint" style="font-size:12px;color:var(--muted);margin-top:4px;"></div>
+</div>
+<div class="form-group">
+<label class="form-label">Payment Method *</label>
+<select class="form-control" id="rec-method" onchange="onMethodChange(this.value)">
+<option value="cash">Cash</option>
+<option value="upi">UPI / PhonePe / GPay</option>
+<option value="cheque">Cheque</option>
+<option value="neft">NEFT / RTGS</option>
+<option value="imps">IMPS</option>
+<option value="card">Card</option>
+</select>
+</div>
+<div class="form-group" id="rec-txnGroup">
+<label class="form-label">Transaction / Cheque ID</label>
+<input class="form-control" id="rec-txnId" placeholder="UPI ref / Cheque no. / UTR" type="text"/>
+</div>
+<div class="form-group" id="rec-bankGroup" style="display:none;">
+<label class="form-label">Bank / UPI Destination</label>
+<input class="form-control" id="rec-bankDest" placeholder="e.g. KVB Bank / Admin GPay" type="text"/>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Notes</label>
+<input class="form-control" id="rec-notes" placeholder="Any notes about this payment…" type="text"/>
+</div>
+<!-- Balance preview -->
+<div id="rec-balancePreview" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:16px;display:none;">
+<div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">After This Payment</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+<div><div style="font-size:11px;color:var(--muted);">Invoice Amount</div><div id="bp-invoice" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--text3);">₹0</div></div>
+<div><div style="font-size:11px;color:var(--muted);">This Payment</div><div id="bp-this" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--green);">₹0</div></div>
+<div><div style="font-size:11px;color:var(--muted);">Balance Due</div><div id="bp-balance" style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--red);">₹0</div></div>
+</div>
+<div id="bp-statusMsg" style="margin-top:10px;font-size:13px;font-weight:600;"></div>
+</div>
+<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="saveReceipt()">Save Receipt &amp; Update Invoice</button>
+<button onclick="clearReceiptForm()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:10px;">Clear</button>
+</div>
+</div>
+</div>
+<!-- Receipts List -->
+<div id="receiptListWrap" style="display:none;">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title">All Payment Receipts</span>
+<input class="form-control" oninput="filterList('receiptsList',this.value)" placeholder="Search party…" style="width:200px;" type="text"/>
+</div>
+<div style="overflow-x:auto;">
+<table class="inv-list-table">
+<thead><tr><th>Receipt No.</th><th>Party</th><th>Against Invoice</th><th>Date</th><th>Amount</th><th>Method</th><th>Actions</th></tr></thead>
+<tbody id="receiptsList">
+<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 <div class="erp-page" id="page-inventory">
-        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-          <button class="btn btn-green" onclick="showInventoryForm()">+ Add New Item</button>
-          <button class="btn btn-outline-green" onclick="showInventoryList()">View All Stock</button>
-        </div>
-
-        <div id="inventoryFormWrap" style="display:none;">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title" id="invItemFormTitle">Add New Stock Item</span>
-            </div>
-            
-            <div class="inv-meta">
-              <div>
-                <div class="form-group">
-                  <label class="form-label">Item Code / SKU *</label>
-                  <input class="form-control" type="text" id="stk-code" placeholder="e.g. SP-500W" style="text-transform:uppercase;"/>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Item Description *</label>
-                  <textarea class="form-control" id="stk-desc" rows="2" placeholder="Full product name and description"></textarea>
-                </div>
-                <div class="inv-meta">
-                  <div class="form-group">
-                    <label class="form-label">Category</label>
-                    <select class="form-control" id="stk-category">
-                      <option value="Solar Panels">Solar Panels</option>
-                      <option value="Inverters">Inverters</option>
-                      <option value="Structures">Mounting Structures</option>
-                      <option value="Cables">Cables & Wires</option>
-                      <option value="Raw Steel">Raw Steel / Iron</option>
-                      <option value="Hardware">Hardware & Fasteners</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">HSN / SAC Code</label>
-                    <input class="form-control" type="text" id="stk-hsn" placeholder="e.g. 8541"/>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Current Stock Quantity</label>
-                  <input class="form-control" type="number" id="stk-qty" placeholder="0" style="font-size:18px;font-weight:bold;color:var(--green3);"/>
-                </div>
-              </div>
-
-              <div>
-                <div class="inv-meta">
-                  <div class="form-group">
-                    <label class="form-label">Purchase Price (₹)</label>
-                    <input class="form-control" type="number" id="stk-purchasePrice" placeholder="0.00"/>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Sales Price (₹) *</label>
-                    <input class="form-control" type="number" id="stk-salesPrice" placeholder="0.00"/>
-                  </div>
-                </div>
-                <div class="inv-meta">
-                  <div class="form-group">
-                    <label class="form-label">Discount Value</label>
-                    <input class="form-control" type="number" id="stk-discount" placeholder="0"/>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Discount Type</label>
-                    <select class="form-control" id="stk-discountType">
-                      <option value="percentage">% Percentage</option>
-                      <option value="flat">₹ Flat Amount</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Applicable Tax (GST %)</label>
-                  <select class="form-control" id="stk-tax">
-                    <option value="0">0%</option>
-                    <option value="5">5%</option>
-                    <option value="12">12%</option>
-                    <option value="18" selected>18%</option>
-                    <option value="28">28%</option>
-                  </select>
-                </div>
-                
-                <div class="form-group">
-                  <label class="form-label">Item Photo (Optional)</label>
-                  <input class="form-control" type="file" id="stk-photo" accept="image/*" onchange="previewStockPhoto(event)" style="padding:8px;"/>
-                  <div id="stk-photo-preview" style="margin-top:10px;height:120px;width:120px;border:1px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg3);">
-                    <span style="font-size:11px;color:var(--muted);">No Image</span>
-                  </div>
-                  <input type="hidden" id="stk-photo-base64"/>
-                </div>
-              </div>
-            </div>
-
-            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
-              <button class="btn btn-green" onclick="saveStockItem()">Save Item to Inventory</button>
-              <button class="btn btn-outline-green" onclick="showInventoryList()">Cancel</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="inventoryListWrap">
-          <div class="erp-panel">
-            <div class="erp-panel-head">
-              <span class="erp-panel-title">Current Inventory</span>
-              <input class="form-control" type="text" placeholder="Search items…" style="width:200px;" oninput="filterList('stockList',this.value)"/>
-            </div>
-            <div style="overflow-x:auto;">
-              <table class="inv-list-table">
-                <thead><tr><th>Photo</th><th>Code</th><th>Description</th><th>Category</th><th>Qty</th><th>Sales Price</th><th>Actions</th></tr></thead>
-                <tbody id="stockList">
-                  <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading Inventory…</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- ══ REPORTS ══ -->
-      <div class="erp-page" id="page-reports">
-         
-
-        <!-- ── REPORT CONTROLS ── -->
-        <div class="erp-panel" style="margin-bottom:16px;">
-          <div class="erp-panel-head">
-            <span class="erp-panel-title">Reports & Analytics</span>
-            <div style="display:flex;gap:8px;">
-              <button class="btn btn-outline-green btn-sm" onclick="downloadReportPDF()">Download PDF</button>
-              <button class="btn btn-outline-green btn-sm" onclick="exportReportCSV()">Export CSV</button>
-            </div>
-          </div>
-
-          <!-- Date range + party filter -->
-          <div class="inv-meta inv-meta-3" style="margin-bottom:16px;">
-            <div class="form-group">
-              <label class="form-label">From Date</label>
-              <input class="form-control" type="date" id="rep-from"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">To Date</label>
-              <input class="form-control" type="date" id="rep-to"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Party / Supplier Name</label>
-              <input class="form-control" id="rep-party" placeholder="All parties" list="rep-party-list"/>
-              <datalist id="rep-party-list"></datalist>
-            </div>
-          </div>
-
-          <!-- Quick date presets -->
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
-            <span style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;align-self:center;">Quick:</span>
-            <button class="filter-chip" onclick="setDatePreset('thisMonth')">This Month</button>
-            <button class="filter-chip" onclick="setDatePreset('lastMonth')">Last Month</button>
-            <button class="filter-chip" onclick="setDatePreset('thisQ')">This Quarter</button>
-            <button class="filter-chip" onclick="setDatePreset('thisYear')">This Year</button>
-            <button class="filter-chip" onclick="setDatePreset('lastYear')">Last Year</button>
-            <button class="filter-chip" onclick="setDatePreset('all')">All Time</button>
-          </div>
-
-          <!-- Report type buttons -->
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn btn-green" onclick="generateReport('sales')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="showInventoryForm()">+ Add New Item</button>
+<button class="btn btn-outline-green" onclick="showInventoryList()">View All Stock</button>
+</div>
+<div id="inventoryFormWrap" style="display:none;">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title" id="invItemFormTitle">Add New Stock Item</span>
+</div>
+<div class="inv-meta">
+<div>
+<div class="form-group">
+<label class="form-label">Item Code / SKU *</label>
+<input class="form-control" id="stk-code" placeholder="e.g. SP-500W" style="text-transform:uppercase;" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Item Description *</label>
+<textarea class="form-control" id="stk-desc" placeholder="Full product name and description" rows="2"></textarea>
+</div>
+<div class="inv-meta">
+<div class="form-group">
+<label class="form-label">Category</label>
+<select class="form-control" id="stk-category">
+<option value="Solar Panels">Solar Panels</option>
+<option value="Inverters">Inverters</option>
+<option value="Structures">Mounting Structures</option>
+<option value="Cables">Cables &amp; Wires</option>
+<option value="Raw Steel">Raw Steel / Iron</option>
+<option value="Hardware">Hardware &amp; Fasteners</option>
+<option value="Other">Other</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">HSN / SAC Code</label>
+<input class="form-control" id="stk-hsn" placeholder="e.g. 8541" type="text"/>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Current Stock Quantity</label>
+<input class="form-control" id="stk-qty" placeholder="0" style="font-size:18px;font-weight:bold;color:var(--green3);" type="number"/>
+</div>
+</div>
+<div>
+<div class="inv-meta">
+<div class="form-group">
+<label class="form-label">Purchase Price (₹)</label>
+<input class="form-control" id="stk-purchasePrice" placeholder="0.00" type="number"/>
+</div>
+<div class="form-group">
+<label class="form-label">Sales Price (₹) *</label>
+<input class="form-control" id="stk-salesPrice" placeholder="0.00" type="number"/>
+</div>
+</div>
+<div class="inv-meta">
+<div class="form-group">
+<label class="form-label">Discount Value</label>
+<input class="form-control" id="stk-discount" placeholder="0" type="number"/>
+</div>
+<div class="form-group">
+<label class="form-label">Discount Type</label>
+<select class="form-control" id="stk-discountType">
+<option value="percentage">% Percentage</option>
+<option value="flat">₹ Flat Amount</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Applicable Tax (GST %)</label>
+<select class="form-control" id="stk-tax">
+<option value="0">0%</option>
+<option value="5">5%</option>
+<option value="12">12%</option>
+<option selected="" value="18">18%</option>
+<option value="28">28%</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Item Photo (Optional)</label>
+<input accept="image/*" class="form-control" id="stk-photo" onchange="previewStockPhoto(event)" style="padding:8px;" type="file"/>
+<div id="stk-photo-preview" style="margin-top:10px;height:120px;width:120px;border:1px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg3);">
+<span style="font-size:11px;color:var(--muted);">No Image</span>
+</div>
+<input id="stk-photo-base64" type="hidden"/>
+</div>
+</div>
+</div>
+<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="saveStockItem()">Save Item to Inventory</button>
+<button class="btn btn-outline-green" onclick="showInventoryList()">Cancel</button>
+</div>
+</div>
+</div>
+<div id="inventoryListWrap">
+<div class="erp-panel">
+<div class="erp-panel-head">
+<span class="erp-panel-title">Current Inventory</span>
+<input class="form-control" oninput="filterList('stockList',this.value)" placeholder="Search items…" style="width:200px;" type="text"/>
+</div>
+<div style="overflow-x:auto;">
+<table class="inv-list-table">
+<thead><tr><th>Photo</th><th>Code</th><th>Description</th><th>Category</th><th>Qty</th><th>Sales Price</th><th>Actions</th></tr></thead>
+<tbody id="stockList">
+<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);">Loading Inventory…</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- ══ REPORTS ══ -->
+<div class="erp-page" id="page-reports">
+<!-- ── REPORT CONTROLS ── -->
+<div class="erp-panel" style="margin-bottom:16px;">
+<div class="erp-panel-head">
+<span class="erp-panel-title">Reports &amp; Analytics</span>
+<div style="display:flex;gap:8px;">
+<button class="btn btn-outline-green btn-sm" onclick="downloadReportPDF()">Download PDF</button>
+<button class="btn btn-outline-green btn-sm" onclick="exportReportCSV()">Export CSV</button>
+</div>
+</div>
+<!-- Date range + party filter -->
+<div class="inv-meta inv-meta-3" style="margin-bottom:16px;">
+<div class="form-group">
+<label class="form-label">From Date</label>
+<input class="form-control" id="rep-from" type="date"/>
+</div>
+<div class="form-group">
+<label class="form-label">To Date</label>
+<input class="form-control" id="rep-to" type="date"/>
+</div>
+<div class="form-group">
+<label class="form-label">Party / Supplier Name</label>
+<input class="form-control" id="rep-party" list="rep-party-list" placeholder="All parties"/>
+<datalist id="rep-party-list"></datalist>
+</div>
+</div>
+<!-- Quick date presets -->
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+<span style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;align-self:center;">Quick:</span>
+<button class="filter-chip" onclick="setDatePreset('thisMonth')">This Month</button>
+<button class="filter-chip" onclick="setDatePreset('lastMonth')">Last Month</button>
+<button class="filter-chip" onclick="setDatePreset('thisQ')">This Quarter</button>
+<button class="filter-chip" onclick="setDatePreset('thisYear')">This Year</button>
+<button class="filter-chip" onclick="setDatePreset('lastYear')">Last Year</button>
+<button class="filter-chip" onclick="setDatePreset('all')">All Time</button>
+</div>
+<!-- Report type buttons -->
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="generateReport('sales')">
+<svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" style="vertical-align:-2px;margin-right:4px;" viewbox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
               Sales Report
             </button>
-            <button class="btn btn-outline-green" onclick="generateReport('purchase')">Purchase Report</button>
-            <button class="btn btn-outline-green" onclick="generateReport('ledger')">Party Ledger</button>
-            <button class="btn btn-outline-green" onclick="generateReport('pl')">P&L Summary</button>
-            <button class="btn btn-outline-green" onclick="generateReport('gst')">GST Summary</button>
-            <button class="btn btn-outline-green" onclick="generateReport('monthly')">Monthly Summary</button>
-          </div>
-        </div>
-
-        <!-- ── AUDITOR EMAIL SETTINGS ── -->
-        <div class="erp-panel" style="margin-bottom:16px;">
-          <div class="erp-panel-head">
-            <span class="erp-panel-title">Auditor & Email Reports</span>
-            <button class="btn btn-outline-green btn-sm" onclick="saveAuditorSettings()">Save Settings</button>
-          </div>
-          <div class="inv-meta">
-            <div class="form-group">
-              <label class="form-label">Auditor Email Address</label>
-              <input class="form-control" type="email" id="auditorEmail" placeholder="auditor@example.com"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Your Email (for reports)</label>
-              <input class="form-control" type="email" id="adminReportEmail" placeholder="you@deepusiva.com"/>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4px;">
-            <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;border:1px solid var(--border);">
-              <input type="checkbox" id="tog-daily" onchange="saveAuditorSettings()"/>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--text2);">Daily Report</div>
-                <div style="font-size:11px;color:var(--muted);">Every day at 9 PM</div>
-              </div>
-            </label>
-            <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;border:1px solid var(--border);">
-              <input type="checkbox" id="tog-weekly" onchange="saveAuditorSettings()"/>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--text2);">Weekly Report</div>
-                <div style="font-size:11px;color:var(--muted);">Every Monday morning</div>
-              </div>
-            </label>
-            <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;border:1px solid var(--border);">
-              <input type="checkbox" id="tog-monthly" onchange="saveAuditorSettings()"/>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--text2);">Monthly Report</div>
-                <div style="font-size:11px;color:var(--muted);">1st of every month</div>
-              </div>
-            </label>
-          </div>
-          <div class="cms-log" id="auditorLog" style="margin-top:12px;"></div>
-          <p style="font-size:11px;color:var(--muted);margin-top:8px;">
+<button class="btn btn-outline-green" onclick="generateReport('purchase')">Purchase Report</button>
+<button class="btn btn-outline-green" onclick="generateReport('ledger')">Party Ledger</button>
+<button class="btn btn-outline-green" onclick="generateReport('pl')">P&amp;L Summary</button>
+<button class="btn btn-outline-green" onclick="generateReport('gst')">GST Summary</button>
+<button class="btn btn-outline-green" onclick="generateReport('monthly')">Monthly Summary</button>
+</div>
+</div>
+<!-- ── AUDITOR EMAIL SETTINGS ── -->
+<div class="erp-panel" style="margin-bottom:16px;">
+<div class="erp-panel-head">
+<span class="erp-panel-title">Auditor &amp; Email Reports</span>
+<button class="btn btn-outline-green btn-sm" onclick="saveAuditorSettings()">Save Settings</button>
+</div>
+<div class="inv-meta">
+<div class="form-group">
+<label class="form-label">Auditor Email Address</label>
+<input class="form-control" id="auditorEmail" placeholder="auditor@example.com" type="email"/>
+</div>
+<div class="form-group">
+<label class="form-label">Your Email (for reports)</label>
+<input class="form-control" id="adminReportEmail" placeholder="you@deepusiva.com" type="email"/>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4px;">
+<label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;border:1px solid var(--border);">
+<input id="tog-daily" onchange="saveAuditorSettings()" type="checkbox"/>
+<div>
+<div style="font-size:14px;font-weight:700;color:var(--text2);">Daily Report</div>
+<div style="font-size:11px;color:var(--muted);">Every day at 9 PM</div>
+</div>
+</label>
+<label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;border:1px solid var(--border);">
+<input id="tog-weekly" onchange="saveAuditorSettings()" type="checkbox"/>
+<div>
+<div style="font-size:14px;font-weight:700;color:var(--text2);">Weekly Report</div>
+<div style="font-size:11px;color:var(--muted);">Every Monday morning</div>
+</div>
+</label>
+<label style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;border:1px solid var(--border);">
+<input id="tog-monthly" onchange="saveAuditorSettings()" type="checkbox"/>
+<div>
+<div style="font-size:14px;font-weight:700;color:var(--text2);">Monthly Report</div>
+<div style="font-size:11px;color:var(--muted);">1st of every month</div>
+</div>
+</label>
+</div>
+<div class="cms-log" id="auditorLog" style="margin-top:12px;"></div>
+<p style="font-size:11px;color:var(--muted);margin-top:8px;">
             ℹ️ Email scheduling requires Firebase Cloud Functions. Settings are saved now and will activate when Cloud Functions are set up.
           </p>
-        </div>
-
-        <!-- ── REPORT OUTPUT ── -->
-        <div id="reportOutput" style="min-height:200px;"></div>
-
-      </div>
-
-      <!-- ══ SETTINGS ══ -->
-      <div class="erp-page" id="page-settings">
-        <div class="erp-panel">
-          <div class="erp-panel-head"><span class="erp-panel-title">Company & Invoice Settings</span></div>
-
-          <div class="settings-section">
-            <div class="settings-section-title">Your Company Details (auto-fills invoices)</div>
-            <div class="inv-meta">
-              <div class="form-group"><label class="form-label">Company Name</label><input class="form-control" id="s-companyName" placeholder="Deepu Siva Private Limited"/></div>
-              <div class="form-group"><label class="form-label">GSTIN</label><input class="form-control" id="s-gstin" placeholder="33XXXXX…"/></div>
-            </div>
-            <div class="form-group"><label class="form-label">Address</label><textarea class="form-control" id="s-address" rows="2" placeholder="Full address"></textarea></div>
-            <div class="inv-meta">
-              <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="s-phone" placeholder="+91 84890 90666"/></div>
-              <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="s-email" placeholder="contact@deepusiva.com"/></div>
-            </div>
-          </div>
-
-          <div class="settings-section">
-            <div class="settings-section-title">Default Bank Details (auto-fills invoices)</div>
-            <div class="form-group"><textarea class="form-control" id="s-bankDetails" rows="4" placeholder="Bank Name:&#10;Account No:&#10;IFSC:&#10;Branch:"></textarea></div>
-          </div>
-
-          <div class="settings-section">
-            <div class="settings-section-title">Default Terms & Conditions</div>
-            <div class="form-group"><textarea class="form-control" id="s-terms" rows="4" placeholder="1. Payment due within 30 days&#10;2. Goods once sold cannot be returned&#10;3. Subject to Coimbatore jurisdiction"></textarea></div>
-          </div>
-
-          <div class="settings-section">
-            <div class="settings-section-title">Invoice Number Prefix</div>
-            <div class="inv-meta">
-              <div class="form-group"><label class="form-label">Invoice Prefix</label><input class="form-control" id="s-invPrefix" placeholder="INV" value="INV"/></div>
-              <div class="form-group"><label class="form-label">Quotation Prefix</label><input class="form-control" id="s-quoPrefix" placeholder="QUO" value="QUO"/></div>
-              <div class="form-group"><label class="form-label">Challan Prefix</label><input class="form-control" id="s-dcPrefix" placeholder="DC" value="DC"/></div>
-            </div>
-          </div>
-
-          <!-- ── HSN CODE MANAGER ── -->
-          <div class="settings-section">
-            <div class="settings-section-title">Common HSN Codes</div>
-            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">These appear as quick-copy chips in the invoice form.</p>
-            <div id="hsnManagerList" style="margin-bottom:12px;"></div>
-            <div style="display:flex;gap:8px;">
-              <input class="form-control" id="newHsnCode" placeholder="HSN Code (e.g. 7308)" style="width:160px;"/>
-              <input class="form-control" id="newHsnDesc" placeholder="Description (e.g. Steel Structures)" style="flex:1;"/>
-              <button class="btn btn-green btn-sm" onclick="addHsnCode()">+ Add</button>
-            </div>
-          </div>
-
-          <!-- ── CLIENT DIRECTORY ── -->
-          <div class="settings-section">
-            <div class="settings-section-title">Client Directory</div>
-            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Saved party details for quick autofill in invoices.</p>
-            <div id="clientDirectoryList" style="margin-bottom:12px;"></div>
-            <button class="btn btn-outline-green btn-sm" onclick="loadClientDirectory()">Refresh Directory</button>
-          </div>
-
-          <!-- ── PDF TEMPLATE ── -->
-          <div class="settings-section">
-            <div class="settings-section-title">PDF Invoice Template</div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
-              <label class="template-card" id="tmpl-classic">
-                <input type="radio" name="pdfTemplate" value="classic" style="display:none;"/>
-                <div class="template-preview" style="border-top:4px solid var(--green3);">
-                  <div style="font-size:11px;font-weight:800;color:var(--green3);text-transform:uppercase;">Classic</div>
-                  <div style="font-size:10px;color:var(--muted);margin-top:3px;">Traditional Tally style</div>
-                  <div style="height:40px;background:var(--bg3);border-radius:4px;margin-top:8px;"></div>
-                </div>
-              </label>
-              <label class="template-card" id="tmpl-modern">
-                <input type="radio" name="pdfTemplate" value="modern" style="display:none;"/>
-                <div class="template-preview" style="border-top:4px solid var(--green);">
-                  <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;">Modern</div>
-                  <div style="font-size:10px;color:var(--muted);margin-top:3px;">Clean two-column</div>
-                  <div style="height:40px;background:var(--green-pale);border-radius:4px;margin-top:8px;"></div>
-                </div>
-              </label>
-              <label class="template-card" id="tmpl-colorful">
-                <input type="radio" name="pdfTemplate" value="colorful" style="display:none;"/>
-                <div class="template-preview" style="border-top:4px solid var(--amber);">
-                  <div style="font-size:11px;font-weight:800;color:var(--amber);text-transform:uppercase;">Colorful</div>
-                  <div style="font-size:10px;color:var(--muted);margin-top:3px;">Bold header, green rows</div>
-                  <div style="height:40px;background:#fef3c7;border-radius:4px;margin-top:8px;"></div>
-                   </label> <label class="template-card" id="tmpl-tally">
-                <input type="radio" name="pdfTemplate" value="tally" style="display:none;"/>
-                <div class="template-preview" style="border-top:4px solid #0f172a;">
-                  <div style="font-size:11px;font-weight:800;color:#0f172a;text-transform:uppercase;">Tally Grid</div>
-                  <div style="font-size:10px;color:var(--muted);margin-top:3px;">Standard Indian Format</div>
-                  <div style="height:40px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:4px;margin-top:8px; display:flex; flex-direction:column; gap:2px; padding:4px;">
-                     <div style="height:4px; background:#e2e8f0; width:100%;"></div>
-                     <div style="height:4px; background:#e2e8f0; width:100%;"></div>
-                  </div>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <!-- ── PDF COLUMN TOGGLES ── -->
-          <div class="settings-section">
-            <div class="settings-section-title">PDF Column Visibility</div>
-            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Toggle which columns appear in your printed/downloaded invoice.</p>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-hsn" checked/> Show HSN Code</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-unit" checked/> Show Unit</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-rate" checked/> Show Unit Rate</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-gstpct" checked/> Show GST %</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-sgstcgst" checked/> Show SGST/CGST split</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input type="checkbox" id="col-bank" checked/> Show Bank Details</label>
-            </div>
-          </div>
-
-          <button class="btn btn-green" onclick="saveSettings()">Save All Settings</button>
-          <div style="margin-top:12px;font-size:13px;color:var(--muted);" id="settingsSaved"></div>
-        </div>
-      </div>
-
-    </div><!-- /erp-content -->
-
-    <!-- MOBILE BOTTOM NAV -->
-    <nav class="mob-bottom-nav">
-      <button class="mob-nav-tab active" onclick="showPage('dashboard',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+</div>
+<!-- ── REPORT OUTPUT ── -->
+<div id="reportOutput" style="min-height:200px;"></div>
+</div>
+<!-- ══ SETTINGS ══ -->
+<div class="erp-page" id="page-settings">
+<div class="erp-panel">
+<div class="erp-panel-head"><span class="erp-panel-title">Company &amp; Invoice Settings</span></div>
+<div class="settings-section">
+<div class="settings-section-title">Your Company Details (auto-fills invoices)</div>
+<div class="inv-meta">
+<div class="form-group"><label class="form-label">Company Name</label><input class="form-control" id="s-companyName" placeholder="Deepu Siva Private Limited"/></div>
+<div class="form-group"><label class="form-label">GSTIN</label><input class="form-control" id="s-gstin" placeholder="33XXXXX…"/></div>
+</div>
+<div class="form-group"><label class="form-label">Address</label><textarea class="form-control" id="s-address" placeholder="Full address" rows="2"></textarea></div>
+<div class="inv-meta">
+<div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="s-phone" placeholder="+91 84890 90666"/></div>
+<div class="form-group"><label class="form-label">Email</label><input class="form-control" id="s-email" placeholder="contact@deepusiva.com"/></div>
+</div>
+</div>
+<div class="settings-section">
+<div class="settings-section-title">Default Bank Details (auto-fills invoices)</div>
+<div class="form-group"><textarea class="form-control" id="s-bankDetails" placeholder="Bank Name:
+Account No:
+IFSC:
+Branch:" rows="4"></textarea></div>
+</div>
+<div class="settings-section">
+<div class="settings-section-title">Default Terms &amp; Conditions</div>
+<div class="form-group"><textarea class="form-control" id="s-terms" placeholder="1. Payment due within 30 days
+2. Goods once sold cannot be returned
+3. Subject to Coimbatore jurisdiction" rows="4"></textarea></div>
+</div>
+<div class="settings-section">
+<div class="settings-section-title">Invoice Number Prefix</div>
+<div class="inv-meta">
+<div class="form-group"><label class="form-label">Invoice Prefix</label><input class="form-control" id="s-invPrefix" placeholder="INV" value="INV"/></div>
+<div class="form-group"><label class="form-label">Quotation Prefix</label><input class="form-control" id="s-quoPrefix" placeholder="QUO" value="QUO"/></div>
+<div class="form-group"><label class="form-label">Challan Prefix</label><input class="form-control" id="s-dcPrefix" placeholder="DC" value="DC"/></div>
+</div>
+</div>
+<!-- ── HSN CODE MANAGER ── -->
+<div class="settings-section">
+<div class="settings-section-title">Common HSN Codes</div>
+<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">These appear as quick-copy chips in the invoice form.</p>
+<div id="hsnManagerList" style="margin-bottom:12px;"></div>
+<div style="display:flex;gap:8px;">
+<input class="form-control" id="newHsnCode" placeholder="HSN Code (e.g. 7308)" style="width:160px;"/>
+<input class="form-control" id="newHsnDesc" placeholder="Description (e.g. Steel Structures)" style="flex:1;"/>
+<button class="btn btn-green btn-sm" onclick="addHsnCode()">+ Add</button>
+</div>
+</div>
+<!-- ── CLIENT DIRECTORY ── -->
+<div class="settings-section">
+<div class="settings-section-title">Client Directory</div>
+<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Saved party details for quick autofill in invoices.</p>
+<div id="clientDirectoryList" style="margin-bottom:12px;"></div>
+<button class="btn btn-outline-green btn-sm" onclick="loadClientDirectory()">Refresh Directory</button>
+</div>
+<!-- ── PDF TEMPLATE ── -->
+<div class="settings-section">
+<div class="settings-section-title">PDF Invoice Template</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+<label class="template-card" id="tmpl-classic">
+<input name="pdfTemplate" style="display:none;" type="radio" value="classic"/>
+<div class="template-preview" style="border-top:4px solid var(--green3);">
+<div style="font-size:11px;font-weight:800;color:var(--green3);text-transform:uppercase;">Classic</div>
+<div style="font-size:10px;color:var(--muted);margin-top:3px;">Traditional Tally style</div>
+<div style="height:40px;background:var(--bg3);border-radius:4px;margin-top:8px;"></div>
+</div>
+</label>
+<label class="template-card" id="tmpl-modern">
+<input name="pdfTemplate" style="display:none;" type="radio" value="modern"/>
+<div class="template-preview" style="border-top:4px solid var(--green);">
+<div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;">Modern</div>
+<div style="font-size:10px;color:var(--muted);margin-top:3px;">Clean two-column</div>
+<div style="height:40px;background:var(--green-pale);border-radius:4px;margin-top:8px;"></div>
+</div>
+</label>
+<label class="template-card" id="tmpl-colorful">
+<input name="pdfTemplate" style="display:none;" type="radio" value="colorful"/>
+<div class="template-preview" style="border-top:4px solid var(--amber);">
+<div style="font-size:11px;font-weight:800;color:var(--amber);text-transform:uppercase;">Colorful</div>
+<div style="font-size:10px;color:var(--muted);margin-top:3px;">Bold header, green rows</div>
+<div style="height:40px;background:#fef3c7;border-radius:4px;margin-top:8px;"></div>
+</div></label> <label class="template-card" id="tmpl-tally">
+<input name="pdfTemplate" style="display:none;" type="radio" value="tally"/>
+<div class="template-preview" style="border-top:4px solid #0f172a;">
+<div style="font-size:11px;font-weight:800;color:#0f172a;text-transform:uppercase;">Tally Grid</div>
+<div style="font-size:10px;color:var(--muted);margin-top:3px;">Standard Indian Format</div>
+<div style="height:40px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:4px;margin-top:8px; display:flex; flex-direction:column; gap:2px; padding:4px;">
+<div style="height:4px; background:#e2e8f0; width:100%;"></div>
+<div style="height:4px; background:#e2e8f0; width:100%;"></div>
+</div>
+</div>
+</label>
+</div>
+</div>
+<!-- ── PDF COLUMN TOGGLES ── -->
+<div class="settings-section">
+<div class="settings-section-title">PDF Column Visibility</div>
+<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Toggle which columns appear in your printed/downloaded invoice.</p>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input checked="" id="col-hsn" type="checkbox"/> Show HSN Code</label>
+<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input checked="" id="col-unit" type="checkbox"/> Show Unit</label>
+<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input checked="" id="col-rate" type="checkbox"/> Show Unit Rate</label>
+<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input checked="" id="col-gstpct" type="checkbox"/> Show GST %</label>
+<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input checked="" id="col-sgstcgst" type="checkbox"/> Show SGST/CGST split</label>
+<label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;"><input checked="" id="col-bank" type="checkbox"/> Show Bank Details</label>
+</div>
+</div>
+<button class="btn btn-green" onclick="saveSettings()">Save All Settings</button>
+<div id="settingsSaved" style="margin-top:12px;font-size:13px;color:var(--muted);"></div>
+</div>
+</div>
+</div><!-- /erp-content -->
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mob-bottom-nav">
+<button class="mob-nav-tab active" onclick="showPage('dashboard',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg>
         Home
       </button>
-      <button class="mob-nav-tab" onclick="showPage('invoice',this);newDoc('invoice')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+<button class="mob-nav-tab" onclick="showPage('invoice',this);newDoc('invoice')">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" ry="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg>
         Invoice
       </button>
-      <button class="mob-nav-tab" onclick="showPage('quotation',this);newDoc('quotation')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+<button class="mob-nav-tab" onclick="showPage('quotation',this);newDoc('quotation')">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
         Quote
       </button>
-      <button class="mob-nav-tab" onclick="showPage('reports',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+<button class="mob-nav-tab" onclick="showPage('reports',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
         Reports
       </button>
-      <button class="mob-nav-tab" onclick="showPage('settings',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+<button class="mob-nav-tab" onclick="showPage('settings',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path></svg>
         Settings
       </button>
-    </nav>
-
-  </div><!-- /erp-main -->
+</nav>
+</div><!-- /erp-main -->
 </div><!-- /erp-shell -->
-
 <!-- ══ PORTAL PUSH MODAL ══ -->
 <div class="portal-push-modal" id="portalPushModal">
-  <div class="ppm-box">
-    <h3>Document Saved</h3>
-    <p>Would you like to push this document to the client's portal?</p>
-    <div class="toggle-row">
-      <div>
-        <div class="toggle-label">Push to Client Portal</div>
-        <div class="toggle-desc">Client will see this in their dashboard</div>
-      </div>
-      <label class="toggle-switch">
-        <input type="checkbox" id="portalPushToggle" checked/>
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-    <div class="toggle-row">
-      <div>
-        <div class="toggle-label">Send Email Notification</div>
-        <div class="toggle-desc">Email a copy to the client</div>
-      </div>
-      <label class="toggle-switch">
-        <input type="checkbox" id="emailNotifyToggle" checked/>
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:16px;">
-      <button class="btn btn-green btn-full" onclick="confirmPortalPush()">Confirm</button>
-      <button class="btn btn-outline-green" style="flex:0 0 auto;padding:12px 20px;" onclick="closePortalModal()">Skip</button>
-    </div>
-  </div>
+<div class="ppm-box">
+<h3>Document Saved</h3>
+<p>Would you like to push this document to the client's portal?</p>
+<div class="toggle-row">
+<div>
+<div class="toggle-label">Push to Client Portal</div>
+<div class="toggle-desc">Client will see this in their dashboard</div>
 </div>
-
+<label class="toggle-switch">
+<input checked="" id="portalPushToggle" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+<div class="toggle-row">
+<div>
+<div class="toggle-label">Send Email Notification</div>
+<div class="toggle-desc">Email a copy to the client</div>
+</div>
+<label class="toggle-switch">
+<input checked="" id="emailNotifyToggle" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+<div style="display:flex;gap:10px;margin-top:16px;">
+<button class="btn btn-green btn-full" onclick="confirmPortalPush()">Confirm</button>
+<button class="btn btn-outline-green" onclick="closePortalModal()" style="flex:0 0 auto;padding:12px 20px;">Skip</button>
+</div>
+</div>
+</div>
 <!-- ══ PRINT TEMPLATE (hidden) ══ -->
 <div id="printTemplate">
-  <div class="pt-header">
-    <div>
-      <div class="pt-company-name" id="pt-fromName">Deepu Siva Private Limited</div>
-      <div class="pt-company-details" id="pt-fromDetails"></div>
-    </div>
-    <div>
-      <div class="pt-doc-type" id="pt-docType">TAX INVOICE</div>
-      <div class="pt-doc-num" id="pt-docNum"></div>
-    </div>
-  </div>
-
-  <div class="pt-meta-grid">
-    <div class="pt-meta-box">
-      <div class="pt-meta-label">Bill To</div>
-      <div class="pt-meta-val" id="pt-toDetails"></div>
-    </div>
-    <div class="pt-meta-box">
-      <div class="pt-meta-label">Invoice Details</div>
-      <div class="pt-meta-val" id="pt-invDetails"></div>
-    </div>
-  </div>
-
-  <table class="pt-table">
-    <thead>
-      <tr>
-        <th style="width:30px;">#</th>
-        <th>Description</th>
-        <th style="width:70px;">HSN</th>
-        <th style="width:45px;">Qty</th>
-        <th style="width:55px;">Unit</th>
-        <th style="width:90px;text-align:right;">Rate ₹</th>
-        <th style="width:55px;text-align:center;">GST%</th>
-        <th style="width:100px;text-align:right;">Amount ₹</th>
-      </tr>
-    </thead>
-    <tbody id="pt-lineItems"></tbody>
-  </table>
-
-  <div class="pt-totals">
-    <div class="pt-totals-box">
-      <div class="pt-total-row"><span>Subtotal (Taxable)</span><span id="pt-sub">₹0</span></div>
-      <div class="pt-total-row"><span>SGST @ 9%</span><span id="pt-sgst">₹0</span></div>
-      <div class="pt-total-row"><span>CGST @ 9%</span><span id="pt-cgst">₹0</span></div>
-      <div class="pt-total-row"><span>Round Off</span><span id="pt-round">₹0</span></div>
-      <div class="pt-total-row grand"><span>Grand Total</span><span id="pt-total">₹0</span></div>
-    </div>
-  </div>
-
-  <div class="pt-inwords" id="pt-inwords"></div>
-
-  <div class="pt-bank-terms">
-    <div class="pt-bank-box">
-      <div class="pt-section-label">Bank Details</div>
-      <p id="pt-bankDetails"></p>
-    </div>
-    <div class="pt-terms-box">
-      <div class="pt-section-label">Terms & Conditions</div>
-      <p id="pt-terms"></p>
-    </div>
-  </div>
-
-  <div class="pt-footer">
-    <div class="pt-footer-note" id="pt-notes"></div>
-    <div class="pt-signature">
-      <div class="pt-sig-line"></div>
-      <div class="pt-sig-label" id="pt-sigName">For Deepu Siva Private Limited</div>
-      <div class="pt-sig-label">Authorised Signatory</div>
-    </div>
-  </div>
+<div class="pt-header">
+<div>
+<div class="pt-company-name" id="pt-fromName">Deepu Siva Private Limited</div>
+<div class="pt-company-details" id="pt-fromDetails"></div>
 </div>
-
+<div>
+<div class="pt-doc-type" id="pt-docType">TAX INVOICE</div>
+<div class="pt-doc-num" id="pt-docNum"></div>
+</div>
+</div>
+<div class="pt-meta-grid">
+<div class="pt-meta-box">
+<div class="pt-meta-label">Bill To</div>
+<div class="pt-meta-val" id="pt-toDetails"></div>
+</div>
+<div class="pt-meta-box">
+<div class="pt-meta-label">Invoice Details</div>
+<div class="pt-meta-val" id="pt-invDetails"></div>
+</div>
+</div>
+<table class="pt-table">
+<thead>
+<tr>
+<th style="width:30px;">#</th>
+<th>Description</th>
+<th style="width:70px;">HSN</th>
+<th style="width:45px;">Qty</th>
+<th style="width:55px;">Unit</th>
+<th style="width:90px;text-align:right;">Rate ₹</th>
+<th style="width:55px;text-align:center;">GST%</th>
+<th style="width:100px;text-align:right;">Amount ₹</th>
+</tr>
+</thead>
+<tbody id="pt-lineItems"></tbody>
+</table>
+<div class="pt-totals">
+<div class="pt-totals-box">
+<div class="pt-total-row"><span>Subtotal (Taxable)</span><span id="pt-sub">₹0</span></div>
+<div class="pt-total-row"><span>SGST @ 9%</span><span id="pt-sgst">₹0</span></div>
+<div class="pt-total-row"><span>CGST @ 9%</span><span id="pt-cgst">₹0</span></div>
+<div class="pt-total-row"><span>Round Off</span><span id="pt-round">₹0</span></div>
+<div class="pt-total-row grand"><span>Grand Total</span><span id="pt-total">₹0</span></div>
+</div>
+</div>
+<div class="pt-inwords" id="pt-inwords"></div>
+<div class="pt-bank-terms">
+<div class="pt-bank-box">
+<div class="pt-section-label">Bank Details</div>
+<p id="pt-bankDetails"></p>
+</div>
+<div class="pt-terms-box">
+<div class="pt-section-label">Terms &amp; Conditions</div>
+<p id="pt-terms"></p>
+</div>
+</div>
+<div class="pt-footer">
+<div class="pt-footer-note" id="pt-notes"></div>
+<div class="pt-signature">
+<div class="pt-sig-line"></div>
+<div class="pt-sig-label" id="pt-sigName">For Deepu Siva Private Limited</div>
+<div class="pt-sig-label">Authorised Signatory</div>
+</div>
+</div>
+</div>
 <!-- TOAST -->
 <div class="erp-toast" id="erpToast"></div>
-
 <script type="module">
 // ── CONFIG VAULT — fault-tolerant import ──────────────
 // If config.js is missing the page still works.
@@ -2325,7 +2230,7 @@ function getNextTempId() {
 // ── PWA REGISTRATION ──────────────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/internal/sw.js', {scope:'/internal/'}).catch(() => {});
     navigator.serviceWorker.addEventListener('message', e => {
       if (e.data?.type === 'SYNC_OFFLINE_INVOICES') syncOfflineInvoices();
     });
@@ -5514,7 +5419,6 @@ window.showPage = function(pageId, btn) {
 // ══ END ERP-2 ══════════════════════════════════════════
 
 </script>
-
 <!-- Print styles -->
 <style>
 @media print {
@@ -5522,6 +5426,5 @@ window.showPage = function(pageId, btn) {
   #printTemplate { display: block !important; width: 100%; margin: 0; padding: 10mm; }
 }
 </style>
-
 </body>
 </html>

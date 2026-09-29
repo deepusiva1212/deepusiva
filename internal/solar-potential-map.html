@@ -1,17 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head><meta name="robots" content="noindex,nofollow">
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<head><meta content="noindex,nofollow,noarchive" name="robots"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Solar Potential Map | Real-Time Satellite &amp; Weather Analysis | Deepu Siva</title>
-<meta name="description" content="Click any location on the map to see real satellite-based solar potential — past 30 days of missed energy, today's generation, and a 7-day forecast. Free tool by Deepu Siva Private Limited, Coimbatore."/>
-<meta name="keywords" content="solar potential map Coimbatore, rooftop solar simulator, solar energy calculator location, satellite solar analysis Tamil Nadu"/>
-<link rel="stylesheet" href="style.css"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+<meta content="Click any location on the map to see real satellite-based solar potential — past 30 days of missed energy, today's generation, and a 7-day forecast. Free tool by Deepu Siva Private Limited, Coimbatore." name="description"/>
+<meta content="solar potential map Coimbatore, rooftop solar simulator, solar energy calculator location, satellite solar analysis Tamil Nadu" name="keywords"/>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<link href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" rel="stylesheet"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-
 <style>
 /* ── PAGE-SPECIFIC STYLES — uses site theme vars from style.css ── */
 .map-hero {
@@ -180,234 +180,214 @@
   .action-row .btn { min-width: 100%; }
 }
 </style>
-</head>
+</meta></head>
 <body>
-
 <!-- DESKTOP NAV -->
 <div class="topbar web-only">
-  <div class="topbar-inner">
-    <a href="mailto:contact@deepusiva.com">contact@deepusiva.com</a>
-    <a href="tel:+918489090666">+91 84890 90666</a>
-    <a href="login.html">Client Portal</a>
-  </div>
+<div class="topbar-inner">
+<a href="mailto:contact@deepusiva.com">contact@deepusiva.com</a>
+<a href="tel:+918489090666">+91 84890 90666</a>
+<a href="login.html">Client Portal</a>
+</div>
 </div>
 <nav class="site-nav web-only">
-  <div class="nav-inner">
-    <a href="index.html" class="logo"><span class="logo-dot"></span>Deepu Siva<span class="logo-badge">Pvt Ltd</span></a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="solar-calculator.html">Solar Calculator</a></li>
-      <li><a href="solar-potential-map.html" style="color:var(--green);">Potential Map</a></li>
-      <li><a href="scheme-timer.html">Govt Scheme</a></li>
-      <li><a href="faq.html">FAQ</a></li>
-      <li><a href="login.html" class="btn-nav-cta">Client Portal</a></li>
-    </ul>
-  </div>
+<div class="nav-inner">
+<a class="logo" href="index.html"><span class="logo-dot"></span>Deepu Siva<span class="logo-badge">Pvt Ltd</span></a>
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="solar-calculator.html">Solar Calculator</a></li>
+<li><a href="solar-potential-map.html" style="color:var(--green);">Potential Map</a></li>
+<li><a href="scheme-timer.html">Govt Scheme</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a class="btn-nav-cta" href="login.html">Client Portal</a></li>
+</ul>
+</div>
 </nav>
-
 <!-- MOBILE HEADER -->
 <header class="app-header">
-  <div class="app-header-logo">Solar <span>Potential Map</span></div>
-  <div class="app-header-actions">
-    <a href="index.html" class="app-icon-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </a>
-  </div>
+<div class="app-header-logo">Solar <span>Potential Map</span></div>
+<div class="app-header-actions">
+<a class="app-icon-btn" href="index.html">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+</a>
+</div>
 </header>
-
 <!-- HERO -->
 <div class="map-hero">
-  <h1>See Your Roof's <em>Real Solar Potential</em></h1>
-  <p>Click any location on the satellite map to pull live weather data — see exactly how much energy you missed in the past 30 days, what you'll generate today, and your 7-day forecast.</p>
-  <div class="map-hero-badges">
-    <span class="chip-green" style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;">🛰️ Live Satellite Data</span>
-    <span class="chip-blue" style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#dbeafe;color:#1e40af;">🌦️ Real Weather API</span>
-    <span style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#fef3c7;color:#92400e;">📊 30-Day History</span>
-  </div>
+<h1>See Your Roof's <em>Real Solar Potential</em></h1>
+<p>Click any location on the satellite map to pull live weather data — see exactly how much energy you missed in the past 30 days, what you'll generate today, and your 7-day forecast.</p>
+<div class="map-hero-badges">
+<span class="chip-green" style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;">🛰️ Live Satellite Data</span>
+<span class="chip-blue" style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#dbeafe;color:#1e40af;">🌦️ Real Weather API</span>
+<span style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:#fef3c7;color:#92400e;">📊 30-Day History</span>
 </div>
-
+</div>
 <!-- QUICK CITY CHIPS -->
 <div class="city-chips-wrap">
-  <div class="city-chips" id="cityChips">
-    <button class="city-chip" onclick="jumpToCity(11.0168,76.9558,'Coimbatore')">📍 Coimbatore</button>
-    <button class="city-chip" onclick="jumpToCity(13.0827,80.2707,'Chennai')">📍 Chennai</button>
-    <button class="city-chip" onclick="jumpToCity(9.9252,78.1198,'Madurai')">📍 Madurai</button>
-    <button class="city-chip" onclick="jumpToCity(11.6643,78.1460,'Salem')">📍 Salem</button>
-    <button class="city-chip" onclick="jumpToCity(10.7905,78.7047,'Trichy')">📍 Trichy</button>
-    <button class="city-chip" onclick="jumpToCity(8.7642,78.1348,'Tirunelveli')">📍 Tirunelveli</button>
-    <button class="city-chip" onclick="jumpToCity(11.3410,77.7172,'Erode')">📍 Erode</button>
-    <button class="city-chip" onclick="useMyLocation()">📡 Use My Location</button>
-  </div>
+<div class="city-chips" id="cityChips">
+<button class="city-chip" onclick="jumpToCity(11.0168,76.9558,'Coimbatore')">📍 Coimbatore</button>
+<button class="city-chip" onclick="jumpToCity(13.0827,80.2707,'Chennai')">📍 Chennai</button>
+<button class="city-chip" onclick="jumpToCity(9.9252,78.1198,'Madurai')">📍 Madurai</button>
+<button class="city-chip" onclick="jumpToCity(11.6643,78.1460,'Salem')">📍 Salem</button>
+<button class="city-chip" onclick="jumpToCity(10.7905,78.7047,'Trichy')">📍 Trichy</button>
+<button class="city-chip" onclick="jumpToCity(8.7642,78.1348,'Tirunelveli')">📍 Tirunelveli</button>
+<button class="city-chip" onclick="jumpToCity(11.3410,77.7172,'Erode')">📍 Erode</button>
+<button class="city-chip" onclick="useMyLocation()">📡 Use My Location</button>
 </div>
-
+</div>
 <!-- MAIN SOLAR WRAP -->
 <div class="solar-wrap">
-  <div class="map-area">
-    <div id="solarMap"></div>
-    <div class="map-type-toggle">
-      <button class="map-type-btn active" id="btn-street" onclick="setMapType('street')">Street</button>
-      <button class="map-type-btn" id="btn-satellite" onclick="setMapType('satellite')">Satellite</button>
-    </div>
-    <div class="map-instructions" id="mapInstructions">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+<div class="map-area">
+<div id="solarMap"></div>
+<div class="map-type-toggle">
+<button class="map-type-btn active" id="btn-street" onclick="setMapType('street')">Street</button>
+<button class="map-type-btn" id="btn-satellite" onclick="setMapType('satellite')">Satellite</button>
+</div>
+<div class="map-instructions" id="mapInstructions">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
       Click anywhere on the map or search above to analyze that location
     </div>
-  </div>
-
-  <div class="results-area">
-    <div class="sr-title">Interactive Solar ROI</div>
-    <div class="sr-subtitle">Use search, a quick-city chip, or click any roof on the map.</div>
-
-    <div class="control-grid">
-      <div class="input-group">
-        <label>Target System (kW)</label>
-        <input type="number" id="sys-kw" value="5" step="0.5" onchange="updateCalculations()"/>
-      </div>
-      <div class="input-group">
-        <label>Panel Power (Watts)</label>
-        <input type="number" id="panel-w" value="500" step="10" onchange="updateCalculations()"/>
-      </div>
-    </div>
-
-    <div class="hw-box">
-      <div class="hw-box-label">Hardware Required</div>
-      <div class="hw-box-val"><span id="calc-panels">10</span> Panels</div>
-    </div>
-
-    <!-- BEFORE FIRST CLICK -->
-    <div class="map-empty-state" id="emptyState">
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      <p>Select a location above to see real-time solar potential for that spot.</p>
-    </div>
-
-    <!-- LOADING -->
-    <div id="sr-loading" class="sr-loading">
-      <div class="spin-icon"></div>
+</div>
+<div class="results-area">
+<div class="sr-title">Interactive Solar ROI</div>
+<div class="sr-subtitle">Use search, a quick-city chip, or click any roof on the map.</div>
+<div class="control-grid">
+<div class="input-group">
+<label>Target System (kW)</label>
+<input id="sys-kw" onchange="updateCalculations()" step="0.5" type="number" value="5"/>
+</div>
+<div class="input-group">
+<label>Panel Power (Watts)</label>
+<input id="panel-w" onchange="updateCalculations()" step="10" type="number" value="500"/>
+</div>
+</div>
+<div class="hw-box">
+<div class="hw-box-label">Hardware Required</div>
+<div class="hw-box-val"><span id="calc-panels">10</span> Panels</div>
+</div>
+<!-- BEFORE FIRST CLICK -->
+<div class="map-empty-state" id="emptyState">
+<svg fill="none" height="48" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+<p>Select a location above to see real-time solar potential for that spot.</p>
+</div>
+<!-- LOADING -->
+<div class="sr-loading" id="sr-loading">
+<div class="spin-icon"></div>
       Connecting to weather satellites…
     </div>
-
-    <!-- RESULTS -->
-    <div id="sr-data-container" style="display:none;">
-
-      <div class="location-tag">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span id="sr-location-name">Selected Location</span>
-      </div>
-
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab('today',this)">Today</div>
-        <div class="tab" onclick="switchTab('forecast',this)">7-Day Forecast</div>
-        <div class="tab" onclick="switchTab('history',this)">Past 30 Days</div>
-        <div class="tab" onclick="switchTab('savings',this)">💰 Savings</div>
-      </div>
-
-      <!-- TAB: TODAY -->
-      <div id="tab-today" class="tab-content active">
-        <div class="mini-stat-row">
-          <div class="mini-stat">
-            <div class="mini-stat-label">Sunrise</div>
-            <div class="mini-stat-val" id="sr-sunrise">--:--</div>
-          </div>
-          <div class="mini-stat">
-            <div class="mini-stat-label">Sunset</div>
-            <div class="mini-stat-val" id="sr-sunset">--:--</div>
-          </div>
-        </div>
-        <div class="sr-box">
-          <div class="sr-label">Today's Estimated Energy</div>
-          <div class="sr-big-val"><span id="sr-today-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh today</span></div>
-          <div class="sr-sub-note">Based on <span id="sr-today-hours" style="font-weight:700;color:var(--text2);">0</span> hours of daylight detected via satellite.</div>
-        </div>
-        <div class="impact-strip">
-          <div class="impact-box">
-            <div class="impact-val" id="sr-today-month">0</div>
-            <div class="impact-lbl">Est. kWh / Month</div>
-          </div>
-          <div class="impact-box">
-            <div class="impact-val" id="sr-today-year">0</div>
-            <div class="impact-lbl">Est. kWh / Year</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB: 7-DAY FORECAST -->
-      <div id="tab-forecast" class="tab-content">
-        <div class="sr-box">
-          <div class="sr-label">Upcoming Energy Generation</div>
-          <div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh this week</span></div>
-        </div>
-        <table class="forecast-table">
-          <thead><tr><th>Date</th><th>Weather</th><th>Energy</th></tr></thead>
-          <tbody id="forecast-body"></tbody>
-        </table>
-      </div>
-
-      <!-- TAB: PAST 30 DAYS -->
-      <div id="tab-history" class="tab-content">
-        <div class="sr-box history">
-          <div class="sr-label history">Missed Energy Opportunity</div>
-          <div class="sr-sub-note" style="color:#9a3412;margin-bottom:6px;">If you'd installed this 30 days ago, you would have generated:</div>
-          <div class="sr-big-val history"><span id="sr-hist-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh of free power</span></div>
-        </div>
-        <div style="font-size:13px;color:var(--muted);line-height:1.7;background:var(--bg3);padding:16px;border-radius:var(--radius);">
-          <strong style="color:var(--text2);">Data Summary (Last 30 Days):</strong><br/><br/>
+<!-- RESULTS -->
+<div id="sr-data-container" style="display:none;">
+<div class="location-tag">
+<svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+<span id="sr-location-name">Selected Location</span>
+</div>
+<div class="tabs">
+<div class="tab active" onclick="switchTab('today',this)">Today</div>
+<div class="tab" onclick="switchTab('forecast',this)">7-Day Forecast</div>
+<div class="tab" onclick="switchTab('history',this)">Past 30 Days</div>
+<div class="tab" onclick="switchTab('savings',this)">💰 Savings</div>
+</div>
+<!-- TAB: TODAY -->
+<div class="tab-content active" id="tab-today">
+<div class="mini-stat-row">
+<div class="mini-stat">
+<div class="mini-stat-label">Sunrise</div>
+<div class="mini-stat-val" id="sr-sunrise">--:--</div>
+</div>
+<div class="mini-stat">
+<div class="mini-stat-label">Sunset</div>
+<div class="mini-stat-val" id="sr-sunset">--:--</div>
+</div>
+</div>
+<div class="sr-box">
+<div class="sr-label">Today's Estimated Energy</div>
+<div class="sr-big-val"><span id="sr-today-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh today</span></div>
+<div class="sr-sub-note">Based on <span id="sr-today-hours" style="font-weight:700;color:var(--text2);">0</span> hours of daylight detected via satellite.</div>
+</div>
+<div class="impact-strip">
+<div class="impact-box">
+<div class="impact-val" id="sr-today-month">0</div>
+<div class="impact-lbl">Est. kWh / Month</div>
+</div>
+<div class="impact-box">
+<div class="impact-val" id="sr-today-year">0</div>
+<div class="impact-lbl">Est. kWh / Year</div>
+</div>
+</div>
+</div>
+<!-- TAB: 7-DAY FORECAST -->
+<div class="tab-content" id="tab-forecast">
+<div class="sr-box">
+<div class="sr-label">Upcoming Energy Generation</div>
+<div class="sr-big-val"><span id="sr-total-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh this week</span></div>
+</div>
+<table class="forecast-table">
+<thead><tr><th>Date</th><th>Weather</th><th>Energy</th></tr></thead>
+<tbody id="forecast-body"></tbody>
+</table>
+</div>
+<!-- TAB: PAST 30 DAYS -->
+<div class="tab-content" id="tab-history">
+<div class="sr-box history">
+<div class="sr-label history">Missed Energy Opportunity</div>
+<div class="sr-sub-note" style="color:#9a3412;margin-bottom:6px;">If you'd installed this 30 days ago, you would have generated:</div>
+<div class="sr-big-val history"><span id="sr-hist-energy">0.0</span> <span style="font-size:14px;font-weight:700;">kWh of free power</span></div>
+</div>
+<div style="font-size:13px;color:var(--muted);line-height:1.7;background:var(--bg3);padding:16px;border-radius:var(--radius);">
+<strong style="color:var(--text2);">Data Summary (Last 30 Days):</strong><br/><br/>
           ☀️ Total Sunlight: <span id="hist-sun-hours" style="font-weight:700;color:var(--text);">0</span> Hours<br/>
           🌧️ Total Rainfall: <span id="hist-rain" style="font-weight:700;color:var(--text);">0</span> mm
         </div>
-      </div>
-
-      <!-- TAB: SAVINGS (NEW) -->
-      <div id="tab-savings" class="tab-content">
-        <div class="sr-box savings">
-          <div class="sr-label savings">Estimated Monthly Bill Savings</div>
-          <div class="sr-big-val savings">₹<span id="sr-monthly-savings">0</span> <span style="font-size:14px;font-weight:700;">per month</span></div>
-          <div class="sr-sub-note">Calculated at ₹8/unit average TANGEDCO rate.</div>
-        </div>
-        <div class="impact-strip">
-          <div class="impact-box">
-            <div class="impact-val" id="sr-annual-savings">₹0</div>
-            <div class="impact-lbl">Annual Savings</div>
-          </div>
-          <div class="impact-box">
-            <div class="impact-val" id="sr-co2-saved">0 kg</div>
-            <div class="impact-lbl">CO₂ Avoided / Year</div>
-          </div>
-        </div>
-        <div class="subsidy-callout">
-          <h4>🏛️ Government Subsidy Available</h4>
-          <p>Your system may qualify for up to <strong style="color:#fde68a;">₹78,000</strong> direct cash subsidy under PM Surya Ghar: Muft Bijli Yojana. <a href="scheme-timer.html">See full scheme details →</a></p>
-        </div>
-      </div>
-
-      <div class="action-row">
-        <button class="btn btn-green" onclick="getFreeQuote()">Get Free Quote</button>
-        <a href="solar-calculator.html" class="btn btn-outline-green">Full Calculator</a>
-        <button class="btn btn-outline-green" onclick="shareReport()">Share</button>
-      </div>
-    </div>
-  </div>
 </div>
-
+<!-- TAB: SAVINGS (NEW) -->
+<div class="tab-content" id="tab-savings">
+<div class="sr-box savings">
+<div class="sr-label savings">Estimated Monthly Bill Savings</div>
+<div class="sr-big-val savings">₹<span id="sr-monthly-savings">0</span> <span style="font-size:14px;font-weight:700;">per month</span></div>
+<div class="sr-sub-note">Calculated at ₹8/unit average TANGEDCO rate.</div>
+</div>
+<div class="impact-strip">
+<div class="impact-box">
+<div class="impact-val" id="sr-annual-savings">₹0</div>
+<div class="impact-lbl">Annual Savings</div>
+</div>
+<div class="impact-box">
+<div class="impact-val" id="sr-co2-saved">0 kg</div>
+<div class="impact-lbl">CO₂ Avoided / Year</div>
+</div>
+</div>
+<div class="subsidy-callout">
+<h4>🏛️ Government Subsidy Available</h4>
+<p>Your system may qualify for up to <strong style="color:#fde68a;">₹78,000</strong> direct cash subsidy under PM Surya Ghar: Muft Bijli Yojana. <a href="scheme-timer.html">See full scheme details →</a></p>
+</div>
+</div>
+<div class="action-row">
+<button class="btn btn-green" onclick="getFreeQuote()">Get Free Quote</button>
+<a class="btn btn-outline-green" href="solar-calculator.html">Full Calculator</a>
+<button class="btn btn-outline-green" onclick="shareReport()">Share</button>
+</div>
+</div>
+</div>
+</div>
 <!-- MOBILE BOTTOM NAV -->
 <nav class="app-bottom-nav">
-  <a href="index.html" class="nav-tab">
-    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-    <span>Home</span>
-  </a>
-  <a href="solar-calculator.html" class="nav-tab">
-    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></span>
-    <span>Calculator</span>
-  </a>
-  <a href="scheme-timer.html" class="nav-tab">
-    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
-    <span>Scheme</span>
-  </a>
-  <a href="tel:+918489090666" class="nav-tab">
-    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.58 3.56a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-    <span>Call</span>
-  </a>
+<a class="nav-tab" href="index.html">
+<span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></span>
+<span>Home</span>
+</a>
+<a class="nav-tab" href="solar-calculator.html">
+<span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"></path></svg></span>
+<span>Calculator</span>
+</a>
+<a class="nav-tab" href="scheme-timer.html">
+<span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></span>
+<span>Scheme</span>
+</a>
+<a class="nav-tab" href="tel:+918489090666">
+<span class="tab-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.58 3.56a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+<span>Call</span>
+</a>
 </nav>
-
 <script>
 let currentForecastData = null;
 let currentHistoricalData = null;

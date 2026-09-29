@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head><meta name="robots" content="noindex,nofollow">
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<head><meta content="noindex,nofollow,noarchive" name="robots"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Admin Dashboard | Deepu Siva</title>
-<link rel="stylesheet" href="style.css"/>
+<link href="style.css" rel="stylesheet"/>
 <style>
 /* ── LOADING ── */
 #auth-overlay{position:fixed;inset:0;background:var(--white);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
@@ -379,812 +380,738 @@ tbody tr:hover td{background:var(--green-pale);}
 .mob-action-tab.active{color:var(--green);}
 .mob-action-tab:hover{color:var(--green3);}
 </style>
-</head>
+</meta></head>
 <body>
-
 <div id="auth-overlay"><div class="spinner"></div><p>Admin verification…</p></div>
-
 <!-- ═══ SIDEBAR ═══ -->
 <aside class="admin-sidebar">
-  <div class="sidebar-logo">
-    <h2>Deepu Siva</h2>
-    <div class="badge-admin">Admin Panel</div>
-  </div>
-  <nav class="sidebar-nav">
-    <button class="nav-item active" onclick="showPage('overview',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+<div class="sidebar-logo">
+<h2>Deepu Siva</h2>
+<div class="badge-admin">Admin Panel</div>
+</div>
+<nav class="sidebar-nav">
+<button class="nav-item active" onclick="showPage('overview',this)">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg>
       Overview
     </button>
-    <button class="nav-item" onclick="showPage('approvals',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+<button class="nav-item" onclick="showPage('approvals',this)">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg>
       Client Approvals
       <span id="pendingBadge" style="background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:none;align-items:center;justify-content:center;margin-left:auto;">0</span>
-    </button>
-    <button class="nav-item" onclick="showPage('upload',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+</button>
+<button class="nav-item" onclick="showPage('upload',this)">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
       Upload to Client
     </button>
-    <button class="nav-item" onclick="showPage('clients',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+<button class="nav-item" onclick="showPage('clients',this)">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
       All Clients
     </button>
-    <button class="nav-item" onclick="showPage('cms',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+<button class="nav-item" onclick="showPage('cms',this)">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
       Website CMS
     </button>
-    <button class="nav-item" onclick="showPage('notify',this)" id="navNotify">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+<button class="nav-item" id="navNotify" onclick="showPage('notify',this)">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
       Notifications
     </button>
-    <button class="nav-item" onclick="showPage('solar',this)" id="navSolar">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+<button class="nav-item" id="navSolar" onclick="showPage('solar',this)">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
       Solar Leads
       <span class="badge" id="solarLeadBadge" style="display:none;">0</span>
-    </button>
-  </nav>
-  <div class="sidebar-bottom">
-    <a href="index.html">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+</button>
+</nav>
+<div class="sidebar-bottom">
+<a href="index.html">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
       View Main Site
     </a>
-    <a href="admin-erp.html">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+<a href="admin-erp.html">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" ry="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg>
       ERP / Billing
     </a>
-    <a href="admin-shop.html">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+<a href="admin-shop.html">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" x2="21" y1="6" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
       Shop Admin
     </a>
-    <button class="btn-signout" onclick="doLogout()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+<button class="btn-signout" onclick="doLogout()">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
       Sign Out
     </button>
-  </div>
+</div>
 </aside>
-
 <!-- ═══ MAIN AREA ═══ -->
 <div class="admin-main">
-  <div class="admin-topbar">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button class="mob-topbar-btn" id="mobHamburger" onclick="toggleMobSidebar()" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-      <h1 id="pageTitle">Overview</h1>
-    </div>
-    <span class="admin-email" id="adminEmail">—</span>
-  </div>
-
-  <div class="admin-content">
-
-    <!-- ── PAGE: OVERVIEW ── -->
-    <div class="admin-page active" id="page-overview">
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-          <div class="stat-val" id="s-total">—</div>
-          <div class="stat-lbl">Total Clients</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#fef3c7;color:#92400e;"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-          <div class="stat-val" id="s-pending" style="color:var(--amber);">—</div>
-          <div class="stat-lbl">Pending Approval</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div class="stat-val" id="s-approved">—</div>
-          <div class="stat-lbl">Approved Clients</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <div class="stat-val" id="s-docs">—</div>
-          <div class="stat-lbl">Docs Uploaded</div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>Quick Actions</h3>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
-          <button onclick="showPage('approvals', document.querySelector('[onclick*=approvals]'))" style="background:var(--green-pale);border:1px solid rgba(22,163,74,.2);color:var(--green3);padding:16px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;cursor:pointer;text-align:left;text-transform:uppercase;">Review Pending Approvals →</button>
-          <button onclick="showPage('upload', document.querySelector('[onclick*=upload]'))" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:16px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;cursor:pointer;text-align:left;text-transform:uppercase;">Upload Client Document →</button>
-          <a href="admin-shop.html" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:16px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;text-align:left;text-transform:uppercase;display:block;text-decoration:none;">Manage Shop & Orders →</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── PAGE: APPROVALS ── -->
-    <div class="admin-page" id="page-approvals">
-      <div class="panel">
-        <h3>Pending Client Approvals</h3>
-        <div id="pendingList"><div class="no-data"><p>Loading…</p></div></div>
-      </div>
-    </div>
-
-    <!-- ── PAGE: UPLOAD TO CLIENT ── -->
-    <div class="admin-page" id="page-upload">
-      <div class="panel">
-        <h3>Upload Document to Client Dashboard</h3>
-
-        <div class="form-2col" style="margin-bottom:16px;">
-          <div class="form-group">
-            <label class="form-label">Select Approved Client *</label>
-            <select class="form-control" id="clientSelect">
-              <option value="">— Loading clients… —</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Document Type *</label>
-            <select class="form-control" id="docType">
-              <option value="invoices">Bill / Invoice</option>
-              <option value="payments">Payment Update</option>
-              <option value="updates">Site Progress Update</option>
-              <option value="sites">Site Location (Google Maps)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-2col" style="margin-bottom:16px;">
-          <div class="form-group">
-            <label class="form-label">Title / Description *</label>
-            <input class="form-control" type="text" id="docTitle" placeholder="e.g. Invoice #102, Site Progress Week 3"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Amount (₹) — for invoices & payments</label>
-            <input class="form-control" type="number" id="docAmount" placeholder="e.g. 50000"/>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom:16px;">
-          <label class="form-label">Detail / Description / Map Link</label>
-          <textarea class="form-control" id="docDetail" rows="3" placeholder="Detailed description, Google Maps URL for sites, or payment notes…"></textarea>
-        </div>
-
-        <div class="form-group" style="margin-bottom:16px;">
-          <label class="form-label">Status (for payments)</label>
-          <select class="form-control" id="docStatus">
-            <option value="Unpaid">Unpaid</option>
-            <option value="Paid">Paid</option>
-            <option value="Pending">Pending</option>
-            <option value="Overdue">Overdue</option>
-            <option value="Partial">Partial Payment</option>
-          </select>
-        </div>
-
-        <div class="form-group" style="margin-bottom:20px;">
-          <label class="form-label">Attach PDF (optional — bills only)</label>
-          <input class="form-control" type="file" id="docFile" accept="application/pdf" style="padding:10px;cursor:pointer;"/>
-          <p style="font-size:12px;color:var(--muted);margin-top:6px;">Max 10 MB. Only PDF files.</p>
-        </div>
-
-        <button class="btn btn-green btn-lg" id="uploadBtn" onclick="pushToClient()" style="width:100%;">
+<div class="admin-topbar">
+<div style="display:flex;align-items:center;gap:12px;">
+<button aria-label="Menu" class="mob-topbar-btn" id="mobHamburger" onclick="toggleMobSidebar()">
+<span></span><span></span><span></span>
+</button>
+<h1 id="pageTitle">Overview</h1>
+</div>
+<span class="admin-email" id="adminEmail">—</span>
+</div>
+<div class="admin-content">
+<!-- ── PAGE: OVERVIEW ── -->
+<div class="admin-page active" id="page-overview">
+<div class="stats-row">
+<div class="stat-card">
+<div class="stat-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+<div class="stat-val" id="s-total">—</div>
+<div class="stat-lbl">Total Clients</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon" style="background:#fef3c7;color:#92400e;"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></div>
+<div class="stat-val" id="s-pending" style="color:var(--amber);">—</div>
+<div class="stat-lbl">Pending Approval</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+<div class="stat-val" id="s-approved">—</div>
+<div class="stat-lbl">Approved Clients</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+<div class="stat-val" id="s-docs">—</div>
+<div class="stat-lbl">Docs Uploaded</div>
+</div>
+</div>
+<div class="panel">
+<h3>Quick Actions</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+<button onclick="showPage('approvals', document.querySelector('[onclick*=approvals]'))" style="background:var(--green-pale);border:1px solid rgba(22,163,74,.2);color:var(--green3);padding:16px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;cursor:pointer;text-align:left;text-transform:uppercase;">Review Pending Approvals →</button>
+<button onclick="showPage('upload', document.querySelector('[onclick*=upload]'))" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:16px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;cursor:pointer;text-align:left;text-transform:uppercase;">Upload Client Document →</button>
+<a href="admin-shop.html" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:16px;border-radius:var(--radius);font-family:var(--font-head);font-size:15px;font-weight:700;text-align:left;text-transform:uppercase;display:block;text-decoration:none;">Manage Shop &amp; Orders →</a>
+</div>
+</div>
+</div>
+<!-- ── PAGE: APPROVALS ── -->
+<div class="admin-page" id="page-approvals">
+<div class="panel">
+<h3>Pending Client Approvals</h3>
+<div id="pendingList"><div class="no-data"><p>Loading…</p></div></div>
+</div>
+</div>
+<!-- ── PAGE: UPLOAD TO CLIENT ── -->
+<div class="admin-page" id="page-upload">
+<div class="panel">
+<h3>Upload Document to Client Dashboard</h3>
+<div class="form-2col" style="margin-bottom:16px;">
+<div class="form-group">
+<label class="form-label">Select Approved Client *</label>
+<select class="form-control" id="clientSelect">
+<option value="">— Loading clients… —</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Document Type *</label>
+<select class="form-control" id="docType">
+<option value="invoices">Bill / Invoice</option>
+<option value="payments">Payment Update</option>
+<option value="updates">Site Progress Update</option>
+<option value="sites">Site Location (Google Maps)</option>
+</select>
+</div>
+</div>
+<div class="form-2col" style="margin-bottom:16px;">
+<div class="form-group">
+<label class="form-label">Title / Description *</label>
+<input class="form-control" id="docTitle" placeholder="e.g. Invoice #102, Site Progress Week 3" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Amount (₹) — for invoices &amp; payments</label>
+<input class="form-control" id="docAmount" placeholder="e.g. 50000" type="number"/>
+</div>
+</div>
+<div class="form-group" style="margin-bottom:16px;">
+<label class="form-label">Detail / Description / Map Link</label>
+<textarea class="form-control" id="docDetail" placeholder="Detailed description, Google Maps URL for sites, or payment notes…" rows="3"></textarea>
+</div>
+<div class="form-group" style="margin-bottom:16px;">
+<label class="form-label">Status (for payments)</label>
+<select class="form-control" id="docStatus">
+<option value="Unpaid">Unpaid</option>
+<option value="Paid">Paid</option>
+<option value="Pending">Pending</option>
+<option value="Overdue">Overdue</option>
+<option value="Partial">Partial Payment</option>
+</select>
+</div>
+<div class="form-group" style="margin-bottom:20px;">
+<label class="form-label">Attach PDF (optional — bills only)</label>
+<input accept="application/pdf" class="form-control" id="docFile" style="padding:10px;cursor:pointer;" type="file"/>
+<p style="font-size:12px;color:var(--muted);margin-top:6px;">Max 10 MB. Only PDF files.</p>
+</div>
+<button class="btn btn-green btn-lg" id="uploadBtn" onclick="pushToClient()" style="width:100%;">
           Push to Client Dashboard
         </button>
-        <div class="upload-log" id="uploadLog"></div>
-      </div>
-    </div>
-
-    <!-- ── PAGE: ALL CLIENTS ── -->
-    <div class="admin-page" id="page-clients">
-      <div class="panel">
-        <h3>All Registered Clients</h3>
-        <div class="client-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Company</th>
-                <th>Status</th>
-                <th>Joined</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="clientTableBody">
-              <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── PAGE: WEBSITE CMS ── -->
-    <div class="admin-page" id="page-cms">
-
-      <!-- CMS Sub-tabs -->
-      <div class="cms-tabs">
-        <button class="cms-tab active" onclick="showCmsTab('portfolio',this)">Portfolio</button>
-        <button class="cms-tab" onclick="showCmsTab('policies',this)">Policies</button>
-        <button class="cms-tab" onclick="showCmsTab('video',this)">Video Widget</button>
-        <button class="cms-tab" onclick="showCmsTab('social',this)">Social Links</button>
-        <button class="cms-tab" onclick="showCmsTab('banner',this)">Banner</button>
-        <button class="cms-tab" onclick="showCmsTab('theme',this)">Theme</button>
-        <button class="cms-tab" onclick="showCmsTab('stats',this)">Site Stats</button>
-      </div>
-
-      <!-- PORTFOLIO -->
-      <div class="cms-sub active" id="cms-portfolio">
-        <div class="sec-header">
-          <span class="sec-title">Our Projects</span>
-          <button class="btn btn-green btn-sm" onclick="openProjectModal()">+ Add Project</button>
-        </div>
-        <div id="portfolioList"><p style="color:var(--muted);">Loading projects…</p></div>
-      </div>
-
-      <!-- POLICIES -->
-      <div class="cms-sub" id="cms-policies">
-        <div class="sec-header" style="margin-bottom:16px;">
-          <span class="sec-title">Legal Policies</span>
-          <span style="font-size:13px;color:var(--muted);">Changes save to Firestore & appear on your website immediately.</span>
-        </div>
-
-        <!-- Policy tabs -->
-        <div style="display:flex;gap:8px;margin-bottom:20px;">
-          <button class="filter-chip active" onclick="showPolicyTab('privacy',this)" id="ptab-privacy">Privacy Policy</button>
-          <button class="filter-chip" onclick="showPolicyTab('terms',this)" id="ptab-terms">Terms & Conditions</button>
-          <button class="filter-chip" onclick="showPolicyTab('refund',this)" id="ptab-refund">Refund & Shipping</button>
-        </div>
-
-        <div id="policy-privacy" class="policy-editor-block">
-          <div class="rte-toolbar" id="rte-toolbar-privacy">
-            <button class="rte-btn" title="Bold" onclick="rteCmd('privacy','bold')"><b>B</b></button>
-            <button class="rte-btn" title="Italic" onclick="rteCmd('privacy','italic')"><i>I</i></button>
-            <button class="rte-btn" title="H2 Heading" onclick="rteCmd('privacy','formatBlock','h2')">H2</button>
-            <button class="rte-btn" title="H3 Heading" onclick="rteCmd('privacy','formatBlock','h3')">H3</button>
-            <button class="rte-btn" title="Paragraph" onclick="rteCmd('privacy','formatBlock','p')">¶</button>
-            <button class="rte-btn" title="Bullet List" onclick="rteCmd('privacy','insertUnorderedList')">≡</button>
-            <button class="rte-btn" title="Numbered List" onclick="rteCmd('privacy','insertOrderedList')">1.</button>
-            <button class="rte-btn" title="Horizontal Rule" onclick="rteCmd('privacy','insertHorizontalRule')">—</button>
-          </div>
-          <div class="rte-editor" id="rte-privacy" contenteditable="true" spellcheck="false">Loading…</div>
-          <button class="btn btn-green" style="margin-top:12px;" onclick="savePolicy('privacy')">Save Privacy Policy</button>
-          <div class="cms-log" id="log-privacy"></div>
-        </div>
-
-        <div id="policy-terms" class="policy-editor-block" style="display:none;">
-          <div class="rte-toolbar">
-            <button class="rte-btn" onclick="rteCmd('terms','bold')"><b>B</b></button>
-            <button class="rte-btn" onclick="rteCmd('terms','italic')"><i>I</i></button>
-            <button class="rte-btn" onclick="rteCmd('terms','formatBlock','h2')">H2</button>
-            <button class="rte-btn" onclick="rteCmd('terms','formatBlock','h3')">H3</button>
-            <button class="rte-btn" onclick="rteCmd('terms','formatBlock','p')">¶</button>
-            <button class="rte-btn" onclick="rteCmd('terms','insertUnorderedList')">≡</button>
-            <button class="rte-btn" onclick="rteCmd('terms','insertOrderedList')">1.</button>
-            <button class="rte-btn" onclick="rteCmd('terms','insertHorizontalRule')">—</button>
-          </div>
-          <div class="rte-editor" id="rte-terms" contenteditable="true" spellcheck="false">Loading…</div>
-          <button class="btn btn-green" style="margin-top:12px;" onclick="savePolicy('terms')">Save Terms & Conditions</button>
-          <div class="cms-log" id="log-terms"></div>
-        </div>
-
-        <div id="policy-refund" class="policy-editor-block" style="display:none;">
-          <div class="rte-toolbar">
-            <button class="rte-btn" onclick="rteCmd('refund','bold')"><b>B</b></button>
-            <button class="rte-btn" onclick="rteCmd('refund','italic')"><i>I</i></button>
-            <button class="rte-btn" onclick="rteCmd('refund','formatBlock','h2')">H2</button>
-            <button class="rte-btn" onclick="rteCmd('refund','formatBlock','h3')">H3</button>
-            <button class="rte-btn" onclick="rteCmd('refund','formatBlock','p')">¶</button>
-            <button class="rte-btn" onclick="rteCmd('refund','insertUnorderedList')">≡</button>
-            <button class="rte-btn" onclick="rteCmd('refund','insertOrderedList')">1.</button>
-            <button class="rte-btn" onclick="rteCmd('refund','insertHorizontalRule')">—</button>
-          </div>
-          <div class="rte-editor" id="rte-refund" contenteditable="true" spellcheck="false">Loading…</div>
-          <button class="btn btn-green" style="margin-top:12px;" onclick="savePolicy('refund')">Save Refund Policy</button>
-          <div class="cms-log" id="log-refund"></div>
-        </div>
-      </div>
-
-      <!-- VIDEO WIDGET -->
-      <div class="cms-sub" id="cms-video">
-        <div class="panel">
-          <h3>Floating Video Widget</h3>
-          <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Paste a YouTube or Instagram Reel URL. If filled, a floating video widget appears on your public website bottom-right. Clear it to remove the widget.</p>
-          <div class="form-group">
-            <label class="form-label">YouTube / Instagram URL</label>
-            <input class="form-control" type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=... or https://www.instagram.com/reel/..."/>
-          </div>
-          <div id="videoPreviewBox" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:12px;">
-            <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">PREVIEW</p>
-            <iframe id="videoPreviewFrame" src="" width="100%" height="180" frameborder="0" allowfullscreen style="border-radius:6px;"></iframe>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:16px;">
-            <button class="btn btn-green" onclick="saveVideoUrl()">Save & Publish Widget</button>
-            <button class="btn btn-outline-green" onclick="clearVideoUrl()">Remove Widget</button>
-          </div>
-          <div class="cms-log" id="log-video"></div>
-        </div>
-      </div>
-
-      <!-- SOCIAL LINKS -->
-      <div class="cms-sub" id="cms-social">
-        <div class="panel">
-          <h3>Social Media Links</h3>
-          <p style="font-size:14px;color:var(--muted);margin-bottom:24px;">These URLs appear in your website footer. Save to update them instantly — no code changes needed.</p>
-
-          <div class="social-input-row">
-            <div class="social-icon-box">📸</div>
-            <div style="flex:1;">
-              <label class="form-label">Instagram</label>
-              <input class="form-control" type="url" id="social-instagram" placeholder="https://www.instagram.com/yourhandle"/>
-            </div>
-          </div>
-          <div class="social-input-row">
-            <div class="social-icon-box">👍</div>
-            <div style="flex:1;">
-              <label class="form-label">Facebook</label>
-              <input class="form-control" type="url" id="social-facebook" placeholder="https://www.facebook.com/yourpage"/>
-            </div>
-          </div>
-          <div class="social-input-row">
-            <div class="social-icon-box">▶️</div>
-            <div style="flex:1;">
-              <label class="form-label">YouTube</label>
-              <input class="form-control" type="url" id="social-youtube" placeholder="https://www.youtube.com/@yourchannel"/>
-            </div>
-          </div>
-          <div class="social-input-row">
-            <div class="social-icon-box">💼</div>
-            <div style="flex:1;">
-              <label class="form-label">LinkedIn</label>
-              <input class="form-control" type="url" id="social-linkedin" placeholder="https://www.linkedin.com/company/yourcompany"/>
-            </div>
-          </div>
-          <div class="social-input-row">
-            <div class="social-icon-box">✕</div>
-            <div style="flex:1;">
-              <label class="form-label">X / Twitter</label>
-              <input class="form-control" type="url" id="social-twitter" placeholder="https://x.com/yourhandle"/>
-            </div>
-          </div>
-          <div class="social-input-row">
-            <div class="social-icon-box">💬</div>
-            <div style="flex:1;">
-              <label class="form-label">WhatsApp Link</label>
-              <input class="form-control" type="url" id="social-whatsapp" placeholder="https://wa.me/918489090666"/>
-            </div>
-          </div>
-
-          <button class="btn btn-green" style="margin-top:8px;" onclick="saveSocialLinks()">Save All Social Links</button>
-          <div class="cms-log" id="log-social"></div>
-        </div>
-      </div>
-
-
-      <!-- ── BANNER MANAGER ── -->
-      <div class="cms-sub" id="cms-banner">
-        <div class="panel">
-          <h3>Homepage Banner Manager</h3>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Upload a promotional banner image for the top of your homepage. If left empty, no banner appears and the layout adjusts automatically.</p>
-
-          <div class="form-group">
-            <label class="form-label">Current Banner</label>
-            <div id="bannerPreviewWrap" style="width:100%;height:160px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:12px;">
-              <img id="bannerPreviewImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"/>
-              <span id="bannerNoImg" style="color:var(--muted);font-size:13px;">No banner set — homepage shows without a banner</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Upload New Banner Image</label>
-            <input class="form-control" type="file" id="bannerFile" accept="image/*" style="padding:10px;cursor:pointer;" onchange="previewBannerFile(event)"/>
-            <p style="font-size:11px;color:var(--muted);margin-top:4px;">Recommended: 1400×320px landscape image. Max 5MB. Vertical phone photos auto-crop to fit.</p>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Or paste image URL directly</label>
-            <input class="form-control" type="url" id="bannerUrl" placeholder="https://..." oninput="onBannerUrlInput(this.value)"/>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Banner Caption (optional)</label>
-            <input class="form-control" type="text" id="bannerText" placeholder="e.g. Now accepting solar installation orders for 2026"/>
-          </div>
-
-          <div style="display:flex;gap:10px;margin-top:4px;">
-            <button class="btn btn-green" onclick="saveBanner()">Publish Banner</button>
-            <button class="btn btn-outline-green" style="border-color:var(--red);color:var(--red);" onclick="removeBanner()">Remove Banner</button>
-          </div>
-          <div class="cms-log" id="log-banner"></div>
-        </div>
-      </div>
-
-      <!-- ── THEME MANAGER ── -->
-      <div class="cms-sub" id="cms-theme">
-        <div class="panel">
-          <h3>Website Theme Manager</h3>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Control the visual feel of your public website. Changes save to Firestore and apply for every visitor.</p>
-
-          <div class="settings-section">
-            <div class="settings-section-title">Dark / Light Mode Default</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-              <button class="btn btn-outline-green" id="themeLight" onclick="setThemeCMS('light')" style="padding:16px;display:flex;align-items:center;justify-content:center;gap:10px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg>
+<div class="upload-log" id="uploadLog"></div>
+</div>
+</div>
+<!-- ── PAGE: ALL CLIENTS ── -->
+<div class="admin-page" id="page-clients">
+<div class="panel">
+<h3>All Registered Clients</h3>
+<div class="client-table-wrap">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Company</th>
+<th>Status</th>
+<th>Joined</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="clientTableBody">
+<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Loading…</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- ── PAGE: WEBSITE CMS ── -->
+<div class="admin-page" id="page-cms">
+<!-- CMS Sub-tabs -->
+<div class="cms-tabs">
+<button class="cms-tab active" onclick="showCmsTab('portfolio',this)">Portfolio</button>
+<button class="cms-tab" onclick="showCmsTab('policies',this)">Policies</button>
+<button class="cms-tab" onclick="showCmsTab('video',this)">Video Widget</button>
+<button class="cms-tab" onclick="showCmsTab('social',this)">Social Links</button>
+<button class="cms-tab" onclick="showCmsTab('banner',this)">Banner</button>
+<button class="cms-tab" onclick="showCmsTab('theme',this)">Theme</button>
+<button class="cms-tab" onclick="showCmsTab('stats',this)">Site Stats</button>
+</div>
+<!-- PORTFOLIO -->
+<div class="cms-sub active" id="cms-portfolio">
+<div class="sec-header">
+<span class="sec-title">Our Projects</span>
+<button class="btn btn-green btn-sm" onclick="openProjectModal()">+ Add Project</button>
+</div>
+<div id="portfolioList"><p style="color:var(--muted);">Loading projects…</p></div>
+</div>
+<!-- POLICIES -->
+<div class="cms-sub" id="cms-policies">
+<div class="sec-header" style="margin-bottom:16px;">
+<span class="sec-title">Legal Policies</span>
+<span style="font-size:13px;color:var(--muted);">Changes save to Firestore &amp; appear on your website immediately.</span>
+</div>
+<!-- Policy tabs -->
+<div style="display:flex;gap:8px;margin-bottom:20px;">
+<button class="filter-chip active" id="ptab-privacy" onclick="showPolicyTab('privacy',this)">Privacy Policy</button>
+<button class="filter-chip" id="ptab-terms" onclick="showPolicyTab('terms',this)">Terms &amp; Conditions</button>
+<button class="filter-chip" id="ptab-refund" onclick="showPolicyTab('refund',this)">Refund &amp; Shipping</button>
+</div>
+<div class="policy-editor-block" id="policy-privacy">
+<div class="rte-toolbar" id="rte-toolbar-privacy">
+<button class="rte-btn" onclick="rteCmd('privacy','bold')" title="Bold"><b>B</b></button>
+<button class="rte-btn" onclick="rteCmd('privacy','italic')" title="Italic"><i>I</i></button>
+<button class="rte-btn" onclick="rteCmd('privacy','formatBlock','h2')" title="H2 Heading">H2</button>
+<button class="rte-btn" onclick="rteCmd('privacy','formatBlock','h3')" title="H3 Heading">H3</button>
+<button class="rte-btn" onclick="rteCmd('privacy','formatBlock','p')" title="Paragraph">¶</button>
+<button class="rte-btn" onclick="rteCmd('privacy','insertUnorderedList')" title="Bullet List">≡</button>
+<button class="rte-btn" onclick="rteCmd('privacy','insertOrderedList')" title="Numbered List">1.</button>
+<button class="rte-btn" onclick="rteCmd('privacy','insertHorizontalRule')" title="Horizontal Rule">—</button>
+</div>
+<div class="rte-editor" contenteditable="true" id="rte-privacy" spellcheck="false">Loading…</div>
+<button class="btn btn-green" onclick="savePolicy('privacy')" style="margin-top:12px;">Save Privacy Policy</button>
+<div class="cms-log" id="log-privacy"></div>
+</div>
+<div class="policy-editor-block" id="policy-terms" style="display:none;">
+<div class="rte-toolbar">
+<button class="rte-btn" onclick="rteCmd('terms','bold')"><b>B</b></button>
+<button class="rte-btn" onclick="rteCmd('terms','italic')"><i>I</i></button>
+<button class="rte-btn" onclick="rteCmd('terms','formatBlock','h2')">H2</button>
+<button class="rte-btn" onclick="rteCmd('terms','formatBlock','h3')">H3</button>
+<button class="rte-btn" onclick="rteCmd('terms','formatBlock','p')">¶</button>
+<button class="rte-btn" onclick="rteCmd('terms','insertUnorderedList')">≡</button>
+<button class="rte-btn" onclick="rteCmd('terms','insertOrderedList')">1.</button>
+<button class="rte-btn" onclick="rteCmd('terms','insertHorizontalRule')">—</button>
+</div>
+<div class="rte-editor" contenteditable="true" id="rte-terms" spellcheck="false">Loading…</div>
+<button class="btn btn-green" onclick="savePolicy('terms')" style="margin-top:12px;">Save Terms &amp; Conditions</button>
+<div class="cms-log" id="log-terms"></div>
+</div>
+<div class="policy-editor-block" id="policy-refund" style="display:none;">
+<div class="rte-toolbar">
+<button class="rte-btn" onclick="rteCmd('refund','bold')"><b>B</b></button>
+<button class="rte-btn" onclick="rteCmd('refund','italic')"><i>I</i></button>
+<button class="rte-btn" onclick="rteCmd('refund','formatBlock','h2')">H2</button>
+<button class="rte-btn" onclick="rteCmd('refund','formatBlock','h3')">H3</button>
+<button class="rte-btn" onclick="rteCmd('refund','formatBlock','p')">¶</button>
+<button class="rte-btn" onclick="rteCmd('refund','insertUnorderedList')">≡</button>
+<button class="rte-btn" onclick="rteCmd('refund','insertOrderedList')">1.</button>
+<button class="rte-btn" onclick="rteCmd('refund','insertHorizontalRule')">—</button>
+</div>
+<div class="rte-editor" contenteditable="true" id="rte-refund" spellcheck="false">Loading…</div>
+<button class="btn btn-green" onclick="savePolicy('refund')" style="margin-top:12px;">Save Refund Policy</button>
+<div class="cms-log" id="log-refund"></div>
+</div>
+</div>
+<!-- VIDEO WIDGET -->
+<div class="cms-sub" id="cms-video">
+<div class="panel">
+<h3>Floating Video Widget</h3>
+<p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Paste a YouTube or Instagram Reel URL. If filled, a floating video widget appears on your public website bottom-right. Clear it to remove the widget.</p>
+<div class="form-group">
+<label class="form-label">YouTube / Instagram URL</label>
+<input class="form-control" id="videoUrl" placeholder="https://www.youtube.com/watch?v=... or https://www.instagram.com/reel/..." type="url"/>
+</div>
+<div id="videoPreviewBox" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:12px;">
+<p style="font-size:12px;color:var(--muted);margin-bottom:8px;">PREVIEW</p>
+<iframe allowfullscreen="" frameborder="0" height="180" id="videoPreviewFrame" src="" style="border-radius:6px;" width="100%"></iframe>
+</div>
+<div style="display:flex;gap:10px;margin-top:16px;">
+<button class="btn btn-green" onclick="saveVideoUrl()">Save &amp; Publish Widget</button>
+<button class="btn btn-outline-green" onclick="clearVideoUrl()">Remove Widget</button>
+</div>
+<div class="cms-log" id="log-video"></div>
+</div>
+</div>
+<!-- SOCIAL LINKS -->
+<div class="cms-sub" id="cms-social">
+<div class="panel">
+<h3>Social Media Links</h3>
+<p style="font-size:14px;color:var(--muted);margin-bottom:24px;">These URLs appear in your website footer. Save to update them instantly — no code changes needed.</p>
+<div class="social-input-row">
+<div class="social-icon-box">📸</div>
+<div style="flex:1;">
+<label class="form-label">Instagram</label>
+<input class="form-control" id="social-instagram" placeholder="https://www.instagram.com/yourhandle" type="url"/>
+</div>
+</div>
+<div class="social-input-row">
+<div class="social-icon-box">👍</div>
+<div style="flex:1;">
+<label class="form-label">Facebook</label>
+<input class="form-control" id="social-facebook" placeholder="https://www.facebook.com/yourpage" type="url"/>
+</div>
+</div>
+<div class="social-input-row">
+<div class="social-icon-box">▶️</div>
+<div style="flex:1;">
+<label class="form-label">YouTube</label>
+<input class="form-control" id="social-youtube" placeholder="https://www.youtube.com/@yourchannel" type="url"/>
+</div>
+</div>
+<div class="social-input-row">
+<div class="social-icon-box">💼</div>
+<div style="flex:1;">
+<label class="form-label">LinkedIn</label>
+<input class="form-control" id="social-linkedin" placeholder="https://www.linkedin.com/company/yourcompany" type="url"/>
+</div>
+</div>
+<div class="social-input-row">
+<div class="social-icon-box">✕</div>
+<div style="flex:1;">
+<label class="form-label">X / Twitter</label>
+<input class="form-control" id="social-twitter" placeholder="https://x.com/yourhandle" type="url"/>
+</div>
+</div>
+<div class="social-input-row">
+<div class="social-icon-box">💬</div>
+<div style="flex:1;">
+<label class="form-label">WhatsApp Link</label>
+<input class="form-control" id="social-whatsapp" placeholder="https://wa.me/918489090666" type="url"/>
+</div>
+</div>
+<button class="btn btn-green" onclick="saveSocialLinks()" style="margin-top:8px;">Save All Social Links</button>
+<div class="cms-log" id="log-social"></div>
+</div>
+</div>
+<!-- ── BANNER MANAGER ── -->
+<div class="cms-sub" id="cms-banner">
+<div class="panel">
+<h3>Homepage Banner Manager</h3>
+<p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Upload a promotional banner image for the top of your homepage. If left empty, no banner appears and the layout adjusts automatically.</p>
+<div class="form-group">
+<label class="form-label">Current Banner</label>
+<div id="bannerPreviewWrap" style="width:100%;height:160px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:12px;">
+<img alt="" id="bannerPreviewImg" src="" style="width:100%;height:100%;object-fit:cover;display:none;"/>
+<span id="bannerNoImg" style="color:var(--muted);font-size:13px;">No banner set — homepage shows without a banner</span>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Upload New Banner Image</label>
+<input accept="image/*" class="form-control" id="bannerFile" onchange="previewBannerFile(event)" style="padding:10px;cursor:pointer;" type="file"/>
+<p style="font-size:11px;color:var(--muted);margin-top:4px;">Recommended: 1400×320px landscape image. Max 5MB. Vertical phone photos auto-crop to fit.</p>
+</div>
+<div class="form-group">
+<label class="form-label">Or paste image URL directly</label>
+<input class="form-control" id="bannerUrl" oninput="onBannerUrlInput(this.value)" placeholder="https://..." type="url"/>
+</div>
+<div class="form-group">
+<label class="form-label">Banner Caption (optional)</label>
+<input class="form-control" id="bannerText" placeholder="e.g. Now accepting solar installation orders for 2026" type="text"/>
+</div>
+<div style="display:flex;gap:10px;margin-top:4px;">
+<button class="btn btn-green" onclick="saveBanner()">Publish Banner</button>
+<button class="btn btn-outline-green" onclick="removeBanner()" style="border-color:var(--red);color:var(--red);">Remove Banner</button>
+</div>
+<div class="cms-log" id="log-banner"></div>
+</div>
+</div>
+<!-- ── THEME MANAGER ── -->
+<div class="cms-sub" id="cms-theme">
+<div class="panel">
+<h3>Website Theme Manager</h3>
+<p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Control the visual feel of your public website. Changes save to Firestore and apply for every visitor.</p>
+<div class="settings-section">
+<div class="settings-section-title">Dark / Light Mode Default</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+<button class="btn btn-outline-green" id="themeLight" onclick="setThemeCMS('light')" style="padding:16px;display:flex;align-items:center;justify-content:center;gap:10px;">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"></path></svg>
                 Light Mode
               </button>
-              <button class="btn btn-outline-green" id="themeDark" onclick="setThemeCMS('dark')" style="padding:16px;display:flex;align-items:center;justify-content:center;gap:10px;background:#0d1117;color:#fff;border-color:#30363d;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+<button class="btn btn-outline-green" id="themeDark" onclick="setThemeCMS('dark')" style="padding:16px;display:flex;align-items:center;justify-content:center;gap:10px;background:#0d1117;color:#fff;border-color:#30363d;">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"></path></svg>
                 Dark Mode
               </button>
-            </div>
-          </div>
-
-          <div class="settings-section">
-            <div class="settings-section-title">Accent Colour</div>
-            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Changes the primary colour of buttons, highlights and links across the entire website.</p>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-              <button onclick="setAccentCMS('green')"  id="accentGreen"  style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#16a34a;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Green</button>
-              <button onclick="setAccentCMS('blue')"   id="accentBlue"   style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#2563eb;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Blue</button>
-              <button onclick="setAccentCMS('gold')"   id="accentGold"   style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#d97706;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Gold</button>
-              <button onclick="setAccentCMS('red')"    id="accentRed"    style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#dc2626;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Red</button>
-              <button onclick="setAccentCMS('purple')" id="accentPurple" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#7c3aed;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Purple</button>
-              <button onclick="setAccentCMS('teal')"   id="accentTeal"   style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#0d9488;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Teal</button>
-              <button onclick="setAccentCMS('orange')" id="accentOrange" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#ea580c;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Orange</button>
-              <button onclick="setAccentCMS('pink')"   id="accentPink"   style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#db2777;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Pink</button>
-            </div>
-          </div>
-
-          <!-- ── BACKGROUND EFFECT ── -->
-          <div class="settings-section" style="margin-top:24px;">
-            <div class="settings-section-title">Interactive Background Effect</div>
-            <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">The background reacts to mouse/touch movement. Choose a design or turn it off.</p>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px;">
-              <button onclick="setBgCMS('off')"       id="bg-off"       class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Off</button>
-              <button onclick="setBgCMS('particles')" id="bg-particles" class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Particles</button>
-              <button onclick="setBgCMS('geometry')"  id="bg-geometry"  class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Geometry</button>
-              <button onclick="setBgCMS('stars')"     id="bg-stars"     class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Stars</button>
-              <button onclick="setBgCMS('grid')"      id="bg-grid"      class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Grid Warp</button>
-              <button onclick="setBgCMS('waves')"     id="bg-waves"     class="btn-sm-green" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Waves</button>
-            </div>
-            <p style="font-size:11px;color:var(--muted);">Tip: "Particles" is the Google gravity-like effect. "Grid Warp" follows the mouse most dramatically.</p>
-          </div>
-
-          <div class="cms-log" id="log-theme"></div>
-        </div>
-      </div>
-
-      <!-- ── STATS MANAGER ── -->
-      <div class="cms-sub" id="cms-stats">
-        <div class="panel">
-          <h3>Homepage Statistics</h3>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">These numbers appear in the "About Us" section and animate when visitors scroll to them.</p>
-
-          <div class="inv-meta">
-            <div class="form-group">
-              <label class="form-label">Years in Business</label>
-              <input class="form-control" type="number" id="stat-years" placeholder="10" min="0"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Projects Completed</label>
-              <input class="form-control" type="number" id="stat-projects" placeholder="200" min="0"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Happy Clients</label>
-              <input class="form-control" type="number" id="stat-clients" placeholder="150" min="0"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Team Members</label>
-              <input class="form-control" type="number" id="stat-team" placeholder="50" min="0"/>
-            </div>
-          </div>
-
-          <button class="btn btn-green" onclick="saveStats()">Save & Publish Stats</button>
-          <div class="cms-log" id="log-stats"></div>
-        </div>
-      </div>
-
-    </div><!-- /page-cms -->
-
-  <!-- ══ SOLAR LEADS PAGE ══ -->
-  <div class="admin-page" id="page-solar">
-
-    <!-- Stats row -->
-    <div class="lead-stat-row">
-      <div class="lead-stat">
-        <div class="lead-stat-val" id="sl-total" style="color:var(--green);">0</div>
-        <div class="lead-stat-lbl">Total Leads</div>
-      </div>
-      <div class="lead-stat">
-        <div class="lead-stat-val" id="sl-new" style="color:var(--red);">0</div>
-        <div class="lead-stat-lbl">New</div>
-      </div>
-      <div class="lead-stat">
-        <div class="lead-stat-val" id="sl-called" style="color:#1e40af;">0</div>
-        <div class="lead-stat-lbl">Called</div>
-      </div>
-      <div class="lead-stat">
-        <div class="lead-stat-val" id="sl-visit" style="color:var(--amber);">0</div>
-        <div class="lead-stat-lbl">Site Visit</div>
-      </div>
-      <div class="lead-stat">
-        <div class="lead-stat-val" id="sl-won" style="color:var(--green3);">0</div>
-        <div class="lead-stat-lbl">Won 🎉</div>
-      </div>
-    </div>
-
-    <!-- Filters -->
-    <div class="lead-filters">
-      <input class="form-control" type="text" id="leadSearch"
-        placeholder="Search by name or phone…" style="max-width:240px;"
-        oninput="filterLeads()"/>
-      <select class="form-control" id="leadStatusFilter" style="width:auto;" onchange="filterLeads()">
-        <option value="all">All Statuses</option>
-        <option value="new">New</option>
-        <option value="called">Called</option>
-        <option value="visit">Site Visit Booked</option>
-        <option value="won">Won</option>
-        <option value="lost">Lost</option>
-      </select>
-      <select class="form-control" id="leadTypeFilter" style="width:auto;" onchange="filterLeads()">
-        <option value="all">All Types</option>
-        <option value="home">Home / Residential</option>
-        <option value="factory">Factory / Industrial</option>
-        <option value="commercial">Commercial</option>
-        <option value="farm">Farm / Agricultural</option>
-      </select>
-      <button class="btn btn-outline-green btn-sm" onclick="loadSolarLeads()">↻ Refresh</button>
-      <span id="leadCount" style="font-size:13px;color:var(--muted);margin-left:auto;"></span>
-    </div>
-
-    <!-- Leads list -->
-    <div id="solarLeadsList">
-      <div class="no-data" style="text-align:center;padding:60px;color:var(--muted);">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3;margin-bottom:12px;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        <p>Loading solar leads…</p>
-      </div>
-    </div>
-
-  </div><!-- /page-solar -->
-
-  <!-- ══ NOTIFICATION ENGINE PAGE ══ -->
-  <div class="admin-page" id="page-notify">
-
-    <!-- ── COMPOSE PANEL ── -->
-    <div class="panel" style="margin-bottom:20px;">
-      <div class="erp-panel-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">
-        <span style="font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--green3);text-transform:uppercase;">Compose Alert</span>
-        <button class="btn btn-outline-green btn-sm" onclick="showNotifHistory()">View History</button>
-      </div>
-
-      <!-- Notification Type -->
-      <div class="form-label" style="margin-bottom:10px;">Notification Type</div>
-      <div class="notif-type-grid">
-        <button class="notif-type-card active" onclick="setNotifType('info',this)" id="nt-info">
-          <div class="notif-type-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </div>
-          <div class="notif-type-label">Info</div>
-        </button>
-        <button class="notif-type-card" onclick="setNotifType('update',this)" id="nt-update">
-          <div class="notif-type-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
-          </div>
-          <div class="notif-type-label">Site Update</div>
-        </button>
-        <button class="notif-type-card" onclick="setNotifType('payment',this)" id="nt-payment">
-          <div class="notif-type-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          </div>
-          <div class="notif-type-label">Payment</div>
-        </button>
-        <button class="notif-type-card" onclick="setNotifType('urgent',this)" id="nt-urgent">
-          <div class="notif-type-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <div class="notif-type-label">Urgent</div>
-        </button>
-        <button class="notif-type-card" onclick="setNotifType('invoice',this)" id="nt-invoice">
-          <div class="notif-type-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          </div>
-          <div class="notif-type-label">Invoice</div>
-        </button>
-        <button class="notif-type-card" onclick="setNotifType('visit',this)" id="nt-visit">
-          <div class="notif-type-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <div class="notif-type-label">Site Visit</div>
-        </button>
-        <button class="notif-type-card" onclick="setNotifType('complete',this)" id="nt-complete">
-          <div class="notif-type-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <div class="notif-type-label">Completed</div>
-        </button>
-        <button class="notif-type-card" onclick="setNotifType('custom',this)" id="nt-custom">
-          <div class="notif-type-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          </div>
-          <div class="notif-type-label">Custom</div>
-        </button>
-      </div>
-
-      <!-- Recipients -->
-      <div class="form-label" style="margin-bottom:10px;">Send To</div>
-      <div class="notif-target-row">
-        <button class="notif-target-chip active" onclick="setNotifTarget('all',this)" id="target-all">All Clients</button>
-        <button class="notif-target-chip" onclick="setNotifTarget('specific',this)" id="target-specific">Specific Client</button>
-        <button class="notif-target-chip" onclick="setNotifTarget('approved',this)" id="target-approved">Approved Only</button>
-      </div>
-
-      <!-- Specific client selector (hidden until "Specific Client" picked) -->
-      <div id="specificClientWrap" style="display:none;margin-bottom:16px;">
-        <label class="form-label">Select Client</label>
-        <select class="form-control" id="notifClientSelect">
-          <option value="">— Loading clients… —</option>
-        </select>
-      </div>
-
-      <!-- Message -->
-      <div class="form-group">
-        <label class="form-label">Notification Title *</label>
-        <input class="form-control" type="text" id="notifTitle"
-          placeholder="e.g. Site Work Starts Monday — Stage 2 Begins"
-          oninput="updateNotifPreview()"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Message Body *</label>
-        <textarea class="form-control" id="notifBody" rows="4"
-          placeholder="Write your message here. Be specific — date, time, what the client needs to know or do."
-          oninput="updateNotifPreview()"></textarea>
-      </div>
-
-      <!-- Quick templates -->
-      <div style="margin-bottom:16px;">
-        <div class="form-label" style="margin-bottom:8px;">Quick Templates</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="hsn-chip" onclick="applyTemplate('site_start')">Work Starting</button>
-          <button class="hsn-chip" onclick="applyTemplate('invoice_ready')">Invoice Ready</button>
-          <button class="hsn-chip" onclick="applyTemplate('payment_received')">Payment Confirmed</button>
-          <button class="hsn-chip" onclick="applyTemplate('site_visit')">Site Visit Scheduled</button>
-          <button class="hsn-chip" onclick="applyTemplate('project_complete')">Project Complete</button>
-          <button class="hsn-chip" onclick="applyTemplate('material_dispatch')">Material Dispatched</button>
-          <button class="hsn-chip" onclick="applyTemplate('delay_notice')">Delay Notice</button>
-        </div>
-      </div>
-
-      <!-- Schedule (optional) -->
-      <div class="schedule-row">
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-          <input type="checkbox" id="scheduleToggle" onchange="toggleSchedule()"/>
-          <span>Schedule for later</span>
-        </label>
-        <div id="scheduleDateWrap" style="display:none;display:flex;align-items:center;gap:8px;">
-          <input class="form-control" type="datetime-local" id="scheduleDate" style="width:auto;"/>
-          <span style="font-size:12px;color:var(--muted);">(prep for Cloud Functions)</span>
-        </div>
-      </div>
-
-      <!-- Live Preview -->
-      <div class="notif-preview-box" id="notifPreview">
-        <div class="form-label" style="margin-bottom:12px;color:var(--green3);">Preview — How clients will see it</div>
-        <div style="background:var(--white);border-radius:var(--radius-lg);padding:16px;border:1px solid var(--border);">
-          <div class="notif-preview-header">
-            <div class="notif-preview-icon" id="previewIcon" style="background:var(--green);">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            </div>
-            <div>
-              <div class="notif-preview-title" id="previewTitle">Your notification title…</div>
-              <div style="font-size:11px;color:var(--muted);">Deepu Siva Pvt Ltd · Just now</div>
-            </div>
-          </div>
-          <div class="notif-preview-body" id="previewBody">Your message will appear here…</div>
-        </div>
-      </div>
-
-      <!-- Action -->
-      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
-        <button class="btn btn-green" style="flex:1;padding:14px;" onclick="sendNotification()">
+</div>
+</div>
+<div class="settings-section">
+<div class="settings-section-title">Accent Colour</div>
+<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Changes the primary colour of buttons, highlights and links across the entire website.</p>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+<button id="accentGreen" onclick="setAccentCMS('green')" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#16a34a;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Green</button>
+<button id="accentBlue" onclick="setAccentCMS('blue')" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#2563eb;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Blue</button>
+<button id="accentGold" onclick="setAccentCMS('gold')" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#d97706;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Gold</button>
+<button id="accentRed" onclick="setAccentCMS('red')" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#dc2626;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Red</button>
+<button id="accentPurple" onclick="setAccentCMS('purple')" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#7c3aed;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Purple</button>
+<button id="accentTeal" onclick="setAccentCMS('teal')" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#0d9488;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Teal</button>
+<button id="accentOrange" onclick="setAccentCMS('orange')" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#ea580c;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Orange</button>
+<button id="accentPink" onclick="setAccentCMS('pink')" style="padding:14px 8px;border-radius:var(--radius);border:2px solid transparent;background:#db2777;color:#fff;font-family:var(--font-head);font-size:12px;font-weight:800;cursor:pointer;text-transform:uppercase;">Pink</button>
+</div>
+</div>
+<!-- ── BACKGROUND EFFECT ── -->
+<div class="settings-section" style="margin-top:24px;">
+<div class="settings-section-title">Interactive Background Effect</div>
+<p style="font-size:13px;color:var(--muted);margin-bottom:16px;">The background reacts to mouse/touch movement. Choose a design or turn it off.</p>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px;">
+<button class="btn-sm-green" id="bg-off" onclick="setBgCMS('off')" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Off</button>
+<button class="btn-sm-green" id="bg-particles" onclick="setBgCMS('particles')" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Particles</button>
+<button class="btn-sm-green" id="bg-geometry" onclick="setBgCMS('geometry')" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Geometry</button>
+<button class="btn-sm-green" id="bg-stars" onclick="setBgCMS('stars')" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Stars</button>
+<button class="btn-sm-green" id="bg-grid" onclick="setBgCMS('grid')" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Grid Warp</button>
+<button class="btn-sm-green" id="bg-waves" onclick="setBgCMS('waves')" style="padding:12px 6px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;font-family:var(--font-head);">Waves</button>
+</div>
+<p style="font-size:11px;color:var(--muted);">Tip: "Particles" is the Google gravity-like effect. "Grid Warp" follows the mouse most dramatically.</p>
+</div>
+<div class="cms-log" id="log-theme"></div>
+</div>
+</div>
+<!-- ── STATS MANAGER ── -->
+<div class="cms-sub" id="cms-stats">
+<div class="panel">
+<h3>Homepage Statistics</h3>
+<p style="font-size:13px;color:var(--muted);margin-bottom:20px;">These numbers appear in the "About Us" section and animate when visitors scroll to them.</p>
+<div class="inv-meta">
+<div class="form-group">
+<label class="form-label">Years in Business</label>
+<input class="form-control" id="stat-years" min="0" placeholder="10" type="number"/>
+</div>
+<div class="form-group">
+<label class="form-label">Projects Completed</label>
+<input class="form-control" id="stat-projects" min="0" placeholder="200" type="number"/>
+</div>
+<div class="form-group">
+<label class="form-label">Happy Clients</label>
+<input class="form-control" id="stat-clients" min="0" placeholder="150" type="number"/>
+</div>
+<div class="form-group">
+<label class="form-label">Team Members</label>
+<input class="form-control" id="stat-team" min="0" placeholder="50" type="number"/>
+</div>
+</div>
+<button class="btn btn-green" onclick="saveStats()">Save &amp; Publish Stats</button>
+<div class="cms-log" id="log-stats"></div>
+</div>
+</div>
+</div><!-- /page-cms -->
+<!-- ══ SOLAR LEADS PAGE ══ -->
+<div class="admin-page" id="page-solar">
+<!-- Stats row -->
+<div class="lead-stat-row">
+<div class="lead-stat">
+<div class="lead-stat-val" id="sl-total" style="color:var(--green);">0</div>
+<div class="lead-stat-lbl">Total Leads</div>
+</div>
+<div class="lead-stat">
+<div class="lead-stat-val" id="sl-new" style="color:var(--red);">0</div>
+<div class="lead-stat-lbl">New</div>
+</div>
+<div class="lead-stat">
+<div class="lead-stat-val" id="sl-called" style="color:#1e40af;">0</div>
+<div class="lead-stat-lbl">Called</div>
+</div>
+<div class="lead-stat">
+<div class="lead-stat-val" id="sl-visit" style="color:var(--amber);">0</div>
+<div class="lead-stat-lbl">Site Visit</div>
+</div>
+<div class="lead-stat">
+<div class="lead-stat-val" id="sl-won" style="color:var(--green3);">0</div>
+<div class="lead-stat-lbl">Won 🎉</div>
+</div>
+</div>
+<!-- Filters -->
+<div class="lead-filters">
+<input class="form-control" id="leadSearch" oninput="filterLeads()" placeholder="Search by name or phone…" style="max-width:240px;" type="text"/>
+<select class="form-control" id="leadStatusFilter" onchange="filterLeads()" style="width:auto;">
+<option value="all">All Statuses</option>
+<option value="new">New</option>
+<option value="called">Called</option>
+<option value="visit">Site Visit Booked</option>
+<option value="won">Won</option>
+<option value="lost">Lost</option>
+</select>
+<select class="form-control" id="leadTypeFilter" onchange="filterLeads()" style="width:auto;">
+<option value="all">All Types</option>
+<option value="home">Home / Residential</option>
+<option value="factory">Factory / Industrial</option>
+<option value="commercial">Commercial</option>
+<option value="farm">Farm / Agricultural</option>
+</select>
+<button class="btn btn-outline-green btn-sm" onclick="loadSolarLeads()">↻ Refresh</button>
+<span id="leadCount" style="font-size:13px;color:var(--muted);margin-left:auto;"></span>
+</div>
+<!-- Leads list -->
+<div id="solarLeadsList">
+<div class="no-data" style="text-align:center;padding:60px;color:var(--muted);">
+<svg fill="none" height="48" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" style="opacity:.3;margin-bottom:12px;" viewbox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+<p>Loading solar leads…</p>
+</div>
+</div>
+</div><!-- /page-solar -->
+<!-- ══ NOTIFICATION ENGINE PAGE ══ -->
+<div class="admin-page" id="page-notify">
+<!-- ── COMPOSE PANEL ── -->
+<div class="panel" style="margin-bottom:20px;">
+<div class="erp-panel-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+<span style="font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--green3);text-transform:uppercase;">Compose Alert</span>
+<button class="btn btn-outline-green btn-sm" onclick="showNotifHistory()">View History</button>
+</div>
+<!-- Notification Type -->
+<div class="form-label" style="margin-bottom:10px;">Notification Type</div>
+<div class="notif-type-grid">
+<button class="notif-type-card active" id="nt-info" onclick="setNotifType('info',this)">
+<div class="notif-type-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+</div>
+<div class="notif-type-label">Info</div>
+</button>
+<button class="notif-type-card" id="nt-update" onclick="setNotifType('update',this)">
+<div class="notif-type-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+</div>
+<div class="notif-type-label">Site Update</div>
+</button>
+<button class="notif-type-card" id="nt-payment" onclick="setNotifType('payment',this)">
+<div class="notif-type-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg>
+</div>
+<div class="notif-type-label">Payment</div>
+</button>
+<button class="notif-type-card" id="nt-urgent" onclick="setNotifType('urgent',this)">
+<div class="notif-type-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
+</div>
+<div class="notif-type-label">Urgent</div>
+</button>
+<button class="notif-type-card" id="nt-invoice" onclick="setNotifType('invoice',this)">
+<div class="notif-type-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+</div>
+<div class="notif-type-label">Invoice</div>
+</button>
+<button class="notif-type-card" id="nt-visit" onclick="setNotifType('visit',this)">
+<div class="notif-type-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+</div>
+<div class="notif-type-label">Site Visit</div>
+</button>
+<button class="notif-type-card" id="nt-complete" onclick="setNotifType('complete',this)">
+<div class="notif-type-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+</div>
+<div class="notif-type-label">Completed</div>
+</button>
+<button class="notif-type-card" id="nt-custom" onclick="setNotifType('custom',this)">
+<div class="notif-type-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path></svg>
+</div>
+<div class="notif-type-label">Custom</div>
+</button>
+</div>
+<!-- Recipients -->
+<div class="form-label" style="margin-bottom:10px;">Send To</div>
+<div class="notif-target-row">
+<button class="notif-target-chip active" id="target-all" onclick="setNotifTarget('all',this)">All Clients</button>
+<button class="notif-target-chip" id="target-specific" onclick="setNotifTarget('specific',this)">Specific Client</button>
+<button class="notif-target-chip" id="target-approved" onclick="setNotifTarget('approved',this)">Approved Only</button>
+</div>
+<!-- Specific client selector (hidden until "Specific Client" picked) -->
+<div id="specificClientWrap" style="display:none;margin-bottom:16px;">
+<label class="form-label">Select Client</label>
+<select class="form-control" id="notifClientSelect">
+<option value="">— Loading clients… —</option>
+</select>
+</div>
+<!-- Message -->
+<div class="form-group">
+<label class="form-label">Notification Title *</label>
+<input class="form-control" id="notifTitle" oninput="updateNotifPreview()" placeholder="e.g. Site Work Starts Monday — Stage 2 Begins" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Message Body *</label>
+<textarea class="form-control" id="notifBody" oninput="updateNotifPreview()" placeholder="Write your message here. Be specific — date, time, what the client needs to know or do." rows="4"></textarea>
+</div>
+<!-- Quick templates -->
+<div style="margin-bottom:16px;">
+<div class="form-label" style="margin-bottom:8px;">Quick Templates</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<button class="hsn-chip" onclick="applyTemplate('site_start')">Work Starting</button>
+<button class="hsn-chip" onclick="applyTemplate('invoice_ready')">Invoice Ready</button>
+<button class="hsn-chip" onclick="applyTemplate('payment_received')">Payment Confirmed</button>
+<button class="hsn-chip" onclick="applyTemplate('site_visit')">Site Visit Scheduled</button>
+<button class="hsn-chip" onclick="applyTemplate('project_complete')">Project Complete</button>
+<button class="hsn-chip" onclick="applyTemplate('material_dispatch')">Material Dispatched</button>
+<button class="hsn-chip" onclick="applyTemplate('delay_notice')">Delay Notice</button>
+</div>
+</div>
+<!-- Schedule (optional) -->
+<div class="schedule-row">
+<label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+<input id="scheduleToggle" onchange="toggleSchedule()" type="checkbox"/>
+<span>Schedule for later</span>
+</label>
+<div id="scheduleDateWrap" style="display:none;display:flex;align-items:center;gap:8px;">
+<input class="form-control" id="scheduleDate" style="width:auto;" type="datetime-local"/>
+<span style="font-size:12px;color:var(--muted);">(prep for Cloud Functions)</span>
+</div>
+</div>
+<!-- Live Preview -->
+<div class="notif-preview-box" id="notifPreview">
+<div class="form-label" style="margin-bottom:12px;color:var(--green3);">Preview — How clients will see it</div>
+<div style="background:var(--white);border-radius:var(--radius-lg);padding:16px;border:1px solid var(--border);">
+<div class="notif-preview-header">
+<div class="notif-preview-icon" id="previewIcon" style="background:var(--green);">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+</div>
+<div>
+<div class="notif-preview-title" id="previewTitle">Your notification title…</div>
+<div style="font-size:11px;color:var(--muted);">Deepu Siva Pvt Ltd · Just now</div>
+</div>
+</div>
+<div class="notif-preview-body" id="previewBody">Your message will appear here…</div>
+</div>
+</div>
+<!-- Action -->
+<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+<button class="btn btn-green" onclick="sendNotification()" style="flex:1;padding:14px;">
           Send Notification Now
         </button>
-        <button class="btn btn-outline-green" onclick="clearNotifForm()">Clear</button>
-      </div>
-      <div class="cms-log" id="notifLog"></div>
-    </div><!-- /compose panel -->
-
-    <!-- ── HISTORY PANEL ── -->
-    <div class="panel" id="notifHistoryPanel" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <h3 style="margin:0;">Sent History</h3>
-        <button class="btn btn-outline-green btn-sm" onclick="hideNotifHistory()">Hide History</button>
-      </div>
-      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-        <input class="form-control" type="text" placeholder="Filter history…"
-          style="max-width:200px;" oninput="filterNotifHistory(this.value)"/>
-        <select class="form-control" style="width:auto;" onchange="filterNotifHistoryType(this.value)">
-          <option value="all">All Types</option>
-          <option value="info">Info</option>
-          <option value="update">Site Update</option>
-          <option value="payment">Payment</option>
-          <option value="urgent">Urgent</option>
-          <option value="invoice">Invoice</option>
-          <option value="complete">Completed</option>
-        </select>
-      </div>
-      <div id="notifHistoryList">
-        <p style="color:var(--muted);text-align:center;padding:24px;">Loading history…</p>
-      </div>
-    </div><!-- /history -->
-
-  </div><!-- /page-notify -->
-
-  </div><!-- /admin-content -->
+<button class="btn btn-outline-green" onclick="clearNotifForm()">Clear</button>
+</div>
+<div class="cms-log" id="notifLog"></div>
+</div><!-- /compose panel -->
+<!-- ── HISTORY PANEL ── -->
+<div class="panel" id="notifHistoryPanel" style="display:none;">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+<h3 style="margin:0;">Sent History</h3>
+<button class="btn btn-outline-green btn-sm" onclick="hideNotifHistory()">Hide History</button>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+<input class="form-control" oninput="filterNotifHistory(this.value)" placeholder="Filter history…" style="max-width:200px;" type="text"/>
+<select class="form-control" onchange="filterNotifHistoryType(this.value)" style="width:auto;">
+<option value="all">All Types</option>
+<option value="info">Info</option>
+<option value="update">Site Update</option>
+<option value="payment">Payment</option>
+<option value="urgent">Urgent</option>
+<option value="invoice">Invoice</option>
+<option value="complete">Completed</option>
+</select>
+</div>
+<div id="notifHistoryList">
+<p style="color:var(--muted);text-align:center;padding:24px;">Loading history…</p>
+</div>
+</div><!-- /history -->
+</div><!-- /page-notify -->
+</div><!-- /admin-content -->
 </div><!-- /admin-main -->
-
 <!-- ══ PROJECT ADD/EDIT MODAL ══ -->
 <div class="modal-backdrop" id="projectModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeProjectModal()">✕</button>
-    <h3 id="modalTitle">Add Project</h3>
-    <input type="hidden" id="editProjectId"/>
-
-    <div class="form-group">
-      <label class="form-label">Project Title *</label>
-      <input class="form-control" type="text" id="proj-title" placeholder="e.g. Industrial Platform & Staircase"/>
-    </div>
-    <div class="form-2col">
-      <div class="form-group">
-        <label class="form-label">Category *</label>
-        <input class="form-control" type="text" id="proj-cat" placeholder="e.g. Metal Fabrication"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Display Order</label>
-        <input class="form-control" type="number" id="proj-order" placeholder="1" value="1"/>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Short Description (shown on home page)</label>
-      <textarea class="form-control" id="proj-short" rows="2" placeholder="Brief description for the project card…"></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Full Description (shown on project detail page)</label>
-      <textarea class="form-control" id="proj-full" rows="4" placeholder="Detailed project description, scope, materials used…"></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Project Image</label>
-      <input class="form-control" type="file" id="proj-image" accept="image/*" style="padding:10px;cursor:pointer;" onchange="previewProjImage(event)"/>
-      <img id="proj-img-preview" class="img-preview" src="" alt="Preview"/>
-      <p style="font-size:12px;color:var(--muted);margin-top:6px;">Or paste a direct image URL instead:</p>
-      <input class="form-control" type="url" id="proj-imageUrl" placeholder="https://..." style="margin-top:6px;"/>
-    </div>
-
-    <button class="btn btn-green btn-full" style="margin-top:4px;" id="saveProjectBtn" onclick="saveProject()">Save Project</button>
-    <div class="cms-log" id="log-project"></div>
-  </div>
+<div class="modal-box">
+<button class="modal-close" onclick="closeProjectModal()">✕</button>
+<h3 id="modalTitle">Add Project</h3>
+<input id="editProjectId" type="hidden"/>
+<div class="form-group">
+<label class="form-label">Project Title *</label>
+<input class="form-control" id="proj-title" placeholder="e.g. Industrial Platform &amp; Staircase" type="text"/>
 </div>
-
-  <!-- MOBILE BOTTOM ACTION BAR -->
-  <div class="mob-bottom-action" id="mobBottomBar">
-    <button class="mob-action-tab active" id="mob-tab-overview" onclick="mobNav('overview',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+<div class="form-2col">
+<div class="form-group">
+<label class="form-label">Category *</label>
+<input class="form-control" id="proj-cat" placeholder="e.g. Metal Fabrication" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label">Display Order</label>
+<input class="form-control" id="proj-order" placeholder="1" type="number" value="1"/>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Short Description (shown on home page)</label>
+<textarea class="form-control" id="proj-short" placeholder="Brief description for the project card…" rows="2"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Full Description (shown on project detail page)</label>
+<textarea class="form-control" id="proj-full" placeholder="Detailed project description, scope, materials used…" rows="4"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Project Image</label>
+<input accept="image/*" class="form-control" id="proj-image" onchange="previewProjImage(event)" style="padding:10px;cursor:pointer;" type="file"/>
+<img alt="Preview" class="img-preview" id="proj-img-preview" src=""/>
+<p style="font-size:12px;color:var(--muted);margin-top:6px;">Or paste a direct image URL instead:</p>
+<input class="form-control" id="proj-imageUrl" placeholder="https://..." style="margin-top:6px;" type="url"/>
+</div>
+<button class="btn btn-green btn-full" id="saveProjectBtn" onclick="saveProject()" style="margin-top:4px;">Save Project</button>
+<div class="cms-log" id="log-project"></div>
+</div>
+</div>
+<!-- MOBILE BOTTOM ACTION BAR -->
+<div class="mob-bottom-action" id="mobBottomBar">
+<button class="mob-action-tab active" id="mob-tab-overview" onclick="mobNav('overview',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg>
       Home
     </button>
-    <button class="mob-action-tab" id="mob-tab-approvals" onclick="mobNav('approvals',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+<button class="mob-action-tab" id="mob-tab-approvals" onclick="mobNav('approvals',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg>
       Approve
       <span id="mob-pending-dot" style="position:absolute;top:8px;width:8px;height:8px;background:var(--red);border-radius:50%;display:none;"></span>
-    </button>
-    <button class="mob-action-tab" id="mob-tab-upload" onclick="mobNav('upload',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+</button>
+<button class="mob-action-tab" id="mob-tab-upload" onclick="mobNav('upload',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
       Upload
     </button>
-    <button class="mob-action-tab" id="mob-tab-clients" onclick="mobNav('clients',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+<button class="mob-action-tab" id="mob-tab-clients" onclick="mobNav('clients',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
       Clients
     </button>
-    <a href="admin-erp.html" class="mob-action-tab">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+<a class="mob-action-tab" href="admin-erp.html">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" ry="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg>
       ERP
     </a>
-    <button class="mob-action-tab" id="mob-tab-notify" onclick="mobNav('notify',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+<button class="mob-action-tab" id="mob-tab-notify" onclick="mobNav('notify',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
       Alerts
     </button>
-    <button class="mob-action-tab" id="mob-tab-solar" onclick="mobNav('solar',this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg>
+<button class="mob-action-tab" id="mob-tab-solar" onclick="mobNav('solar',this)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"></path></svg>
       Solar
     </button>
-  </div>
-
+</div>
 <div class="a-toast" id="aToast"></div>
-
 <script type="module">
 import { auth, db, storage, requireAdmin } from './ds-firebase.js';
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";

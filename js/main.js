@@ -1,6 +1,6 @@
 const menu=document.querySelector('.menu'), links=document.querySelector('.nav-links');
-menu?.addEventListener('click',()=>links?.classList.toggle('open'));
-document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>links?.classList.remove('open')));
+menu?.addEventListener('click',()=>{const open=links?.classList.toggle('open');menu.setAttribute('aria-expanded',String(!!open));});
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{links?.classList.remove('open');menu?.setAttribute('aria-expanded','false');}));
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 const year=document.querySelector('[data-year]'); if(year) year.textContent=new Date().getFullYear();

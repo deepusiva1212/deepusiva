@@ -1,14 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head><meta name="robots" content="noindex,nofollow">
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="Deepu Siva"/>
-<meta name="theme-color" content="#16a34a"/>
+<head><meta content="noindex,nofollow,noarchive" name="robots"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Deepu Siva" name="apple-mobile-web-app-title"/>
+<meta content="#16a34a" name="theme-color"/>
 <title>Deepu Siva App</title>
-<link rel="manifest" href="manifest.json"/>
+<link href="manifest.json" rel="manifest"/>
 <style>
 /* ═══════════════════════════════════════════════
    DEEPU SIVA APP — Native-feel PWA
@@ -204,265 +205,244 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);height:100dv
 .role-director{background:#fef3c7;color:#92400e;}
 .role-client{background:var(--green-light);color:var(--green3);}
 </style>
-</head>
+</meta></head>
 <body>
-
 <div id="splash">
-  <div class="splash-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
-  </div>
-  <div class="splash-title">Deepu Siva</div>
-  <div class="splash-sub">Private Limited</div>
-  <div class="splash-loader"><div class="splash-loader-fill"></div></div>
+<div class="splash-logo">
+<svg fill="none" height="44" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24" width="44" xmlns="http://www.w3.org/2000/svg"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path></svg>
 </div>
-
+<div class="splash-title">Deepu Siva</div>
+<div class="splash-sub">Private Limited</div>
+<div class="splash-loader"><div class="splash-loader-fill"></div></div>
+</div>
 <div id="authScreen">
-  <div class="auth-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
-  </div>
-  <h1 class="auth-title">Welcome Back</h1>
-  <p class="auth-sub">Sign in to your Deepu Siva account</p>
-  <div class="auth-form">
-    <input class="auth-input" type="email" id="authEmail" placeholder="Email address" autocomplete="email"/>
-    <input class="auth-input" type="password" id="authPassword" placeholder="Password" autocomplete="current-password"/>
-    <button class="auth-btn" id="authBtn" onclick="doSignIn()">Sign In</button>
-    <div class="auth-err" id="authErr"></div>
-    <div style="text-align:center;margin-top:16px;">
-      <a href="login.html" style="font-size:13px;color:var(--green);font-weight:600;">Forgot password? Use browser instead →</a>
-    </div>
-  </div>
+<div class="auth-logo">
+<svg fill="none" height="36" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewbox="0 0 24 24" width="36" xmlns="http://www.w3.org/2000/svg"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path></svg>
 </div>
-
+<h1 class="auth-title">Welcome Back</h1>
+<p class="auth-sub">Sign in to your Deepu Siva account</p>
+<div class="auth-form">
+<input autocomplete="email" class="auth-input" id="authEmail" placeholder="Email address" type="email"/>
+<input autocomplete="current-password" class="auth-input" id="authPassword" placeholder="Password" type="password"/>
+<button class="auth-btn" id="authBtn" onclick="doSignIn()">Sign In</button>
+<div class="auth-err" id="authErr"></div>
+<div style="text-align:center;margin-top:16px;">
+<a href="login.html" style="font-size:13px;color:var(--green);font-weight:600;">Forgot password? Use browser instead →</a>
+</div>
+</div>
+</div>
 <div id="appShell" style="display:none;flex-direction:column;height:100dvh;">
-
-  <div class="app-header" id="appHeader">
-    <div class="header-brand">
-      <div class="header-brand-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
-      </div>
-      <div class="header-title">Deepu <span>Siva</span></div>
-    </div>
-    <div class="header-right">
-      <div class="header-icon-btn" onclick="showTab('notifications')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <div class="notif-dot" id="headerNotifDot" style="display:none;"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="app-body" id="appBody">
-
-    <div class="screen" id="screen-home-director">
-      <div class="hero-banner">
-        <div class="hero-greeting">Good day, Director</div>
-        <h2 id="directorName">Deepadharsan</h2>
-        <p>Here's your business at a glance</p>
-        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-          <span class="chip" style="background:rgba(255,255,255,.15);color:#fff;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="10"/></svg>
+<div class="app-header" id="appHeader">
+<div class="header-brand">
+<div class="header-brand-icon">
+<svg fill="none" height="18" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path></svg>
+</div>
+<div class="header-title">Deepu <span>Siva</span></div>
+</div>
+<div class="header-right">
+<div class="header-icon-btn" onclick="showTab('notifications')">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+<div class="notif-dot" id="headerNotifDot" style="display:none;"></div>
+</div>
+</div>
+</div>
+<div class="app-body" id="appBody">
+<div class="screen" id="screen-home-director">
+<div class="hero-banner">
+<div class="hero-greeting">Good day, Director</div>
+<h2 id="directorName">Deepadharsan</h2>
+<p>Here's your business at a glance</p>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+<span class="chip" style="background:rgba(255,255,255,.15);color:#fff;">
+<svg fill="currentColor" height="10" stroke="none" viewbox="0 0 24 24" width="10" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle></svg>
             Live Data
           </span>
-          <span class="chip role-director">Director</span>
-        </div>
-      </div>
-
-      <div class="stat-strip cols-3" style="margin-top:12px;">
-        <div class="stat-box">
-          <div class="stat-box-val" id="d-invoices">—</div>
-          <div class="stat-box-lbl">Invoices</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-box-val" id="d-leads" style="color:var(--amber);">—</div>
-          <div class="stat-box-lbl">Solar Leads</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-box-val" id="d-orders" style="color:var(--blue);">—</div>
-          <div class="stat-box-lbl">Orders</div>
-        </div>
-      </div>
-
-      <div class="sec-head"><div class="sec-title">Quick Actions</div></div>
-      <div class="qa-grid">
-        <a href="admin-erp.html" class="qa-btn">
-          <div class="qa-icon" style="background:#dcfce7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-          <div class="qa-label">ERP</div>
-        </a>
-        <a href="director-portal.html" class="qa-btn">
-          <div class="qa-icon" style="background:#fef3c7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-          <div class="qa-label">Portal</div>
-        </a>
-        <a href="admin-shop.html" class="qa-btn">
-          <div class="qa-icon" style="background:#dbeafe;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-          <div class="qa-label">Shop</div>
-        </a>
-        <a href="solar-calculator.html" class="qa-btn">
-          <div class="qa-icon" style="background:#fef3c7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></div>
-          <div class="qa-label">Solar Calc</div>
-        </a>
-      </div>
-
-      <div class="sec-head">
-        <div class="sec-title">🔥 Hot Solar Leads</div>
-        <div class="sec-action" onclick="showTab('solar')">See all</div>
-      </div>
-      <div class="card" style="margin:0 16px 10px;">
-        <div id="hotLeadsList">
-          <div class="empty-state" style="padding:32px 24px;">
-            <p>Loading leads…</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="sec-head">
-        <div class="sec-title">Recent Invoices</div>
-        <a href="admin-erp.html" class="sec-action">Open ERP</a>
-      </div>
-      <div class="card" style="margin:0 16px 20px;">
-        <div id="recentInvList">
-          <div class="empty-state" style="padding:32px 24px;">
-            <p>Loading invoices…</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="screen-home-client">
-      <div class="hero-banner">
-        <div class="hero-greeting">Welcome back</div>
-        <h2 id="clientName">Client</h2>
-        <p>Your project dashboard</p>
-        <div style="margin-top:12px;">
-          <span class="chip role-client">Active Account</span>
-        </div>
-      </div>
-
-      <div class="stat-strip cols-3" style="margin-top:12px;">
-        <div class="stat-box">
-          <div class="stat-box-val" id="c-bills">—</div>
-          <div class="stat-box-lbl">Bills</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-box-val" id="c-paid" style="color:var(--green);">—</div>
-          <div class="stat-box-lbl">Paid</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-box-val" id="c-updates" style="color:var(--blue);">—</div>
-          <div class="stat-box-lbl">Updates</div>
-        </div>
-      </div>
-
-      <div class="sec-head"><div class="sec-title">Quick Actions</div></div>
-      <div class="qa-grid">
-        <a href="my-bills.html" class="qa-btn">
-          <div class="qa-icon" style="background:#dcfce7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <div class="qa-label">My Bills</div>
-        </a>
-        <a href="payments.html" class="qa-btn">
-          <div class="qa-icon" style="background:#fef3c7;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-          <div class="qa-label">Payments</div>
-        </a>
-        <a href="my-sites.html" class="qa-btn">
-          <div class="qa-icon" style="background:#dbeafe;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div class="qa-label">My Sites</div>
-        </a>
-        <a href="updates.html" class="qa-btn">
-          <div class="qa-icon" style="background:#f3e8ff;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
-          <div class="qa-label">Updates</div>
-        </a>
-      </div>
-
-      <div class="sec-head">
-        <div class="sec-title">Latest Updates</div>
-        <a href="updates.html" class="sec-action">See all</a>
-      </div>
-      <div class="card" style="margin:0 16px 10px;">
-        <div id="clientUpdatesList">
-          <div class="empty-state" style="padding:32px 24px;">
-            <p>Loading updates…</p>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin:4px 16px 24px;">
-        <div style="background:var(--green3);border-radius:var(--radius-lg);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <div>
-            <div style="font-size:14px;font-weight:700;color:#fff;">Need help?</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:2px;">+91 84890 90666</div>
-          </div>
-          <a href="https://wa.me/918489090666" style="background:#25d366;color:#fff;padding:10px 16px;border-radius:var(--radius);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;">WhatsApp</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="screen-solar">
-      <div class="sec-head" style="padding-top:20px;">
-        <div class="sec-title">☀️ Solar Leads</div>
-        <div class="sec-action" onclick="loadSolarLeads()">↻ Refresh</div>
-      </div>
-      <div style="padding:0 16px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;">
-        <button class="chip chip-gray" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('all',this)">All</button>
-        <button class="chip chip-red" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('new',this)">New</button>
-        <button class="chip chip-blue" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('called',this)">Called</button>
-        <button class="chip chip-amber" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('visit',this)">Site Visit</button>
-        <button class="chip chip-green" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);" onclick="filterLeadsApp('won',this)">Won</button>
-      </div>
-      <div class="card" style="margin:8px 16px 20px;" id="leadsListCard">
-        <div class="empty-state"><p>Loading leads…</p></div>
-      </div>
-    </div>
-
-    <div class="screen" id="screen-notifications">
-      <div class="sec-head" style="padding-top:20px;">
-        <div class="sec-title">Notifications</div>
-        <div class="sec-action" id="markAllBtn" onclick="markAllNotifRead()">Mark all read</div>
-      </div>
-      <div class="card" style="margin:0 16px 20px;" id="notifListCard">
-        <div class="empty-state"><p>Loading…</p></div>
-      </div>
-    </div>
-
-    <div class="screen" id="screen-profile">
-      <div class="prof-banner">
-        <div class="prof-avatar" id="profAvatar">DS</div>
-        <div class="prof-name" id="profName">Loading…</div>
-        <div class="prof-email" id="profEmail">—</div>
-        <div class="prof-badge" id="profRole">—</div>
-      </div>
-      <div class="card" style="margin:16px 16px 8px;">
-        <a href="dashboard.html" class="prof-menu-item">
-          <div class="prof-menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-          <div class="prof-menu-label">Full Portal Dashboard</div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
-        </a>
-        <a href="profile.html" class="prof-menu-item">
-          <div class="prof-menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-          <div class="prof-menu-label">Edit Profile</div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
-        </a>
-        <a href="index.html" class="prof-menu-item">
-          <div class="prof-menu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-          <div class="prof-menu-label">Main Website</div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
-        </a>
-        <a href="solar-calculator.html" class="prof-menu-item">
-          <div class="prof-menu-icon" style="background:#fef3c7;color:#d97706;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></div>
-          <div class="prof-menu-label">Solar Calculator</div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
-        </a>
-      </div>
-      <div class="card" style="margin:0 16px 24px;">
-        <div class="prof-menu-item" onclick="doSignOut()" style="cursor:pointer;">
-          <div class="prof-menu-icon" style="background:#fee2e2;color:var(--red);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
-          <div class="prof-menu-label" style="color:var(--red);">Sign Out</div>
-        </div>
-      </div>
-    </div>
-
-  </div><div class="tab-bar" id="tabBar">
-    </div>
-
+<span class="chip role-director">Director</span>
+</div>
+</div>
+<div class="stat-strip cols-3" style="margin-top:12px;">
+<div class="stat-box">
+<div class="stat-box-val" id="d-invoices">—</div>
+<div class="stat-box-lbl">Invoices</div>
+</div>
+<div class="stat-box">
+<div class="stat-box-val" id="d-leads" style="color:var(--amber);">—</div>
+<div class="stat-box-lbl">Solar Leads</div>
+</div>
+<div class="stat-box">
+<div class="stat-box-val" id="d-orders" style="color:var(--blue);">—</div>
+<div class="stat-box-lbl">Orders</div>
+</div>
+</div>
+<div class="sec-head"><div class="sec-title">Quick Actions</div></div>
+<div class="qa-grid">
+<a class="qa-btn" href="admin-erp.html">
+<div class="qa-icon" style="background:#dcfce7;"><svg fill="none" height="18" stroke="#16a34a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg></div>
+<div class="qa-label">ERP</div>
+</a>
+<a class="qa-btn" href="director-portal.html">
+<div class="qa-icon" style="background:#fef3c7;"><svg fill="none" height="18" stroke="#d97706" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg></div>
+<div class="qa-label">Portal</div>
+</a>
+<a class="qa-btn" href="admin-shop.html">
+<div class="qa-icon" style="background:#dbeafe;"><svg fill="none" height="18" stroke="#2563eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" x2="21" y1="6" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></div>
+<div class="qa-label">Shop</div>
+</a>
+<a class="qa-btn" href="solar-calculator.html">
+<div class="qa-icon" style="background:#fef3c7;"><svg fill="none" height="18" stroke="#d97706" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"></path></svg></div>
+<div class="qa-label">Solar Calc</div>
+</a>
+</div>
+<div class="sec-head">
+<div class="sec-title">🔥 Hot Solar Leads</div>
+<div class="sec-action" onclick="showTab('solar')">See all</div>
+</div>
+<div class="card" style="margin:0 16px 10px;">
+<div id="hotLeadsList">
+<div class="empty-state" style="padding:32px 24px;">
+<p>Loading leads…</p>
+</div>
+</div>
+</div>
+<div class="sec-head">
+<div class="sec-title">Recent Invoices</div>
+<a class="sec-action" href="admin-erp.html">Open ERP</a>
+</div>
+<div class="card" style="margin:0 16px 20px;">
+<div id="recentInvList">
+<div class="empty-state" style="padding:32px 24px;">
+<p>Loading invoices…</p>
+</div>
+</div>
+</div>
+</div>
+<div class="screen" id="screen-home-client">
+<div class="hero-banner">
+<div class="hero-greeting">Welcome back</div>
+<h2 id="clientName">Client</h2>
+<p>Your project dashboard</p>
+<div style="margin-top:12px;">
+<span class="chip role-client">Active Account</span>
+</div>
+</div>
+<div class="stat-strip cols-3" style="margin-top:12px;">
+<div class="stat-box">
+<div class="stat-box-val" id="c-bills">—</div>
+<div class="stat-box-lbl">Bills</div>
+</div>
+<div class="stat-box">
+<div class="stat-box-val" id="c-paid" style="color:var(--green);">—</div>
+<div class="stat-box-lbl">Paid</div>
+</div>
+<div class="stat-box">
+<div class="stat-box-val" id="c-updates" style="color:var(--blue);">—</div>
+<div class="stat-box-lbl">Updates</div>
+</div>
+</div>
+<div class="sec-head"><div class="sec-title">Quick Actions</div></div>
+<div class="qa-grid">
+<a class="qa-btn" href="my-bills.html">
+<div class="qa-icon" style="background:#dcfce7;"><svg fill="none" height="18" stroke="#16a34a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+<div class="qa-label">My Bills</div>
+</a>
+<a class="qa-btn" href="payments.html">
+<div class="qa-icon" style="background:#fef3c7;"><svg fill="none" height="18" stroke="#d97706" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><rect height="16" rx="2" width="22" x="1" y="4"></rect><line x1="1" x2="23" y1="10" y2="10"></line></svg></div>
+<div class="qa-label">Payments</div>
+</a>
+<a class="qa-btn" href="my-sites.html">
+<div class="qa-icon" style="background:#dbeafe;"><svg fill="none" height="18" stroke="#2563eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+<div class="qa-label">My Sites</div>
+</a>
+<a class="qa-btn" href="updates.html">
+<div class="qa-icon" style="background:#f3e8ff;"><svg fill="none" height="18" stroke="#7c3aed" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg></div>
+<div class="qa-label">Updates</div>
+</a>
+</div>
+<div class="sec-head">
+<div class="sec-title">Latest Updates</div>
+<a class="sec-action" href="updates.html">See all</a>
+</div>
+<div class="card" style="margin:0 16px 10px;">
+<div id="clientUpdatesList">
+<div class="empty-state" style="padding:32px 24px;">
+<p>Loading updates…</p>
+</div>
+</div>
+</div>
+<div style="margin:4px 16px 24px;">
+<div style="background:var(--green3);border-radius:var(--radius-lg);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+<div>
+<div style="font-size:14px;font-weight:700;color:#fff;">Need help?</div>
+<div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:2px;">+91 84890 90666</div>
+</div>
+<a href="https://wa.me/918489090666" style="background:#25d366;color:#fff;padding:10px 16px;border-radius:var(--radius);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;">WhatsApp</a>
+</div>
+</div>
+</div>
+<div class="screen" id="screen-solar">
+<div class="sec-head" style="padding-top:20px;">
+<div class="sec-title">☀️ Solar Leads</div>
+<div class="sec-action" onclick="loadSolarLeads()">↻ Refresh</div>
+</div>
+<div style="padding:0 16px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;">
+<button class="chip chip-gray" onclick="filterLeadsApp('all',this)" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);">All</button>
+<button class="chip chip-red" onclick="filterLeadsApp('new',this)" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);">New</button>
+<button class="chip chip-blue" onclick="filterLeadsApp('called',this)" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);">Called</button>
+<button class="chip chip-amber" onclick="filterLeadsApp('visit',this)" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);">Site Visit</button>
+<button class="chip chip-green" onclick="filterLeadsApp('won',this)" style="white-space:nowrap;border:none;cursor:pointer;font-family:var(--font);">Won</button>
+</div>
+<div class="card" id="leadsListCard" style="margin:8px 16px 20px;">
+<div class="empty-state"><p>Loading leads…</p></div>
+</div>
+</div>
+<div class="screen" id="screen-notifications">
+<div class="sec-head" style="padding-top:20px;">
+<div class="sec-title">Notifications</div>
+<div class="sec-action" id="markAllBtn" onclick="markAllNotifRead()">Mark all read</div>
+</div>
+<div class="card" id="notifListCard" style="margin:0 16px 20px;">
+<div class="empty-state"><p>Loading…</p></div>
+</div>
+</div>
+<div class="screen" id="screen-profile">
+<div class="prof-banner">
+<div class="prof-avatar" id="profAvatar">DS</div>
+<div class="prof-name" id="profName">Loading…</div>
+<div class="prof-email" id="profEmail">—</div>
+<div class="prof-badge" id="profRole">—</div>
+</div>
+<div class="card" style="margin:16px 16px 8px;">
+<a class="prof-menu-item" href="dashboard.html">
+<div class="prof-menu-icon"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg></div>
+<div class="prof-menu-label">Full Portal Dashboard</div>
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="color:var(--muted);margin-left:auto;" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</a>
+<a class="prof-menu-item" href="profile.html">
+<div class="prof-menu-icon"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+<div class="prof-menu-label">Edit Profile</div>
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="color:var(--muted);margin-left:auto;" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</a>
+<a class="prof-menu-item" href="index.html">
+<div class="prof-menu-icon"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>
+<div class="prof-menu-label">Main Website</div>
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="color:var(--muted);margin-left:auto;" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</a>
+<a class="prof-menu-item" href="solar-calculator.html">
+<div class="prof-menu-icon" style="background:#fef3c7;color:#d97706;"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"></path></svg></div>
+<div class="prof-menu-label">Solar Calculator</div>
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="color:var(--muted);margin-left:auto;" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</a>
+</div>
+<div class="card" style="margin:0 16px 24px;">
+<div class="prof-menu-item" onclick="doSignOut()" style="cursor:pointer;">
+<div class="prof-menu-icon" style="background:#fee2e2;color:var(--red);"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg></div>
+<div class="prof-menu-label" style="color:var(--red);">Sign Out</div>
+</div>
+</div>
+</div>
+</div><div class="tab-bar" id="tabBar">
+</div>
 </div><div class="app-toast" id="appToast"></div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, browserLocalPersistence, setPersistence }
